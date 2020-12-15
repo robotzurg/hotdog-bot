@@ -62,7 +62,7 @@ client.on('message', async message => {
 	let commandName = args.shift().toLowerCase();
 
 
-    if (message.content.startsWith(`${prefix}rate`) || (message.content.toLowerCase().startsWith(`${prefix}addsong`)) || (message.content.toLowerCase().startsWith(`${prefix}erateep`)) || (message.content.toLowerCase().startsWith(`${prefix}newrate`))) {
+    if (message.content.startsWith(`${prefix}rate`) || (message.content.toLowerCase().startsWith(`${prefix}addsong`)) || (message.content.toLowerCase().startsWith(`${prefix}erateep`)) || (message.content.toLowerCase().startsWith(`${prefix}newrate`)) || (message.content.toLowerCase().startsWith(`${prefix}getreview`))) {
         args = message.content.slice(prefix.length).trim().split(/\| +/);
         const firstargs = args[0].split(/ +/);
         commandName = firstargs.shift().toLowerCase();  

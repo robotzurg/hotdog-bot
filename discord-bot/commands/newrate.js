@@ -32,18 +32,9 @@ module.exports = {
             .setColor(`${message.member.displayHexColor}`)
             .setTitle(`${args[0]} - ${args[1]}`)
             .setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review` : `${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
-            // .setURL('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
             exampleEmbed.setDescription(args[2])
             .setThumbnail(`${message.author.avatarURL({ format: "png", dynamic: false })}`)
-            // .addFields(
-            //    { name: 'Regular field title', value: 'Some value here' },
-            //    { name: '\u200B', value: '\u200B' },
-            //    { name: 'Inline field title', value: 'Some value here', inline: true },
-            //    { name: 'Inline field title', value: 'Some value here', inline: true },
-            // )
             .addField('Rating: ', `**${args[3]}**`, true);
-            // .setImage('${message.author.avatarURL({ format: "png", dynamic: false })}`')
-            // .setTimestamp()
             if (userIsTagged === true) {
                 exampleEmbed.setFooter(`Sent by ${taggedUser.username}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
             }
@@ -51,17 +42,58 @@ module.exports = {
             message.delete(message);
 
             //Add review to database
-            db.reviewDB.set(args[0], { 
-                [args[1]]: { 
-                    [`<@${message.author.id}>`]: { 
-                        name: message.member.displayName,
-                        review: args[2],
-                        rate: args[3],
+            if (db.reviewDB.get(args[0].trim()) === undefined) {
+                db.reviewDB.set(args[0].trim(), { 
+                    [args[1].trim()]: { 
+                        [`<@${message.author.id}>`]: { 
+                            name: message.member.displayName,
+                            review: args[2].trim(),
+                            rate: args[3].trim(),
+                        },
+                        EP: false, 
                     },
-                    EP: false, 
-                },
-            });
+                });
+            } else {
+                const artistObj = db.reviewDB.get(args[0].trim());
 
+                const newsongObj = { 
+                    [args[1].trim()]: { 
+                        [`<@${message.author.id}>`]: { 
+                            name: message.member.displayName,
+                            review: args[2].trim(),
+                            rate: args[3].trim(),
+                        },
+                        EP: false, 
+                    },
+                };
+
+                Object.assign(artistObj, newsongObj);
+
+                db.reviewDB.set(args[0].trim(), artistObj);
+
+                /*const updatedUserObj = db.reviewDB.get(args[0], `${args[1].trim()}.${message.author}`);
+                const songObj = db.reviewDB.get(args[0], `${args[1].trim()}`);
+
+                if (updatedUserObj === undefined) {
+
+                    const newUserObj = {
+                        name: message.member.displayName,
+                        review: args[2].trim(),
+                        rate: args[3].trim(),
+                    };
+
+                    Object.assign(songObj, newUserObj);
+
+                    db.reviewDB.set(args[0].trim(), songObj);
+
+
+                } else {
+                    console.log(updatedUserObj);
+                }*/
+
+            }
+
+            
             return message.channel.send(exampleEmbed); 
         }
 
