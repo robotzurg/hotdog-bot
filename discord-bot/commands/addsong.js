@@ -22,7 +22,12 @@ module.exports = {
 
             db.friList.set(`${keyNum}`, songObj);
 
-            message.channel.send(`Added ${db.friList.get(`${db.friList.count}`, `artist`)} - ${db.friList.get(`${db.friList.count}`, `song`)} to the Music Listening Playlist!`);
-        } else { return message.reply('You don\'t have the perms to use this command!'); }
+            message.channel.send(`Added ${db.friList.get(`${db.friList.count}`, `artist`)} - ${db.friList.get(`${db.friList.count}`, `song`)} to the Music Listening Playlist!`).then(msg => {
+                msg.delete({ timeout: 10000 }); 
+            })
+            .catch(console.error);
+
+            message.delete({ timeout: 10000 });
+        } else { return message.reply('You don\'t have the perms to use this command!').then(msg => { msg.delete({ timeout: 10000 }); }); }
 	},
 };

@@ -20,6 +20,8 @@ client.genreList = ['Brostep/Riddim', 'Future Riddim', 'Color Bass', 'Melodic Du
 'Other Hardcore', 'Psytrance', 'Other Trance', 'Progressive House', 'Future House', 'Big Room House', 'Bass House', 'Trap', 'Future Bass', 'Glitch Hop/Moombah', 'Dancefloor DnB',
 'Liquid DnB', 'Neuro DnB', 'Other DnB', 'Indie Dance/Nu Disco', 'Synthwave', 'Garage', 'Other Chillout', 'Non-EDM'];
 
+// client.multiargList = ['!rate', '!addsong', '!erateep', '!addreview', '!getreview', '!editreview'];
+
 // Command Collections
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -59,15 +61,15 @@ client.on('message', async message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     let args = message.content.slice(prefix.length).trim().split(/ +/);
-	let commandName = args.shift().toLowerCase();
+    let commandName = args.shift().toLowerCase();
 
-
-    if (message.content.startsWith(`${prefix}rate`) || (message.content.toLowerCase().startsWith(`${prefix}addsong`)) || (message.content.toLowerCase().startsWith(`${prefix}erateep`)) || (message.content.toLowerCase().startsWith(`${prefix}newrate`)) || (message.content.toLowerCase().startsWith(`${prefix}getreview`))) {
-        args = message.content.slice(prefix.length).trim().split(/\| +/);
+    if (args.length > 1) {
+        args = message.content.slice(prefix.length).trim().split(/ \| +/);
         const firstargs = args[0].split(/ +/);
         commandName = firstargs.shift().toLowerCase();  
         args[0] = args[0].slice(commandName.length + 1).trim(); 
     }
+    
 
     // Genre Roulette GameStatus Stuff
     if (message.content.startsWith(`${prefix}gamestatus`)) {
@@ -104,7 +106,7 @@ client.on('message', async message => {
 
     // Friday Music Listening Stuff
     if (message.content.startsWith(`${prefix}fridaylist`)) {
-        if (message.member.hasPermission('ADMINISTRATOR')) {
+        // if (message.member.hasPermission('ADMINISTRATOR')) {
             const songList = ['**Music Listening Playlist**', ' '];
 
                 db.friList.forEach((prop) => {
@@ -112,19 +114,20 @@ client.on('message', async message => {
                         const songString = `**--** ${prop.artist} - ${prop.song}`;
                         songList.push(songString);
                     } else if (prop.friday === true) {
-                        const songString = `(F) **--** ${prop.artist} - ${prop.song}`;
+                        const songString = `**--** :regional_indicator_f: ${prop.artist} - ${prop.song}`;
                         songList.unshift(songString); 
                     }
                 });
 
                 songList.unshift(' ');
-                songList.unshift('**Music Listening Playlist** (:regional_indicator_f: means that it is on the Friday Playlist for this week.)');
+                songList.unshift('(:regional_indicator_f: means that it is on the Friday Playlist for this week.)');
+                songList.unshift('**Music Listening Playlist**');
                 
             (message.channel.send(songList)).then((msg) => {
                 db.friID.set(`friID`, msg.id);
                 console.log(db.friID.get('friID'));
             });
-       } else { return message.reply('You don\'t have the perms to use this command!'); }
+       // } else { return message.reply('You don\'t have the perms to use this command!'); }
     }
 
     module.exports.updateFridayListData = function() {
@@ -132,18 +135,51 @@ client.on('message', async message => {
         const channeltoSearch = message.guild.channels.cache.find(ch => ch.name === 'friday-playlist');
         (channeltoSearch.messages.fetch(friIDmsg)).then((msg) => {
 
+            const singleList = [];
+            const epList = [];
+            const lpList = [];
+            const compList = [];
             const songList = [];
 
             db.friList.forEach((prop) => {
                 if (prop.friday === false) {
                     const songString = `**--** ${prop.artist} - ${prop.song}`;
-                    songList.push(songString);
+
+                    if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.includes('comp')) {
+                        singleList.push(songString);
+                    } else if (prop.song.includes('EP')) {
+                        epList.push(songString);
+                    } else if (prop.song.includes('LP')) {
+                        lpList.push(songString);
+                    } else if (prop.song.includes('comp')) {
+                        compList.push(songString.substring(0, songString.length - 5));
+                    }
                 } else if (prop.friday === true) {
-                    const songString = `**--** ${prop.artist} - ${prop.song} :regional_indicator_f: `;
-                    songList.unshift(songString); 
+                    const songString = `**--** :regional_indicator_f: **${prop.artist} - ${prop.song}**`;
+
+                    if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.includes('comp')) {
+                        singleList.unshift(songString);
+                    } else if (prop.song.includes('EP')) {
+                        epList.unshift(songString);
+                    } else if (prop.song.includes('LP')) {
+                        lpList.unshift(songString);
+                    } else if (prop.song.includes('comp')) {
+                        compList.push(songString.substring(0, songString.length - 6) + '**');
+                    }
                 }
             });
 
+            songList.unshift(compList.join('\n'));
+            songList.unshift('**Compilations**');
+            songList.unshift(' ');
+            songList.unshift(lpList.join('\n'));
+            songList.unshift('**LPs**');
+            songList.unshift(' ');
+            songList.unshift(epList.join('\n'));
+            songList.unshift('**EPs**');
+            songList.unshift(' ');
+            songList.unshift(singleList.join('\n'));
+            songList.unshift('**Singles**');
             songList.unshift(' ');
             songList.unshift('(:regional_indicator_f: means that it is on the Friday Playlist for this week.)');
             songList.unshift('**Music Listening Playlist**');

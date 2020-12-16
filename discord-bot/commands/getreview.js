@@ -1,19 +1,17 @@
 const Discord = require('discord.js');
 const db = require("../db.js");
-// bconst { prefix } = require('../config.json');
-// const mailboxes = ['aeroface', 'av', 'emily', 'ethan', 'fridgey', 'hal', 'jeff', 'josh', 'lapplepieguy', 'meltered', 'nate', 'pup', 'shiro', 'steph', 'treez', 'valence', 'vol', 'xypod', 'yacob', 'yul'];
 
 module.exports = {
 	name: 'getreview',
-	cooldown: 0,
-    description: 'Ping!',
+    description: 'Get a review from a user on the server that they have written!',
     args: true,
     usage: '<artist> | <song> | <user>',
 	execute(message, args) {
-		const taggedUser = message.mentions.users.first();
-		const rname = db.reviewDB.get(args[0], `${args[1].trim()}.${taggedUser}.name`);
-		const rreview = db.reviewDB.get(args[0], `${args[1].trim()}.${taggedUser}.review`);
-		const rscore = db.reviewDB.get(args[0], `${args[1].trim()}.${taggedUser}.rate`);
+        const taggedUser = message.mentions.users.first();
+        const rname = db.reviewDB.get(args[0], `${args[1]}.${taggedUser}.name`);
+        if (rname === undefined) return message.channel.send('No review found.');
+		const rreview = db.reviewDB.get(args[0], `${args[1]}.${taggedUser}.review`);
+		const rscore = db.reviewDB.get(args[0], `${args[1]}.${taggedUser}.rate`);
 
 
 		const exampleEmbed = new Discord.MessageEmbed()
