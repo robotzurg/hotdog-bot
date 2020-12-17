@@ -15,17 +15,16 @@ module.exports = {
 
         for (let i = 0; i < songArray.length; i++) {
             const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
+            const songObj = db.reviewDB.get(args[0], `${songArray[i]}`);
+            const reviewNum = Object.keys(songObj).length - 1;
             if (songEP != false) {
                 if (EPs[`${songEP}`] === undefined) {
-                    console.log('Adding to EP');
-                    EPs[`${songEP}`] = { [songArray[i]]: '' } ;
+                    EPs[`${songEP}`] = { [songArray[i]]: reviewNum } ;
                 } else {
-                   EPs[`${songEP}`][`${songArray[i]}`] = ' ';
+                   EPs[`${songEP}`][`${songArray[i]}`] = reviewNum;
                 }
             }
         }
-
-        console.log(EPs);
 
 		const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)
@@ -37,9 +36,16 @@ module.exports = {
 
                 if (songEP === false) { //If it's a single
                     exampleEmbed.addField(`${songArray[i]}${songEP != false ? ` (${songEP})` : ''}: `, `*(${reviewNum} review${reviewNum > 1 ? 's' : ''})*`);
-                } else if (songEP != false && !EPsOnEmbed.includes(songEP)) { //If it's an EP and the field doesn't already exist
+                }
+            }
+            
+            for (let i = 0; i < songArray.length; i++) {
+                const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
+
+                if (songEP != false && !EPsOnEmbed.includes(songEP)) { //If it's an EP and the field doesn't already exist
                     const s = EPs[`${songEP}`]; 
                     let songsinEP = Object.keys(s);
+                    songsinEP = songsinEP.map(x => x + ` *(${EPs[`${songEP}`][`${x}`]} reviews)*`);
                     songsinEP = songsinEP.map(ii => '-' + ii);
                     songsinEP.join('\n');
                     exampleEmbed.addField(`${songEP}: `, songsinEP);

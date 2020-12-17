@@ -17,8 +17,7 @@ module.exports = {
             for (let i = 0; i < songArray.length; i++) {
                 const songObj = db.reviewDB.get(args[0], `${songArray[i]}`);
                 const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
-                console.log(songEP);
-
+                
                 if (songEP === args[1]) {
                     const reviewNum = Object.keys(songObj).length - 1;
                     exampleEmbed.addField(`**${songArray[i]}**:`, `*(${reviewNum} review${reviewNum > 1 ? 's' : ''})*`);

@@ -51,7 +51,7 @@ module.exports = {
                             review: args[3],
                             rate: args[2],
                         },
-                        EP: 'Test EP', 
+                        EP: false, 
                     },
                 });
             } else if(db.reviewDB.get(args[0], `${args[1]}`) === undefined) { //If the artist db exists, check if the song db doesn't exist
@@ -66,7 +66,7 @@ module.exports = {
                             review: args[3],
                             rate: args[2],
                         },
-                        EP: 'Test EP', 
+                        EP: false, 
                     },
                 };
 
