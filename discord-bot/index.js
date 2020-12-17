@@ -20,8 +20,6 @@ client.genreList = ['Brostep/Riddim', 'Future Riddim', 'Color Bass', 'Melodic Du
 'Other Hardcore', 'Psytrance', 'Other Trance', 'Progressive House', 'Future House', 'Big Room House', 'Bass House', 'Trap', 'Future Bass', 'Glitch Hop/Moombah', 'Dancefloor DnB',
 'Liquid DnB', 'Neuro DnB', 'Other DnB', 'Indie Dance/Nu Disco', 'Synthwave', 'Garage', 'Other Chillout', 'Non-EDM'];
 
-// client.multiargList = ['!rate', '!addsong', '!erateep', '!addreview', '!getreview', '!editreview'];
-
 // Command Collections
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);

@@ -9,7 +9,7 @@ module.exports = {
     args: true,
     usage: '<artist> | <song_name> | <rating> | <rate_desc> | [op] <user_that_sent_song>',
 	execute(message, args) {
-        // if (message.author.id === '122568101995872256') { 
+        if (message.author.id === '122568101995872256') { 
             const command = message.client.commands.get('addreview');
             const is_mailbox = mailboxes.includes(message.channel.name);
             let userIsTagged;
@@ -51,7 +51,7 @@ module.exports = {
                             review: args[3],
                             rate: args[2],
                         },
-                        EP: false, 
+                        EP: 'Test EP', 
                     },
                 });
             } else if(db.reviewDB.get(args[0], `${args[1]}`) === undefined) { //If the artist db exists, check if the song db doesn't exist
@@ -66,7 +66,7 @@ module.exports = {
                             review: args[3],
                             rate: args[2],
                         },
-                        EP: false, 
+                        EP: 'Test EP', 
                     },
                 };
 
@@ -97,6 +97,6 @@ module.exports = {
             }
             // Send the embed rate message
             return message.channel.send(exampleEmbed); 
-        // }
+        }
     },
 };
