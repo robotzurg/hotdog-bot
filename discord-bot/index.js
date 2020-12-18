@@ -3,7 +3,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const db = require("./db.js");
-// const cron = require('node-cron');
+const cron = require('node-cron');
 
 // Set up random number function
 function randomNumber(min, max) {  
@@ -23,6 +23,11 @@ client.genreList = ['Brostep/Riddim', 'Future Riddim', 'Color Bass', 'Melodic Du
 
 client.ogreList = ['./Ogres/ogreGold.png', './Ogres/ogreHappy.png', './Ogres/ogreMad.png', './Ogres/ogreSad.png', './Ogres/ogreSmug.png', './Ogres/ogreSnow.png'];
 
+client.memberIDList = ['398369363784368128', '487747924361478155', '156110247004471296', '289178868118716416', '331821722594443274', '205726084291887104', '341299011971448835', 
+'229617545651552256', '341979797129527297', '122568101995872256', '784993334330130463', '143091697096720384', '221087833534889994', '221006870129803264', '283068026960609283', 
+'431134660857298955', '449314134387982347', '229249397203009536'];
+
+
 // Command Collections
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -39,25 +44,32 @@ client.once('ready', () => {
     client.user.setActivity('with hotdogs!');
     const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
     console.log(date);
-
 });
 
-/*client.on('ready', () => {
+// Change avatar at 10:00am
+cron.schedule('00 10 * * *', () => { 
+    client.user.setAvatar(client.ogreList[Math.floor(Math.random() * client.ogreList.length)]);
+    const channel = client.channels.cache.get('680864894006067263');
+    channel.send('Hello everyone! I\'m here to tell you all today\'s **Pea of the Day** which is...');
+}, {
+    scheduled: true,
+});
 
-    cron.schedule('35 29 1 * * *', () => { //
-        // client.user.setAvatar(client.ogreList[Math.floor(Math.random() * client.ogreList.length)]);
-        const myRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Pea of the Day");
-        const myUser = client.users.cache.get('122568101995872256');
-        console.log();
-        client.guilds.cache.find(guild => guild.id === '680864893552951306').members.fetch(myUser).roles.add(myRole);
-    }, {
-        scheduled: true,
-    });
-
-});*/
 
 // Listen for messages
 client.on('message', async message => {
+
+    // Set pea of the day
+    if (message.author.id === '784993334330130463' && message.content.includes('here to tell you all')) {
+        const previousUser = db.potdID.get('ID');
+        const chosenUser = client.memberIDList[Math.floor(Math.random() * client.memberIDList.length)];
+        const myRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Pea of the Day");
+        message.guild.members.fetch(previousUser).then(a => a.roles.remove(myRole));
+        message.guild.members.fetch(chosenUser).then(a => a.roles.add(myRole));
+        message.channel.send(`<@${chosenUser}>! Congratulations!`);
+
+        db.potdID.set('ID', chosenUser);
+    }
 
     // NON-COMMAND CHECKS
     if (Math.round(randomNumber(1, 500)) == 1 && message.channel.name != 'serious-events') {
