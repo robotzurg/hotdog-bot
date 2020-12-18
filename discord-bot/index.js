@@ -3,6 +3,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const db = require("./db.js");
+// const cron = require('node-cron');
 
 // Set up random number function
 function randomNumber(min, max) {  
@@ -20,6 +21,8 @@ client.genreList = ['Brostep/Riddim', 'Future Riddim', 'Color Bass', 'Melodic Du
 'Other Hardcore', 'Psytrance', 'Other Trance', 'Progressive House', 'Future House', 'Big Room House', 'Bass House', 'Trap', 'Future Bass', 'Glitch Hop/Moombah', 'Dancefloor DnB',
 'Liquid DnB', 'Neuro DnB', 'Other DnB', 'Indie Dance/Nu Disco', 'Synthwave', 'Garage', 'Other Chillout', 'Non-EDM'];
 
+client.ogreList = ['./Ogres/ogreGold.png', './Ogres/ogreHappy.png', './Ogres/ogreMad.png', './Ogres/ogreSad.png', './Ogres/ogreSmug.png', './Ogres/ogreSnow.png'];
+
 // Command Collections
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -36,7 +39,22 @@ client.once('ready', () => {
     client.user.setActivity('with hotdogs!');
     const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
     console.log(date);
+
 });
+
+/*client.on('ready', () => {
+
+    cron.schedule('35 29 1 * * *', () => { //
+        // client.user.setAvatar(client.ogreList[Math.floor(Math.random() * client.ogreList.length)]);
+        const myRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Pea of the Day");
+        const myUser = client.users.cache.get('122568101995872256');
+        console.log();
+        client.guilds.cache.find(guild => guild.id === '680864893552951306').members.fetch(myUser).roles.add(myRole);
+    }, {
+        scheduled: true,
+    });
+
+});*/
 
 // Listen for messages
 client.on('message', async message => {

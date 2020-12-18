@@ -25,7 +25,6 @@
 		"no-shadow": ["error", { "allow": ["err", "resolve", "reject"] }],
 		"no-var": "error",
 		"object-curly-spacing": ["error", "always"],
-		"prefer-const": "error",
 		"semi": ["error", "always"],
 		"space-before-blocks": "error",
 		"space-before-function-paren": ["error", {
