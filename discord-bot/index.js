@@ -86,6 +86,10 @@ client.on('message', async message => {
         message.react('<:craig:714689464760533092>');
     }
 
+    if (message.content.toLowerCase().includes('friday') && message.channel.name != 'serious-events') {
+        message.react('🏀');
+    }
+
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     let args = message.content.slice(prefix.length).trim().split(/ +/);

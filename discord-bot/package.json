@@ -21,7 +21,9 @@
     "node-cron": "^2.0.3",
     "node-gyp": "^7.1.2",
     "sequelize": "^6.3.5",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "trello": "^0.10.0",
+    "trello-node-api": "0.0.9"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0"
