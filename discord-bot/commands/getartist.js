@@ -9,6 +9,7 @@ module.exports = {
 	execute(message, args) {
         
         const artistObj = db.reviewDB.get(args[0]);
+        if (artistObj === undefined) return message.channel.send('Artist not found.');
         const songArray = Object.keys(artistObj);
         const EPs = {};
         const EPsOnEmbed = [];

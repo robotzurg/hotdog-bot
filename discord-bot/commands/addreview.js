@@ -30,6 +30,8 @@ module.exports = {
                 }
             }
 
+            // const rmx = message.content.substring(0, args[1].length - 7).split(' (');
+
             const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)
             .setTitle(`${args[0]} - ${args[1]}`)
