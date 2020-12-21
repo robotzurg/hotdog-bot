@@ -7,7 +7,7 @@ module.exports = {
     usage: `<feature> | <description_of_feature>`,
 	execute(message, args) {
         const data = {
-            name: args[0],
+            name: `${message.member.displayName}: ${args[0]}`,
             desc: args[1],
             idList: '5fdd279b8c0f807ba3822448', //REQUIRED
             idLabels: ['5fdda073f579d381c8503ada'],

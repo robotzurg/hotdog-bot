@@ -35,7 +35,7 @@ module.exports = {
                 const reviewNum = Object.keys(songObj).length - 1;
 
                 if (songEP === false) { //If it's a single
-                    exampleEmbed.addField(`${songArray[i]}${songEP != false ? ` (${songEP})` : ''}: `, `*(${reviewNum} review${reviewNum > 1 ? 's' : ''})*`);
+                    exampleEmbed.addField(`${songArray[i]}${songEP != false ? ` (${songEP})` : ''}: `, `*(${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''})*`);
                 }
             }
             

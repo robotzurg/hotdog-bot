@@ -72,7 +72,11 @@ client.on('message', async message => {
     }
 
     // NON-COMMAND CHECKS
-    if (Math.round(randomNumber(1, 500)) == 1 && message.channel.name != 'serious-events') {
+    if (Math.round(randomNumber(1, 500)) == 1 && message.channel.name != 'serious-events' && message.author.id != db.potdID.get('ID')) {
+        message.react('<:pepehehe:784594747406286868>');
+        const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
+        console.log(`Deploying pepehehe at ${date}`);
+    } else if (Math.round(randomNumber(1, 100)) == 1 && message.channel.name != 'serious-events' && message.author.id === db.potdID.get('ID')) {
         message.react('<:pepehehe:784594747406286868>');
         const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
         console.log(`Deploying pepehehe at ${date}`);
@@ -86,7 +90,7 @@ client.on('message', async message => {
         message.react('<:craig:714689464760533092>');
     }
 
-    if (message.content.toLowerCase().includes('friday') && message.channel.name != 'serious-events') {
+    if (message.content.toLowerCase().includes('friday 🏀 we ball') && message.channel.name != 'serious-events') {
         message.react('🏀');
     }
 

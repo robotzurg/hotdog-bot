@@ -5,8 +5,9 @@ module.exports = {
 	name: 'editreview',
     description: 'Edit a pre-existing review of your own.',
     args: true,
-    usage: '<artist> | <song_name> | <rating> | <rate_desc> | [op] <user_that_sent_song>',
+    usage: '<artist> | <song_name> | <rating> | <rate_desc> | [op] <user_that_sent_song> | [admin] <user>',
 	execute(message, args) {
+        
         const rname = db.reviewDB.get(args[0], `${args[1]}.${message.author}.name`);
         if (rname === undefined) return message.channel.send('No review found.');
 

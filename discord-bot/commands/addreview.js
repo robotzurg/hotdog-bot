@@ -12,8 +12,10 @@ module.exports = {
         if (message.author.id === '122568101995872256') { 
             const command = message.client.commands.get('addreview');
             const is_mailbox = mailboxes.includes(message.channel.name);
+            let artistArray = args[0].split(' & ');
             let userIsTagged;
             let taggedUser;
+
 
             if (args.length < 4) {
                 return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
@@ -43,57 +45,59 @@ module.exports = {
 
             //Add review to database
             // If the artist db doesn't exist
-            if (db.reviewDB.get(args[0]) === undefined) {
-                db.reviewDB.set(args[0], { 
-                    [args[1]]: { // Create the SONG DB OBJECT
+            for (let i = 0; i < artistArray.length; i++) {
+                if (db.reviewDB.get(artistArray[i]) === undefined) {
+                    db.reviewDB.set(artistArray[i], { 
+                        [args[1]]: { // Create the SONG DB OBJECT
+                            [`<@${message.author.id}>`]: { 
+                                name: message.member.displayName,
+                                review: args[3],
+                                rate: args[2],
+                            },
+                            EP: false, 
+                        },
+                    });
+                } else if(db.reviewDB.get(artistArray[i], `${args[1]}`) === undefined) { //If the artist db exists, check if the song db doesn't exist
+                console.log('Song Not Detected!');
+                const artistObj = db.reviewDB.get(artistArray[i]);
+
+                    //Create the object that will be injected into the Artist object
+                    const newsongObj = { 
+                        [args[1]]: { 
+                            [`<@${message.author.id}>`]: { 
+                                name: message.member.displayName,
+                                review: args[3],
+                                rate: args[2],
+                            },
+                            EP: false, 
+                        },
+                    };
+
+                    //Inject the newsongobject into the artistobject and then put it in the database
+                    Object.assign(artistObj, newsongObj);
+                    db.reviewDB.set(artistArray[i], artistObj);
+
+                } else if (db.reviewDB.get(artistArray[i], `${args[1]}.${message.author}`)) { // Check if you are already in the system
+                    console.log('User is in the system!');
+                    return message.channel.send(`You already have a review for ${artistArray[i]} - ${args[1]} in the system! Use \`!getreview\` to get your review, or \`!editreview\` to edit your pre-existing review.`);
+                } else {
+                    console.log('User not detected!');
+                    const songObj = db.reviewDB.get(artistArray[i], `${args[1]}`);
+
+                    //Create the object that will be injected into the Song object
+                    const newuserObj = {
                         [`<@${message.author.id}>`]: { 
                             name: message.member.displayName,
                             review: args[3],
                             rate: args[2],
                         },
-                        EP: false, 
-                    },
-                });
-            } else if(db.reviewDB.get(args[0], `${args[1]}`) === undefined) { //If the artist db exists, check if the song db doesn't exist
-            console.log('Song Not Detected!');
-            const artistObj = db.reviewDB.get(args[0]);
+                    };
 
-                //Create the object that will be injected into the Artist object
-                const newsongObj = { 
-                    [args[1]]: { 
-                        [`<@${message.author.id}>`]: { 
-                            name: message.member.displayName,
-                            review: args[3],
-                            rate: args[2],
-                        },
-                        EP: false, 
-                    },
-                };
-
-                //Inject the newsongobject into the artistobject and then put it in the database
-                Object.assign(artistObj, newsongObj);
-                db.reviewDB.set(args[0], artistObj);
-
-            } else if (db.reviewDB.get(args[0], `${args[1]}.${message.author}`)) { // Check if you are already in the system
-                console.log('User is in the system!');
-                return message.channel.send(`You already have a review for ${args[0]} - ${args[1]} in the system! Use \`!getreview\` to get your review, or \`!editreview\` to edit your pre-existing review.`);
-            } else {
-                console.log('User not detected!');
-                const songObj = db.reviewDB.get(args[0], `${args[1]}`);
-
-                //Create the object that will be injected into the Song object
-                const newuserObj = {
-                    [`<@${message.author.id}>`]: { 
-                        name: message.member.displayName,
-                        review: args[3],
-                        rate: args[2],
-                    },
-                };
-
-                //Inject the newsongobject into the artistobject and then put it in the database
-                Object.assign(songObj, newuserObj);
-                console.log(songObj);
-                db.reviewDB.set(args[0], songObj, `${args[1]}`);
+                    //Inject the newsongobject into the songobject and then put it in the database
+                    Object.assign(songObj, newuserObj);
+                    console.log(songObj);
+                    db.reviewDB.set(artistArray[i], songObj, `${args[1]}`);
+                }
             }
             // Send the embed rate message
             return message.channel.send(exampleEmbed); 
