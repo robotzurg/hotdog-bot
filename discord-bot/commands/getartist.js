@@ -12,9 +12,10 @@ module.exports = {
         if (artistObj === undefined) return message.channel.send('Artist not found.');
         const songArray = Object.keys(artistObj);
         const EPs = {};
+        // if (EPs.toString() == `[object Object]`) { console.log(EPs); }
         const EPsOnEmbed = [];
 
-        for (let i = 0; i < songArray.length; i++) {
+        for (let i = 0; i < songArray.length; i++) { //EP preparation
             const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
             const songObj = db.reviewDB.get(args[0], `${songArray[i]}`);
             const reviewNum = Object.keys(songObj).length - 1;
@@ -22,7 +23,7 @@ module.exports = {
                 if (EPs[`${songEP}`] === undefined) {
                     EPs[`${songEP}`] = { [songArray[i]]: reviewNum } ;
                 } else {
-                   EPs[`${songEP}`][`${songArray[i]}`] = reviewNum;
+                EPs[`${songEP}`][`${songArray[i]}`] = reviewNum;
                 }
             }
         }
@@ -33,10 +34,25 @@ module.exports = {
             for (let i = 0; i < songArray.length; i++) {
                 const songObj = db.reviewDB.get(args[0], `${songArray[i]}`);
                 const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
-                const reviewNum = Object.keys(songObj).length - 1;
+                const reviewNum = Object.keys(songObj).length - 2;
 
                 if (songEP === false) { //If it's a single
-                    exampleEmbed.addField(`${songArray[i]}${songEP != false ? ` (${songEP})` : ''}: `, `*(${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''})*`);
+                    let songDetails;
+                    let remixReviewNum;
+                    if (Object.keys(db.reviewDB.get(args[0], `${songArray[i]}.Remixers`)).length > 0) {
+                        const songRemixersObj = db.reviewDB.get(args[0], `${songArray[i]}.Remixers`);
+                        songDetails = [`*(${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''})*`, '-Remixes:'];
+
+                        for (const remixer in songRemixersObj) {
+                            const remixerObj = db.reviewDB.get(args[0], `${songArray[i]}.Remixers.${remixer}`);
+                            remixReviewNum = Object.keys(remixerObj).length;
+                            songDetails.push(`${remixer} Remix *(${remixReviewNum} reviews)*`);
+                        }
+                    } else {
+                        songDetails = `*(${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''})*`;
+                    }
+                    
+                    exampleEmbed.addField(`${songArray[i]}${songEP != false ? ` (${songEP})` : ''}: `, songDetails);
                 }
             }
             
