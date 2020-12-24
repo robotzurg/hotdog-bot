@@ -7,11 +7,13 @@ module.exports = {
 	name: 'addreview',
     description: 'Create a song rating embed message!',
     args: true,
-    usage: '<artist> | <song_name> | <rating> | <rate_desc> | [op] <user_that_sent_song>',
+    usage: '`<artist> | <song_name> | <rating> | <rate_desc> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>`',
 	execute(message, args) {
         // if (message.author.id === '122568101995872256') { 
             const command = message.client.commands.get('addreview');
             const is_mailbox = mailboxes.includes(message.channel.name);
+            
+            //Remix preparation
             let songName;
             let rmxArtist;
             if (args[1].toLowerCase().includes('remix')) {
@@ -23,20 +25,36 @@ module.exports = {
             }
 
             let artistArray = args[0].split(' & ');
-            let userIsTagged;
             let taggedUser;
+            let taggedMember;
+            let thumbnailImage;
 
             if (args.length < 4) {
                 return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
             } else if (args.length === 4) {
-                userIsTagged = false;
+
+                taggedUser = false;
+                taggedMember = false;
+                thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+
             } else if (args.length === 5) {
+
+                thumbnailImage = args[4];
+                taggedUser = false;
+                taggedMember = false;
+
+            } else if (args.length === 6) {
+
                 if (message.mentions.users.first() != undefined) { 
                     taggedUser = message.mentions.users.first(); 
-                    userIsTagged = true;
+                    taggedMember = message.mentions.members.first();
                 } else { 
-                    userIsTagged = false;
+                    taggedUser = false;
+                    taggedMember = false;
                 }
+
+                thumbnailImage = args[4];
+
             }
 
             const exampleEmbed = new Discord.MessageEmbed()
@@ -44,10 +62,10 @@ module.exports = {
             .setTitle(`${args[0]} - ${args[1]}`)
             .setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review` : `${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
             exampleEmbed.setDescription(args[3])
-            .setThumbnail(`${message.author.avatarURL({ format: "png", dynamic: false })}`)
+            .setThumbnail(thumbnailImage)
             .addField('Rating: ', `**${args[2]}**`, true);
-            if (userIsTagged === true) {
-                exampleEmbed.setFooter(`Sent by ${taggedUser.username}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
+            if (taggedUser != false) {
+                exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
             }
 
             message.delete(message);
@@ -63,9 +81,11 @@ module.exports = {
                                     name: message.member.displayName,
                                     review: args[3],
                                     rate: args[2],
+                                    sentby: taggedUser === false ? false : taggedUser.id,
                                 },
                                 EP: false, 
                                 Remixers: {},
+                                Image: thumbnailImage,
                             },
                         });
                     } else if(db.reviewDB.get(artistArray[i], `${args[1]}`) === undefined) { //If the artist db exists, check if the song db doesn't exist
@@ -79,9 +99,11 @@ module.exports = {
                                     name: message.member.displayName,
                                     review: args[3],
                                     rate: args[2],
+                                    sentby: taggedUser === false ? false : taggedUser.id,
                                 },
                                 EP: false, 
                                 Remixers: {},
+                                Image: thumbnailImage,
                             },
                         };
 
@@ -102,6 +124,7 @@ module.exports = {
                                 name: message.member.displayName,
                                 review: args[3],
                                 rate: args[2],
+                                sentby: taggedUser === false ? false : taggedUser.id,
                             },
                         };
 
@@ -123,9 +146,11 @@ module.exports = {
                                     name: message.member.displayName,
                                     review: args[3],
                                     rate: args[2],  
+                                    sentby: taggedUser === false ? false : taggedUser.id,
                                 },
                                 EP: false,
                                 Remixers: false,
+                                Image: thumbnailImage,
                             } : { // Create the SONG DB OBJECT, for the original artist
                                 EP: false, 
                                 Remixers: {
@@ -134,9 +159,12 @@ module.exports = {
                                             name: message.member.displayName,
                                             review: args[3],
                                             rate: args[2],  
+                                            sentby: taggedUser === false ? false : taggedUser.id,
                                         },
+                                        Image: thumbnailImage,
                                     },
                                 },
+                                Image: false,
                             },
                         });
                     } else if(db.reviewDB.get(artistArray[i], `${songName}`) === undefined) { //If the artist db exists, check if the song db doesn't exist
@@ -149,10 +177,12 @@ module.exports = {
                                 [`<@${message.author.id}>`]: { 
                                     name: message.member.displayName,
                                     review: args[3],
-                                    rate: args[2],  
+                                    rate: args[2], 
+                                    sentby: taggedUser === false ? false : taggedUser.id,
                                 },
                                 EP: false,
                                 Remixers: false,
+                                Image: thumbnailImage,
                             } : { // Create the SONG DB OBJECT, for the original artist
                                 EP: false, 
                                 Remixers: {
@@ -161,9 +191,12 @@ module.exports = {
                                             name: message.member.displayName,
                                             review: args[3],
                                             rate: args[2],  
+                                            sentby: taggedUser === false ? false : taggedUser.id,
                                         },
+                                        Image: thumbnailImage,
                                     },
                                 },
+                                Image: false,
                             },
                         };
 
@@ -184,7 +217,9 @@ module.exports = {
                                     name: message.member.displayName,
                                     review: args[3],
                                     rate: args[2],  
+                                    sentby: taggedUser === false ? false : taggedUser.id,
                                 },
+                                Image: thumbnailImage,
                             },
                         };
 
@@ -204,6 +239,7 @@ module.exports = {
                                 name: message.member.displayName,
                                 review: args[3],
                                 rate: args[2],
+                                sentby: taggedUser === false ? false : taggedUser.id,
                             },
                         };
 

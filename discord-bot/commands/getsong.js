@@ -21,6 +21,7 @@ module.exports = {
                     exampleEmbed.addField(`${name}:`, `Rating: ${rating}`);
                 }
             }
+            exampleEmbed.setThumbnail();
         
         message.channel.send(exampleEmbed);
 	},

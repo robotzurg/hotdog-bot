@@ -24,8 +24,8 @@ module.exports = {
             'sooooooooooooooooo not pea, they are cool and epic and pog!',
             'reaching yul levels of pea...',
         ];
-        const taggedUser = message.mentions.users.first();
+        const taggedMember = message.mentions.members.first();
         const pick = responses[Math.floor(Math.random() * responses.length)];
-        return message.channel.send(`${taggedUser.username} is ${pick}`);
+        return message.channel.send(`${taggedMember.displayName} is ${pick}`);
     },
 };

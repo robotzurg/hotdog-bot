@@ -46,8 +46,8 @@ client.once('ready', () => {
     console.log(date);
 });
 
-// Change avatar at 10:00am
-cron.schedule('00 10 * * *', () => { 
+// Change avatar at 9:00am
+cron.schedule('00 9 * * *', () => { 
     client.user.setAvatar(client.ogreList[Math.floor(Math.random() * client.ogreList.length)]);
     const channel = client.channels.cache.get('680864894006067263');
     channel.send('Hello everyone! I\'m here to tell you all today\'s **Pea of the Day** which is...');

@@ -4,7 +4,7 @@ const db = require("../db.js");
 const mailboxes = ['aeroface', 'av', 'emily', 'ethan', 'fridgey', 'hal', 'jeff', 'josh', 'lapplepieguy', 'meltered', 'nate', 'pup', 'shiro', 'steph', 'treez', 'valence', 'vol', 'xypod', 'yacob', 'yul'];
 
 module.exports = {
-	name: 'nrateep',
+	name: 'addreviewep',
     description: '(Main Method) Create an EP/LP rating embed message! Use !end to end the chain. (DATABASE TESTING VERSION THIS CANNOT BE USED ATM)',
     args: true,
     usage: '<artist> | <ep/lp_name> | [op] <user_that_sent_ep/lp>',
@@ -12,20 +12,22 @@ module.exports = {
         if (message.author.id === '122568101995872256') { 
         const command = message.client.commands.get('rateep');
         const is_mailbox = mailboxes.includes(message.channel.name);
-        let userIsTagged;
         let taggedUser;
+        let taggedMember;
         let msgtoEdit;
 
         if (args.length < 2) {
             return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
         } else if (args.length === 2) {
-            userIsTagged = false;
+            taggedUser = false;
+            taggedMember = false;
         } else if (args.length === 3) {
             if (message.mentions.users.first() != undefined) { 
                 taggedUser = message.mentions.users.first(); 
-                userIsTagged = true;
+                taggedMember = message.mentions.members.first();
             } else { 
-                userIsTagged = false;
+                taggedUser = false;
+                taggedMember = false;
             }
         }
 
@@ -44,8 +46,8 @@ module.exports = {
         }
 
         exampleEmbed.setThumbnail(`${message.author.avatarURL({ format: "png", dynamic: false })}`);
-        if (userIsTagged === true) {
-            exampleEmbed.setFooter(`Sent by ${taggedUser.username}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
+        if (taggedUser != false) {
+            exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
         }
 
         (message.channel.send(exampleEmbed)).then((msg) => {
@@ -120,8 +122,8 @@ module.exports = {
                 exampleEmbed.addField('Overall Thoughts:', overallString);
             }
 
-            if (userIsTagged === true) {
-                exampleEmbed.setFooter(`Sent by ${taggedUser.username}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
+            if (taggedUser != false) {
+                exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
             }
 
             //Add data to database
@@ -141,6 +143,7 @@ module.exports = {
                                 name: message.member.displayName,
                                 review: splitUpArray[1],
                                 rate: songRating[0].slice(1, -1),
+                                sentby: taggedUser === false ? false : taggedUser.id,
                             },
                             EP: args[1], 
                         },
@@ -156,6 +159,7 @@ module.exports = {
                                 name: message.member.displayName,
                                 review: splitUpArray[1],
                                 rate: songRating[0].slice(1, -1),
+                                sentby: taggedUser === false ? false : taggedUser.id,
                             },
                             EP: args[1], 
                         },
@@ -178,6 +182,7 @@ module.exports = {
                             name: message.member.displayName,
                             review: splitUpArray[1],
                             rate: songRating[0].slice(1, -1),
+                            sentby: taggedUser === false ? false : taggedUser.id,
                         },
                     };
 
