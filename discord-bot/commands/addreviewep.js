@@ -10,8 +10,9 @@ module.exports = {
     usage: '<artist> | <ep/lp_name> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {
         if (message.author.id === '122568101995872256') { 
-        const command = message.client.commands.get('rateep');
+        const command = message.client.commands.get('addreviewep');
         const is_mailbox = mailboxes.includes(message.channel.name);
+        
         let taggedUser;
         let taggedMember;
         let msgtoEdit;
@@ -66,8 +67,6 @@ module.exports = {
         let position;
         let overallString = -1;
         let artistArray = args[0].split(' & ');
-
-        // console.log(args);
         
         collector.on('collect', m => {
             if (m.content.includes('!end')) {
