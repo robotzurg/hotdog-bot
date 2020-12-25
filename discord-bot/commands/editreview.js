@@ -42,14 +42,20 @@ module.exports = {
             rscore = db.reviewDB.get(args[0], `${songName}.Remixers.${rmxArtist}.${message.author}.rate`);
         }
 
+        const thumbnailImage = db.reviewDB.get(args[0], `${args[1]}.Image`);
 
 		const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)
             .setTitle(`${args[0]} - ${args[1]}`)
             .setAuthor(`${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
-            exampleEmbed.setDescription(rreview)
-            .setThumbnail(`${message.author.avatarURL({ format: "png", dynamic: false })}`)
-            .addField('Rating: ', `**${rscore}**`, true);
+            exampleEmbed.setDescription(rreview);
+            if (thumbnailImage === false) {
+                exampleEmbed.setThumbnail(`${message.author.avatarURL({ format: "png", dynamic: false })}`);
+            } else {
+                exampleEmbed.setThumbnail(thumbnailImage);
+            }
+            
+            exampleEmbed.addField('Rating: ', `**${rscore}**`, true);
         
         message.channel.send('Review edited:').then(msg => {
             msg.delete({ timeout: 15000 });

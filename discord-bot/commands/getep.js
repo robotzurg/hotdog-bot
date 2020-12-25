@@ -17,9 +17,15 @@ module.exports = {
             for (let i = 0; i < songArray.length; i++) {
                 const songObj = db.reviewDB.get(args[0], `${songArray[i]}`);
                 const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
-                
+                const songThumbnail = db.reviewDB.get(args[0], `${songArray[i]}.Image`);
+                if (songThumbnail != false) {
+                    exampleEmbed.setThumbnail(songThumbnail);
+                } else {
+                    exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png", dynamic: false }));
+                }
+
                 if (songEP === args[1]) {
-                    const reviewNum = Object.keys(songObj).length - 1;
+                    const reviewNum = Object.keys(songObj).length - 2;
                     exampleEmbed.addField(`**${songArray[i]}**:`, `*(${reviewNum} review${reviewNum > 1 ? 's' : ''})*`);
                 }
             }

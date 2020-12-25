@@ -18,7 +18,7 @@ module.exports = {
         for (let i = 0; i < songArray.length; i++) { //EP preparation
             const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
             const songObj = db.reviewDB.get(args[0], `${songArray[i]}`);
-            const reviewNum = Object.keys(songObj).length - 1;
+            const reviewNum = Object.keys(songObj).length - 2;
             if (songEP != false) {
                 if (EPs[`${songEP}`] === undefined) {
                     EPs[`${songEP}`] = { [songArray[i]]: reviewNum } ;
@@ -34,7 +34,7 @@ module.exports = {
             for (let i = 0; i < songArray.length; i++) {
                 const songObj = db.reviewDB.get(args[0], `${songArray[i]}`);
                 const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
-                const reviewNum = Object.keys(songObj).length - 2;
+                const reviewNum = Object.keys(songObj).length - 3;
 
                 if (songEP === false) { //If it's a single
                     let songDetails;
@@ -45,7 +45,7 @@ module.exports = {
 
                         for (const remixer in songRemixersObj) {
                             const remixerObj = db.reviewDB.get(args[0], `${songArray[i]}.Remixers.${remixer}`);
-                            remixReviewNum = Object.keys(remixerObj).length;
+                            remixReviewNum = Object.keys(remixerObj).length - 1;
                             songDetails.push(`${remixer} Remix *(${remixReviewNum} reviews)*`);
                         }
                     } else {

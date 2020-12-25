@@ -148,11 +148,11 @@ module.exports = {
                                     rate: args[2],  
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                 },
-                                EP: false,
+                                EP: args[1],
                                 Remixers: false,
                                 Image: thumbnailImage,
                             } : { // Create the SONG DB OBJECT, for the original artist
-                                EP: false, 
+                                EP: args[1], 
                                 Remixers: {
                                     [rmxArtist]: {
                                         [`<@${message.author.id}>`]: { 
