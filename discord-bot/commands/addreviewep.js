@@ -4,7 +4,8 @@ const db = require("../db.js");
 const mailboxes = ['aeroface', 'av', 'emily', 'ethan', 'fridgey', 'hal', 'jeff', 'josh', 'lapplepieguy', 'meltered', 'nate', 'pup', 'shiro', 'steph', 'treez', 'valence', 'vol', 'xypod', 'yacob', 'yul'];
 
 module.exports = {
-	name: 'addreviewep',
+    name: 'addreviewep',
+    aliases: ['addreviewep', 'reviewep'],
     description: '(Main Method) Create an EP/LP rating embed message! Use !end to end the chain. (DATABASE TESTING VERSION THIS CANNOT BE USED ATM)',
     args: true,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',

@@ -5,7 +5,7 @@ module.exports = {
 	name: 'getreview',
     description: 'Get a review from a user on the server that they have written! Putting nothing for <user> will replace <user> with yourself.',
     args: true,
-    usage: '<artist> | <song> | [op] <user>',
+    usage: '<artist> | <song/ep/lp> | [op] <user>',
 	execute(message, args) {
 
         let songName;

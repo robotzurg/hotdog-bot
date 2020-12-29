@@ -1,4 +1,5 @@
 // const prefix = require('./config.json');
+const db = require("../db.js");
 
 module.exports = {
 	name: 'ispea',
@@ -25,7 +26,14 @@ module.exports = {
             'reaching yul levels of pea...',
         ];
         const taggedMember = message.mentions.members.first();
-        const pick = responses[Math.floor(Math.random() * responses.length)];
-        return message.channel.send(`${taggedMember.displayName} is ${pick}`);
+        let pick;
+        if (taggedMember.user.id != db.potdID.get('ID')) {
+            pick = responses[Math.floor(Math.random() * responses.length)];
+            return message.channel.send(`${taggedMember.displayName} is ${pick}`);
+        } else {
+            pick = `This user... ${taggedMember.displayName}... They've gone beyond simply being pea...\nThey've become pea of the day.`;
+            return message.channel.send(`${pick}`);
+        }
+        
     },
 };

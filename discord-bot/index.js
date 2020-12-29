@@ -161,6 +161,7 @@ client.on('message', async message => {
                 
             (message.channel.send(songList)).then((msg) => {
                 db.friID.set(`friID`, msg.id);
+                db.friList.set(`Week`, 4);
                 console.log(db.friID.get('friID'));
             });
        // } else { return message.reply('You don\'t have the perms to use this command!'); }
@@ -224,9 +225,9 @@ client.on('message', async message => {
         });
     };
     
-    if (!client.commands.has(commandName)) return;
 
-    const command = client.commands.get(commandName);
+	const command = client.commands.get(commandName) ||	client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	if (!command) return;
 
     //Update the databases whenever a command is used, just to make sure we're good at most times
     module.exports.updateGenreGameData();
@@ -237,7 +238,7 @@ client.on('message', async message => {
         let reply = `You didn't provide any arguments, ${message.author}!`;
 
 		if (command.usage) {
-			reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+			reply += `\nThe proper usage would be: \`${command.usage}\``;
 		}
 
 		return message.channel.send(reply);	

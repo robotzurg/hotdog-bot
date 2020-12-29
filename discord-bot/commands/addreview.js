@@ -4,7 +4,8 @@ const { prefix } = require('../config.json');
 const mailboxes = ['aeroface', 'av', 'emily', 'ethan', 'fridgey', 'hal', 'jeff', 'josh', 'lapplepieguy', 'meltered', 'nate', 'pup', 'shiro', 'steph', 'treez', 'valence', 'vol', 'xypod', 'yacob', 'yul'];
 
 module.exports = {
-	name: 'addreview',
+    name: 'addreview',
+    aliases: ['addreview', 'review'],
     description: 'Create a song rating embed message!',
     args: true,
     usage: '`<artist> | <song_name> | <rating> | <rate_desc> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>`',
