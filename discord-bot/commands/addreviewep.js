@@ -14,37 +14,25 @@ module.exports = {
         const command = message.client.commands.get('addreviewep');
         const is_mailbox = mailboxes.includes(message.channel.name);
         
-        let taggedUser;
-        let taggedMember;
-        let thumbnailImage;
+        let taggedUser = false;
+        let taggedMember = false;
+        let thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
         let msgtoEdit;
 
         if (args.length < 2) {
             return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
-        } else if (args.length === 2) {
+        } else if (args.length === 3 || args.length === 4) {
 
-            taggedUser = false;
-            taggedMember = false;
-            thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
-
-        } else if (args.length === 3) {
-
-            thumbnailImage = args[2];
-            taggedUser = false;
-            taggedMember = false;
-
-        } else if (args.length === 4) {
-
-            if (message.mentions.users.first() != undefined) { 
+            if (message.mentions.users.first() === undefined) { // If there isn't a user mentioned, then we know it's 3 arguments with no user mention.
+                thumbnailImage = args[2];
+            } else if (args.length === 3) { // If there is a user mentioned but only 3 arguments, then we know no image.
                 taggedUser = message.mentions.users.first(); 
                 taggedMember = message.mentions.members.first();
-            } else { 
-                taggedUser = false;
-                taggedMember = false;
+            } else if (args.length === 4) { // If there is both a user mentioned and 4 arguments, then we know both!
+                thumbnailImage = args[2];
+                taggedUser = message.mentions.users.first(); 
+                taggedMember = message.mentions.members.first();
             }
-
-            thumbnailImage = args[2];
-
         }
 
         message.delete(message);

@@ -7,7 +7,9 @@ module.exports = {
     args: true,
     usage: '<artist> | <song>',
 	execute(message, args) {
-        
+        // Function to grab average of all ratings later
+        // const average = arr => arr.reduce((sume, el) => sume + el, 0) / arr.length;
+
         const songObj = db.reviewDB.get(args[0], `${args[1]}`);
         const userArray = Object.keys(songObj);
 

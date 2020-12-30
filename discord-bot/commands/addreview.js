@@ -26,36 +26,24 @@ module.exports = {
             }
 
             let artistArray = args[0].split(' & ');
-            let taggedUser;
-            let taggedMember;
-            let thumbnailImage;
+            let taggedUser = false;
+            let taggedMember = false;
+            let thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
 
             if (args.length < 4) {
                 return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
-            } else if (args.length === 4) {
-
-                taggedUser = false;
-                taggedMember = false;
-                thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
-
-            } else if (args.length === 5) {
-
-                thumbnailImage = args[4];
-                taggedUser = false;
-                taggedMember = false;
-
-            } else if (args.length === 6) {
-
-                if (message.mentions.users.first() != undefined) { 
+            } else if (args.length === 5 || args.length === 6) {
+    
+                if (message.mentions.users.first() === undefined) { // If there isn't a user mentioned, then we know it's 3 arguments with no user mention.
+                    thumbnailImage = args[4];
+                } else if (args.length === 3) { // If there is a user mentioned but only 3 arguments, then we know no image.
                     taggedUser = message.mentions.users.first(); 
                     taggedMember = message.mentions.members.first();
-                } else { 
-                    taggedUser = false;
-                    taggedMember = false;
+                } else if (args.length === 4) { // If there is both a user mentioned and 4 arguments, then we know both!
+                    thumbnailImage = args[4];
+                    taggedUser = message.mentions.users.first(); 
+                    taggedMember = message.mentions.members.first();
                 }
-
-                thumbnailImage = args[4];
-
             }
 
             const exampleEmbed = new Discord.MessageEmbed()
@@ -83,6 +71,7 @@ module.exports = {
                                     review: args[3],
                                     rate: args[2],
                                     sentby: taggedUser === false ? false : taggedUser.id,
+                                    rankPosition: -1,
                                 },
                                 EP: false, 
                                 Remixers: {},
@@ -101,6 +90,7 @@ module.exports = {
                                     review: args[3],
                                     rate: args[2],
                                     sentby: taggedUser === false ? false : taggedUser.id,
+                                    rankPosition: -1,
                                 },
                                 EP: false, 
                                 Remixers: {},
@@ -126,6 +116,7 @@ module.exports = {
                                 review: args[3],
                                 rate: args[2],
                                 sentby: taggedUser === false ? false : taggedUser.id,
+                                rankPosition: -1,
                             },
                         };
 
@@ -148,6 +139,7 @@ module.exports = {
                                     review: args[3],
                                     rate: args[2],  
                                     sentby: taggedUser === false ? false : taggedUser.id,
+                                    rankPosition: -1,
                                 },
                                 EP: args[1],
                                 Remixers: false,
@@ -161,6 +153,7 @@ module.exports = {
                                             review: args[3],
                                             rate: args[2],  
                                             sentby: taggedUser === false ? false : taggedUser.id,
+                                            rankPosition: -1,
                                         },
                                         Image: thumbnailImage,
                                     },
@@ -180,6 +173,7 @@ module.exports = {
                                     review: args[3],
                                     rate: args[2], 
                                     sentby: taggedUser === false ? false : taggedUser.id,
+                                    rankPosition: -1,
                                 },
                                 EP: false,
                                 Remixers: false,
@@ -193,6 +187,7 @@ module.exports = {
                                             review: args[3],
                                             rate: args[2],  
                                             sentby: taggedUser === false ? false : taggedUser.id,
+                                            rankPosition: -1,
                                         },
                                         Image: thumbnailImage,
                                     },
@@ -219,6 +214,7 @@ module.exports = {
                                     review: args[3],
                                     rate: args[2],  
                                     sentby: taggedUser === false ? false : taggedUser.id,
+                                    rankPosition: -1,
                                 },
                                 Image: thumbnailImage,
                             },
@@ -241,6 +237,7 @@ module.exports = {
                                 review: args[3],
                                 rate: args[2],
                                 sentby: taggedUser === false ? false : taggedUser.id,
+                                rankPosition: -1,
                             },
                         };
 

@@ -13,37 +13,26 @@ module.exports = {
         const command = message.client.commands.get('addranking');
         const is_mailbox = mailboxes.includes(message.channel.name);
 
-        let taggedUser;
-        let taggedMember;
-        let thumbnailImage;
+
+        let taggedUser = false;
+        let taggedMember = false;
+        let thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
         let msgtoEdit;
 
         if (args.length < 2) {
             return message.channel.send(`Missing arguments!\nProper usage is: \`${command.usage}\``);
-        } else if (args.length === 2) {
+        } else if (args.length === 3 || args.length === 4) {
 
-            taggedUser = false;
-            taggedMember = false;
-            thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
-
-        } else if (args.length === 3) {
-
-            thumbnailImage = args[2];
-            taggedUser = false;
-            taggedMember = false;
-
-        } else if (args.length === 4) {
-
-            if (message.mentions.users.first() != undefined) { 
+            if (message.mentions.users.first() === undefined) { // If there isn't a user mentioned, then we know it's 3 arguments with no user mention.
+                thumbnailImage = args[2];
+            } else if (args.length === 3) { // If there is a user mentioned but only 3 arguments, then we know no image.
                 taggedUser = message.mentions.users.first(); 
                 taggedMember = message.mentions.members.first();
-            } else { 
-                taggedUser = false;
-                taggedMember = false;
+            } else if (args.length === 4) { // If there is both a user mentioned and 4 arguments, then we know both!
+                thumbnailImage = args[2];
+                taggedUser = message.mentions.users.first(); 
+                taggedMember = message.mentions.members.first();
             }
-
-            thumbnailImage = args[2];
-
         }
 
         message.delete(message);
@@ -71,10 +60,11 @@ module.exports = {
             msg.react('👂');
         });
 
-        const filter = m => m.author.id === message.author.id && (m.content.includes('(') || m.content.toLowerCase().includes('overall') || m.content.includes('!end'));
+        const filter = m => m.author.id === message.author.id && (m.content.includes('(') || m.content.includes(')') || m.content.toLowerCase().includes('overall') || m.content.includes('!end'));
         const collector = message.channel.createMessageCollector(filter, { idle: 900000 });
         const rankArray = ['\n'];
 
+        let rankPosition = 0;
         let songName;
         let fullSongName;
         let songRating;
@@ -121,6 +111,11 @@ module.exports = {
                     fullSongName = false;
                 }
 
+                rankPosition = songName.slice(0, -songName.length + 2);
+                if (rankPosition.includes('.')) {
+                    rankPosition = rankPosition.slice(0, -1);
+                }
+
                 m.delete();
             }
 
@@ -141,8 +136,7 @@ module.exports = {
             }
             exampleEmbed.setThumbnail(thumbnailImage)
             .addField('Ranking:', `\`\`\`${rankArray.join('\n')}\`\`\``, true);
-            console.log(`\`\`\`${rankArray.join('\n')}\`\`\``);
-
+            
             if (taggedUser != false) {
                 exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
             }
@@ -165,8 +159,9 @@ module.exports = {
                                     review: 'This was from a ranking, so there is no written review for this song.',
                                     rate: songRating[0],
                                     sentby: taggedUser === false ? false : taggedUser.id,
+                                    rankPosition: rankPosition,
                                 },
-                                EP: [args[1], `\`\`\`${rankArray}\`\`\``],
+                                EP: args[1],
                                 Remixers: {},
                                 Image: thumbnailImage,
                             },
@@ -183,8 +178,9 @@ module.exports = {
                                     review: 'This was from a ranking, so there is no written review for this song.',
                                     rate: songRating[0],
                                     sentby: taggedUser === false ? false : taggedUser.id,
+                                    rankPosition: rankPosition,
                                 },
-                                EP: [args[1], `\`\`\`${rankArray}\`\`\``],
+                                EP: args[1],
                                 Remixers: {},
                                 Image: thumbnailImage,
                             },
@@ -208,6 +204,7 @@ module.exports = {
                                 review: 'This was from a ranking, so there is no written review for this song.',
                                 rate: songRating[0],
                                 sentby: taggedUser === false ? false : taggedUser.id,
+                                rankPosition: rankPosition,
                             },
                         };
     
@@ -231,12 +228,13 @@ module.exports = {
                                     review: 'This was from a ranking, so there is no written review for this song.',
                                     rate: songRating[0],
                                     sentby: taggedUser === false ? false : taggedUser.id,
+                                    rankPosition: rankPosition,
                                 },
-                                EP: [args[1], `\`\`\`${rankArray}\`\`\``],
+                                EP: args[1],
                                 Remixers: false,
                                 Image: thumbnailImage,
                             } : { // Create the SONG DB OBJECT, for the original artist
-                                EP: [args[1], `\`\`\`${rankArray}\`\`\``], 
+                                EP: args[1],
                                 Remixers: {
                                     [rmxArtist]: {
                                         [`<@${message.author.id}>`]: { 
@@ -244,7 +242,9 @@ module.exports = {
                                             review: 'This was from a ranking, so there is no written review for this song.',
                                             rate: songRating[0],
                                             sentby: taggedUser === false ? false : taggedUser.id,
+                                            rankPosition: rankPosition,
                                         },
+                                        EP: args[1],
                                         Image: thumbnailImage,
                                     },
                                 },
@@ -263,12 +263,13 @@ module.exports = {
                                     review: 'This was from a ranking, so there is no written review for this song.',
                                     rate: songRating[0],
                                     sentby: taggedUser === false ? false : taggedUser.id,
+                                    rankPosition: rankPosition,
                                 },
-                                EP:  [args[1], `\`\`\`${rankArray}\`\`\``],
+                                EP: args[1],
                                 Remixers: false,
                                 Image: thumbnailImage,
                             } : { // Create the SONG DB OBJECT, for the original artist
-                                EP:  [args[1], `\`\`\`${rankArray}\`\`\``],
+                                EP: args[1],
                                 Remixers: {
                                     [rmxArtist]: {
                                         [`<@${message.author.id}>`]: { 
@@ -276,7 +277,9 @@ module.exports = {
                                             review: 'This was from a ranking, so there is no written review for this song.',
                                             rate: songRating[0],
                                             sentby: taggedUser === false ? false : taggedUser.id,
+                                            rankPosition: rankPosition,
                                         },
+                                        EP: args[1],
                                         Image: thumbnailImage,
                                     },
                                 },
@@ -300,7 +303,9 @@ module.exports = {
                                     review: 'This was from a ranking, so there is no written review for this song.',
                                     rate: songRating[0],
                                     sentby: taggedUser === false ? false : taggedUser.id,
+                                    rankPosition: rankPosition,
                                 },
+                                EP: args[1],
                                 Image: thumbnailImage,
                             },
                         };
@@ -322,6 +327,7 @@ module.exports = {
                                 review: 'This was from a ranking, so there is no written review for this song.',
                                 rate: songRating[0],
                                 sentby: taggedUser === false ? false : taggedUser.id,
+                                rankPosition: rankPosition,
                             },
                         };
     
