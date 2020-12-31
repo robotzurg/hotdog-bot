@@ -16,7 +16,7 @@ module.exports = {
         
         let taggedUser = false;
         let taggedMember = false;
-        let thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+        let thumbnailImage = false;
         let msgtoEdit;
 
         if (args.length < 2) {
@@ -34,7 +34,6 @@ module.exports = {
                 taggedMember = message.mentions.members.first();
             }
         }
-
         message.delete(message);
 
         let exampleEmbed = new Discord.MessageEmbed()
@@ -49,7 +48,12 @@ module.exports = {
             exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review` : `${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
         }
 
-        exampleEmbed.setThumbnail(thumbnailImage);
+        if (thumbnailImage === false) {
+            exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png", dynamic: false }));
+        } else {
+            exampleEmbed.setThumbnail(thumbnailImage);
+        }
+
         if (taggedUser != false) {
             exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
         }
@@ -138,8 +142,12 @@ module.exports = {
                 exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review` : `${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
             }
 
-            exampleEmbed.setThumbnail(thumbnailImage);
-
+            if (thumbnailImage === false) {
+                exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png", dynamic: false }));
+            } else {
+                exampleEmbed.setThumbnail(thumbnailImage);
+            }
+            
             for (let i = 0; i < rankArray.length; i++) {
                 exampleEmbed.addField(rankArray[i][0], rankArray[i][1]);
             }
@@ -159,11 +167,6 @@ module.exports = {
             // songRating[0]: Song Rating
             // splitUpArray[1]: Song Review Description
 
-            //Quick thumbnail image check to assure we aren't putting in an avatar
-            if (thumbnailImage.includes('avatar') === true) {
-                thumbnailImage = false;
-            }
-
             // If the artist db doesn't exist
             if (rmxArtist === false) {
             for (let i = 0; i < artistArray.length; i++) {
@@ -176,7 +179,7 @@ module.exports = {
                                 rate: songRating[0].slice(1, -1),
                                 sentby: taggedUser === false ? false : taggedUser.id,
                             },
-                            EP: args[1],
+                            EP: overallString != -1 ? [args[1], overallString] : args[1],
                             Remixers: {},
                             Image: thumbnailImage,
                         },
@@ -194,7 +197,7 @@ module.exports = {
                                 rate: songRating[0].slice(1, -1),
                                 sentby: taggedUser === false ? false : taggedUser.id,
                             },
-                            EP: args[1], 
+                            EP: overallString != -1 ? [args[1], overallString] : args[1],
                             Remixers: {},
                             Image: thumbnailImage,
                         },
@@ -242,11 +245,11 @@ module.exports = {
                                 rate: songRating[0].slice(1, -1),
                                 sentby: taggedUser === false ? false : taggedUser.id,
                             },
-                            EP: args[1],
+                            EP: overallString != -1 ? [args[1], overallString] : args[1],
                             Remixers: false,
                             Image: thumbnailImage,
                         } : { // Create the SONG DB OBJECT, for the original artist
-                            EP: args[1], 
+                            EP: overallString != -1 ? [args[1], overallString] : args[1],
                             Remixers: {
                                 [rmxArtist]: {
                                     [`<@${message.author.id}>`]: { 
@@ -274,11 +277,11 @@ module.exports = {
                                 rate: songRating[0].slice(1, -1),
                                 sentby: taggedUser === false ? false : taggedUser.id,
                             },
-                            EP: args[1],
+                            EP: overallString != -1 ? [args[1], overallString] : args[1],
                             Remixers: false,
                             Image: thumbnailImage,
                         } : { // Create the SONG DB OBJECT, for the original artist
-                            EP: args[1], 
+                            EP: overallString != -1 ? [args[1], overallString] : args[1],
                             Remixers: {
                                 [rmxArtist]: {
                                     [`<@${message.author.id}>`]: { 

@@ -16,7 +16,7 @@ module.exports = {
 
         let taggedUser = false;
         let taggedMember = false;
-        let thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+        let thumbnailImage = false;
         let msgtoEdit;
 
         if (args.length < 2) {
@@ -49,8 +49,13 @@ module.exports = {
             exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox ranking` : `${message.member.displayName}'s ranking`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
         }
 
-        exampleEmbed.setThumbnail(thumbnailImage)
-        .addField('Ranking:', `\`\`\`\u200B\`\`\``, true);
+        if (thumbnailImage === false) {
+            exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png", dynamic: false }));
+        } else {
+            exampleEmbed.setThumbnail(thumbnailImage);
+        }
+
+        exampleEmbed.addField('Ranking:', `\`\`\`\u200B\`\`\``, true);
         if (taggedUser != false) {
             exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
         }
@@ -161,11 +166,6 @@ module.exports = {
             // songName: Song Name
             // songRating[0]: Song Rating
             // rmxArtist: Remix Artist
-
-            //Quick thumbnail image check to assure we aren't putting in an avatar
-            if (thumbnailImage.includes('avatar') === true) {
-                thumbnailImage = false;
-            }
 
             // If the artist db doesn't exist
             if (rmxArtist === false) {
