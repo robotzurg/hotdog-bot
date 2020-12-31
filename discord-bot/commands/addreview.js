@@ -20,11 +20,23 @@ module.exports = {
             if (args[1].toLowerCase().includes('remix')) {
                 songName = args[1].substring(0, args[1].length - 7).split(' (')[0];
                 rmxArtist = args[1].substring(0, args[1].length - 7).split(' (')[1];
+            } else if (args[1].toLowerCase().includes('bootleg')) {
+                songName = args[1].substring(0, args[1].length - 9).split(' (')[0];
+                rmxArtist = args[1].substring(0, args[1].length - 9).split(' (')[1];
+            } else if (args[1].toLowerCase().includes('flip') || args[1].toLowerCase().includes('edit')) {
+                songName = args[1].substring(0, args[1].length - 6).split(' (')[0];
+                rmxArtist = args[1].substring(0, args[1].length - 6).split(' (')[1];
             } else {
                 songName = args[1];
                 rmxArtist = false;
             }
 
+            if (args[1].includes('(feat') || args[1].includes('(ft')) {
+                songName = songName.split(` (f`);
+                songName.splice(1);
+                return console.log(songName);
+            }
+ 
             let artistArray = args[0].split(' & ');
             let taggedUser = false;
             let taggedMember = false;
@@ -60,6 +72,11 @@ module.exports = {
             message.delete(message);
 
             //Add review to database
+            //Quick thumbnail image check to assure we aren't putting in an avatar
+            if (thumbnailImage.includes('avatar') === true) {
+                thumbnailImage = false;
+            }
+
             if (rmxArtist === false) {
                 for (let i = 0; i < artistArray.length; i++) {
                     // If the artist db doesn't exist
@@ -141,11 +158,11 @@ module.exports = {
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: -1,
                                 },
-                                EP: args[1],
-                                Remixers: false,
+                                EP: false,
+                                Remixers: {},
                                 Image: thumbnailImage,
                             } : { // Create the SONG DB OBJECT, for the original artist
-                                EP: args[1], 
+                                EP: false, 
                                 Remixers: {
                                     [rmxArtist]: {
                                         [`<@${message.author.id}>`]: { 
@@ -176,7 +193,7 @@ module.exports = {
                                     rankPosition: -1,
                                 },
                                 EP: false,
-                                Remixers: false,
+                                Remixers: {},
                                 Image: thumbnailImage,
                             } : { // Create the SONG DB OBJECT, for the original artist
                                 EP: false, 

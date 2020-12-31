@@ -8,22 +8,33 @@ module.exports = {
     usage: '<artist> | <song>',
 	execute(message, args) {
         // Function to grab average of all ratings later
-        // const average = arr => arr.reduce((sume, el) => sume + el, 0) / arr.length;
+        let average = (array) => array.reduce((a, b) => a + b) / array.length;
 
         const songObj = db.reviewDB.get(args[0], `${args[1]}`);
-        const userArray = Object.keys(songObj);
+        const songEP = db.reviewDB.get(args[0], `${args[1]}.EP`);
+        let userArray = Object.keys(songObj);
+        
+        userArray = userArray.filter(function(e) { return e !== 'EP'; });
+        userArray = userArray.filter(function(e) { return e !== 'Image'; });
+        userArray = userArray.filter(function(e) { return e !== 'Remixers'; });
+        const rankNumArray = [];
 
-		const exampleEmbed = new Discord.MessageEmbed()
+        const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)
             .setTitle(`${args[0]} - ${args[1]} ratings`);
             for (let i = 0; i < userArray.length; i++) {
                 if (userArray[i] != 'EP') {
                     const rating = db.reviewDB.get(args[0], `${args[1]}.${userArray[i]}.rate`);
-                    const name = db.reviewDB.get(args[0], `${args[1]}.${userArray[i]}.name`);
-                    exampleEmbed.addField(`${name}:`, `Rating: ${rating}`);
+                    rankNumArray.push(parseInt(rating.slice(0, -3)));
+                    userArray[i] = `${userArray[i]} \`${rating}\``;
                 }
             }
-            exampleEmbed.setThumbnail();
+            exampleEmbed.setDescription(`*The average rating of this song is ${average(rankNumArray)}!*`);
+            exampleEmbed.addField('Reviews:', userArray);
+            exampleEmbed.setThumbnail(db.reviewDB.get(args[0], `${args[1]}.Image`));
+            if (songEP != false) {
+                exampleEmbed.setFooter(`from ${songEP}`);
+            }
         
         message.channel.send(exampleEmbed);
 	},

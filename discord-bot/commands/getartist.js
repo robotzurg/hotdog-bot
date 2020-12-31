@@ -12,13 +12,14 @@ module.exports = {
         if (artistObj === undefined) return message.channel.send('Artist not found.');
         const songArray = Object.keys(artistObj);
         const EPs = {};
-        // if (EPs.toString() == `[object Object]`) { console.log(EPs); }
         const EPsOnEmbed = [];
+        const singleArray = [];
+        const remixArray = [];
 
         for (let i = 0; i < songArray.length; i++) { //EP preparation
             const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
             const songObj = db.reviewDB.get(args[0], `${songArray[i]}`);
-            const reviewNum = Object.keys(songObj).length - 2;
+            const reviewNum = Object.keys(songObj).length - 3;
             if (songEP != false) {
                 if (EPs[`${songEP}`] === undefined) {
                     EPs[`${songEP}`] = { [songArray[i]]: reviewNum } ;
@@ -36,25 +37,30 @@ module.exports = {
                 const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
                 const reviewNum = Object.keys(songObj).length - 3;
 
-                if (songEP === false) { //If it's a single
+                if (songEP === false) { //If it's a single and NOT a remix
                     let songDetails;
-                    let remixReviewNum;
+
                     if (Object.keys(db.reviewDB.get(args[0], `${songArray[i]}.Remixers`)).length > 0) {
                         const songRemixersObj = db.reviewDB.get(args[0], `${songArray[i]}.Remixers`);
-                        songDetails = [`*(${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''})*`, '-Remixes:'];
+                        const songRemixersAmt = Object.keys(songRemixersObj).length;
+                        songDetails = [`\`${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''}\``, `\`${songRemixersAmt} remix${songRemixersAmt > 1 ? 'es' : ''}\``];
+                        songDetails = songDetails.join(' ');
 
-                        for (const remixer in songRemixersObj) {
-                            const remixerObj = db.reviewDB.get(args[0], `${songArray[i]}.Remixers.${remixer}`);
-                            remixReviewNum = Object.keys(remixerObj).length - 1;
-                            songDetails.push(`${remixer} Remix *(${remixReviewNum} reviews)*`);
-                        }
                     } else {
-                        songDetails = `*(${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''})*`;
+                        songDetails = `\`${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''}\``;
+                    }
+
+                    if (!songArray[i].toLowerCase().includes('remix')) {
+                        singleArray.push(`-${songArray[i]}${songEP != false ? ` (${songEP})` : ''} ${songDetails}`);
+                    } else {
+                        remixArray.push(`-${songArray[i]}${songEP != false ? ` (${songEP})` : ''} ${songDetails}`);
                     }
                     
-                    exampleEmbed.addField(`${songArray[i]}${songEP != false ? ` (${songEP})` : ''}: `, songDetails);
                 }
             }
+
+            exampleEmbed.addField('Singles:', singleArray);
+            exampleEmbed.addField('Remixes:', remixArray);
             
             for (let i = 0; i < songArray.length; i++) {
                 const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
@@ -62,7 +68,7 @@ module.exports = {
                 if (songEP != false && !EPsOnEmbed.includes(songEP)) { //If it's an EP and the field doesn't already exist
                     const s = EPs[`${songEP}`]; 
                     let songsinEP = Object.keys(s);
-                    songsinEP = songsinEP.map(x => x + ` *(${EPs[`${songEP}`][`${x}`]} reviews)*`);
+                    songsinEP = songsinEP.map(x => x + ` \`${EPs[`${songEP}`][`${x}`]} review${EPs[`${songEP}`][`${x}`] > 1 ? 's' : ''}\``);
                     songsinEP = songsinEP.map(ii => '-' + ii);
                     songsinEP.join('\n');
                     exampleEmbed.addField(`${songEP}: `, songsinEP);

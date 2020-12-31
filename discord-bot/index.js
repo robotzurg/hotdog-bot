@@ -46,9 +46,20 @@ client.once('ready', () => {
     console.log(date);
 });
 
-// Change avatar at 9:00am
+// Change avatar at 9:00am and set pea of the day
 cron.schedule('00 9 * * *', () => { 
-    client.user.setAvatar(client.ogreList[Math.floor(Math.random() * client.ogreList.length)]);
+    const ogrePick = client.ogreList[Math.floor(Math.random() * client.ogreList.length)];
+    const myUserRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Hotdog Water Bot");
+    client.user.setAvatar(ogrePick);
+    switch (ogrePick) {
+        case './Ogres/ogreGold.png': myUserRole.setColor('#FFEF00'); break;
+        case './Ogres/ogreHappy.png': myUserRole.setColor('#83FF39'); break;
+        case './Ogres/ogreMad.png': myUserRole.setColor('#FF0000'); break;
+        case './Ogres/ogreSad.png': myUserRole.setColor('#3A41F9'); break;
+        case './Ogres/ogreSmug.png': myUserRole.setColor('#7E3BFF'); break;
+        case './Ogres/ogreSnow.png': myUserRole.setColor('#FFFFFF'); break;
+    }
+
     const channel = client.channels.cache.get('680864894006067263');
     channel.send('Hello everyone! I\'m here to tell you all today\'s **Pea of the Day** which is...');
 }, {
