@@ -7,6 +7,11 @@ module.exports = {
     args: true,
     usage: '<artist> | <song>',
 	execute(message, args) {
+
+        if (args[1].toLowerCase().includes('ep') || args[1].toLowerCase().includes('lp') || !args[1].toLowerCase().includes('remixes')) {
+            return message.channel.send('This isn\'t a single! Please use `!getEP` to get EP/LP overviews.');
+        }
+
         // Function to grab average of all ratings later
         let average = (array) => array.reduce((a, b) => a + b) / array.length;
 

@@ -8,6 +8,10 @@ module.exports = {
     args: true,
     usage: '<artist> | <ep>',
 	execute(message, args) {
+
+        if (!args[1].toLowerCase().includes('ep') && !args[1].toLowerCase().includes('lp') && !args[1].toLowerCase().includes('remixes')) {
+            return message.channel.send('This isn\'t an EP! Please use `!getSong` to get single overviews.');
+        }
         
         const artistObj = db.reviewDB.get(args[0]);
         const songArray = Object.keys(artistObj);
@@ -31,6 +35,8 @@ module.exports = {
                     const reviewNum = Object.keys(songObj).length - 3;
                     exampleEmbed.addField(`**${epnum}. ${songArray[i]}**`, `\`${reviewNum} review${reviewNum > 1 ? 's' : ''}\``);
                 }
+
+                if (epnum === 0) return message.channel.send('No EP found.');
             }
         
         message.channel.send(exampleEmbed);

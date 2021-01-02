@@ -4,11 +4,15 @@ const mailboxes = ['aeroface', 'av', 'emily', 'ethan', 'fridgey', 'hal', 'jeff',
 
 module.exports = {
     name: 'addranking',
-    aliases: ['addranking', 'rank'],
+    aliases: ['addranking', 'rank', `rankEP`, `addRankingEP`],
     description: 'Create a ranking review of an EP/LP/Compilation/Remix Package or really anything.',
     args: true,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {
+
+        if (!args[1].includes('EP') && !args[1].includes('LP') && !args[1].includes('Remixes')) {
+            return message.channel.send('You can only use this command to rank EPs/LPs/Remix Packages. Comps are not yet supported.\nPlease use `!addReview` for singles!');
+        }
 
         const command = message.client.commands.get('addranking');
         const is_mailbox = mailboxes.includes(message.channel.name);
@@ -87,11 +91,21 @@ module.exports = {
                 msgtoEdit.reactions.removeAll();
                 return;
             } else if (m.content.includes(`Overall`)) {
+                const songArray = Object.keys(db.reviewDB.get(args[0]));
+
                 if (overallString === -1) {
                     splitUpOverall = m.content.split('\n');
                     splitUpOverall.shift();
                     overallString = splitUpOverall;
                     m.delete();
+                }
+
+                for (let i = 0; i < songArray.length; i++) {
+                    const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
+
+                    if (songEP === args[1]) {
+                        db.reviewDB.set(args[0], overallString[0], `${songArray[i]}.<@${message.author.id}>.EPOverall`);
+                    }
                 }
             } else {
                 rankArray.push(m.content);
@@ -135,6 +149,8 @@ module.exports = {
                     rankPosition = rankPosition.slice(0, -1);
                 }
 
+                songName = rankPosition > 3 ? songName = songName.slice(4) : songName = songName.slice(3);
+
                 m.delete();
             }
 
@@ -153,8 +169,14 @@ module.exports = {
             if (overallString != -1) {
                 exampleEmbed.setDescription(`${overallString}`);
             }
-            exampleEmbed.setThumbnail(thumbnailImage)
-            .addField('Ranking:', `\`\`\`${rankArray.join('\n')}\`\`\``, true);
+
+            if (thumbnailImage === false) {
+                exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png", dynamic: false }));
+            } else {
+                exampleEmbed.setThumbnail(thumbnailImage);
+            }
+
+            exampleEmbed.addField('Ranking:', `\`\`\`${rankArray.join('\n')}\`\`\``, true);
             
             if (taggedUser != false) {
                 exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
@@ -179,6 +201,7 @@ module.exports = {
                                     rate: songRating[0],
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
+                                    EPOverall: false,
                                 },
                                 EP: args[1],
                                 Remixers: {},
@@ -198,6 +221,7 @@ module.exports = {
                                     rate: songRating[0],
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
+                                    EPOverall: false,
                                 },
                                 EP: args[1],
                                 Remixers: {},
@@ -224,6 +248,7 @@ module.exports = {
                                 rate: songRating[0],
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: rankPosition,
+                                EPOverall: false,
                             },
                         };
     
@@ -248,6 +273,7 @@ module.exports = {
                                     rate: songRating[0],
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
+                                    EPOverall: false,
                                 },
                                 EP: args[1],
                                 Remixers: false,
@@ -262,6 +288,7 @@ module.exports = {
                                             rate: songRating[0],
                                             sentby: taggedUser === false ? false : taggedUser.id,
                                             rankPosition: rankPosition,
+                                            EPOverall: false,
                                         },
                                         EP: args[1],
                                         Image: thumbnailImage,
@@ -283,6 +310,7 @@ module.exports = {
                                     rate: songRating[0],
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
+                                    EPOverall: false,
                                 },
                                 EP: args[1],
                                 Remixers: false,
@@ -297,6 +325,7 @@ module.exports = {
                                             rate: songRating[0],
                                             sentby: taggedUser === false ? false : taggedUser.id,
                                             rankPosition: rankPosition,
+                                            EPOverall: false,
                                         },
                                         EP: args[1],
                                         Image: thumbnailImage,
@@ -323,6 +352,7 @@ module.exports = {
                                     rate: songRating[0],
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
+                                    EPOverall: false,
                                 },
                                 EP: args[1],
                                 Image: thumbnailImage,
@@ -347,6 +377,7 @@ module.exports = {
                                 rate: songRating[0],
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: rankPosition,
+                                EPOverall: false,
                             },
                         };
     

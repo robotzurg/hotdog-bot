@@ -10,7 +10,11 @@ module.exports = {
     args: true,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {
-        if (message.author.id === '122568101995872256') { 
+
+        if (!args[1].toLowerCase().includes('ep') && !args[1].toLowerCase().includes('lp') && !args[1].toLowerCase().includes('remixes')) {
+            return message.channel.send('You can only use this command to rank EPs/LPs/Remix Packages. Comps are not yet supported.\nPlease use `!addReview` for singles!');
+        }
+
         const command = message.client.commands.get('addreviewep');
         const is_mailbox = mailboxes.includes(message.channel.name);
         
@@ -71,6 +75,7 @@ module.exports = {
         let songName;
         let fullSongName;
         let songRating;
+        let songReview;
         let id_tag;
         let position;
         let rmxArtist;
@@ -84,14 +89,31 @@ module.exports = {
                 msgtoEdit.reactions.removeAll();
                 return;
             } else if (m.content.includes(`Overall`)) {
+                const songArray = Object.keys(db.reviewDB.get(args[0]));
+
                 if (overallString === -1) {
                     splitUpOverall = m.content.split('\n');
                     splitUpOverall.shift();
                     overallString = splitUpOverall;
                     m.delete();
                 }
+
+                for (let i = 0; i < songArray.length; i++) {
+                    const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
+
+                    if (songEP === args[1]) {
+                        db.reviewDB.set(args[0], overallString[0], `${songArray[i]}.<@${message.author.id}>.EPOverall`);
+                    }
+                }
+
             } else {
                 splitUpArray = m.content.split('\n'); 
+                songReview = splitUpArray[1];
+                if (songReview === undefined) {
+                    songReview = 'No written review.';
+                    splitUpArray[1] = 'No written review.';
+                }
+
                 rankArray.push(splitUpArray);
                 songRating = splitUpArray[0].split(' '),
                     id_tag = '-',
@@ -104,7 +126,7 @@ module.exports = {
                     songName = songName.split(` (f`);
                     songName.splice(1);
                 }
-
+ 
                 //Remix preparation
             if (args[1].toLowerCase().includes('remix')) {
                 fullSongName = songName;
@@ -165,7 +187,7 @@ module.exports = {
             // args[1]: Name of EP
             // songName: Song Name
             // songRating[0]: Song Rating
-            // splitUpArray[1]: Song Review Description
+            // songReview: Song Review Description
 
             // If the artist db doesn't exist
             if (rmxArtist === false) {
@@ -175,11 +197,12 @@ module.exports = {
                         [songName]: { // Create the SONG DB OBJECT
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
-                                review: splitUpArray[1],
+                                review: songReview,
                                 rate: songRating[0].slice(1, -1),
                                 sentby: taggedUser === false ? false : taggedUser.id,
+                                EPOverall: false,
                             },
-                            EP: overallString != -1 ? [args[1], overallString] : args[1],
+                            EP: args[1],
                             Remixers: {},
                             Image: thumbnailImage,
                         },
@@ -193,11 +216,12 @@ module.exports = {
                         [songName]: { 
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
-                                review: splitUpArray[1],
+                                review: songReview,
                                 rate: songRating[0].slice(1, -1),
                                 sentby: taggedUser === false ? false : taggedUser.id,
+                                EPOverall: false,
                             },
-                            EP: overallString != -1 ? [args[1], overallString] : args[1],
+                            EP: args[1],
                             Remixers: {},
                             Image: thumbnailImage,
                         },
@@ -218,9 +242,10 @@ module.exports = {
                     const newuserObj = {
                         [`<@${message.author.id}>`]: { 
                             name: message.member.displayName,
-                            review: splitUpArray[1],
+                            review: songReview,
                             rate: songRating[0].slice(1, -1),
                             sentby: taggedUser === false ? false : taggedUser.id,
+                            EPOverall: false,
                         },
                     };
 
@@ -241,22 +266,24 @@ module.exports = {
                         [songName]: artistArray[i] === rmxArtist ? { //For the remixer
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
-                                review: splitUpArray[1],
+                                review: songReview,
                                 rate: songRating[0].slice(1, -1),
                                 sentby: taggedUser === false ? false : taggedUser.id,
+                                EPOverall: false,
                             },
-                            EP: overallString != -1 ? [args[1], overallString] : args[1],
+                            EP: args[1],
                             Remixers: false,
                             Image: thumbnailImage,
                         } : { // Create the SONG DB OBJECT, for the original artist
-                            EP: overallString != -1 ? [args[1], overallString] : args[1],
+                            EP: args[1],
                             Remixers: {
                                 [rmxArtist]: {
                                     [`<@${message.author.id}>`]: { 
                                         name: message.member.displayName,
-                                        review: splitUpArray[1],
+                                        review: songReview,
                                         rate: songRating[0].slice(1, -1),
                                         sentby: taggedUser === false ? false : taggedUser.id,
+                                        EPOverall: false,
                                     },
                                     Image: thumbnailImage,
                                 },
@@ -273,22 +300,24 @@ module.exports = {
                         [songName]: artistArray[i] === rmxArtist ? { //For the remixer
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
-                                review: splitUpArray[1],
+                                review: songReview,
                                 rate: songRating[0].slice(1, -1),
                                 sentby: taggedUser === false ? false : taggedUser.id,
+                                EPOverall: false,
                             },
-                            EP: overallString != -1 ? [args[1], overallString] : args[1],
+                            EP: args[1],
                             Remixers: false,
                             Image: thumbnailImage,
                         } : { // Create the SONG DB OBJECT, for the original artist
-                            EP: overallString != -1 ? [args[1], overallString] : args[1],
+                            EP: args[1],
                             Remixers: {
                                 [rmxArtist]: {
                                     [`<@${message.author.id}>`]: { 
                                         name: message.member.displayName,
-                                        review: splitUpArray[1],
+                                        review: songReview,
                                         rate: songRating[0].slice(1, -1),
                                         sentby: taggedUser === false ? false : taggedUser.id,
+                                        EPOverall: false,
                                     },
                                     Image: thumbnailImage,
                                 },
@@ -310,9 +339,10 @@ module.exports = {
                         [rmxArtist]: {
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
-                                review: splitUpArray[1],
+                                review: songReview,
                                 rate: songRating[0].slice(1, -1),
                                 sentby: taggedUser === false ? false : taggedUser.id,
+                                EPOverall: false,
                             },
                             Image: thumbnailImage,
                         },
@@ -332,9 +362,10 @@ module.exports = {
                     const newuserObj = {
                         [`<@${message.author.id}>`]: { 
                             name: message.member.displayName,
-                            review: splitUpArray[1],
+                            review: songReview,
                             rate: songRating[0].slice(1, -1),
                             sentby: taggedUser === false ? false : taggedUser.id,
+                            EPOverall: false,
                         },
                     };
 
@@ -353,6 +384,5 @@ module.exports = {
 
         });
 
-    }
     },
 };

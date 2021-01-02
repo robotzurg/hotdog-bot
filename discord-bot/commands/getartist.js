@@ -59,8 +59,12 @@ module.exports = {
                 }
             }
 
-            exampleEmbed.addField('Singles:', singleArray);
-            exampleEmbed.addField('Remixes:', remixArray);
+            if (singleArray.length != 0) {
+                exampleEmbed.addField('Singles:', singleArray);
+            }
+            if (remixArray.length != 0) {
+                exampleEmbed.addField('Remixes:', remixArray);
+            }
             
             for (let i = 0; i < songArray.length; i++) {
                 const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);

@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const db = require("../db.js");
 
 module.exports = {
-	name: 'getreview',
+    name: 'getreview',
+    aliases: ['getreview', 'getr'],
     description: 'Get a review from a user on the server that they have written! Putting nothing for <user> will replace <user> with yourself.',
     args: true,
     usage: '<artist> | <song/ep/lp> | [op] <user>',
@@ -35,7 +36,7 @@ module.exports = {
         }
         if (rmxArtist === false) {
             rname = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.name`);
-            if (rname === undefined) return message.channel.send('No review found.');
+            if (rname === undefined) return message.channel.send('No review found. *Note that for EP reviews, you need to use `!getReviewEP`.*');
             rreview = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.review`);
             rscore = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.rate`);
             rsentby = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.sentby`);
@@ -50,7 +51,7 @@ module.exports = {
             }
         } else {
             rname = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.name`);
-            if (rname === undefined) return message.channel.send('No review found.');
+            if (rname === undefined) return message.channel.send('No review found. *Note that for EP reviews, you need to use `!getReviewEP`.*');
             rreview = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.review`);
             rscore = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.rate`);
             rsentby = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.sentby`);
