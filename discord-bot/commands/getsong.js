@@ -8,7 +8,7 @@ module.exports = {
     usage: '<artist> | <song>',
 	execute(message, args) {
 
-        if (args[1].toLowerCase().includes('ep') || args[1].toLowerCase().includes('lp') || !args[1].toLowerCase().includes('remixes')) {
+        if (args[1].includes('EP') || args[1].includes('LP') || !args[1].toLowerCase().includes('remixes')) {
             return message.channel.send('This isn\'t a single! Please use `!getEP` to get EP/LP overviews.');
         }
 
@@ -19,9 +19,10 @@ module.exports = {
         const songEP = db.reviewDB.get(args[0], `${args[1]}.EP`);
         let userArray = Object.keys(songObj);
         
-        userArray = userArray.filter(function(e) { return e !== 'EP'; });
-        userArray = userArray.filter(function(e) { return e !== 'Image'; });
-        userArray = userArray.filter(function(e) { return e !== 'Remixers'; });
+        userArray = userArray.filter(e => e !== 'EP')
+            .filter(e => e !== 'Image')
+            .filter(e => e !== 'Remixers');
+        
         const rankNumArray = [];
 
         const exampleEmbed = new Discord.MessageEmbed()

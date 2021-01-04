@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const { prefix } = require('../config.json');
 const db = require("../db.js");
-const mailboxes = ['aeroface', 'av', 'emily', 'ethan', 'fridgey', 'hal', 'jeff', 'josh', 'lapplepieguy', 'meltered', 'nate', 'pup', 'shiro', 'steph', 'treez', 'valence', 'vol', 'xypod', 'yacob', 'yul'];
+const { mailboxes } = require('../arrays.json');
 
 module.exports = {
     name: 'addreviewep',
@@ -67,7 +67,7 @@ module.exports = {
             msg.react('👂');
         });
 
-        const filter = m => m.author.id === message.author.id && (m.content.includes('(') || m.content.includes('Overall') || m.content.includes('!end'));
+        const filter = m => m.author.id === message.author.id && (m.content.includes('(') || m.content.includes('[') || m.content.includes('Overall') || m.content.includes('!end'));
         const collector = message.channel.createMessageCollector(filter, { idle: 900000 });
         const rankArray = [];
         let splitUpArray;
@@ -89,7 +89,6 @@ module.exports = {
                 msgtoEdit.reactions.removeAll();
                 return;
             } else if (m.content.includes(`Overall`)) {
-                const songArray = Object.keys(db.reviewDB.get(args[0]));
 
                 if (overallString === -1) {
                     splitUpOverall = m.content.split('\n');
@@ -97,14 +96,20 @@ module.exports = {
                     overallString = splitUpOverall;
                     m.delete();
                 }
+                
+                let songArray;
+                for (let ii = 0; ii < artistArray.length; ii++) {
+                    songArray = Object.keys(db.reviewDB.get(artistArray[ii]));
+                    for (let i = 0; i < songArray.length; i++) {
+                        const songEP = db.reviewDB.get(artistArray[ii], `${songArray[i]}.EP`);
 
-                for (let i = 0; i < songArray.length; i++) {
-                    const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
-
-                    if (songEP === args[1]) {
-                        db.reviewDB.set(args[0], overallString[0], `${songArray[i]}.<@${message.author.id}>.EPOverall`);
+                        if (songEP === args[1]) {
+                            db.reviewDB.set(artistArray[ii], overallString[0], `${songArray[i]}.<@${message.author.id}>.EPOverall`);
+                        }
                     }
                 }
+                collector.stop();
+                msgtoEdit.reactions.removeAll();
 
             } else {
                 splitUpArray = m.content.split('\n'); 

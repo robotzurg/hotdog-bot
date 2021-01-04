@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const db = require("../db.js");
 const { prefix } = require('../config.json');
-const mailboxes = ['aeroface', 'av', 'emily', 'ethan', 'fridgey', 'hal', 'jeff', 'josh', 'lapplepieguy', 'meltered', 'nate', 'pup', 'shiro', 'steph', 'treez', 'valence', 'vol', 'xypod', 'yacob', 'yul'];
+const { mailboxes } = require('../arrays.json');
 
 module.exports = {
     name: 'addreview',
@@ -38,7 +38,6 @@ module.exports = {
         if (args[1].includes('(feat') || args[1].includes('(ft')) {
             songName = songName.split(` (f`);
             songName.splice(1);
-            return console.log(songName);
         }
 
         let artistArray = args[0].split(' & ');

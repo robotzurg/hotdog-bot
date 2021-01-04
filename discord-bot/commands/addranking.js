@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const db = require("../db.js");
-const mailboxes = ['aeroface', 'av', 'emily', 'ethan', 'fridgey', 'hal', 'jeff', 'josh', 'lapplepieguy', 'meltered', 'nate', 'pup', 'shiro', 'steph', 'treez', 'valence', 'vol', 'xypod', 'yacob', 'yul'];
+const { mailboxes } = require('../arrays.json');
 
 module.exports = {
     name: 'addranking',
@@ -91,8 +91,6 @@ module.exports = {
                 msgtoEdit.reactions.removeAll();
                 return;
             } else if (m.content.includes(`Overall`)) {
-                const songArray = Object.keys(db.reviewDB.get(args[0]));
-
                 if (overallString === -1) {
                     splitUpOverall = m.content.split('\n');
                     splitUpOverall.shift();
@@ -100,15 +98,23 @@ module.exports = {
                     m.delete();
                 }
 
-                for (let i = 0; i < songArray.length; i++) {
-                    const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
+                let songArray;
+                for (let ii = 0; ii < artistArray.length; ii++) {
+                    songArray = Object.keys(db.reviewDB.get(artistArray[ii]));
+                    for (let i = 0; i < songArray.length; i++) {
+                        const songEP = db.reviewDB.get(artistArray[ii], `${songArray[i]}.EP`);
 
-                    if (songEP === args[1]) {
-                        db.reviewDB.set(args[0], overallString[0], `${songArray[i]}.<@${message.author.id}>.EPOverall`);
+                        if (songEP === args[1]) {
+                            db.reviewDB.set(artistArray[ii], overallString[0], `${songArray[i]}.<@${message.author.id}>.EPOverall`);
+                        }
                     }
                 }
+
+                collector.stop();
+                msgtoEdit.reactions.removeAll();
             } else {
-                rankArray.push(m.content);
+                rankPosition++; //Start by upping the rank position, so we can go from 1-whatever
+                rankArray.push(`${rankPosition}. ${m.content}`);
                 songRating = m.content.split(' '),
                     id_tag = '-',
                     position = songRating.indexOf(id_tag);
@@ -143,13 +149,6 @@ module.exports = {
                     rmxArtist = false;
                     fullSongName = false;
                 }
-
-                rankPosition = songName.slice(0, -songName.length + 2);
-                if (rankPosition.includes('.')) {
-                    rankPosition = rankPosition.slice(0, -1);
-                }
-
-                songName = rankPosition > 3 ? songName = songName.slice(4) : songName = songName.slice(3);
 
                 m.delete();
             }

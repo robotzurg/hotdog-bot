@@ -1,4 +1,5 @@
 const db = require("../db.js");
+const { genreList } = require('../arrays.json');
 
 module.exports = {
 	name: 'reset',
@@ -7,7 +8,7 @@ module.exports = {
 		//if (message.member.hasPermission('ADMINISTRATOR')) {
 		
 			db.genreRoulette.forEach((prop, key) => {
-				const genrePick = message.client.genreList[Math.floor(Math.random() * message.client.genreList.length)];
+				const genrePick = genreList[Math.floor(Math.random() * message.client.genreList.length)];
 				db.genreRoulette.set(key, { genre: genrePick, status: 'alive' });
 			});
 

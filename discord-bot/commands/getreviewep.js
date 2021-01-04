@@ -12,14 +12,14 @@ module.exports = {
         if (!args[1].toLowerCase().includes('ep') && !args[1].toLowerCase().includes('lp') && !args[1].toLowerCase().includes('remixes')) {
             return message.channel.send('This isn\'t an EP! Please use `!getReview` to get non-EP reviews.');
         }
-        
-        const artistObj = db.reviewDB.get(args[0]);
+
+        const artistName = args[0].split(' & ');
+        const artistObj = db.reviewDB.get(artistName[0]);
         if (artistObj === undefined) {
             return message.channel.send('No artist found.');
         }
 
         const songArray = Object.keys(artistObj);
-        const artistName = args[0].split(' & ');
 
         let taggedUser;
         let rname;
@@ -27,6 +27,8 @@ module.exports = {
         let rscore;
         let rsentby;
         let roverall;
+        let rrankpos;
+        let songRanking = [];
         let usrSentBy;
         let thumbnailImage;
         let rmxProg = -1;
@@ -61,6 +63,8 @@ module.exports = {
                     rscore = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.rate`);
                     rsentby = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.sentby`);
                     roverall = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.EPOverall`);
+                    rrankpos = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.rankPosition`);
+                    if (rrankpos != undefined) songRanking.push(`${rrankpos}. ${songName} (${rscore})`);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }
@@ -75,7 +79,9 @@ module.exports = {
                     rreview = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.review`);
                     rscore = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.rate`);
                     rsentby = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.sentby`);
-                    roverall = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.EPOverall`);
+                    roverall = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.EPOverall`);
+                    rrankpos = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.rankPosition`);
+                    if (rrankpos != undefined) songRanking.push(`${rrankpos}. ${songName} (${rscore})`);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }     
@@ -87,18 +93,26 @@ module.exports = {
                     }
                 }
 
-                exampleEmbed.addField(`${songName} (${rscore})`, `${rreview}`);
+                if (songRanking.length === 0) {
+                    exampleEmbed.addField(`${songName} (${rscore})`, `${rreview}`);
+                }
             }
         }
 
+        if (songRanking.length != 0) {
+            exampleEmbed.addField('Ranking:', `\`\`\`${songRanking.join('\n')}\`\`\``);
+        }
         // Check if any of the songs in the artist DB are attached to the requested EP
         if (checkforEP === false) {
             return message.channel.send('No EP found.');
         }
 
-        if (roverall != false && roverall != undefined) {
+        if (roverall != false && roverall != undefined && songRanking.length === 0) {
             exampleEmbed.addField('Overall Thoughts', roverall);
+        } else if (roverall != false && roverall != undefined && songRanking.length != 0) {
+            exampleEmbed.setDescription(roverall);
         }
+
         exampleEmbed.setColor(`${message.member.displayHexColor}`);
         exampleEmbed.setTitle(`${args[0]} - ${args[1]}`);
         exampleEmbed.setAuthor(rsentby != false ? `${rname}'s mailbox review` : `${rname}'s review`, `${taggedUser.avatarURL({ format: "png" })}`);

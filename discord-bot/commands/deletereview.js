@@ -1,7 +1,8 @@
 const db = require("../db.js");
 
 module.exports = {
-	name: 'deletereview',
+    name: 'deletereview',
+    aliases: ['deletereview', 'deleter', 'delreview', 'delr'],
     description: 'Edit a pre-existing review of your own.',
     args: true,
     usage: '<artist> | <song_name>',
