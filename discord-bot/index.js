@@ -2,6 +2,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
+const { ogreList, genreList, memberIDList, mailboxes } = require('./array.json');
 const db = require("./db.js");
 const cron = require('node-cron');
 
@@ -15,18 +16,6 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const cooldowns = new Discord.Collection();
-
-// Some Arrays
-client.genreList = ['Brostep/Riddim', 'Future Riddim', 'Color Bass', 'Melodic Dubstep', 'Electro House', 'Midtempo/New Beat', 'Techno', 'Hardstyle', 'Happy Hardcore', 
-'Other Hardcore', 'Psytrance', 'Other Trance', 'Progressive House', 'Future House', 'Big Room House', 'Bass House', 'Trap', 'Future Bass', 'Glitch Hop/Moombah', 'Dancefloor DnB',
-'Liquid DnB', 'Neuro DnB', 'Other DnB', 'Indie Dance/Nu Disco', 'Synthwave', 'Garage', 'Other Chillout', 'Non-EDM'];
-
-client.ogreList = ['./Ogres/ogreGold.png', './Ogres/ogreHappy.png', './Ogres/ogreMad.png', './Ogres/ogreSad.png', './Ogres/ogreSmug.png', './Ogres/ogreSnow.png'];
-
-client.memberIDList = ['398369363784368128', '487747924361478155', '156110247004471296', '289178868118716416', '331821722594443274', '205726084291887104', '341299011971448835', 
-'229617545651552256', '341979797129527297', '122568101995872256', '784993334330130463', '143091697096720384', '221087833534889994', '221006870129803264', '283068026960609283', 
-'431134660857298955', '449314134387982347', '229249397203009536'];
-
 
 // Command Collections
 for (const file of commandFiles) {
