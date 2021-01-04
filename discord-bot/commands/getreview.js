@@ -47,7 +47,7 @@ module.exports = {
             if (db.reviewDB.get(artistName[0], `${songName}.Image`) != false) {
                 thumbnailImage = db.reviewDB.get(artistName[0], `${songName}.Image`);
             } else {
-                thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+                thumbnailImage = taggedUser.avatarURL({ format: "png" });
             }
         } else {
             rname = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.name`);
@@ -62,7 +62,7 @@ module.exports = {
             if (db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`)) {
                 thumbnailImage = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`);
             } else {
-                thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+                thumbnailImage = taggedUser.avatarURL({ format: "png" });
             }
         }
 

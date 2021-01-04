@@ -303,6 +303,7 @@ client.on('message', async message => {
         command.execute(message, args);
     } catch (error) {
         console.error(error);
+        console.log(message.content);
         message.reply('there was an error trying to execute that command!');
     }
 

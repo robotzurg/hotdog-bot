@@ -22,6 +22,7 @@ module.exports = {
         const songArray = Object.keys(artistObj);
 
         let taggedUser;
+        let taggedMember;
         let rname;
         let rreview;
         let rscore;
@@ -52,8 +53,10 @@ module.exports = {
 
                 if (args.length > 2) {
                     taggedUser = message.mentions.users.first();
+                    taggedMember = message.mentions.members.first();
                 } else {
                     taggedUser = message.author;
+                    taggedMember = message.member;
                 }
 
                 if (rmxArtist === false) {
@@ -71,7 +74,7 @@ module.exports = {
                     if (db.reviewDB.get(artistName[0], `${songName}.Image`) != false) {
                         thumbnailImage = db.reviewDB.get(artistName[0], `${songName}.Image`);
                     } else {
-                        thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+                        thumbnailImage = taggedUser.avatarURL({ format: "png" });
                     }
                 } else {
                     rname = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.name`);
@@ -89,7 +92,7 @@ module.exports = {
                     if (db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`)) {
                         thumbnailImage = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`);
                     } else {
-                        thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+                        thumbnailImage = taggedUser.avatarURL({ format: "png" });
                     }
                 }
 
@@ -113,7 +116,7 @@ module.exports = {
             exampleEmbed.setDescription(roverall);
         }
 
-        exampleEmbed.setColor(`${message.member.displayHexColor}`);
+        exampleEmbed.setColor(`${taggedMember.displayHexColor}`);
         exampleEmbed.setTitle(`${args[0]} - ${args[1]}`);
         exampleEmbed.setAuthor(rsentby != false ? `${rname}'s mailbox review` : `${rname}'s review`, `${taggedUser.avatarURL({ format: "png" })}`);
         if (args[1].includes('EP')) {

@@ -43,7 +43,18 @@ module.exports = {
         let artistArray = args[0].split(' & ');
         let taggedUser = false;
         let taggedMember = false;
-        let thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+        let thumbnailImage;
+        if (db.reviewDB.has(artistArray[0])) {
+            if (rmxArtist === false) {
+                thumbnailImage = db.reviewDB.get(artistArray[0], `${songName}.Image`);
+                if (thumbnailImage === undefined) thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+            } else {
+                thumbnailImage = db.reviewDB.get(artistArray[0], `${songName}.Remixers.${rmxArtist}.Image`);
+                if (thumbnailImage === undefined) thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+            }
+        } else {
+            thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+        }
 
         if (args.length < 4) {
             return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
