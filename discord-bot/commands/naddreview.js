@@ -7,11 +7,22 @@ module.exports = {
     aliases: ['naddreview', 'nreview'],
     description: 'Create a song rating embed message!',
     args: true,
-    usage: '`<artist> | <song_name> | <rating> | <rate_desc> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>`',
+    usage: '`<artist> | <song_name> | <rating> | <review> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>`',
 	execute(message, args) {
+        let rating = args[2];
+        let review = args[3];
+
+        if (args[2].length > 10) {
+            rating = args[3];
+            review = args[2];
+        }
 
         if (args[1].includes('EP') || args[1].toLowerCase().includes('LP') || args[1].toLowerCase().includes('Remixes')) {
-            return message.channel.send('You can only use this command to rank singles/single remixes.\nPlease use `!addReviewEP` for EP Reviews/Rankings!');
+            message.delete({ timeout: 30000 });
+            return message.channel.send('You can only use this command to rank singles/single remixes.\nPlease use `!addReviewEP` for EP Reviews/Rankings!').then(msg => {
+               msg.delete({ timeout: 30000 }); 
+            })
+            .catch(console.error);
         }
 
         const command = message.client.commands.get('addreview');
@@ -37,8 +48,18 @@ module.exports = {
         if (args[1].includes('(feat') || args[1].includes('(ft')) {
             songName = songName.split(` (f`);
             songName.splice(1);
+        } else if (args[1].includes('feat')) {
+            songName = songName.split(' feat.');
+            songName.splice(1);
+        } else if (args[1].includes('ft')) {
+            songName = songName.split(' ft.');
+            songName.splice(1);
         }
 
+        if (songName.includes('(VIP)')) {
+            songName = songName.split(' (');
+            songName = `${songName[0]} ${songName[1].slice(0, -1)}`;
+        }
         //let artistArray = args[0].split(' & ');
         let taggedUser = false;
         let taggedMember = false;
@@ -64,9 +85,9 @@ module.exports = {
         .setColor(`${message.member.displayHexColor}`)
         .setTitle(`${args[0]} - ${args[1]}`)
         .setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review` : `${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
-        exampleEmbed.setDescription(args[3])
+        exampleEmbed.setDescription(review)
         .setThumbnail(thumbnailImage)
-        .addField('Rating: ', `**${args[2]}**`, true);
+        .addField('Rating: ', `**${rating}**`, true);
         if (taggedUser != false) {
             exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
         }

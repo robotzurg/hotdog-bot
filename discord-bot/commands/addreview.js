@@ -11,6 +11,14 @@ module.exports = {
     usage: '`<artist> | <song_name> | <rating> | <rate_desc> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>`',
 	execute(message, args) {
 
+        let rating = args[2];
+        let review = args[3];
+
+        if (args[2].length > 10) {
+            rating = args[3];
+            review = args[2];
+        }
+
         if (args[1].includes('EP') || args[1].toLowerCase().includes('LP') || args[1].toLowerCase().includes('Remixes')) {
             return message.channel.send('You can only use this command to rank singles/single remixes.\nPlease use `!addReviewEP` for EP Reviews/Rankings!');
         }
@@ -35,11 +43,24 @@ module.exports = {
             rmxArtist = false;
         }
 
+        //Take out the ft./feat.
         if (args[1].includes('(feat') || args[1].includes('(ft')) {
             songName = songName.split(` (f`);
             songName.splice(1);
+        } else if (args[1].includes('feat')) {
+            songName = songName.split('feat');
+            songName.splice(1);
+        } else if (args[1].includes('ft')) {
+            songName = songName.split('ft');
+            songName.splice(1);
         }
 
+        //Adjust (VIP)
+        if (songName.includes('(VIP)')) {
+            songName = songName.split(' (');
+            songName = `${songName[0]} ${songName[1].slice(0, -1)}`;
+        }
+        
         let artistArray = args[0].split(' & ');
         let taggedUser = false;
         let taggedMember = false;
@@ -76,9 +97,9 @@ module.exports = {
         .setColor(`${message.member.displayHexColor}`)
         .setTitle(`${args[0]} - ${args[1]}`)
         .setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review` : `${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
-        exampleEmbed.setDescription(args[3])
+        exampleEmbed.setDescription(review)
         .setThumbnail(thumbnailImage)
-        .addField('Rating: ', `**${args[2]}**`, true);
+        .addField('Rating: ', `**${rating}**`, true);
         if (taggedUser != false) {
             exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
         }
@@ -99,8 +120,8 @@ module.exports = {
                         [args[1]]: { // Create the SONG DB OBJECT
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
-                                review: args[3],
-                                rate: args[2],
+                                review: review,
+                                rate: rating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: -1,
                             },
@@ -118,8 +139,8 @@ module.exports = {
                         [args[1]]: { 
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
-                                review: args[3],
-                                rate: args[2],
+                                review: review,
+                                rate: rating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: -1,
                             },
@@ -144,8 +165,8 @@ module.exports = {
                     const newuserObj = {
                         [`<@${message.author.id}>`]: { 
                             name: message.member.displayName,
-                            review: args[3],
-                            rate: args[2],
+                            review: review,
+                            rate: rating,
                             sentby: taggedUser === false ? false : taggedUser.id,
                             rankPosition: -1,
                         },
@@ -167,8 +188,8 @@ module.exports = {
                         [songName]: artistArray[i] === rmxArtist ? { //For the remixer
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
-                                review: args[3],
-                                rate: args[2],  
+                                review: review,
+                                rate: rating,  
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: -1,
                             },
@@ -181,8 +202,8 @@ module.exports = {
                                 [rmxArtist]: {
                                     [`<@${message.author.id}>`]: { 
                                         name: message.member.displayName,
-                                        review: args[3],
-                                        rate: args[2],  
+                                        review: review,
+                                        rate: rating,  
                                         sentby: taggedUser === false ? false : taggedUser.id,
                                         rankPosition: -1,
                                     },
@@ -201,8 +222,8 @@ module.exports = {
                         [songName]: artistArray[i] === rmxArtist ? { //For the remixer
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
-                                review: args[3],
-                                rate: args[2], 
+                                review: review,
+                                rate: rating, 
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: -1,
                             },
@@ -215,8 +236,8 @@ module.exports = {
                                 [rmxArtist]: {
                                     [`<@${message.author.id}>`]: { 
                                         name: message.member.displayName,
-                                        review: args[3],
-                                        rate: args[2],  
+                                        review: review,
+                                        rate: rating,  
                                         sentby: taggedUser === false ? false : taggedUser.id,
                                         rankPosition: -1,
                                     },
@@ -242,8 +263,8 @@ module.exports = {
                         [rmxArtist]: {
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
-                                review: args[3],
-                                rate: args[2],  
+                                review: review,
+                                rate: rating,  
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: -1,
                             },
@@ -265,8 +286,8 @@ module.exports = {
                     const newuserObj = {
                         [`<@${message.author.id}>`]: { 
                             name: message.member.displayName,
-                            review: args[3],
-                            rate: args[2],
+                            review: review,
+                            rate: rating,
                             sentby: taggedUser === false ? false : taggedUser.id,
                             rankPosition: -1,
                         },

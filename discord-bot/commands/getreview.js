@@ -9,6 +9,12 @@ module.exports = {
     usage: '<artist> | <song/ep/lp> | [op] <user>',
 	execute(message, args) {
 
+        // Fix (VIP) if needed
+        if (args[1].includes('(VIP)')) {
+            args[1] = args[1].split(' (');
+            args[1] = `${args[1][0]} ${args[1][1].slice(0, -1)}`;
+        }
+
         let songName;
         let rmxArtist;
 
@@ -29,6 +35,7 @@ module.exports = {
         let rsentby;
         let usrSentBy;
         let thumbnailImage;
+        let epfrom = db.reviewDB.get(artistName[0], `${songName}.EP`);
         if (args.length > 2) {
             taggedUser = message.mentions.users.first();
         } else {
@@ -76,6 +83,8 @@ module.exports = {
                 .addField('Rating: ', `**${rscore}**`, true);
                 if (rsentby != false) {
                     exampleEmbed.setFooter(`Sent by ${usrSentBy.displayName}`, `${usrSentBy.user.avatarURL({ format: "png" })}`);
+                } else if (epfrom != undefined && epfrom != false) {
+                    exampleEmbed.setFooter(`from the ${epfrom}`, thumbnailImage);
                 }
                 
             message.channel.send(exampleEmbed);

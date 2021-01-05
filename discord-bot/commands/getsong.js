@@ -16,6 +16,13 @@ module.exports = {
             return message.channel.send('This isn\'t a single! Please use `!getEP` to get EP/LP overviews.');
         }
 
+        let argSongName = args[1];
+        // Fix (VIP) if needed
+        if (args[1].includes('(VIP)')) {
+            args[1] = args[1].split(' (');
+            argSongName = `${args[1][0]} ${args[1][1].slice(0, -1)}`;
+        }
+
         // Function to grab average of all ratings later
         let average = (array) => array.reduce((a, b) => a + b) / array.length;
 
@@ -26,20 +33,20 @@ module.exports = {
         let songName;
         let rmxArtist;
 
-        if (args[1].toLowerCase().includes('remix')) {
-            fullSongName = args[1];
+        if (argSongName.toLowerCase().includes('remix')) {
+            fullSongName = argSongName;
             songName = rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' (')[0];
             rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' (')[1];
             songObj = db.reviewDB.get(rmxArtist, `${fullSongName}`);
             songEP = db.reviewDB.get(rmxArtist, `${fullSongName}.EP`);
-        } else if (args[1].toLowerCase().includes('bootleg')) {
-            fullSongName = args[1];
+        } else if (argSongName.toLowerCase().includes('bootleg')) {
+            fullSongName = argSongName;
             songName = rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' (')[0];
             rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' (')[1];
             songObj = db.reviewDB.get(rmxArtist, `${fullSongName}`);
             songEP = db.reviewDB.get(rmxArtist, `${fullSongName}.EP`);
-        } else if (args[1].toLowerCase().includes('flip') || args[1].toLowerCase().includes('edit')) {
-            fullSongName = args[1];
+        } else if (argSongName.toLowerCase().includes('flip') || argSongName.toLowerCase().includes('edit')) {
+            fullSongName = argSongName;
             songName = rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' (')[0];
             rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' (')[1];
             songObj = db.reviewDB.get(rmxArtist, `${fullSongName}`);
@@ -47,10 +54,12 @@ module.exports = {
         } else {
             rmxArtist = false;
             fullSongName = false;
-            songName = args[1];
-            songObj = db.reviewDB.get(artistName[0], `${args[1]}`);
-            songEP = db.reviewDB.get(artistName[0], `${args[1]}.EP`);
+            songName = argSongName;
+            songObj = db.reviewDB.get(artistName[0], `${argSongName}`);
+            songEP = db.reviewDB.get(artistName[0], `${argSongName}.EP`);
         }
+
+        if (songObj === undefined) return message.channel.send('The requested song does not exist.\nUse `!getArtist` to get a full list of this artist\'s songs.');
 
         let userArray = Object.keys(songObj);
         
@@ -62,28 +71,36 @@ module.exports = {
 
         const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)
-            .setTitle(`${args[0]} - ${args[1]} ratings`);
+            .setTitle(`${args[0]} - ${argSongName} ratings`);
             for (let i = 0; i < userArray.length; i++) {
                 if (userArray[i] != 'EP') {
                     let rating;
                     if (rmxArtist === false) {
-                        rating = db.reviewDB.get(artistName[0], `${args[1]}.${userArray[i]}.rate`);
+                        rating = db.reviewDB.get(artistName[0], `${argSongName}.${userArray[i]}.rate`);
                     } else {
                         rating = db.reviewDB.get(rmxArtist, `${fullSongName}.${userArray[i]}.rate`);
                     }
-                    rankNumArray.push(parseInt(rating.slice(0, -3)));
+                    rankNumArray.push(parseFloat(rating.slice(0, -3)));
                     userArray[i] = `${userArray[i]} \`${rating}\``;
                 }
             }
-            exampleEmbed.setDescription(`*The average rating of this song is ${average(rankNumArray)}!*`);
-            exampleEmbed.addField('Reviews:', userArray);
+            if (rankNumArray.length != 0) {
+                exampleEmbed.setDescription(`*The average rating of this song is* ***${average(rankNumArray)}!***`);
+            } else {
+                exampleEmbed.setDescription(`*The average rating of this song is N/A*`);
+            }
+
+            if (userArray != 0) {
+                exampleEmbed.addField('Reviews:', userArray);
+            } else {
+                exampleEmbed.addField('Reviews:', 'No reviews :(');
+            }
+
             if (rmxArtist === false) {
-                console.log(artistName[0]);
-                console.log(args[1]);
-                if (db.reviewDB.get(db.reviewDB.get(artistName[0], `${args[1]}.Image`)) === false) {
+                if ((db.reviewDB.get(artistName[0], `${argSongName}.Image`)) === false) {
                     exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png" }));
                 } else {
-                    exampleEmbed.setThumbnail(db.reviewDB.get(artistName[0], `${args[1]}.Image`));
+                    exampleEmbed.setThumbnail(db.reviewDB.get(artistName[0], `${argSongName}.Image`));
                 }
             } else {
                 if (db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`) === false) {

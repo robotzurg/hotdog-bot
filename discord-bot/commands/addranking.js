@@ -130,21 +130,21 @@ module.exports = {
                 songRating[0] = songRating[0].slice(1, -1);
 
                 //Remix preparation
-                if (songName.toLowerCase().includes('remix')) {
+                if (songName.toString().toLowerCase().includes('remix')) {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 7).split(' (')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' (')[1];
-                    artistArray = songName.split(' & ');
-                } else if (args[1].toLowerCase().includes('bootleg')) {
+                    artistArray = args[0].split(' & ');
+                } else if (songName.toString().toLowerCase().includes('bootleg')) {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 9).split(' (')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' (')[1];
-                    artistArray = songName.split(' & ');
-                } else if (args[1].toLowerCase().includes('flip') || args[1].toLowerCase().includes('edit')) {
+                    artistArray = args[0].split(' & ');
+                } else if (songName.toString().toLowerCase().includes('flip') || songName.toString().toLowerCase().includes('edit')) {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 6).split(' (')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' (')[1];
-                    artistArray = songName.split(' & ');
+                    artistArray = args[0].split(' & ');
                 } else {
                     rmxArtist = false;
                     fullSongName = false;

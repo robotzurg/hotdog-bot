@@ -66,7 +66,7 @@ module.exports = {
             msg.react('👂');
         });
 
-        const filter = m => m.author.id === message.author.id && (m.content.includes('(') || m.content.includes('[') || m.content.includes('Overall') || m.content.includes('!end'));
+        const filter = m => m.author.id === message.author.id && (m.content.includes('(') || m.content.includes('[') || m.content.includes('ft') || m.content.includes('feat') || m.content.includes('Overall') || m.content.includes('!end'));
         const collector = message.channel.createMessageCollector(filter, { idle: 900000 });
         const rankArray = [];
         let splitUpArray;
@@ -77,7 +77,7 @@ module.exports = {
         let songReview;
         let id_tag;
         let position;
-        // let rmxArtist;
+        let rmxArtist;
         let overallString = -1;
         // let artistArray = args[0].split(' & ');
         
@@ -114,30 +114,46 @@ module.exports = {
                     position = songRating.indexOf(id_tag);
 
                 if (~position) songRating.splice(position, 1);
-
                 songName = songRating.splice(0, songRating.length - 1).join(" ");
+
+                //Remix preparation
+                if (songName.toString().toLowerCase().includes('remix')) {
+                    fullSongName = songName;
+                    songName = fullSongName.substring(0, fullSongName.length - 7).split(' (')[0];
+                    rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' (')[1];
+                } else if (songName.toString().toLowerCase().includes('bootleg')) {
+                    fullSongName = songName;
+                    songName = fullSongName.substring(0, fullSongName.length - 9).split(' (')[0];
+                    rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' (')[1];
+                } else if (songName.toString().toLowerCase().includes('flip') || songName.toString().toLowerCase().includes('edit')) {
+                    fullSongName = songName;
+                    songName = fullSongName.substring(0, fullSongName.length - 6).split(' (')[0];
+                    rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' (')[1];
+                } else {
+                    rmxArtist = false;
+                    fullSongName = false;
+                }
+
                 if (songName.includes('(feat') || songName.includes('(ft')) {
                     songName = songName.split(` (f`);
                     songName.splice(1);
+                } else if (songName.includes('feat')) {
+                    songName = songName.split(' feat');
+                    songName.splice(1);
+
+                    if (rmxArtist != false) {
+                        fullSongName = fullSongName.split(' feat. ');
+                        fullSongName = `${fullSongName[0]} (${fullSongName[1].split(' (')[1]}`;
+                    }
+                } else if (songName.includes('ft')) {
+                    songName = songName.split(' ft');
+                    songName.splice(1);
+
+                    if (rmxArtist != false) {
+                        fullSongName = fullSongName.split(' ft. ');
+                        fullSongName = `${fullSongName[0]} (${fullSongName[1].split(' (')[1]}`;
+                    }
                 }
- 
-                //Remix preparation
-            if (args[1].toLowerCase().includes('remix')) {
-                fullSongName = songName;
-                songName = fullSongName.substring(0, fullSongName.length - 7).split(' (')[0];
-               // rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' (')[1];
-            } else if (args[1].toLowerCase().includes('bootleg')) {
-                fullSongName = songName;
-                songName = fullSongName.substring(0, fullSongName.length - 9).split(' (')[0];
-               // rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' (')[1];
-            } else if (args[1].toLowerCase().includes('flip') || args[1].toLowerCase().includes('edit')) {
-                fullSongName = songName;
-                songName = fullSongName.substring(0, fullSongName.length - 6).split(' (')[0];
-               // rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' (')[1];
-            } else {
-                //rmxArtist = false;
-                fullSongName = false;
-            }
 
                 m.delete();
             }
