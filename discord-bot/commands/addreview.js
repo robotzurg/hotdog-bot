@@ -87,10 +87,10 @@ module.exports = {
 
             if (message.mentions.users.first() === undefined) { // If there isn't a user mentioned, then we know it's 3 arguments with no user mention.
                 thumbnailImage = args[4];
-            } else if (args.length === 3) { // If there is a user mentioned but only 3 arguments, then we know no image.
+            } else if (args.length === 5) { // If there is a user mentioned but only 3 arguments, then we know no image.
                 taggedUser = message.mentions.users.first(); 
                 taggedMember = message.mentions.members.first();
-            } else if (args.length === 4) { // If there is both a user mentioned and 4 arguments, then we know both!
+            } else if (args.length === 6) { // If there is both a user mentioned and 4 arguments, then we know both!
                 thumbnailImage = args[4];
                 taggedUser = message.mentions.users.first(); 
                 taggedMember = message.mentions.members.first();
@@ -179,6 +179,7 @@ module.exports = {
                     //Inject the newsongobject into the songobject and then put it in the database
                     Object.assign(songObj, newuserObj);
                     db.reviewDB.set(artistArray[i], songObj, `${args[1]}`);
+                    db.reviewDB.set(artistArray[i], thumbnailImage, `${args[1]}.Image`);
                 }
             }
         } else { //Same version of the above, but this time for REMIXES
@@ -301,8 +302,10 @@ module.exports = {
                     Object.assign(remixsongObj, newuserObj);
                     if (artistArray[i] === rmxArtist) {
                         db.reviewDB.set(artistArray[i], remixsongObj, `${songName}`);
+                        db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Image`);
                     } else {
-                        db.reviewDB.set(artistArray[i], remixsongObj, `${songName}.Remixers.${rmxArtist}`); 
+                        db.reviewDB.set(artistArray[i], remixsongObj, `${songName}.Remixers.${rmxArtist}`);
+                        db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Remixers.${rmxArtist}.Image`);
                     }
                 }
             }

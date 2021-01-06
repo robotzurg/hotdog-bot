@@ -284,6 +284,7 @@ module.exports = {
                     Object.assign(songObj, newuserObj);
                     db.reviewDB.set(artistArray[i], songObj, `${songName}`);
                     db.reviewDB.set(artistArray[i], args[1], `${songName}.EP`); //Format song to include the EP
+                    db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Image`);
                 } else {
                     console.log('User not detected!');
                     const songObj = db.reviewDB.get(artistArray[i], `${songName}`);
@@ -303,6 +304,7 @@ module.exports = {
                     Object.assign(songObj, newuserObj);
                     db.reviewDB.set(artistArray[i], songObj, `${songName}`);
                     db.reviewDB.set(artistArray[i], args[1], `${songName}.EP`); //Format song to include the EP
+                    db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Image`);
                 }
             }
         } else { //The same but for remixes
@@ -421,9 +423,11 @@ module.exports = {
                     if (artistArray[i] === rmxArtist) {
                         db.reviewDB.set(artistArray[i], remixsongObj, `${songName}`);
                         db.reviewDB.set(artistArray[i], args[1], `${songName}.EP`); //Format song to include the EP
+                        db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Image`);
                     } else {
                         db.reviewDB.set(artistArray[i], remixsongObj, `${songName}.Remixers.${rmxArtist}`); 
                         db.reviewDB.set(artistArray[i], args[1], `${songName}.Remixers.${rmxArtist}.EP`); //Format song to include the EP
+                        db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Remixers.${rmxArtist}.Image`);
                     }
 
                 } else {
@@ -446,9 +450,11 @@ module.exports = {
                     if (artistArray[i] === rmxArtist) {
                         db.reviewDB.set(artistArray[i], remixsongObj, `${songName}`);
                         db.reviewDB.set(artistArray[i], args[1], `${songName}.EP`); //Format song to include the EP
+                        db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Image`);
                     } else {
                         db.reviewDB.set(artistArray[i], remixsongObj, `${songName}.Remixers.${rmxArtist}`); 
                         db.reviewDB.set(artistArray[i], args[1], `${songName}.Remixers.${rmxArtist}.EP`); //Format song to include the EP
+                        db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Remixers.${rmxArtist}.Image`);
                     }
                 }
             }
