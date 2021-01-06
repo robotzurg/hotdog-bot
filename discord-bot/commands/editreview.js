@@ -14,7 +14,7 @@ module.exports = {
         }
         
         const artistArray = args[0].split(' & ');
-        let songName;
+        let songName = args[1];
         let rmxArtist;
 
         if (args[1].toLowerCase().includes('remix')) {
@@ -26,20 +26,32 @@ module.exports = {
             rmxArtist = false;
         }
 
+        //Take out the ft./feat.
+        if (args[1].includes('(feat') || args[1].includes('(ft')) {
+            songName = songName.split(` (f`);
+            songName.splice(1);
+        } else if (args[1].includes('feat')) {
+            songName = songName.split('feat');
+            songName.splice(1);
+        } else if (args[1].includes('ft')) {
+            songName = songName.split('ft');
+            songName.splice(1);
+        }
+
         
         let rname;
         let rreview;
         let rscore;
         for (let i = 0; i < artistArray.length; i++) {
             if (rmxArtist === false || artistArray[i] === rmxArtist) {
-                rname = db.reviewDB.get(artistArray[i], `${args[1]}.${message.author}.name`);
+                rname = db.reviewDB.get(artistArray[i], `${songName}.${message.author}.name`);
                 if (rname === undefined) return message.channel.send('No review found.');
 
-                db.reviewDB.set(artistArray[i], args[3], `${args[1]}.${message.author}.review`);
-                rreview = db.reviewDB.get(artistArray[i], `${args[1]}.${message.author}.review`);
+                db.reviewDB.set(artistArray[i], args[3], `${songName}.${message.author}.review`);
+                rreview = db.reviewDB.get(artistArray[i], `${songName}.${message.author}.review`);
 
-                db.reviewDB.set(artistArray[i], args[2], `${args[1]}.${message.author}.rate`);
-                rscore = db.reviewDB.get(artistArray[i], `${args[1]}.${message.author}.rate`);
+                db.reviewDB.set(artistArray[i], args[2], `${songName}.${message.author}.rate`);
+                rscore = db.reviewDB.get(artistArray[i], `${songName}.${message.author}.rate`);
             } else {
                 rname = db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}.${message.author}.name`);
                 if (rname === undefined) return message.channel.send('No review found.');
@@ -52,7 +64,7 @@ module.exports = {
             }
         }
 
-        const thumbnailImage = db.reviewDB.get(artistArray[0], `${args[1]}.Image`);
+        const thumbnailImage = db.reviewDB.get(artistArray[0], `${songName}.Image`);
 
 		const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)
@@ -67,15 +79,9 @@ module.exports = {
             
             exampleEmbed.addField('Rating: ', `**${rscore}**`, true);
         
-        message.channel.send('Review edited:').then(msg => {
-            msg.delete({ timeout: 15000 });
-        })
-        .catch(console.error);
+        message.channel.send('Review edited:');
 
-        message.channel.send(exampleEmbed).then(msg => {
-            msg.delete({ timeout: 15000 });
-        })
-        .catch(console.error);
+        message.channel.send(exampleEmbed);
 
         message.delete({ timeout: 15000 });
 	},

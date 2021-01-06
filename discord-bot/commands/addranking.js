@@ -10,6 +10,10 @@ module.exports = {
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {
 
+        if (args[0].includes(',')) {
+            return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
+        }
+
         if (!args[1].includes('EP') && !args[1].includes('LP') && !args[1].includes('Remixes')) {
             return message.channel.send('You can only use this command to rank EPs/LPs/Remix Packages. Comps are not yet supported.\nPlease use `!addReview` for singles!');
         }
@@ -77,8 +81,6 @@ module.exports = {
         let songName;
         let fullSongName;
         let songRating;
-        let id_tag;
-        let position;
         let rmxArtist;
         let artistArray = args[0].split(' & ');
         let splitUpOverall;
@@ -116,12 +118,8 @@ module.exports = {
                 rankPosition++; //Start by upping the rank position, so we can go from 1-whatever
                 rankArray.push(`${rankPosition}. ${m.content}`);
                 songRating = m.content.split(' '),
-                    id_tag = '-',
-                    position = songRating.indexOf(id_tag);
-
-                if (~position) songRating.splice(position, 1);
-
                 songName = songRating.splice(0, songRating.length - 1).join(" ");
+
                 if (songName.includes('(feat') || songName.includes('(ft')) {
                     songName = songName.split(` (f`);
                     songName.splice(1);
@@ -148,6 +146,16 @@ module.exports = {
                 } else {
                     rmxArtist = false;
                     fullSongName = false;
+                }
+
+                if (songName.includes('(VIP)')) {
+                    songName = songName.split(' (');
+                    songName = `${songName[0]} ${songName[1].slice(0, -1)}`;
+
+                    if (rmxArtist != false) {
+                        fullSongName = fullSongName.split(' (');
+                        fullSongName = `${fullSongName[0]} ${fullSongName[1].slice(0, -1)}`;
+                    }
                 }
 
                 m.delete();
@@ -234,7 +242,23 @@ module.exports = {
     
                     } else if (db.reviewDB.get(artistArray[i], `${songName}.${message.author}`)) { // Check if you are already in the system
                         console.log('User is in the system!');
-                        // return message.channel.send(`You already have a review for ${artistArray[i]} - ${songName} in the system! Use \`!getreview\` to get your review, or \`!editreview\` to edit your pre-existing review.`);
+                        const songObj = db.reviewDB.get(artistArray[i], `${songName}`);
+                        delete songObj[`<@${message.author.id}>`];
+            
+                        const newuserObj = {
+                            [`<@${message.author.id}>`]: { 
+                                name: message.member.displayName,
+                                review: 'This was from a ranking, so there is no written review for this song.',
+                                rate: songRating[0],
+                                sentby: taggedUser === false ? false : taggedUser.id,
+                                rankPosition: rankPosition,
+                                EPOverall: false,
+                            },
+                        };
+
+                        Object.assign(songObj, newuserObj);
+                        db.reviewDB.set(artistArray[i], songObj, `${songName}`);
+                        db.reviewDB.set(artistArray[i], args[1], `${songName}.EP`); //Format song to include the EP
                     } else {
                         console.log('User not detected!');
                         const songObj = db.reviewDB.get(artistArray[i], `${songName}`);
@@ -254,6 +278,7 @@ module.exports = {
                         //Inject the newsongobject into the artistobject and then put it in the database
                         Object.assign(songObj, newuserObj);
                         db.reviewDB.set(artistArray[i], songObj, `${songName}`);
+                        db.reviewDB.set(artistArray[i], args[1], `${songName}.EP`); //Format song to include the EP
                     }
                 }
             } else { //The same but for remixes
@@ -363,7 +388,29 @@ module.exports = {
     
                     } else if (db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}.${message.author}`)) { // Check if you are already in the system
                         console.log('User is in the system!');
-                        // return message.channel.send(`You already have a review for ${artistArray[i]} - ${songName} in the system! Use \`!getreview\` to get your review, or \`!editreview\` to edit your pre-existing review.`);
+                        const remixsongObj = (artistArray[i] === rmxArtist) ? db.reviewDB.get(artistArray[i], `${songName}`) : db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}`);
+                        delete remixsongObj[`<@${message.author.id}>`];
+            
+                        const newuserObj = {
+                            [`<@${message.author.id}>`]: { 
+                                name: message.member.displayName,
+                                review: 'This was from a ranking, so there is no written review for this song.',
+                                rate: songRating[0],
+                                sentby: taggedUser === false ? false : taggedUser.id,
+                                rankPosition: rankPosition,
+                                EPOverall: false,
+                            },
+                        };
+
+                        Object.assign(remixsongObj, newuserObj);
+                        if (artistArray[i] === rmxArtist) {
+                            db.reviewDB.set(artistArray[i], remixsongObj, `${songName}`);
+                            db.reviewDB.set(artistArray[i], args[1], `${songName}.EP`); //Format song to include the EP
+                        } else {
+                            db.reviewDB.set(artistArray[i], remixsongObj, `${songName}.Remixers.${rmxArtist}`); 
+                            db.reviewDB.set(artistArray[i], args[1], `${songName}.Remixers.${rmxArtist}.EP`); //Format song to include the EP
+                        }
+
                     } else {
                         console.log('User not detected!');
                         const remixsongObj = (artistArray[i] === rmxArtist) ? db.reviewDB.get(artistArray[i], `${songName}`) : db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}`);
@@ -384,8 +431,10 @@ module.exports = {
                         Object.assign(remixsongObj, newuserObj);
                         if (artistArray[i] === rmxArtist) {
                             db.reviewDB.set(artistArray[i], remixsongObj, `${songName}`);
+                            db.reviewDB.set(artistArray[i], args[1], `${songName}.EP`); //Format song to include the EP
                         } else {
                             db.reviewDB.set(artistArray[i], remixsongObj, `${songName}.Remixers.${rmxArtist}`); 
+                            db.reviewDB.set(artistArray[i], args[1], `${songName}.Remixers.${rmxArtist}.EP`); //Format song to include the EP
                         }
                     }
                 }

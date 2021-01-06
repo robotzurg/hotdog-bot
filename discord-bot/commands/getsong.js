@@ -101,16 +101,19 @@ module.exports = {
                     exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png" }));
                 } else {
                     exampleEmbed.setThumbnail(db.reviewDB.get(artistName[0], `${argSongName}.Image`));
+                    if (songEP != false) {
+                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `${argSongName}.Image`));
+                    }
                 }
             } else {
                 if (db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`) === false) {
                     exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png" }));
                 } else {
                     exampleEmbed.setThumbnail(db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`));
+                    if (songEP != false) {
+                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`));
+                    }
                 }
-            }
-            if (songEP != false) {
-                exampleEmbed.setFooter(`from ${songEP}`);
             }
         
         message.channel.send(exampleEmbed);

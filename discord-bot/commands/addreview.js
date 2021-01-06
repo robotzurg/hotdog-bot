@@ -11,6 +11,10 @@ module.exports = {
     usage: '`<artist> | <song_name> | <rating> | <rate_desc> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>`',
 	execute(message, args) {
 
+        if (args[0].includes(',')) {
+            return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
+        }
+
         let rating = args[2];
         let review = args[3];
 

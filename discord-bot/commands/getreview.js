@@ -15,7 +15,7 @@ module.exports = {
             args[1] = `${args[1][0]} ${args[1][1].slice(0, -1)}`;
         }
 
-        let songName;
+        let songName = args[1];
         let rmxArtist;
 
         if (args[1].toLowerCase().includes('remix')) {
@@ -25,6 +25,19 @@ module.exports = {
             songName = args[1];
             rmxArtist = false;
         }
+
+        //Take out the ft./feat.
+        if (args[1].includes('(feat') || args[1].includes('(ft')) {
+            songName = songName.split(` (f`);
+            songName.splice(1);
+        } else if (args[1].includes('feat')) {
+            songName = songName.split('feat');
+            songName.splice(1);
+        } else if (args[1].includes('ft')) {
+            songName = songName.split('ft');
+            songName.splice(1);
+        }
+
 
         const artistName = args[0].split(' & ');
 
