@@ -72,10 +72,10 @@ module.exports = {
         if (db.reviewDB.has(artistArray[0])) {
             if (rmxArtist === false) {
                 thumbnailImage = db.reviewDB.get(artistArray[0], `${songName}.Image`);
-                if (thumbnailImage === undefined) thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+                if (thumbnailImage === undefined || thumbnailImage === false || thumbnailImage === null) thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
             } else {
                 thumbnailImage = db.reviewDB.get(artistArray[0], `${songName}.Remixers.${rmxArtist}.Image`);
-                if (thumbnailImage === undefined) thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+                if (thumbnailImage === undefined || thumbnailImage === false || thumbnailImage === null) thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
             }
         } else {
             thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
@@ -101,9 +101,9 @@ module.exports = {
         .setColor(`${message.member.displayHexColor}`)
         .setTitle(`${args[0]} - ${args[1]}`)
         .setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review` : `${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
-        exampleEmbed.setDescription(review)
-        .setThumbnail(thumbnailImage)
-        .addField('Rating: ', `**${rating}**`, true);
+        exampleEmbed.setDescription(review);
+        exampleEmbed.setThumbnail(thumbnailImage);
+        exampleEmbed.addField('Rating: ', `**${rating}**`, true);
         if (taggedUser != false) {
             exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
         }
@@ -112,7 +112,9 @@ module.exports = {
 
         //Add review to database
         //Quick thumbnail image check to assure we aren't putting in an avatar
-        if (thumbnailImage.includes('avatar') === true) {
+        if (thumbnailImage === undefined || thumbnailImage === null || thumbnailImage === false) { 
+            thumbnailImage = false;
+        } else if (thumbnailImage.includes('avatar') === true) {
             thumbnailImage = false;
         }
 
@@ -160,7 +162,7 @@ module.exports = {
 
                 } else if (db.reviewDB.get(artistArray[i], `${args[1]}.${message.author}`)) { // Check if you are already in the system
                     console.log('User is in the system!');
-                    return message.channel.send(`You already have a review for ${artistArray[i]} - ${args[1]} in the system! Use \`!getreview\` to get your review, or \`!editreview\` to edit your pre-existing review.`);
+                    return message.reply(`You already have a review for ${artistArray[i]} - ${args[1]} in the system! Use \`!getreview\` to get your review, or \`!editreview\` to edit your pre-existing review.`);
                 } else {
                     console.log('User not detected!');
                     const songObj = db.reviewDB.get(artistArray[i], `${args[1]}`);

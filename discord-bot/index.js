@@ -350,8 +350,7 @@ client.on('message', async message => {
         command.execute(message, args);
     } catch (error) {
         console.error(error);
-        console.log(message.content);
-        message.reply('there was an error trying to execute that command!');
+        message.reply(`There was an error trying to execute that command!\nMessage sent: \`${message.content}\`\n@Jeffdev#2840 look into this!`);
     }
 
 });
