@@ -142,9 +142,8 @@ client.on('message', async message => {
 
     // Friday Music Listening Stuff
     if (message.content.startsWith(`${prefix}fridaylist`)) {
-        if (message.member.hasPermission('ADMINISTRATOR')) {
-            const songList = [];
-
+        //if (message.member.hasPermission('ADMINISTRATOR')) {
+            const introList = [];
             const singleList = [];
             const epList = [];
             const lpList = [];
@@ -178,84 +177,132 @@ client.on('message', async message => {
                 }
             });
 
-            songList.unshift(compList.join('\n'));
-            songList.unshift('**Compilations**');
-            songList.unshift(' ');
-            songList.unshift(lpList.join('\n'));
-            songList.unshift('**LPs**');
-            songList.unshift(' ');
-            songList.unshift(epList.join('\n'));
-            songList.unshift('**EPs**');
-            songList.unshift(' ');
-            songList.unshift(singleList.join('\n'));
-            songList.unshift('**Singles**');
-            songList.unshift(' ');
-            songList.unshift('(:regional_indicator_f: means that it is on the Friday Playlist for this week.)');
-            songList.unshift('**Music Listening Playlist**');
-                
-            (message.channel.send(songList)).then((msg) => {
-                db.friID.set(`friID`, msg.id);
-                db.friList.set(`Week`, 4);
-                console.log(db.friID.get('friID'));
+            db.friID.set(`Week`, 5);
+
+            compList.join('\n');
+            compList.unshift('**Compilations**');
+            compList.unshift(' ');
+            compList.push('----------------------------------------------------------------------------------------------------------------');
+
+            lpList.join('\n');
+            lpList.unshift('**LPs**');
+            lpList.unshift(' ');
+            lpList.push('----------------------------------------------------------------------------------------------------------------');
+
+            epList.join('\n');
+            epList.unshift('**EPs**');
+            epList.unshift(' ');
+            epList.push('----------------------------------------------------------------------------------------------------------------');
+
+            singleList.join('\n');
+            singleList.unshift('**Singles**');
+            singleList.unshift(' ');
+            singleList.push('----------------------------------------------------------------------------------------------------------------');
+
+            introList.unshift('(:regional_indicator_f: means that it is on the Friday Playlist for this week.)');
+            introList.unshift(`**Music Listening Playlist (Week ${db.friID.get('Week')})**`);
+            introList.push('----------------------------------------------------------------------------------------------------------------');
+            
+            message.channel.send(introList);
+
+            (message.channel.send(singleList)).then((msg) => {
+                db.friID.set(`singleID`, msg.id);
             });
-       } else { return message.reply('You don\'t have the perms to use this command!'); }
+
+            (message.channel.send(epList)).then((msg) => {
+                db.friID.set(`epID`, msg.id);
+            });
+
+            (message.channel.send(lpList)).then((msg) => {
+                db.friID.set(`lpID`, msg.id);
+            });
+
+            (message.channel.send(compList)).then((msg) => {
+                db.friID.set(`compID`, msg.id);
+            });
+
+        message.delete();
+       //} else { return message.reply('You don\'t have the perms to use this command!'); }
     }
 
     module.exports.updateFridayListData = function() {
-        const friIDmsg = db.friID.get('friID');
+        const singleID = db.friID.get('singleID');
+        const epID = db.friID.get('epID');
+        const lpID = db.friID.get('lpID');
+        const compID = db.friID.get('compID');
         const channeltoSearch = message.guild.channels.cache.find(ch => ch.name === 'friday-playlist');
-        (channeltoSearch.messages.fetch(friIDmsg)).then((msg) => {
 
-            const singleList = [];
-            const epList = [];
-            const lpList = [];
-            const compList = [];
-            const songList = [];
+        const epList = [];
+        const lpList = [];
+        const compList = [];
+        const singleList = [];
 
-            db.friList.forEach((prop) => {
-                if (prop.friday === false) {
-                    const songString = `**--** ${prop.artist} - ${prop.song}`;
+        db.friList.forEach((prop) => {
+            if (prop.friday === false) {
+                let artistName = prop.artist.replace('*', '\\*');
+                let songName = prop.song.replace('*', '\\*');
+                const songString = `**--** ${artistName} - ${songName}`;
 
-                    if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
-                        singleList.push(songString);
-                    } else if (prop.song.includes('EP')) {
-                        epList.push(songString);
-                    } else if (prop.song.includes('LP')) {
-                        lpList.push(songString);
-                    } else if (prop.song.toLowerCase().includes('comp')) {
-                        compList.push(songString.substring(0, songString.length - 5));
-                    }
-                } else if (prop.friday === true) {
-                    const songString = `**--** :regional_indicator_f: **${prop.artist} - ${prop.song}**`;
-
-                    if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
-                        singleList.unshift(songString);
-                    } else if (prop.song.includes('EP')) {
-                        epList.unshift(songString);
-                    } else if (prop.song.includes('LP')) {
-                        lpList.unshift(songString);
-                    } else if (prop.song.toLowerCase().includes('comp')) {
-                        compList.push(songString.substring(0, songString.length - 6) + '**');
-                    }
+                if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
+                    singleList.push(songString);
+                } else if (prop.song.includes('EP')) {
+                    epList.push(songString);
+                } else if (prop.song.includes('LP')) {
+                    lpList.push(songString);
+                } else if (prop.song.toLowerCase().includes('comp')) {
+                    compList.push(songString.substring(0, songString.length - 5));
                 }
-            });
+            } else if (prop.friday === true) {
+                let artistName = prop.artist.replace('*', '\\*');
+                let songName = prop.song.replace('*', '\\*');
+                const songString = `**--** :regional_indicator_f: **${artistName} - ${songName}**`;
 
-            songList.unshift(compList.join('\n'));
-            songList.unshift('**Compilations**');
-            songList.unshift(' ');
-            songList.unshift(lpList.join('\n'));
-            songList.unshift('**LPs**');
-            songList.unshift(' ');
-            songList.unshift(epList.join('\n'));
-            songList.unshift('**EPs**');
-            songList.unshift(' ');
-            songList.unshift(singleList.join('\n'));
-            songList.unshift('**Singles**');
-            songList.unshift(' ');
-            songList.unshift('(:regional_indicator_f: means that it is on the Friday Playlist for this week.)');
-            songList.unshift('**Music Listening Playlist**');
+                if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
+                    singleList.unshift(songString);
+                } else if (prop.song.includes('EP')) {
+                    epList.unshift(songString);
+                } else if (prop.song.includes('LP')) {
+                    lpList.unshift(songString);
+                } else if (prop.song.toLowerCase().includes('comp')) {
+                    compList.push(songString.substring(0, songString.length - 6) + '**');
+                }
+            }
+        });
 
-            msg.edit(songList);
+        compList.join('\n');
+        compList.unshift('**Compilations**');
+        compList.unshift(' ');
+        compList.push('----------------------------------------------------------------------------------------------------------------');
+
+        lpList.join('\n');
+        lpList.unshift('**LPs**');
+        lpList.unshift(' ');
+        lpList.push('----------------------------------------------------------------------------------------------------------------');
+
+        epList.join('\n');
+        epList.unshift('**EPs**');
+        epList.unshift(' ');
+        epList.push('----------------------------------------------------------------------------------------------------------------');
+
+        singleList.join('\n');
+        singleList.unshift('**Singles**');
+        singleList.unshift(' ');
+        singleList.push('----------------------------------------------------------------------------------------------------------------');
+
+        (channeltoSearch.messages.fetch(singleID)).then((msg) => {
+            msg.edit(singleList);
+        });
+
+        (channeltoSearch.messages.fetch(epID)).then((msg) => {
+            msg.edit(epList);
+        });
+
+        (channeltoSearch.messages.fetch(lpID)).then((msg) => {
+            msg.edit(lpList);
+        });
+
+        (channeltoSearch.messages.fetch(compID)).then((msg) => {
+            msg.edit(compList);
         });
     };
     

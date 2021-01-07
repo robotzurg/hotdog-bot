@@ -33,6 +33,13 @@ module.exports = {
         let songName;
         let rmxArtist;
 
+        for (let i = 0; i < artistName.length; i++) {
+            if (!db.reviewDB.has(artistName[i])) {
+                return message.channel.send(`The artist \`${artistName[i]}\` is not in the database, therefore this song isn't either.`);
+            }
+        }
+        
+
         if (argSongName.toLowerCase().includes('remix')) {
             fullSongName = argSongName;
             songName = rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' (')[0];
