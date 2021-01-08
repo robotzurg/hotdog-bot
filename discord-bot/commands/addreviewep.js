@@ -11,6 +11,10 @@ module.exports = {
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {
 
+        if (message.author.id != 122568101995872256) {
+            return message.channel.send('This command has been temporarily disabled for maintenance.\nSee https://discord.com/channels/680864893552951306/680881424210984974/796998458778451989 for more information.');
+        }
+
         if (args[0].includes(',')) {
             return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
         }

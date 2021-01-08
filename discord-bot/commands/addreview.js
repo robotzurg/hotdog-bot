@@ -11,6 +11,9 @@ module.exports = {
     usage: '`<artist> | <song_name> | <rating> | <rate_desc> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>`',
 	execute(message, args) {
 
+        if (message.author.id != 122568101995872256) {
+            return message.channel.send('This command has been temporarily disabled for maintenance.\nSee https://discord.com/channels/680864893552951306/680881424210984974/796998458778451989 for more information.');
+        }
         if (args[0].includes(',')) {
             return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
         }
@@ -29,35 +32,42 @@ module.exports = {
 
         const command = message.client.commands.get('addreview');
         const is_mailbox = mailboxes.includes(message.channel.name);
-        
-        //Remix preparation
-        let songName;
+
+        let songName = args[1];
         let rmxArtist;
-        if (args[1].toLowerCase().includes('remix')) {
-            songName = args[1].substring(0, args[1].length - 7).split(' (')[0];
-            rmxArtist = args[1].substring(0, args[1].length - 7).split(' (')[1];
-        } else if (args[1].toLowerCase().includes('bootleg)')) {
-            songName = args[1].substring(0, args[1].length - 9).split(' (')[0];
-            rmxArtist = args[1].substring(0, args[1].length - 9).split(' (')[1];
-        } else if (args[1].toLowerCase().includes('flip)') || args[1].toLowerCase().includes('edit)')) {
-            songName = args[1].substring(0, args[1].length - 6).split(' (')[0];
-            rmxArtist = args[1].substring(0, args[1].length - 6).split(' (')[1];
-        } else {
-            songName = args[1];
-            rmxArtist = false;
-        }
 
         //Take out the ft./feat.
-        if (args[1].includes('(feat') || args[1].includes('(ft')) {
-            songName = songName.split(` (f`);
-            songName.splice(1);
+        if (args[1].includes('(feat')) {
+            songName = args[1].split(` (feat`);
+            rmxArtist = songName[1].split(' [')[1].slice(0, -6);
+            songName = songName[0];
+        } else if (args[1].includes('(ft')) {
+            songName = args[1].split(` (ft`);
+            rmxArtist = songName[1].split(' [')[1].slice(0, -6);
+            songName = songName[0];
         } else if (args[1].includes('feat')) {
-            songName = songName.split('feat');
-            songName.splice(1);
+            songName = args[1].split('feat');
+            rmxArtist = songName.split(' [');
         } else if (args[1].includes('ft')) {
-            songName = songName.split('ft');
-            songName.splice(1);
+            songName = args[1].split(` ft`);
+            rmxArtist = songName[1].split(' [')[1].slice(0, -6);
+            songName = songName[0];
         }
+
+        //Remix preparation
+        if (songName.toLowerCase().includes('remix')) {
+            songName = args[1].split(` [`)[0];
+            rmxArtist = args[1].split(' [')[1].slice(0, -6);
+        } else if (songName.toLowerCase().includes('bootleg]')) {
+            songName = args[1].substring(0, args[1].length - 9).split(' [')[0];
+            rmxArtist = args[1].substring(0, args[1].length - 9).split(' [')[1];
+        } else if (songName.toLowerCase().includes('flip]') || songName.toLowerCase().includes('edit]')) {
+            songName = args[1].substring(0, args[1].length - 6).split(' [')[0];
+            rmxArtist = args[1].substring(0, args[1].length - 6).split(' [')[1];
+        }
+
+        console.log(songName);
+        console.log(rmxArtist);
 
         //Adjust (VIP)
         if (songName.includes('(VIP)')) {
@@ -260,11 +270,10 @@ module.exports = {
                     console.log(artistArray[i]);
                     db.reviewDB.set(artistArray[i], artistObj);
 
-                } else if (db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}`) === undefined) { //If the song exists, check if the remix artist DB exists
+                } else if (db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}`) === undefined && artistArray[i] != rmxArtist) { //If the song exists, check if the remix artist DB exists
                     console.log('Remix Artist not detected!');
 
                     const remixObj = db.reviewDB.get(artistArray[i], `${songName}.Remixers`);
-                    console.log(remixObj);
                     //Create the object that will be injected into the Remixers object
                     const newremixObj = { 
                         [rmxArtist]: {
@@ -288,7 +297,6 @@ module.exports = {
                 } else {
                     console.log('User not detected!');
                     const remixsongObj = (artistArray[i] === rmxArtist) ? db.reviewDB.get(artistArray[i], `${songName}`) : db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}`);
-
                     //Create the object that will be injected into the Song object
                     const newuserObj = {
                         [`<@${message.author.id}>`]: { 
