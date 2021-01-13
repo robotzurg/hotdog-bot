@@ -11,10 +11,6 @@ module.exports = {
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {
 
-        if (message.author.id != 122568101995872256) {
-            return message.channel.send('This command has been temporarily disabled for maintenance.\nSee https://discord.com/channels/680864893552951306/680881424210984974/796998458778451989 for more information.');
-        }
-
         if (args[0].includes(',')) {
             return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
         }
@@ -79,7 +75,7 @@ module.exports = {
         const collector = message.channel.createMessageCollector(filter, { idle: 900000 });
         const rankArray = [];
         let splitUpArray;
-        let splitUpOverall;
+        // let splitUpOverall;
         let songName;
         let fullSongName;
         let songRating;
@@ -96,7 +92,12 @@ module.exports = {
                 return;
             } else if (m.content.includes(`Overall`)) {
 
-                if (overallString === -1) {
+                collector.stop();
+                m.delete();
+                msgtoEdit.reactions.removeAll();
+                return message.reply('Overall stuff is currently broken. Please let Jeff know if you need one.');
+
+                /*if (overallString === -1) {
                     splitUpOverall = m.content.split('\n');
                     splitUpOverall.shift();
                     overallString = splitUpOverall;
@@ -115,7 +116,7 @@ module.exports = {
                     }
                 }
                 collector.stop();
-                msgtoEdit.reactions.removeAll();
+                msgtoEdit.reactions.removeAll();*/
 
             } else {
                 splitUpArray = m.content.split('\n'); 
@@ -128,64 +129,50 @@ module.exports = {
                 rankArray.push(splitUpArray);
                 songRating = splitUpArray[0].split(' '),
                 songName = songRating.splice(0, songRating.length - 1).join(" ");
+                songRating = songRating[0].slice(0, -1);
+                songRating = songRating.slice(1);
 
                 if (songName.includes('(feat') || songName.includes('(ft')) {
                     songName = songName.split(` (f`);
-                    songName.splice(1);
+                    if (songName[1].toLowerCase().includes('remix')) { 
+                        songName = [songName[0], songName[1].split(`[`)];
+                        rmxArtist = songName[1][1].slice(0, -7); 
+                        fullSongName = `${songName[0]} [${rmxArtist} Remix]`;
+                    } else {
+                        rmxArtist = false;
+                        fullSongName = false;
+                    }
+                    
+                    songName = songName[0];
                 }
 
                 //Remix preparation
                 if (songName.toString().toLowerCase().includes('remix')) {
                     fullSongName = songName;
-                    songName = fullSongName.substring(0, fullSongName.length - 7).split(' (')[0];
-                    rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' (')[1];
+                    songName = fullSongName.substring(0, fullSongName.length - 7).split(' [')[0];
+                    rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' [')[1];
                     artistArray = args[0].split(' & ');
                 } else if (songName.toString().toLowerCase().includes('bootleg')) {
                     fullSongName = songName;
-                    songName = fullSongName.substring(0, fullSongName.length - 9).split(' (')[0];
-                    rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' (')[1];
+                    songName = fullSongName.substring(0, fullSongName.length - 9).split(' [')[0];
+                    rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' [')[1];
                     artistArray = args[0].split(' & ');
                 } else if (songName.toString().toLowerCase().includes('flip') || songName.toString().toLowerCase().includes('edit')) {
                     fullSongName = songName;
-                    songName = fullSongName.substring(0, fullSongName.length - 6).split(' (')[0];
-                    rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' (')[1];
+                    songName = fullSongName.substring(0, fullSongName.length - 6).split(' [')[0];
+                    rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' [')[1];
                     artistArray = args[0].split(' & ');
-                } else {
-                    rmxArtist = false;
-                    fullSongName = false;
                 }
 
-                if (songName.includes('(feat') || songName.includes('(ft')) {
-                    songName = songName.split(` (f`);
-                    songName.splice(1);
-                } else if (songName.includes('feat')) {
-                    songName = songName.split(' feat');
-                    songName.splice(1);
-
-                    if (rmxArtist != false) {
-                        fullSongName = fullSongName.split(' feat. ');
-                        fullSongName = `${fullSongName[0]} (${fullSongName[1].split(' (')[1]}`;
-                    }
-                } else if (songName.includes('ft')) {
-                    songName = songName.split(' ft');
-                    songName.splice(1);
-
-                    if (rmxArtist != false) {
-                        fullSongName = fullSongName.split(' ft. ');
-                        fullSongName = `${fullSongName[0]} (${fullSongName[1].split(' (')[1]}`;
-                    }
-                }
-
-                //Adjust (VIP)
                 if (songName.includes('(VIP)')) {
                     songName = songName.split(' (');
                     songName = `${songName[0]} ${songName[1].slice(0, -1)}`;
 
                     if (rmxArtist != false) {
-                        fullSongName = fullSongName.split(' (');
-                        fullSongName = `${fullSongName[0]} ${fullSongName[1].slice(0, -1)}`;
+                        fullSongName = fullSongName.split(' [');
+                        fullSongName = `${songName} [${fullSongName[1].slice(0, -1)}]`;
                     }
-                }
+                }  
 
                 m.delete();
             }
@@ -237,7 +224,7 @@ module.exports = {
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
                                 review: songReview,
-                                rate: songRating[0].slice(1, -1),
+                                rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
                             },
@@ -256,7 +243,7 @@ module.exports = {
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
                                 review: songReview,
-                                rate: songRating[0].slice(1, -1),
+                                rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
                             },
@@ -279,7 +266,7 @@ module.exports = {
                         [`<@${message.author.id}>`]: { 
                             name: message.member.displayName,
                             review: songReview,
-                            rate: songRating[0].slice(1, -1),
+                            rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
                             EPOverall: false,
                         },
@@ -298,7 +285,7 @@ module.exports = {
                         [`<@${message.author.id}>`]: { 
                             name: message.member.displayName,
                             review: songReview,
-                            rate: songRating[0].slice(1, -1),
+                            rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
                             EPOverall: false,
                         },
@@ -315,7 +302,7 @@ module.exports = {
             artistArray.push(rmxArtist);
             for (let i = 0; i < artistArray.length; i++) {
                 if (artistArray[i] === rmxArtist) {songName = fullSongName;} //Set the songname to the full name for the remix artist
-                
+            
                 // If the artist db doesn't exist
                 if (db.reviewDB.get(artistArray[i]) === undefined) {
                     console.log('Artist Not Detected!');
@@ -324,7 +311,7 @@ module.exports = {
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
                                 review: songReview,
-                                rate: songRating[0].slice(1, -1),
+                                rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
                             },
@@ -338,7 +325,7 @@ module.exports = {
                                     [`<@${message.author.id}>`]: { 
                                         name: message.member.displayName,
                                         review: songReview,
-                                        rate: songRating[0].slice(1, -1),
+                                        rate: songRating,
                                         sentby: taggedUser === false ? false : taggedUser.id,
                                         EPOverall: false,
                                     },
@@ -358,7 +345,7 @@ module.exports = {
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
                                 review: songReview,
-                                rate: songRating[0].slice(1, -1),
+                                rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
                             },
@@ -372,7 +359,7 @@ module.exports = {
                                     [`<@${message.author.id}>`]: { 
                                         name: message.member.displayName,
                                         review: songReview,
-                                        rate: songRating[0].slice(1, -1),
+                                        rate: songRating,
                                         sentby: taggedUser === false ? false : taggedUser.id,
                                         EPOverall: false,
                                     },
@@ -397,7 +384,7 @@ module.exports = {
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
                                 review: songReview,
-                                rate: songRating[0].slice(1, -1),
+                                rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
                             },
@@ -417,7 +404,7 @@ module.exports = {
                         [`<@${message.author.id}>`]: { 
                             name: message.member.displayName,
                             review: songReview,
-                            rate: songRating[0].slice(1, -1),
+                            rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
                             EPOverall: false,
                         },
@@ -443,7 +430,7 @@ module.exports = {
                         [`<@${message.author.id}>`]: { 
                             name: message.member.displayName,
                             review: songReview,
-                            rate: songRating[0].slice(1, -1),
+                            rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
                             EPOverall: false,
                         },

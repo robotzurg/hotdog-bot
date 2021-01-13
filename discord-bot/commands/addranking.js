@@ -9,9 +9,6 @@ module.exports = {
     args: true,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {
-        if (message.author.id != 122568101995872256) {
-            return message.channel.send('This command has been temporarily disabled for maintenance.\nSee https://discord.com/channels/680864893552951306/680881424210984974/796998458778451989 for more information.');
-        }
         
         if (args[0].includes(',')) {
             return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
@@ -82,11 +79,11 @@ module.exports = {
 
         let rankPosition = 0;
         let songName;
-        let fullSongName;
+        let fullSongName = false;
         let songRating;
-        let rmxArtist;
+        let rmxArtist = false;
         let artistArray = args[0].split(' & ');
-        let splitUpOverall;
+        // let splitUpOverall;
         let overallString = -1;
         
         collector.on('collect', m => {
@@ -96,7 +93,12 @@ module.exports = {
                 msgtoEdit.reactions.removeAll();
                 return;
             } else if (m.content.includes(`Overall`)) {
-                if (overallString === -1) {
+                collector.stop();
+                m.delete();
+                msgtoEdit.reactions.removeAll();
+                return message.reply('Overall stuff is currently broken. Please let Jeff know if you need one.');
+
+                /*if (overallString === -1) {
                     splitUpOverall = m.content.split('\n');
                     splitUpOverall.shift();
                     overallString = splitUpOverall;
@@ -116,39 +118,44 @@ module.exports = {
                 }
 
                 collector.stop();
-                msgtoEdit.reactions.removeAll();
+                msgtoEdit.reactions.removeAll();*/
             } else {
                 rankPosition++; //Start by upping the rank position, so we can go from 1-whatever
                 rankArray.push(`${rankPosition}. ${m.content}`);
                 songRating = m.content.split(' '),
                 songName = songRating.splice(0, songRating.length - 1).join(" ");
+                songRating = songRating[0].slice(1, -1);
 
                 if (songName.includes('(feat') || songName.includes('(ft')) {
                     songName = songName.split(` (f`);
-                    songName.splice(1);
+                    if (songName[1].toLowerCase().includes('remix')) { 
+                        songName = [songName[0], songName[1].split(`[`)];
+                        rmxArtist = songName[1][1].slice(0, -7); 
+                        fullSongName = `${songName[0]} [${rmxArtist} Remix]`;
+                    } else {
+                        rmxArtist = false;
+                        fullSongName = false;
+                    }
+                    
+                    songName = songName[0];
                 }
-
-                songRating[0] = songRating[0].slice(1, -1);
 
                 //Remix preparation
                 if (songName.toString().toLowerCase().includes('remix')) {
                     fullSongName = songName;
-                    songName = fullSongName.substring(0, fullSongName.length - 7).split(' (')[0];
-                    rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' (')[1];
+                    songName = fullSongName.substring(0, fullSongName.length - 7).split(' [')[0];
+                    rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' [')[1];
                     artistArray = args[0].split(' & ');
                 } else if (songName.toString().toLowerCase().includes('bootleg')) {
                     fullSongName = songName;
-                    songName = fullSongName.substring(0, fullSongName.length - 9).split(' (')[0];
-                    rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' (')[1];
+                    songName = fullSongName.substring(0, fullSongName.length - 9).split(' [')[0];
+                    rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' [')[1];
                     artistArray = args[0].split(' & ');
                 } else if (songName.toString().toLowerCase().includes('flip') || songName.toString().toLowerCase().includes('edit')) {
                     fullSongName = songName;
-                    songName = fullSongName.substring(0, fullSongName.length - 6).split(' (')[0];
-                    rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' (')[1];
+                    songName = fullSongName.substring(0, fullSongName.length - 6).split(' [')[0];
+                    rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' [')[1];
                     artistArray = args[0].split(' & ');
-                } else {
-                    rmxArtist = false;
-                    fullSongName = false;
                 }
 
                 if (songName.includes('(VIP)')) {
@@ -156,8 +163,8 @@ module.exports = {
                     songName = `${songName[0]} ${songName[1].slice(0, -1)}`;
 
                     if (rmxArtist != false) {
-                        fullSongName = fullSongName.split(' (');
-                        fullSongName = `${fullSongName[0]} ${fullSongName[1].slice(0, -1)}`;
+                        fullSongName = fullSongName.split(' [');
+                        fullSongName = `${songName} [${fullSongName[1].slice(0, -1)}]`;
                     }
                 }
 

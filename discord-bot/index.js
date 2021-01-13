@@ -177,7 +177,7 @@ client.on('message', async message => {
                 }
             });
 
-            db.friID.set(`Week`, 5);
+            db.friID.set(`Week`, 6);
 
             compList.join('\n');
             compList.unshift('**Compilations**');
@@ -350,7 +350,7 @@ client.on('message', async message => {
         command.execute(message, args);
     } catch (error) {
         console.error(error);
-        message.reply(`There was an error trying to execute that command!\nMessage sent: \`${message.content}\`\n@Jeffdev#2840 look into this!`);
+        message.reply(`There was an error trying to execute that command!\nMessage sent: \`${message.content}\`\nPing Jeff and tell him to look into it!`);
     }
 
 });
