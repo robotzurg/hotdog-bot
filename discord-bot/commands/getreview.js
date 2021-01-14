@@ -19,8 +19,8 @@ module.exports = {
         let rmxArtist;
 
         if (args[1].toLowerCase().includes('remix')) {
-            songName = args[1].substring(0, args[1].length - 7).split(' (')[0];
-            rmxArtist = args[1].substring(0, args[1].length - 7).split(' (')[1];
+            songName = args[1].substring(0, args[1].length - 7).split(' [')[0];
+            rmxArtist = args[1].substring(0, args[1].length - 7).split(' [')[1];
         } else {
             songName = args[1];
             rmxArtist = false;
@@ -42,6 +42,7 @@ module.exports = {
         const artistName = args[0].split(' & ');
 
         let taggedUser;
+        let taggedMember;
         let rname;
         let rreview;
         let rscore;
@@ -51,8 +52,10 @@ module.exports = {
         let epfrom = db.reviewDB.get(artistName[0], `${songName}.EP`);
         if (args.length > 2) {
             taggedUser = message.mentions.users.first();
+            taggedMember = message.mentions.members.first();
         } else {
             taggedUser = message.author;
+            taggedMember = message.member;
         }
         if (rmxArtist === false) {
             rname = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.name`);
@@ -88,7 +91,7 @@ module.exports = {
 
 
             const exampleEmbed = new Discord.MessageEmbed()
-                .setColor(`${message.member.displayHexColor}`)
+                .setColor(`${taggedMember.displayHexColor}`)
                 .setTitle(`${args[0]} - ${args[1]}`)
                 .setAuthor(rsentby != false ? `${rname}'s mailbox review` : `${rname}'s review`, `${taggedUser.avatarURL({ format: "png" })}`);
                 exampleEmbed.setDescription(rreview)

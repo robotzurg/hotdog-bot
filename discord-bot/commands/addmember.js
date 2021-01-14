@@ -1,4 +1,5 @@
 const db = require("../db.js");
+const { genreList } = require('../arrays.json');
 
 module.exports = {
 	name: 'addmember',
@@ -7,7 +8,7 @@ module.exports = {
     usage: '<user>',
 	execute(message, args) {
         if (message.member.hasPermission('ADMINISTRATOR')) {
-            const genrePick = message.client.genreList[Math.floor(Math.random() * message.client.genreList.length)];
+            const genrePick = genreList[Math.floor(Math.random() * genreList.length)];
             const userObj = {
                 genre: genrePick,
                 status: 'alive',

@@ -5,7 +5,7 @@ module.exports = {
 	name: 'reset',
     description: 'Reset the game to base level with all current players.',
 	execute(message) {
-		//if (message.member.hasPermission('ADMINISTRATOR')) {
+		if (message.member.hasPermission('ADMINISTRATOR')) {
 		
 			db.genreRoulette.forEach((prop, key) => {
 				const genrePick = genreList[Math.floor(Math.random() * message.client.genreList.length)];
@@ -20,6 +20,6 @@ module.exports = {
 
 			message.channel.send('Game reset.');
 
-		//} else { return message.reply('You don\'t have the perms to use this command!'); }
+		} else { return message.reply('You don\'t have the perms to use this command!'); }
 	},
 };

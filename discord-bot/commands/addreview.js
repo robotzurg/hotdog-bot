@@ -15,11 +15,11 @@ module.exports = {
             return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
         }
 
-        let rating = args[2];
+        let rating = args[2].replace(/\s+/g, '');
         let review = args[3];
 
         if (args[2].length > 10) {
-            rating = args[3];
+            rating = args[3].replace(/\s+/g, '');
             review = args[2];
         }
 
@@ -31,7 +31,8 @@ module.exports = {
         const is_mailbox = mailboxes.includes(message.channel.name);
 
         let songName = args[1];
-        let rmxArtist;
+        let rmxArtist = false;
+        let remixsongName;
 
         //Take out the ft./feat.
         if (args[1].includes('(feat')) {
@@ -48,12 +49,11 @@ module.exports = {
 
         }
 
-        let remixsongName = `${songName} [${rmxArtist}Remix]`;
-
         //Remix preparation
         if (songName.toLowerCase().includes('remix')) {
+            remixsongName = songName;
             songName = args[1].split(` [`)[0];
-            rmxArtist = args[1].split(' [')[1].slice(0, -6);
+            rmxArtist = args[1].split(' [')[1].slice(0, -7);
         } else if (songName.toLowerCase().includes('bootleg]')) {
             songName = args[1].substring(0, args[1].length - 9).split(' [')[0];
             rmxArtist = args[1].substring(0, args[1].length - 9).split(' [')[1];
@@ -61,8 +61,6 @@ module.exports = {
             songName = args[1].substring(0, args[1].length - 6).split(' [')[0];
             rmxArtist = args[1].substring(0, args[1].length - 6).split(' [')[1];
         }
-
-        rmxArtist = rmxArtist.slice(0, -1);
 
         console.log(songName);
         console.log(rmxArtist);
@@ -102,6 +100,10 @@ module.exports = {
                 thumbnailImage = args[4];
                 taggedUser = message.mentions.users.first(); 
                 taggedMember = message.mentions.members.first();
+            }
+
+            if (thumbnailImage.includes('|')) {
+                return message.channel.send('Please make sure you don\'t have any **|** characters in your URL!');
             }
         }
 
