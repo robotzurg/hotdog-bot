@@ -4,7 +4,7 @@ const { mailboxes } = require('../arrays.json');
 
 module.exports = {
     name: 'addranking',
-    aliases: ['addranking', 'rank', `rankEP`, `addRankingEP`],
+    aliases: ['addranking', 'rank', `rankEP`, `addrankingep`],
     description: 'Create a ranking review of an EP/LP/Compilation/Remix Package or really anything.',
     args: true,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
@@ -83,43 +83,54 @@ module.exports = {
         let songRating;
         let rmxArtist = false;
         let artistArray = args[0].split(' & ');
-        // let splitUpOverall;
+        let splitUpOverall;
         let overallString = -1;
         
         collector.on('collect', m => {
+
             if (m.content.includes('!end')) {
                 collector.stop();
                 m.delete();
                 msgtoEdit.reactions.removeAll();
                 return;
             } else if (m.content.includes(`Overall`)) {
-                collector.stop();
-                m.delete();
-                msgtoEdit.reactions.removeAll();
-                return message.reply('Overall stuff is currently broken. Please let Jeff know if you need one.');
 
-                /*if (overallString === -1) {
+                if (overallString === -1) {
                     splitUpOverall = m.content.split('\n');
                     splitUpOverall.shift();
                     overallString = splitUpOverall;
                     m.delete();
                 }
-
+                
                 let songArray;
                 for (let ii = 0; ii < artistArray.length; ii++) {
                     songArray = Object.keys(db.reviewDB.get(artistArray[ii]));
                     for (let i = 0; i < songArray.length; i++) {
-                        const songEP = db.reviewDB.get(artistArray[ii], `${songArray[i]}.EP`);
+                        if (!songArray[i].includes('Remix')) {
+                            let songRemixes = db.reviewDB.get(artistArray[ii], `${songArray[i]}.Remixers`);
+                            let songEP;
 
-                        if (songEP === args[1]) {
-                            db.reviewDB.set(artistArray[ii], overallString[0], `${songArray[i]}.<@${message.author.id}>.EPOverall`);
+                            if (Object.keys(songRemixes).length === 0) {
+                                songEP = db.reviewDB.get(artistArray[ii], `${songArray[i]}.EP`);
+                                if (songEP === args[1]) {
+                                    db.reviewDB.set(artistArray[ii], overallString[0], `${songArray[i]}.<@${message.author.id}>.EPOverall`);
+                                }
+                            } else {
+                                for (let rmxNum = 0; rmxNum < Object.keys(songRemixes).length; rmxNum++) {
+                                    songEP = db.reviewDB.get(artistArray[ii], `${songArray[i]}.Remixers.${Object.keys(songRemixes)[rmxNum]}.EP`);
+                                    if (songEP === args[1]) {
+                                        db.reviewDB.set(artistArray[ii], overallString[0], `${songArray[i]}.Remixers.${Object.keys(songRemixes)[rmxNum]}.<@${message.author.id}>.EPOverall`);
+                                    }  
+                                }
+                            }
                         }
                     }
                 }
-
                 collector.stop();
-                msgtoEdit.reactions.removeAll();*/
+                msgtoEdit.reactions.removeAll();
+
             } else {
+                artistArray = args[0].split(' & ');
                 rankPosition++; //Start by upping the rank position, so we can go from 1-whatever
                 rankArray.push(`${rankPosition}. ${m.content}`);
                 songRating = m.content.split(' '),
@@ -156,6 +167,25 @@ module.exports = {
                     songName = fullSongName.substring(0, fullSongName.length - 6).split(' [')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' [')[1];
                     artistArray = args[0].split(' & ');
+                }
+
+                if (songName.includes('(with')) {
+                    songName = songName.split(' (with ');
+                    let epSingleCollabArtists = songName[1].substring(0, songName[1].length - 1);
+                    if (songName[1].includes('&')) {
+                        epSingleCollabArtists = songName[1].split(' & ');
+                        epSingleCollabArtists[epSingleCollabArtists.length - 1] = epSingleCollabArtists[epSingleCollabArtists.length - 1].substring(0, epSingleCollabArtists[epSingleCollabArtists.length - 1].length - 1);
+                    }
+
+                    if (Array.isArray(epSingleCollabArtists)) {
+                        for (let i = 0; i < epSingleCollabArtists.length; i++) {
+                            artistArray.push(epSingleCollabArtists[i]);
+                        }   
+                    } else {
+                        artistArray.push(epSingleCollabArtists);
+                    }
+
+                    songName = songName[0];
                 }
 
                 if (songName.includes('(VIP)')) {
@@ -199,11 +229,15 @@ module.exports = {
                 exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
             }
 
+            if (overallString != -1) {
+                return msgtoEdit.edit(exampleEmbed); 
+            }
+
             //Add data to database
             // artistArray[i]: Name of Artist
             // args[1]: Name of EP
             // songName: Song Name
-            // songRating[0]: Song Rating
+            // songRating: Song Rating
             // rmxArtist: Remix Artist
 
             // If the artist db doesn't exist
@@ -215,7 +249,7 @@ module.exports = {
                                 [`<@${message.author.id}>`]: { 
                                     name: message.member.displayName,
                                     review: 'This was from a ranking, so there is no written review for this song.',
-                                    rate: songRating[0],
+                                    rate: songRating,
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
                                     EPOverall: false,
@@ -225,7 +259,7 @@ module.exports = {
                                 Image: thumbnailImage,
                             },
                         });
-                    } else if(db.reviewDB.get(artistArray[i], `${songName}`) === undefined) { //If the artist db exists, check if the song db doesn't exist
+                    } else if(db.reviewDB.get(artistArray[i], `["${songName}"]`) === undefined) { //If the artist db exists, check if the song db doesn't exist
                     console.log('Song Not Detected!');
                     const artistObj = db.reviewDB.get(artistArray[i]);
     
@@ -235,7 +269,7 @@ module.exports = {
                                 [`<@${message.author.id}>`]: { 
                                     name: message.member.displayName,
                                     review: 'This was from a ranking, so there is no written review for this song.',
-                                    rate: songRating[0],
+                                    rate: songRating,
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
                                     EPOverall: false,
@@ -250,36 +284,35 @@ module.exports = {
                         Object.assign(artistObj, newsongObj);
                         db.reviewDB.set(artistArray[i], artistObj);
     
-                    } else if (db.reviewDB.get(artistArray[i], `${songName}.${message.author}`)) { // Check if you are already in the system
+                    } else if (db.reviewDB.get(artistArray[i], `["${songName}"].${message.author}`)) { // Check if you are already in the system
                         console.log('User is in the system!');
-                        const songObj = db.reviewDB.get(artistArray[i], `${songName}`);
+                        const songObj = db.reviewDB.get(artistArray[i], `["${songName}"]`);
                         delete songObj[`<@${message.author.id}>`];
             
                         const newuserObj = {
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
                                 review: 'This was from a ranking, so there is no written review for this song.',
-                                rate: songRating[0],
+                                rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: rankPosition,
-                                EPOverall: false,
                             },
                         };
 
                         Object.assign(songObj, newuserObj);
-                        db.reviewDB.set(artistArray[i], songObj, `${songName}`);
-                        db.reviewDB.set(artistArray[i], args[1], `${songName}.EP`); //Format song to include the EP
-                        db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Image`);
+                        db.reviewDB.set(artistArray[i], songObj, `["${songName}"]`);
+                        db.reviewDB.set(artistArray[i], args[1], `["${songName}"].EP`); //Format song to include the EP
+                        db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
                     } else {
                         console.log('User not detected!');
-                        const songObj = db.reviewDB.get(artistArray[i], `${songName}`);
+                        const songObj = db.reviewDB.get(artistArray[i], `["${songName}"]`);
     
                         //Create the object that will be injected into the Song object
                         const newuserObj = {
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
                                 review: 'This was from a ranking, so there is no written review for this song.',
-                                rate: songRating[0],
+                                rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: rankPosition,
                                 EPOverall: false,
@@ -288,9 +321,9 @@ module.exports = {
     
                         //Inject the newsongobject into the artistobject and then put it in the database
                         Object.assign(songObj, newuserObj);
-                        db.reviewDB.set(artistArray[i], songObj, `${songName}`);
-                        db.reviewDB.set(artistArray[i], args[1], `${songName}.EP`); //Format song to include the EP
-                        db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Image`);
+                        db.reviewDB.set(artistArray[i], songObj, `["${songName}"]`);
+                        db.reviewDB.set(artistArray[i], args[1], `["${songName}"].EP`); //Format song to include the EP
+                        db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
                     }
                 }
             } else { //The same but for remixes
@@ -306,7 +339,7 @@ module.exports = {
                                 [`<@${message.author.id}>`]: { 
                                     name: message.member.displayName,
                                     review: 'This was from a ranking, so there is no written review for this song.',
-                                    rate: songRating[0],
+                                    rate: songRating,
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
                                     EPOverall: false,
@@ -321,7 +354,7 @@ module.exports = {
                                         [`<@${message.author.id}>`]: { 
                                             name: message.member.displayName,
                                             review: 'This was from a ranking, so there is no written review for this song.',
-                                            rate: songRating[0],
+                                            rate: songRating,
                                             sentby: taggedUser === false ? false : taggedUser.id,
                                             rankPosition: rankPosition,
                                             EPOverall: false,
@@ -333,7 +366,7 @@ module.exports = {
                                 Image: thumbnailImage,
                             },
                         });
-                    } else if(db.reviewDB.get(artistArray[i], `${songName}`) === undefined) { //If the artist db exists, check if the song db doesn't exist
+                    } else if(db.reviewDB.get(artistArray[i], `["${songName}"]`) === undefined) { //If the artist db exists, check if the song db doesn't exist
                     console.log('Song Not Detected!');
                     const artistObj = db.reviewDB.get(artistArray[i]);
     
@@ -343,7 +376,7 @@ module.exports = {
                                 [`<@${message.author.id}>`]: { 
                                     name: message.member.displayName,
                                     review: 'This was from a ranking, so there is no written review for this song.',
-                                    rate: songRating[0],
+                                    rate: songRating,
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
                                     EPOverall: false,
@@ -358,7 +391,7 @@ module.exports = {
                                         [`<@${message.author.id}>`]: { 
                                             name: message.member.displayName,
                                             review: 'This was from a ranking, so there is no written review for this song.',
-                                            rate: songRating[0],
+                                            rate: songRating,
                                             sentby: taggedUser === false ? false : taggedUser.id,
                                             rankPosition: rankPosition,
                                             EPOverall: false,
@@ -375,17 +408,17 @@ module.exports = {
                         Object.assign(artistObj, newsongObj);
                         db.reviewDB.set(artistArray[i], artistObj);
     
-                    } else if (db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}`) === undefined) { //If the song exists, check if the remix artist DB exists
+                    } else if (db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`) === undefined) { //If the song exists, check if the remix artist DB exists
                         console.log('Remix Artist not detected!');
     
-                        const remixObj = db.reviewDB.get(artistArray[i], `${songName}.Remixers`);
+                        const remixObj = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers`);
                         //Create the object that will be injected into the Remixers object
                         const newremixObj = { 
                             [rmxArtist]: {
                                 [`<@${message.author.id}>`]: { 
                                     name: message.member.displayName,
                                     review: 'This was from a ranking, so there is no written review for this song.',
-                                    rate: songRating[0],
+                                    rate: songRating,
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
                                     EPOverall: false,
@@ -396,45 +429,44 @@ module.exports = {
                         };
     
                         Object.assign(remixObj, newremixObj);
-                        db.reviewDB.set(artistArray[i], remixObj, `${songName}.Remixers`);
+                        db.reviewDB.set(artistArray[i], remixObj, `["${songName}"].Remixers`);
     
-                    } else if (db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}.${message.author}`)) { // Check if you are already in the system
+                    } else if (db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"].${message.author}`)) { // Check if you are already in the system
                         console.log('User is in the system!');
-                        const remixsongObj = (artistArray[i] === rmxArtist) ? db.reviewDB.get(artistArray[i], `${songName}`) : db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}`);
+                        const remixsongObj = (artistArray[i] === rmxArtist) ? db.reviewDB.get(artistArray[i], `["${songName}"]`) : db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`);
                         delete remixsongObj[`<@${message.author.id}>`];
             
                         const newuserObj = {
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
                                 review: 'This was from a ranking, so there is no written review for this song.',
-                                rate: songRating[0],
+                                rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: rankPosition,
-                                EPOverall: false,
                             },
                         };
 
                         Object.assign(remixsongObj, newuserObj);
                         if (artistArray[i] === rmxArtist) {
-                            db.reviewDB.set(artistArray[i], remixsongObj, `${songName}`);
-                            db.reviewDB.set(artistArray[i], args[1], `${songName}.EP`); //Format song to include the EP
-                            db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Image`);
+                            db.reviewDB.set(artistArray[i], remixsongObj, `["${songName}"]`);
+                            db.reviewDB.set(artistArray[i], args[1], `["${songName}"].EP`); //Format song to include the EP
+                            db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
                         } else {
-                            db.reviewDB.set(artistArray[i], remixsongObj, `${songName}.Remixers.${rmxArtist}`); 
-                            db.reviewDB.set(artistArray[i], args[1], `${songName}.Remixers.${rmxArtist}.EP`); //Format song to include the EP
-                            db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Remixers.${rmxArtist}.Image`);
+                            db.reviewDB.set(artistArray[i], remixsongObj, `["${songName}"].Remixers.["${rmxArtist}"]`); 
+                            db.reviewDB.set(artistArray[i], args[1], `["${songName}"].Remixers.["${rmxArtist}"].EP`); //Format song to include the EP
+                            db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Remixers.["${rmxArtist}"].Image`);
                         }
 
                     } else {
                         console.log('User not detected!');
-                        const remixsongObj = (artistArray[i] === rmxArtist) ? db.reviewDB.get(artistArray[i], `${songName}`) : db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}`);
+                        const remixsongObj = (artistArray[i] === rmxArtist) ? db.reviewDB.get(artistArray[i], `["${songName}"]`) : db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`);
     
                         //Create the object that will be injected into the Song object
                         const newuserObj = {
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
                                 review: 'This was from a ranking, so there is no written review for this song.',
-                                rate: songRating[0],
+                                rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: rankPosition,
                                 EPOverall: false,
@@ -444,13 +476,13 @@ module.exports = {
                         //Inject the newsongobject into the songobject and then put it in the database
                         Object.assign(remixsongObj, newuserObj);
                         if (artistArray[i] === rmxArtist) {
-                            db.reviewDB.set(artistArray[i], remixsongObj, `${songName}`);
-                            db.reviewDB.set(artistArray[i], args[1], `${songName}.EP`); //Format song to include the EP
-                            db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Image`);
+                            db.reviewDB.set(artistArray[i], remixsongObj, `["${songName}"]`);
+                            db.reviewDB.set(artistArray[i], args[1], `["${songName}"].EP`); //Format song to include the EP
+                            db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
                         } else {
-                            db.reviewDB.set(artistArray[i], remixsongObj, `${songName}.Remixers.${rmxArtist}`); 
-                            db.reviewDB.set(artistArray[i], args[1], `${songName}.Remixers.${rmxArtist}.EP`); //Format song to include the EP
-                            db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Remixers.${rmxArtist}.Image`);
+                            db.reviewDB.set(artistArray[i], remixsongObj, `["${songName}"].Remixers.["${rmxArtist}"]`); 
+                            db.reviewDB.set(artistArray[i], args[1], `["${songName}"].Remixers.["${rmxArtist}"].EP`); //Format song to include the EP
+                            db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Remixers.["${rmxArtist}"].Image`);
                         }
                     }
                 }

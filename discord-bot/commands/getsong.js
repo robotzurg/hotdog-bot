@@ -77,12 +77,12 @@ module.exports = {
         }
 
         if (rmxArtist === false) {
-            songObj = db.reviewDB.get(artistName[0], `${songName}`);
-            songEP = db.reviewDB.get(artistName[0], `${songName}.EP`);
+            songObj = db.reviewDB.get(artistName[0], `["${songName}"]`);
+            songEP = db.reviewDB.get(artistName[0], `["${songName}"].EP`);
             if (songEP === undefined) songEP = false;
         } else {
-            songObj = db.reviewDB.get(rmxArtist, `${fullSongName}`);
-            songEP = db.reviewDB.get(rmxArtist, `${fullSongName}.EP`);
+            songObj = db.reviewDB.get(rmxArtist, `["${fullSongName}"]`);
+            songEP = db.reviewDB.get(rmxArtist, `["${fullSongName}"].EP`);
             if (songEP === undefined) songEP = false;
         }
         
@@ -103,9 +103,9 @@ module.exports = {
                 if (userArray[i] != 'EP') {
                     let rating;
                     if (rmxArtist === false) {
-                        rating = db.reviewDB.get(artistName[0], `${songName}.${userArray[i]}.rate`);
+                        rating = db.reviewDB.get(artistName[0], `["${songName}"].${userArray[i]}.rate`);
                     } else {
-                        rating = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${userArray[i]}.rate`);
+                        rating = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${userArray[i]}.rate`);
                     }
                     rankNumArray.push(parseFloat(rating.slice(0, -3)));
                     userArray[i] = `${userArray[i]} \`${rating}\``;
@@ -125,21 +125,21 @@ module.exports = {
             }
 
             if (rmxArtist === false) {
-                if ((db.reviewDB.get(artistName[0], `${songName}.Image`)) === false) {
+                if ((db.reviewDB.get(artistName[0], `["${songName}"].Image`)) === false) {
                     exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png" }));
                 } else {
-                    exampleEmbed.setThumbnail(db.reviewDB.get(artistName[0], `${songName}.Image`));
+                    exampleEmbed.setThumbnail(db.reviewDB.get(artistName[0], `["${songName}"].Image`));
                     if (songEP != false) {
-                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `${songName}.Image`));
+                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `["${songName}"].Image`));
                     }
                 }
             } else {
-                if (db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`) === false) {
+                if (db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`) === false) {
                     exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png" }));
                 } else {
-                    exampleEmbed.setThumbnail(db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`));
+                    exampleEmbed.setThumbnail(db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`));
                     if (songEP != false) {
-                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`));
+                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`));
                     }
                 }
             }

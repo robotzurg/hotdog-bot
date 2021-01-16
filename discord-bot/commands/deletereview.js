@@ -35,37 +35,37 @@ module.exports = {
         for (let i = 0; i < artistArray.length; i++) {
 
             if (rmxArtist === false) {
-                rname = db.reviewDB.get(artistArray[i], `${songName}.<@${userToDelete.id}>.name`);
+                rname = db.reviewDB.get(artistArray[i], `["${songName}"].<@${userToDelete.id}>.name`);
             } else if (artistArray[i] != rmxArtist) {
-                rname = db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}.<@${userToDelete.id}>.name`);
+                rname = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"].<@${userToDelete.id}>.name`);
             } else if (artistArray[i] === rmxArtist) {
-                rname = db.reviewDB.get(rmxArtist, `${fullSongName}.<@${userToDelete.id}>.name`);
+                rname = db.reviewDB.get(rmxArtist, `["${fullSongName}"].<@${userToDelete.id}>.name`);
             }
 
             if (rname === undefined) return message.channel.send('No review found. *Note that deleting EP reviews is currently not supported.*');
 
             //Non Single Stuff (if the artistArray[i] isn't the remix artist and there is no remix artist)
             if (artistArray[i] != rmxArtist && rmxArtist === false) {
-                songObj = db.reviewDB.get(artistArray[i], `${songName}`);
+                songObj = db.reviewDB.get(artistArray[i], `["${songName}"]`);
                 delete songObj[`<@${userToDelete.id}>`];
 
-                db.reviewDB.set(artistArray[i], songObj, `${songName}`);
+                db.reviewDB.set(artistArray[i], songObj, `["${songName}"]`);
         
             // If there is a remix but we aren't on the remix artist
             } else if (artistArray[i] != rmxArtist && rmxArtist != false) {
-                songObj = db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}`);
+                songObj = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`);
                 delete songObj[`<@${userToDelete.id}>`];
                 console.log(songObj);
         
-                db.reviewDB.set(artistArray[i], songObj, `${songName}.Remixers.${rmxArtist}`);
+                db.reviewDB.set(artistArray[i], songObj, `["${songName}"].Remixers.["${rmxArtist}"]`);
         
             //Lastly, if we are on the remix artist
             } else if (artistArray[i] === rmxArtist) {
-                songObj = db.reviewDB.get(artistArray[i], `${fullSongName}`);
+                songObj = db.reviewDB.get(artistArray[i], `["${fullSongName}"]`);
                 delete songObj[`<@${userToDelete.id}>`];
                 console.log(songObj);
         
-                db.reviewDB.set(artistArray[i], songObj, `${fullSongName}`);
+                db.reviewDB.set(artistArray[i], songObj, `["${fullSongName}"]`);
 
             }
         }

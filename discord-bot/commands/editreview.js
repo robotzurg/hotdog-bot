@@ -44,27 +44,27 @@ module.exports = {
         let rscore;
         for (let i = 0; i < artistArray.length; i++) {
             if (rmxArtist === false || artistArray[i] === rmxArtist) {
-                rname = db.reviewDB.get(artistArray[i], `${songName}.${message.author}.name`);
+                rname = db.reviewDB.get(artistArray[i], `["${songName}"].${message.author}.name`);
                 if (rname === undefined) return message.channel.send('No review found.');
 
-                db.reviewDB.set(artistArray[i], args[3], `${songName}.${message.author}.review`);
-                rreview = db.reviewDB.get(artistArray[i], `${songName}.${message.author}.review`);
+                db.reviewDB.set(artistArray[i], args[3], `["${songName}"].${message.author}.review`);
+                rreview = db.reviewDB.get(artistArray[i], `["${songName}"].${message.author}.review`);
 
-                db.reviewDB.set(artistArray[i], args[2], `${songName}.${message.author}.rate`);
-                rscore = db.reviewDB.get(artistArray[i], `${songName}.${message.author}.rate`);
+                db.reviewDB.set(artistArray[i], args[2], `["${songName}"].${message.author}.rate`);
+                rscore = db.reviewDB.get(artistArray[i], `["${songName}"].${message.author}.rate`);
             } else {
-                rname = db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}.${message.author}.name`);
+                rname = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"].${message.author}.name`);
                 if (rname === undefined) return message.channel.send('No review found.');
 
-                db.reviewDB.set(artistArray[i], args[3], `${songName}.Remixers.${rmxArtist}.${message.author}.review`);
-                rreview = db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}.${message.author}.review`);
+                db.reviewDB.set(artistArray[i], args[3], `["${songName}"].Remixers.["${rmxArtist}"].${message.author}.review`);
+                rreview = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"].${message.author}.review`);
 
-                db.reviewDB.set(artistArray[i], args[2], `${songName}.Remixers.${rmxArtist}.${message.author}.rate`);
-                rscore = db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}.${message.author}.rate`);
+                db.reviewDB.set(artistArray[i], args[2], `["${songName}"].Remixers.["${rmxArtist}"].${message.author}.rate`);
+                rscore = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"].${message.author}.rate`);
             }
         }
 
-        const thumbnailImage = db.reviewDB.get(artistArray[0], `${songName}.Image`);
+        const thumbnailImage = db.reviewDB.get(artistArray[0], `["${songName}"].Image`);
 
 		const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)

@@ -24,10 +24,10 @@ module.exports = {
             .setTitle(`${args[0]} - ${args[1]} tracks`);
             let epnum = 0;
             for (let i = 0; i < songArray.length; i++) {
-                const songObj = db.reviewDB.get(artistName[0], `${songArray[i]}`);
-                const songEP = db.reviewDB.get(artistName[0], `${songArray[i]}.EP`);
+                const songObj = db.reviewDB.get(artistName[0], `["${songArray[i]}"]`);
+                const songEP = db.reviewDB.get(artistName[0], `["${songArray[i]}"].EP`);
                 if (songEP === args[1]) {
-                    if (songThumbnail === false) songThumbnail = db.reviewDB.get(artistName[0], `${songArray[i]}.Image`);
+                    if (songThumbnail === false) songThumbnail = db.reviewDB.get(artistName[0], `["${songArray[i]}"].Image`);
                     if (songThumbnail != false) {
                         exampleEmbed.setThumbnail(songThumbnail);
                     } else {

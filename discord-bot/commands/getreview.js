@@ -49,7 +49,7 @@ module.exports = {
         let rsentby;
         let usrSentBy;
         let thumbnailImage;
-        let epfrom = db.reviewDB.get(artistName[0], `${songName}.EP`);
+        let epfrom = db.reviewDB.get(artistName[0], `["${songName}"].EP`);
         if (args.length > 2) {
             taggedUser = message.mentions.users.first();
             taggedMember = message.mentions.members.first();
@@ -58,32 +58,32 @@ module.exports = {
             taggedMember = message.member;
         }
         if (rmxArtist === false) {
-            rname = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.name`);
+            rname = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.name`);
             if (rname === undefined) return message.channel.send('No review found. *Note that for EP reviews, you need to use `!getReviewEP`.*');
-            rreview = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.review`);
-            rscore = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.rate`);
-            rsentby = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.sentby`);
+            rreview = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.review`);
+            rscore = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.rate`);
+            rsentby = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.sentby`);
             if (rsentby != false) {
                 usrSentBy = message.guild.members.cache.get(rsentby);              
             }
             
-            if (db.reviewDB.get(artistName[0], `${songName}.Image`) != false) {
-                thumbnailImage = db.reviewDB.get(artistName[0], `${songName}.Image`);
+            if (db.reviewDB.get(artistName[0], `["${songName}"].Image`) != false) {
+                thumbnailImage = db.reviewDB.get(artistName[0], `["${songName}"].Image`);
             } else {
                 thumbnailImage = taggedUser.avatarURL({ format: "png" });
             }
         } else {
-            rname = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.name`);
+            rname = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.name`);
             if (rname === undefined) return message.channel.send('No review found. *Note that for EP reviews, you need to use `!getReviewEP`.*');
-            rreview = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.review`);
-            rscore = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.rate`);
-            rsentby = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.sentby`);
+            rreview = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.review`);
+            rscore = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.rate`);
+            rsentby = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.sentby`);
             if (rsentby != false) {
                 usrSentBy = message.guild.members.cache.get(rsentby);              
             }     
 
-            if (db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`)) {
-                thumbnailImage = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`);
+            if (db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`)) {
+                thumbnailImage = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`);
             } else {
                 thumbnailImage = taggedUser.avatarURL({ format: "png" });
             }

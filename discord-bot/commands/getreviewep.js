@@ -37,16 +37,16 @@ module.exports = {
 
         const exampleEmbed = new Discord.MessageEmbed();
         for (let i = 0; i < songArray.length; i++) {
-            const songEP = db.reviewDB.get(artistName[0], `${songArray[i]}.EP`);
+            const songEP = db.reviewDB.get(artistName[0], `["${songArray[i]}"].EP`);
             if (songEP === undefined) return message.channel.send('No EP found.');
             if (songEP === args[1]) {
                 checkforEP = true;
                 let songName = songArray[i];
                 let rmxArtist;
 
-                if (Object.keys(db.reviewDB.get(artistName[0], `${songArray[i]}.Remixers`)).length != 0) {
+                if (Object.keys(db.reviewDB.get(artistName[0], `["${songArray[i]}"].Remixers`)).length != 0) {
                     rmxProg++;
-                    rmxArtist = Object.keys(db.reviewDB.get(artistName[0], `${songArray[i]}.Remixers`))[rmxProg];
+                    rmxArtist = Object.keys(db.reviewDB.get(artistName[0], `["${songArray[i]}"].Remixers`))[rmxProg];
                 } else {
                     rmxArtist = false;
                 }
@@ -60,37 +60,37 @@ module.exports = {
                 }
 
                 if (rmxArtist === false) {
-                    rname = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.name`);
+                    rname = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.name`);
                     if (rname === undefined) return message.channel.send('No review found.');
-                    rreview = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.review`);
-                    rscore = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.rate`);
-                    rsentby = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.sentby`);
-                    roverall = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.EPOverall`);
-                    rrankpos = db.reviewDB.get(artistName[0], `${songName}.${taggedUser}.rankPosition`);
-                    if (rrankpos != undefined) songRanking.push(`${rrankpos}. ${songName} (${rscore})`);
+                    rreview = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.review`);
+                    rscore = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.rate`);
+                    rsentby = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.sentby`);
+                    roverall = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.EPOverall`);
+                    rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.rankPosition`);
+                    if (rrankpos != undefined) songRanking.push(`${rrankpos}. ["${songName}"] (${rscore})`);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }
-                    if (db.reviewDB.get(artistName[0], `${songName}.Image`) != false) {
-                        thumbnailImage = db.reviewDB.get(artistName[0], `${songName}.Image`);
+                    if (db.reviewDB.get(artistName[0], `["${songName}"].Image`) != false) {
+                        thumbnailImage = db.reviewDB.get(artistName[0], `["${songName}"].Image`);
                     } else {
                         thumbnailImage = taggedUser.avatarURL({ format: "png" });
                     }
                 } else {
-                    rname = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.name`);
+                    rname = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.name`);
                     if (rname === undefined) return message.channel.send('No review found.');
-                    rreview = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.review`);
-                    rscore = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.rate`);
-                    rsentby = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.sentby`);
-                    roverall = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.EPOverall`);
-                    rrankpos = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.${taggedUser}.rankPosition`);
-                    if (rrankpos != undefined) songRanking.push(`${rrankpos}. ${songName} (${rscore})`);
+                    rreview = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.review`);
+                    rscore = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.rate`);
+                    rsentby = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.sentby`);
+                    roverall = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.EPOverall`);
+                    rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.rankPosition`);
+                    if (rrankpos != undefined) songRanking.push(`${rrankpos}. ["${songName}"] (${rscore})`);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }     
 
-                    if (db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`)) {
-                        thumbnailImage = db.reviewDB.get(artistName[0], `${songName}.Remixers.${rmxArtist}.Image`);
+                    if (db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.Image`)) {
+                        thumbnailImage = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.Image`);
                     } else {
                         thumbnailImage = taggedUser.avatarURL({ format: "png" });
                     }

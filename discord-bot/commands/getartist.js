@@ -32,15 +32,23 @@ module.exports = {
 		const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)
             .setTitle(`${args[0]}'s reviewed tracks`);
+            console.log(songArray.length);
             for (let i = 0; i < songArray.length; i++) {
                 const songObj = db.reviewDB.get(args[0], `${songArray[i]}`);
                 const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
                 const reviewNum = Object.keys(songObj).length - 3;
 
-                if (songEP === false) { //If it's a single and NOT a remix
+                if (songEP === false || songEP === undefined) { //If it's a single and NOT a remix
                     let songDetails;
+                    let remixerKeys;
 
-                    if (Object.keys(db.reviewDB.get(args[0], `${songArray[i]}.Remixers`)).length > 0) {
+                    if (typeof db.reviewDB.get(args[0], `${songArray[i]}.Remixers`) === 'object') {
+                        remixerKeys = Object.keys(db.reviewDB.get(args[0], `${songArray[i]}.Remixers`));
+                    } else {
+                        remixerKeys = {};
+                    }
+                    
+                    if (remixerKeys.length > 0) {
                         const songRemixersObj = db.reviewDB.get(args[0], `${songArray[i]}.Remixers`);
                         const songRemixersAmt = Object.keys(songRemixersObj).length;
                         songDetails = [`\`${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''}\``, `\`${songRemixersAmt} remix${songRemixersAmt > 1 ? 'es' : ''}\``];
@@ -50,15 +58,15 @@ module.exports = {
                         songDetails = `\`${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''}\``;
                     }
 
-                    if (!songArray[i].toLowerCase().includes('remix')) {
-                        singleArray.push(`-${songArray[i]}${songEP != false ? ` (${songEP})` : ''} ${songDetails}`);
+                    if (!songArray[i].includes('Remix')) {
+                        singleArray.push(`-${songArray[i]}${songEP != false && songEP != undefined ? ` (${songEP})` : ''} ${songDetails}`);
                     } else {
-                        remixArray.push(`-${songArray[i]}${songEP != false ? ` (${songEP})` : ''} ${songDetails}`);
+                        remixArray.push(`-${songArray[i]}${songEP != false && songEP != undefined ? ` (${songEP})` : ''} ${songDetails}`);
                     }
                     
                 }
             }
-
+            
             if (singleArray.length != 0) {
                 exampleEmbed.addField('Singles:', singleArray);
             }
@@ -69,7 +77,7 @@ module.exports = {
             for (let i = 0; i < songArray.length; i++) {
                 const songEP = db.reviewDB.get(args[0], `${songArray[i]}.EP`);
 
-                if (songEP != false && !EPsOnEmbed.includes(songEP)) { //If it's an EP and the field doesn't already exist
+                if (songEP != false && songEP != undefined && !EPsOnEmbed.includes(songEP)) { //If it's an EP and the field doesn't already exist
                     const s = EPs[`${songEP}`]; 
                     let songsinEP = Object.keys(s);
                     songsinEP = songsinEP.map(x => x + ` \`${EPs[`${songEP}`][`${x}`]} review${EPs[`${songEP}`][`${x}`] > 1 ? 's' : ''}\``);
@@ -77,6 +85,7 @@ module.exports = {
                     songsinEP.join('\n');
                     exampleEmbed.addField(`${songEP}: `, songsinEP);
                     EPsOnEmbed.push(songEP);
+                    
                 }
             }
         

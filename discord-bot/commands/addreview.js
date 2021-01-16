@@ -15,6 +15,14 @@ module.exports = {
             return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
         }
 
+        if (args[1].includes('Remix)')) {
+            return message.channel.send('Please use [] for remixes, not ()!');
+        }
+
+        /*if (!args[2].includes('10 ')) {
+            return message.channel.send('Please check your spacing on the **rating**. It appears you may be missing a space at the beginning or end!');
+        }*/
+
         let rating = args[2].replace(/\s+/g, '');
         let review = args[3];
 
@@ -77,10 +85,10 @@ module.exports = {
         let thumbnailImage;
         if (db.reviewDB.has(artistArray[0])) {
             if (rmxArtist === false) {
-                thumbnailImage = db.reviewDB.get(artistArray[0], `${songName}.Image`);
+                thumbnailImage = db.reviewDB.get(artistArray[0], `["${songName}"].Image`);
                 if (thumbnailImage === undefined || thumbnailImage === false || thumbnailImage === null) thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
             } else {
-                thumbnailImage = db.reviewDB.get(artistArray[0], `${songName}.Remixers.${rmxArtist}.Image`);
+                thumbnailImage = db.reviewDB.get(artistArray[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`);
                 if (thumbnailImage === undefined || thumbnailImage === false || thumbnailImage === null) thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
             }
         } else {
@@ -128,12 +136,12 @@ module.exports = {
             thumbnailImage = false;
         }
 
-        if (rmxArtist === false) {
+        if (rmxArtist === false || rmxArtist === undefined) {
             for (let i = 0; i < artistArray.length; i++) {
                 // If the artist db doesn't exist
                 if (db.reviewDB.get(artistArray[i]) === undefined) {
                     db.reviewDB.set(artistArray[i], { 
-                        [args[1]]: { // Create the SONG DB OBJECT
+                        [songName]: { // Create the SONG DB OBJECT
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
                                 review: review,
@@ -146,13 +154,13 @@ module.exports = {
                             Image: thumbnailImage,
                         },
                     });
-                } else if(db.reviewDB.get(artistArray[i], `${args[1]}`) === undefined) { //If the artist db exists, check if the song db doesn't exist
+                } else if(db.reviewDB.get(artistArray[i], `["${songName}"]`) === undefined) { //If the artist db exists, check if the song db doesn't exist
                 console.log('Song Not Detected!');
                 const artistObj = db.reviewDB.get(artistArray[i]);
 
                     //Create the object that will be injected into the Artist object
                     const newsongObj = { 
-                        [args[1]]: { 
+                        [songName]: { 
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
                                 review: review,
@@ -170,12 +178,12 @@ module.exports = {
                     Object.assign(artistObj, newsongObj);
                     db.reviewDB.set(artistArray[i], artistObj);
 
-                } else if (db.reviewDB.get(artistArray[i], `${args[1]}.${message.author}`)) { // Check if you are already in the system
+                } else if (db.reviewDB.get(artistArray[i], `["${songName}"].${message.author}`)) { // Check if you are already in the system
                     console.log('User is in the system!');
                     return message.reply(`You already have a review for ${artistArray[i]} - ${args[1]} in the system! Use \`!getreview\` to get your review, or \`!editreview\` to edit your pre-existing review.`);
                 } else {
                     console.log('User not detected!');
-                    const songObj = db.reviewDB.get(artistArray[i], `${args[1]}`);
+                    const songObj = db.reviewDB.get(artistArray[i], `["${songName}"]`);
 
                     //Create the object that will be injected into the Song object
                     const newuserObj = {
@@ -190,8 +198,8 @@ module.exports = {
 
                     //Inject the newsongobject into the songobject and then put it in the database
                     Object.assign(songObj, newuserObj);
-                    db.reviewDB.set(artistArray[i], songObj, `${args[1]}`);
-                    db.reviewDB.set(artistArray[i], thumbnailImage, `${args[1]}.Image`);
+                    db.reviewDB.set(artistArray[i], songObj, `["${songName}"]`);
+                    db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
                 }
             }
         } else { //Same version of the above, but this time for REMIXES
@@ -230,7 +238,7 @@ module.exports = {
                             Image: false,
                         },
                     });
-                } else if(db.reviewDB.get(artistArray[i], `${songName}`) === undefined) { //If the artist db exists, check if the song db doesn't exist
+                } else if(db.reviewDB.get(artistArray[i], `["${songName}"]`) === undefined) { //If the artist db exists, check if the song db doesn't exist
                 console.log('Song Not Detected!');
                 const artistObj = db.reviewDB.get(artistArray[i]);
 
@@ -270,10 +278,10 @@ module.exports = {
                     console.log(artistArray[i]);
                     db.reviewDB.set(artistArray[i], artistObj);
 
-                } else if (db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}`) === undefined && artistArray[i] != rmxArtist) { //If the song exists, check if the remix artist DB exists
+                } else if (db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`) === undefined && artistArray[i] != rmxArtist) { //If the song exists, check if the remix artist DB exists
                     console.log('Remix Artist not detected!');
 
-                    const remixObj = db.reviewDB.get(artistArray[i], `${songName}.Remixers`);
+                    const remixObj = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers`);
                     //Create the object that will be injected into the Remixers object
                     const newremixObj = { 
                         [rmxArtist]: {
@@ -289,14 +297,14 @@ module.exports = {
                     };
 
                     Object.assign(remixObj, newremixObj);
-                    db.reviewDB.set(artistArray[i], remixObj, `${songName}.Remixers`);
+                    db.reviewDB.set(artistArray[i], remixObj, `["${songName}"].Remixers`);
 
-                } else if (db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}.${message.author}`)) { // Check if you are already in the system
+                } else if (db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"].${message.author}`)) { // Check if you are already in the system
                     console.log('User is in the system!'); 
                     return message.channel.send(`You already have a review for ${artistArray[i]} - ${args[1]} in the system! Use \`!getreview\` to get your review, or \`!editreview\` to edit your pre-existing review.`);
                 } else {
                     console.log('User not detected!');
-                    const remixsongObj = (artistArray[i] === rmxArtist) ? db.reviewDB.get(artistArray[i], `${songName}`) : db.reviewDB.get(artistArray[i], `${songName}.Remixers.${rmxArtist}`);
+                    const remixsongObj = (artistArray[i] === rmxArtist) ? db.reviewDB.get(artistArray[i], `["${songName}"]`) : db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`);
                     //Create the object that will be injected into the Song object
                     const newuserObj = {
                         [`<@${message.author.id}>`]: { 
@@ -311,11 +319,11 @@ module.exports = {
                     //Inject the newsongobject into the songobject and then put it in the database
                     Object.assign(remixsongObj, newuserObj);
                     if (artistArray[i] === rmxArtist) {
-                        db.reviewDB.set(artistArray[i], remixsongObj, `${songName}`);
-                        //db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Image`);
+                        db.reviewDB.set(artistArray[i], remixsongObj, `["${songName}"]`);
+                        //db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
                     } else {
-                        db.reviewDB.set(artistArray[i], remixsongObj, `${songName}.Remixers.${rmxArtist}`);
-                        db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Remixers.${rmxArtist}.Image`);
+                        db.reviewDB.set(artistArray[i], remixsongObj, `["${songName}"].Remixers.["${rmxArtist}"]`);
+                        db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Remixers.["${rmxArtist}"].Image`);
                     }
                 }
             }

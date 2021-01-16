@@ -50,7 +50,7 @@ module.exports = {
 							Image: thumbnailImage,
 						},
 					});
-				} else if (db.reviewDB.get(artistArray[i], `${songName}`) === undefined) {
+				} else if (db.reviewDB.get(artistArray[i], `["${songName}"]`) === undefined) {
 					newSong = true;
 					console.log('Song Not Detected!');
 					const artistObj = db.reviewDB.get(artistArray[i]);
@@ -91,7 +91,7 @@ module.exports = {
                             Image: false,
                         },
                     });
-				} else if (db.reviewDB.get(artistArray[i], `${songName}`) === true) { //If the artist db exists, check if the song db doesn't exist
+				} else if (db.reviewDB.get(artistArray[i], `["${songName}"]`) === true) { //If the artist db exists, check if the song db doesn't exist
 					if (artistArray[i] === rmxArtist) {songName = args[1];} //Set the songname to the full name for the remix artist
 					newSong = true;
 					console.log('Song Not Detected!');
@@ -126,12 +126,12 @@ module.exports = {
 			for (let i = 0; i < artistArray.length; i++) {
 				if (artistArray[i] != rmxArtist) {
 					if (rmxArtist === false) {
-						db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Image`);
+						db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
 					} else {
-						db.reviewDB.set(artistArray[i], thumbnailImage, `${songName}.Remixers.${rmxArtist}.Image`);
+						db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Remixers.["${rmxArtist}"].Image`);
 					}
 				} else if (artistArray[i] === rmxArtist) {
-					db.reviewDB.set(artistArray[i], thumbnailImage, `${args[1]}.Image`);
+					db.reviewDB.set(artistArray[i], thumbnailImage, `["${args[1]}"].Image`);
 				}
 			}
 		}

@@ -16,7 +16,7 @@ module.exports = {
 
         for (let i = 0; i < songArray.length; i++) {
             let userRatingArray = [];
-            let songObj = db.reviewDB.get(args[0], `${songArray[i]}`);
+            let songObj = db.reviewDB.get(args[0], `["${songArray[i]}"]`);
             let userArray = Object.keys(songObj);
     
             userArray = userArray.filter(e => e !== 'EP');
@@ -24,7 +24,7 @@ module.exports = {
             userArray = userArray.filter(e => e !== 'Remixers');
                     
             for (let ii = 0; ii < userArray.length; ii++) {
-                let rating = parseFloat(db.reviewDB.get(args[0], `${songArray[i]}.${userArray[ii]}.rate`));
+                let rating = parseFloat(db.reviewDB.get(args[0], `["${songArray[i]}"].${userArray[ii]}.rate`));
                 userRatingArray.push(rating);
             }
 
