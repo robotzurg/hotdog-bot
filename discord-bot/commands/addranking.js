@@ -19,7 +19,7 @@ module.exports = {
         }
 
         const command = message.client.commands.get('addranking');
-        const is_mailbox = mailboxes.includes(message.channel.name);
+        let is_mailbox = mailboxes.includes(message.channel.name);
 
 
         let taggedUser = false;
@@ -36,10 +36,12 @@ module.exports = {
             } else if (args.length === 3) { // If there is a user mentioned but only 3 arguments, then we know no image.
                 taggedUser = message.mentions.users.first(); 
                 taggedMember = message.mentions.members.first();
+                is_mailbox = true;
             } else if (args.length === 4) { // If there is both a user mentioned and 4 arguments, then we know both!
                 thumbnailImage = args[2];
                 taggedUser = message.mentions.users.first(); 
                 taggedMember = message.mentions.members.first();
+                is_mailbox = true;
             }
         }
 
@@ -93,7 +95,7 @@ module.exports = {
                 m.delete();
                 msgtoEdit.reactions.removeAll();
                 return;
-            } else if (m.content.includes(`Overall`)) {
+            } else if (m.content.includes(`Overall\n`)) {
 
                 if (overallString === -1) {
                     splitUpOverall = m.content.split('\n');

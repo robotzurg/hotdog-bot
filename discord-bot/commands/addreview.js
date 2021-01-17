@@ -36,7 +36,7 @@ module.exports = {
         }
 
         const command = message.client.commands.get('addreview');
-        const is_mailbox = mailboxes.includes(message.channel.name);
+        let is_mailbox = mailboxes.includes(message.channel.name);
 
         let songName = args[1];
         let rmxArtist = false;
@@ -104,10 +104,12 @@ module.exports = {
             } else if (args.length === 5) { // If there is a user mentioned but only 3 arguments, then we know no image.
                 taggedUser = message.mentions.users.first(); 
                 taggedMember = message.mentions.members.first();
+                is_mailbox = true;
             } else if (args.length === 6) { // If there is both a user mentioned and 4 arguments, then we know both!
                 thumbnailImage = args[4];
                 taggedUser = message.mentions.users.first(); 
                 taggedMember = message.mentions.members.first();
+                is_mailbox = true;
             }
 
             if (thumbnailImage.includes('|')) {
