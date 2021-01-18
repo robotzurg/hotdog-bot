@@ -9,6 +9,15 @@ module.exports = {
     usage: '<artist> | <song/ep/lp> | [op] <user>',
 	execute(message, args) {
 
+        //Auto-adjustment to caps for each word
+        args[0] = args[0].split(' ');
+        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[0] = args[0].join(' ');
+
+        args[1] = args[1].split(' ');
+        args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[1] = args[1].join(' ');
+
         if (!args[1].toLowerCase().includes('ep') && !args[1].toLowerCase().includes('lp') && !args[1].toLowerCase().includes('remixes')) {
             return message.channel.send('This isn\'t an EP! Please use `!getReview` to get non-EP reviews.');
         }

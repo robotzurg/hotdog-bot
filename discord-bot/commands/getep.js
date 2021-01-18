@@ -3,17 +3,26 @@ const db = require("../db.js");
 
 module.exports = {
     name: 'getep',
-    aliases: ['getep', 'getlp'],
+    aliases: ['getep', 'getlp', 'gete'],
     description: 'Get all the songs from a specific EP!',
     args: true,
     usage: '<artist> | <ep>',
 	execute(message, args) {
 
+        //Auto-adjustment to caps for each word
+        args[0] = args[0].split(' ');
+        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[0] = args[0].join(' ');
+
+        args[1] = args[1].split(' ');
+        args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[1] = args[1].join(' ');
+
+
         if (!args[1].includes('EP') && !args[1].includes('LP') && !args[1].toLowerCase().includes('remixes')) {
             return message.channel.send('This isn\'t an EP! Please use `!getSong` to get single overviews.');
         }
         
-
         const artistName = args[0].split(' & ');
         const artistObj = db.reviewDB.get(artistName[0]);
         const songArray = Object.keys(artistObj);

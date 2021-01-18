@@ -8,6 +8,12 @@ module.exports = {
     args: true,
     usage: '<artist>',
 	execute(message, args) {
+
+        //Auto-adjustment to caps for each word
+        args[0] = args[0].split(' ');
+        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[0] = args[0].join(' ');
+
         let ranking = [];
 		const artistObj = db.reviewDB.get(args[0]);
         if (artistObj === undefined) return message.channel.send('Artist not found.');

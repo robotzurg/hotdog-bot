@@ -9,6 +9,15 @@ module.exports = {
     usage: '<artist> | <song/ep/lp> | [op] <user>',
 	execute(message, args) {
 
+        //Auto-adjustment to caps for each word
+        args[0] = args[0].split(' ');
+        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[0] = args[0].join(' ');
+
+        args[1] = args[1].split(' ');
+        args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[1] = args[1].join(' ');
+
         // Fix (VIP) if needed
         if (args[1].includes('(VIP)')) {
             args[1] = args[1].split(' (');

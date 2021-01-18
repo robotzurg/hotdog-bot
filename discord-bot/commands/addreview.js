@@ -5,23 +5,30 @@ const { mailboxes } = require('../arrays.json');
 
 module.exports = {
     name: 'addreview',
-    aliases: ['addreview', 'review'],
+    aliases: ['addreview', 'review', 'r'],
     description: 'Create a song rating embed message!',
     args: true,
     usage: '`<artist> | <song_name> | <rating> | <rate_desc> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>`',
 	execute(message, args) {
 
+        //Auto-adjustment to caps for each word
+        args[0] = args[0].split(' ');
+        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[0] = args[0].join(' ');
+
+        args[1] = args[1].split(' ');
+        args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[1] = args[1].join(' ');
+
+        // Comma check
         if (args[0].includes(',')) {
             return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
         }
 
+        // [] check
         if (args[1].includes('Remix)')) {
             return message.channel.send('Please use [] for remixes, not ()!');
         }
-
-        /*if (!args[2].includes('10 ')) {
-            return message.channel.send('Please check your spacing on the **rating**. It appears you may be missing a space at the beginning or end!');
-        }*/
 
         let rating = args[2].replace(/\s+/g, '');
         let review = args[3];
@@ -30,7 +37,8 @@ module.exports = {
             rating = args[3].replace(/\s+/g, '');
             review = args[2];
         }
-
+        
+        // EP/LP check
         if (args[1].includes('EP') || args[1].toLowerCase().includes('LP') || args[1].toLowerCase().includes('Remixes')) {
             return message.channel.send('You can only use this command to rank singles/single remixes.\nPlease use `!addReviewEP` for EP Reviews/Rankings!');
         }

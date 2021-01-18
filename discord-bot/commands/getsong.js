@@ -2,11 +2,21 @@ const Discord = require('discord.js');
 const db = require("../db.js");
 
 module.exports = {
-	name: 'getsong',
+    name: 'getsong',
+    aliases: ['getsong', 'gets'],
     description: 'Get all the data about a song.',
     args: true,
     usage: '<artist> | <song>',
 	execute(message, args) {
+
+        //Auto-adjustment to caps for each word
+        args[0] = args[0].split(' ');
+        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[0] = args[0].join(' ');
+
+        args[1] = args[1].split(' ');
+        args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[1] = args[1].join(' ');
 
         if (args.length === 1) {
             return message.channel.send(`Missing arguments!\nProper usage is: \`<artist> | <song>\``);
@@ -39,16 +49,20 @@ module.exports = {
         if (args[1].includes('(feat')) {
 
             songName = args[1].split(` (feat`);
-            if (args[1].toLowerCase().includes('remix')) { rmxArtist = songName[1].split(' [')[1].slice(0, -6); }
+            if (args[1].toLowerCase().includes('remix')) { 
+                rmxArtist = songName[1].split(' [')[1].slice(0, -6);
+                fullSongName = `${songName} [${rmxArtist}Remix]`;
+            }
             songName = songName[0];
-            fullSongName = `${songName} [${rmxArtist}Remix]`;
 
         } else if (args[1].includes('(ft')) {
 
             songName = args[1].split(` (ft`);
-            if (args[1].toLowerCase().includes('remix')) { rmxArtist = songName[1].split(' [')[1].slice(0, -6); }
+            if (args[1].toLowerCase().includes('remix')) { 
+                rmxArtist = songName[1].split(' [')[1].slice(0, -6); 
+                fullSongName = `${songName} [${rmxArtist}Remix]`;
+            }
             songName = songName[0];
-            fullSongName = `${songName} [${rmxArtist}Remix]`;
 
         }
 

@@ -8,6 +8,15 @@ module.exports = {
     args: true,
     usage: '<artist> | <song_name> | <rating> | <rate_desc>',
 	execute(message, args) {
+        
+        //Auto-adjustment to caps for each word
+        args[0] = args[0].split(' ');
+        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[0] = args[0].join(' ');
+
+        args[1] = args[1].split(' ');
+        args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[1] = args[1].join(' ');
 
         if (args[1].toLowerCase().includes('ep') || args[1].toLowerCase().includes('lp') || args[1].toLowerCase().includes('remixes')) {
             return message.channel.send('EPs/LPs/Remix Package review edits are not supported yet. Please contact Jeff to have your EP/LP/Remix Package review edited, if needed.');

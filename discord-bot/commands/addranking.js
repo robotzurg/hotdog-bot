@@ -4,11 +4,20 @@ const { mailboxes } = require('../arrays.json');
 
 module.exports = {
     name: 'addranking',
-    aliases: ['addranking', 'rank', `rankEP`, `addrankingep`],
+    aliases: ['addranking', 'rank', `rankEP`, `addrankingep`, 'ra'],
     description: 'Create a ranking review of an EP/LP/Compilation/Remix Package or really anything.',
     args: true,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {
+        
+        //Auto-adjustment to caps for each word
+        args[0] = args[0].split(' ');
+        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[0] = args[0].join(' ');
+
+        args[1] = args[1].split(' ');
+        args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[1] = args[1].join(' ');
         
         if (args[0].includes(',')) {
             return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
@@ -95,7 +104,7 @@ module.exports = {
                 m.delete();
                 msgtoEdit.reactions.removeAll();
                 return;
-            } else if (m.content.includes(`Overall\n`)) {
+            } else if (m.content.includes(`Overall`)) {
 
                 if (overallString === -1) {
                     splitUpOverall = m.content.split('\n');
@@ -159,16 +168,30 @@ module.exports = {
                     songName = fullSongName.substring(0, fullSongName.length - 7).split(' [')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' [')[1];
                     artistArray = args[0].split(' & ');
+
+                    rmxArtist = rmxArtist.split(' ');
+                    rmxArtist = rmxArtist.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                    rmxArtist = rmxArtist.join(' ');
+
                 } else if (songName.toString().toLowerCase().includes('bootleg')) {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 9).split(' [')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' [')[1];
                     artistArray = args[0].split(' & ');
+
+                    rmxArtist = rmxArtist.split(' ');
+                    rmxArtist = rmxArtist.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                    rmxArtist = rmxArtist.join(' ');
+
                 } else if (songName.toString().toLowerCase().includes('flip') || songName.toString().toLowerCase().includes('edit')) {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 6).split(' [')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' [')[1];
                     artistArray = args[0].split(' & ');
+
+                    rmxArtist = rmxArtist.split(' ');
+                    rmxArtist = rmxArtist.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                    rmxArtist = rmxArtist.join(' ');
                 }
 
                 if (songName.includes('(with')) {
@@ -181,9 +204,17 @@ module.exports = {
 
                     if (Array.isArray(epSingleCollabArtists)) {
                         for (let i = 0; i < epSingleCollabArtists.length; i++) {
+                            epSingleCollabArtists = epSingleCollabArtists.split(' ');
+                            epSingleCollabArtists = epSingleCollabArtists.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                            epSingleCollabArtists = epSingleCollabArtists.join(' ');
+
                             artistArray.push(epSingleCollabArtists[i]);
                         }   
                     } else {
+                        epSingleCollabArtists = epSingleCollabArtists.split(' ');
+                        epSingleCollabArtists = epSingleCollabArtists.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                        epSingleCollabArtists = epSingleCollabArtists.join(' ');
+
                         artistArray.push(epSingleCollabArtists);
                     }
 
@@ -199,6 +230,10 @@ module.exports = {
                         fullSongName = `${songName} [${fullSongName[1].slice(0, -1)}]`;
                     }
                 }
+
+                songName = songName.split(' ');
+                songName = songName.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                songName = songName.join(' ');
 
                 m.delete();
             }

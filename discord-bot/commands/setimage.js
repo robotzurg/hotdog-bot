@@ -2,11 +2,20 @@ const db = require("../db.js");
 
 module.exports = {
 	name: 'setimage',
-	aliases: ['setimage', 'si'],
+	aliases: ['setimage', 'setI'],
 	description: 'Set an image for a song! You can either do a link, or just attach an attachment.',
 	args: true,
 	usage: '`<artist> | <song> | [op] <url>',
 	execute(message, args) {
+
+		//Auto-adjustment to caps for each word
+        args[0] = args[0].split(' ');
+        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[0] = args[0].join(' ');
+
+        args[1] = args[1].split(' ');
+        args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[1] = args[1].join(' ');
 
 		let thumbnailImage;
 		if (args.length < 2) {
