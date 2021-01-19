@@ -17,7 +17,6 @@ module.exports = {
         args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
         args[1] = args[1].join(' ');
 
-
         if (args[1].includes('EP') && args[1].includes('LP') && args[1].toLowerCase().includes('remixes')) {
             return message.channel.send('This command does not support EPs/LPs yet. Instead, check for a single from the EP/LP you are looking for.');
         }

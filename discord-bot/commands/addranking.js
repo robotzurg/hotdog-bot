@@ -23,7 +23,7 @@ module.exports = {
             return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
         }
 
-        if (!args[1].includes('EP') && !args[1].includes('LP') && !args[1].includes('Remixes')) {
+        if (!args[1].includes('EP') && !args[1].includes('LP') && !args[1].includes('remixes') && !args[1].includes('/')) {
             return message.channel.send('You can only use this command to rank EPs/LPs/Remix Packages. Comps are not yet supported.\nPlease use `!addReview` for singles!');
         }
 
@@ -93,6 +93,7 @@ module.exports = {
         let fullSongName = false;
         let songRating;
         let rmxArtist = false;
+        let featArtists = false;
         let artistArray = args[0].split(' & ');
         let splitUpOverall;
         let overallString = -1;
@@ -150,6 +151,8 @@ module.exports = {
 
                 if (songName.includes('(feat') || songName.includes('(ft')) {
                     songName = songName.split(` (f`);
+                    featArtists = songName[1].slice(3).slice(0, -1).split(' & ');
+
                     if (songName[1].toLowerCase().includes('remix')) { 
                         songName = [songName[0], songName[1].split(`[`)];
                         rmxArtist = songName[1][1].slice(0, -7); 
@@ -160,6 +163,22 @@ module.exports = {
                     }
                     
                     songName = songName[0];
+
+                    if (Array.isArray(featArtists)) {
+                        for (let i = 0; i < featArtists.length; i++) {
+                            featArtists[i] = featArtists[i].split(' ');
+                            featArtists[i] = featArtists[i].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                            featArtists[i] = featArtists[i].join(' ');
+        
+                            artistArray.push(featArtists[i]);
+                        }
+                    } else if (featArtists != false) {
+                        featArtists = featArtists.split(' ');
+                        featArtists = featArtists.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                        featArtists = featArtists.join(' ');
+        
+                        artistArray.push(featArtists);
+                    }
                 }
 
                 //Remix preparation

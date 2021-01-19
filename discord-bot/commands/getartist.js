@@ -15,8 +15,10 @@ module.exports = {
         args[0] = args[0].join(' ');
 
         const artistObj = db.reviewDB.get(args[0]);
+        const artistImage = artistObj.Image;
         if (artistObj === undefined) return message.channel.send('Artist not found.');
-        const songArray = Object.keys(artistObj);
+        let songArray = Object.keys(artistObj);
+        songArray = songArray.filter(item => item !== 'Image');
         const EPs = {};
         const EPsOnEmbed = [];
         const singleArray = [];
@@ -38,6 +40,9 @@ module.exports = {
 		const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)
             .setTitle(`${args[0]}'s reviewed tracks`);
+            if (artistImage != false && artistImage != undefined) {
+                exampleEmbed.setThumbnail(artistImage);
+            }
             for (let i = 0; i < songArray.length; i++) {
                 const songObj = db.reviewDB.get(args[0], `["${songArray[i]}"]`);
                 const songEP = db.reviewDB.get(args[0], `["${songArray[i]}"].EP`);

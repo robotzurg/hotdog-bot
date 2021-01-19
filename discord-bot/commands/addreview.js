@@ -43,10 +43,13 @@ module.exports = {
             return message.channel.send('You can only use this command to rank singles/single remixes.\nPlease use `!addReviewEP` for EP Reviews/Rankings!');
         }
 
+        let artistArray = args[0].split(' & ');
+
         const command = message.client.commands.get('addreview');
         let is_mailbox = mailboxes.includes(message.channel.name);
 
         let songName = args[1];
+        let featArtists = false;
         let rmxArtist = false;
         let remixsongName;
 
@@ -54,14 +57,48 @@ module.exports = {
         if (args[1].includes('(feat')) {
 
             songName = args[1].split(` (feat`);
+            featArtists = songName[1].slice(2).slice(0, -1).split(' & ');
             if (args[1].toLowerCase().includes('remix')) { rmxArtist = songName[1].split(' [')[1].slice(0, -7); }
             songName = songName[0];
+
+            if (Array.isArray(featArtists)) {
+                for (let i = 0; i < featArtists.length; i++) {
+                    featArtists[i] = featArtists[i].split(' ');
+                    featArtists[i] = featArtists[i].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                    featArtists[i] = featArtists[i].join(' ');
+
+                    artistArray.push(featArtists[i]);
+                }
+            } else if (featArtists != false) {
+                featArtists = featArtists.split(' ');
+                featArtists = featArtists.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                featArtists = featArtists.join(' ');
+
+                artistArray.push(featArtists);
+            }
 
         } else if (args[1].includes('(ft')) {
 
             songName = args[1].split(` (ft`);
+            featArtists = songName[1].slice(2).slice(0, -1).split(' & ');
             if (args[1].toLowerCase().includes('remix')) { rmxArtist = songName[1].split(' [')[1].slice(0, -7); }
             songName = songName[0];
+
+            if (Array.isArray(featArtists)) {
+                for (let i = 0; i < featArtists.length; i++) {
+                    featArtists[i] = featArtists[i].split(' ');
+                    featArtists[i] = featArtists[i].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                    featArtists[i] = featArtists[i].join(' ');
+
+                    artistArray.push(featArtists[i]);
+                }
+            } else {
+                featArtists = featArtists.split(' ');
+                featArtists = featArtists.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                featArtists = featArtists.join(' ');
+
+                artistArray.push(featArtists);
+            }
 
         }
 
@@ -87,7 +124,6 @@ module.exports = {
             songName = `${songName[0]} ${songName[1].slice(0, -1)}`;
         }
         
-        let artistArray = args[0].split(' & ');
         let taggedUser = false;
         let taggedMember = false;
         let thumbnailImage;
@@ -163,6 +199,7 @@ module.exports = {
                             Remixers: {},
                             Image: thumbnailImage,
                         },
+                        Image: false,
                     });
                 } else if(db.reviewDB.get(artistArray[i], `["${songName}"]`) === undefined) { //If the artist db exists, check if the song db doesn't exist
                 console.log('Song Not Detected!');
@@ -220,6 +257,7 @@ module.exports = {
                 if (db.reviewDB.get(artistArray[i]) === undefined) {
                     console.log('Artist Not Detected!');
                     db.reviewDB.set(artistArray[i], { 
+                        Image: false,
                         [songName]: artistArray[i] === rmxArtist ? { //For the remixer
                             [`<@${message.author.id}>`]: { 
                                 name: message.member.displayName,
