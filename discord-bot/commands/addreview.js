@@ -20,11 +20,6 @@ module.exports = {
         args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
         args[1] = args[1].join(' ');
 
-        // Comma check
-        if (args[0].includes(',')) {
-            return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
-        }
-
         // [] check
         if (args[1].includes('Remix)')) {
             return message.channel.send('Please use [] for remixes, not ()!');
@@ -37,19 +32,39 @@ module.exports = {
             rating = args[3].replace(/\s+/g, '');
             review = args[2];
         }
-        
+
+        if (rating.includes('(') && rating.includes(')')) {
+            rating = rating.split('(');
+            rating = rating.join(' ');
+            rating = rating.split(')');
+            rating = rating.join(' ');
+            rating = rating.trim();
+        } 
+
         // EP/LP check
         if (args[1].includes('EP') || args[1].toLowerCase().includes('LP') || args[1].toLowerCase().includes('Remixes')) {
             return message.channel.send('You can only use this command to rank singles/single remixes.\nPlease use `!addReviewEP` for EP Reviews/Rankings!');
         }
 
-        let artistArray = args[0].split(' & ');
+        let artistArray;
+
+        if (!args[0].includes(',')) {
+            artistArray = args[0].split(' & ');
+        } else {
+            artistArray = args[0].split(', ');
+            if (artistArray[artistArray.length - 1].includes('&')) {
+                let iter2 = artistArray.pop();
+                iter2 = iter2.split(' & ');
+                iter2 = iter2.map(a => artistArray.push(a));
+                console.log(iter2);
+            }
+        }
 
         const command = message.client.commands.get('addreview');
         let is_mailbox = mailboxes.includes(message.channel.name);
 
         let songName = args[1];
-        let featArtists = false;
+        let featArtists = [];
         let rmxArtist = false;
         let remixsongName;
 
@@ -198,6 +213,8 @@ module.exports = {
                             EP: false, 
                             Remixers: {},
                             Image: thumbnailImage,
+                            Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                            Vocals: featArtists,
                         },
                         Image: false,
                     });
@@ -218,6 +235,8 @@ module.exports = {
                             EP: false, 
                             Remixers: {},
                             Image: thumbnailImage,
+                            Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                            Vocals: featArtists,
                         },
                     };
 
@@ -269,6 +288,8 @@ module.exports = {
                             EP: false,
                             Remixers: {},
                             Image: thumbnailImage,
+                            Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                            Vocals: featArtists,
                         } : { // Create the SONG DB OBJECT, for the original artist
                             EP: false, 
                             Remixers: {
@@ -281,6 +302,8 @@ module.exports = {
                                         rankPosition: -1,
                                     },
                                     Image: thumbnailImage,
+                                    Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                                    Vocals: featArtists,
                                 },
                             },
                             Image: false,
@@ -303,6 +326,8 @@ module.exports = {
                             EP: false,
                             Remixers: {},
                             Image: thumbnailImage,
+                            Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                            Vocals: featArtists,
                         } : { // Create the SONG DB OBJECT, for the original artist
                             EP: false, 
                             Remixers: {
@@ -315,6 +340,8 @@ module.exports = {
                                         rankPosition: -1,
                                     },
                                     Image: thumbnailImage,
+                                    Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                                    Vocals: featArtists,
                                 },
                             },
                             Image: false,
@@ -341,6 +368,8 @@ module.exports = {
                                 rankPosition: -1,
                             },
                             Image: thumbnailImage,
+                            Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                            Vocals: featArtists,
                         },
                     };
 

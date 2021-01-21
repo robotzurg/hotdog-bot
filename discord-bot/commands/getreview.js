@@ -48,7 +48,19 @@ module.exports = {
         }
 
 
-        const artistName = args[0].split(' & ');
+        let artistName = args[0].split(' & ');
+
+        if (!args[0].includes(',')) {
+            artistName = args[0].split(' & ');
+        } else {
+            artistName = args[0].split(', ');
+            if (artistName[artistName.length - 1].includes('&')) {
+                let iter2 = artistName.pop();
+                iter2 = iter2.split(' & ');
+                iter2 = iter2.map(a => artistName.push(a));
+                console.log(iter2);
+            }
+        }
 
         let taggedUser;
         let taggedMember;
@@ -58,7 +70,27 @@ module.exports = {
         let rsentby;
         let usrSentBy;
         let thumbnailImage;
+        let artistsEmbed = args[0];
+        let vocalistsEmbed = [];
         let epfrom = db.reviewDB.get(artistName[0], `["${songName}"].EP`);
+
+        // This is for adding in collaborators/vocalists into the name inputted into the embed title, NOT for getting data out.
+        if (db.reviewDB.get(artistName[0], `["${songName}"].Collab`) != undefined) {
+            if (db.reviewDB.get(artistName[0], `["${songName}"].Collab`).length != 0) {
+                artistsEmbed = [artistName[0]];
+                artistsEmbed.push(db.reviewDB.get(artistName[0], `["${songName}"].Collab`));
+                artistsEmbed = artistsEmbed.join(' & ');
+            }
+        }
+
+        if (db.reviewDB.get(artistName[0], `["${songName}"].Vocals`) != undefined) {
+            if (db.reviewDB.get(artistName[0], `["${songName}"].Vocals`).length != 0) {
+                vocalistsEmbed = [];
+                vocalistsEmbed.push(db.reviewDB.get(artistName[0], `["${songName}"].Vocals`));
+                vocalistsEmbed = vocalistsEmbed.join(' & ');
+            }
+        }
+
         if (args.length > 2) {
             taggedUser = message.mentions.users.first();
             taggedMember = message.mentions.members.first();
@@ -100,9 +132,15 @@ module.exports = {
 
 
             const exampleEmbed = new Discord.MessageEmbed()
-                .setColor(`${taggedMember.displayHexColor}`)
-                .setTitle(`${args[0]} - ${args[1]}`)
-                .setAuthor(rsentby != false ? `${rname}'s mailbox review` : `${rname}'s review`, `${taggedUser.avatarURL({ format: "png" })}`);
+                .setColor(`${taggedMember.displayHexColor}`);
+                if (!args[1].includes('(feat') && !args[1].includes('(ft') && vocalistsEmbed.length != 0) {
+                    vocalistsEmbed = `${args[1]} (ft. ${vocalistsEmbed})`;
+                    exampleEmbed.setTitle(`${artistsEmbed} - ${vocalistsEmbed}`);
+                } else {
+                    exampleEmbed.setTitle(`${artistsEmbed} - ${args[1]}`);
+                }
+                
+                exampleEmbed.setAuthor(rsentby != false ? `${rname}'s mailbox review` : `${rname}'s review`, `${taggedUser.avatarURL({ format: "png" })}`);
                 exampleEmbed.setDescription(rreview)
                 .setThumbnail(thumbnailImage)
                 .addField('Rating: ', `**${rscore}**`, true);

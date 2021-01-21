@@ -15,8 +15,8 @@ module.exports = {
         args[0] = args[0].join(' ');
 
         const artistObj = db.reviewDB.get(args[0]);
-        const artistImage = artistObj.Image;
         if (artistObj === undefined) return message.channel.send('Artist not found.');
+        const artistImage = artistObj.Image;
         let songArray = Object.keys(artistObj);
         songArray = songArray.filter(item => item !== 'Image');
         const EPs = {};

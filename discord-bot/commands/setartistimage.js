@@ -2,7 +2,7 @@ const db = require("../db.js");
 
 module.exports = {
 	name: 'setartistimage',
-	aliases: ['setartistimage', 'setAI'],
+	aliases: ['setartistimage', 'setai'],
 	description: 'Set an image for an artist, for the database.',
 	args: true,
 	usage: '<artist> | [op] <url>',
@@ -14,11 +14,11 @@ module.exports = {
         args[0] = args[0].join(' ');
 
 		let thumbnailImage;
-		if (args.length < 2) {
+		if (args.length < 1) {
 			return message.channel.send('Image missing!');
 		} else if (args.length === 1 && message.attachments.first() != undefined) {
 			thumbnailImage = message.attachments.first().attachment;
-		} else if (args.length === 2) {
+		} else if (args.length === 1) {
 			thumbnailImage = args[1];
 		}
 
@@ -26,8 +26,19 @@ module.exports = {
 			return message.channel.send('Please only use a direct image link, or an attachment, not both.');
 		}
 		
-		const artistArray = args[0].split(' & ');
+		let artistArray = args[0].split(' & ');
 
+        if (!args[0].includes(',')) {
+            artistArray = args[0].split(' & ');
+        } else {
+            artistArray = args[0].split(', ');
+            if (artistArray[artistArray.length - 1].includes('&')) {
+                let iter2 = artistArray.pop();
+                iter2 = iter2.split(' & ');
+                iter2 = iter2.map(a => artistArray.push(a));
+                console.log(iter2);
+            }
+        }
 
         for (let i = 0; i < artistArray.length; i++) {
 			if (db.reviewDB.has(artistArray[i])) {

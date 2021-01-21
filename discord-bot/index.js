@@ -50,7 +50,7 @@ cron.schedule('00 9 * * *', () => {
     }
 
     const channel = client.channels.cache.get('680864894006067263');
-    channel.send('Hello everyone! I\'m here to tell you all today\'s **Pea of the Day** which is....');
+    channel.send('Hello éveryone! I\'m here to téll you all today\'s **Pea of the Day** which is..............3.....');
 }, {
     scheduled: true,
 });

@@ -23,7 +23,20 @@ module.exports = {
             return message.channel.send('This isn\'t an EP! Please use `!getSong` to get single overviews.');
         }
         
-        const artistName = args[0].split(' & ');
+        let artistName = args[0].split(' & ');
+
+        if (!args[0].includes(',')) {
+            artistName = args[0].split(' & ');
+        } else {
+            artistName = args[0].split(', ');
+            if (artistName[artistName.length - 1].includes('&')) {
+                let iter2 = artistName.pop();
+                iter2 = iter2.split(' & ');
+                iter2 = iter2.map(a => artistName.push(a));
+                console.log(iter2);
+            }
+        }
+        
         const artistObj = db.reviewDB.get(artistName[0]);
         const songArray = Object.keys(artistObj);
         let songThumbnail = false;

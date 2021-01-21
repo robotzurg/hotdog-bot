@@ -3,7 +3,7 @@ const db = require("../db.js");
 
 module.exports = {
     name: 'getreviewep',
-    aliases: ['getreviewep', 'getrep'],
+    aliases: ['getreviewep', 'getrep', 'getreviewlp', 'getrlp'],
     description: 'Get an EP review from a user on the server that they have written! Putting nothing for <user> will replace <user> with yourself.',
     args: true,
     usage: '<artist> | <song/ep/lp> | [op] <user>',
@@ -19,10 +19,23 @@ module.exports = {
         args[1] = args[1].join(' ');
 
         if (!args[1].toLowerCase().includes('ep') && !args[1].toLowerCase().includes('lp') && !args[1].toLowerCase().includes('remixes')) {
-            return message.channel.send('This isn\'t an EP! Please use `!getReview` to get non-EP reviews.');
+            return message.channel.send('This isn\'t an EP/LP! Please use `!getReview` to get non-EP/LP reviews.');
         }
 
-        const artistName = args[0].split(' & ');
+        let artistName = args[0].split(' & ');
+
+        if (!args[0].includes(',')) {
+            artistName = args[0].split(' & ');
+        } else {
+            artistName = args[0].split(', ');
+            if (artistName[artistName.length - 1].includes('&')) {
+                let iter2 = artistName.pop();
+                iter2 = iter2.split(' & ');
+                iter2 = iter2.map(a => artistName.push(a));
+                console.log(iter2);
+            }
+        }
+
         const artistObj = db.reviewDB.get(artistName[0]);
         if (artistObj === undefined) {
             return message.channel.send('No artist found.');
@@ -47,7 +60,6 @@ module.exports = {
         const exampleEmbed = new Discord.MessageEmbed();
         for (let i = 0; i < songArray.length; i++) {
             const songEP = db.reviewDB.get(artistName[0], `["${songArray[i]}"].EP`);
-            if (songEP === undefined) return message.channel.send('No EP found.');
             if (songEP === args[1]) {
                 checkforEP = true;
                 let songName = songArray[i];
@@ -76,7 +88,7 @@ module.exports = {
                     rsentby = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.sentby`);
                     roverall = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.EPOverall`);
                     rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.rankPosition`);
-                    if (rrankpos != undefined) songRanking.push(`${rrankpos}. ["${songName}"] (${rscore})`);
+                    if (rrankpos != undefined) songRanking.push(`${rrankpos}. ${songName} (${rscore})`);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }
@@ -93,7 +105,7 @@ module.exports = {
                     rsentby = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.sentby`);
                     roverall = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.EPOverall`);
                     rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.rankPosition`);
-                    if (rrankpos != undefined) songRanking.push(`${rrankpos}. ["${songName}"] (${rscore})`);
+                    if (rrankpos != undefined) songRanking.push(`${rrankpos}. ${songName} (${rscore})`);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }     

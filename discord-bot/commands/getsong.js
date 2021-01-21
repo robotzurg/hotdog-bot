@@ -42,8 +42,12 @@ module.exports = {
         let rmxArtist = false;
         let songObj;
         let songEP = false;
+        let remixObj;
+        let remixes = [];
         let fullSongName = false;
-        
+
+        let artistsEmbed = args[0];
+        let vocalistsEmbed = [];
 
         //Take out the ft./feat.
         if (args[1].includes('(feat')) {
@@ -90,9 +94,38 @@ module.exports = {
             songName = `${songName[0]} ${songName[1].slice(0, -1)}`;
         }
 
+        // This is for adding in collaborators/vocalists into the name inputted into the embed title, NOT for getting data out.
+        if (db.reviewDB.get(artistName[0], `["${songName}"].Collab`) != undefined) {
+            if (db.reviewDB.get(artistName[0], `["${songName}"].Collab`).length != 0) {
+                artistsEmbed = [artistName[0]];
+                artistsEmbed.push(db.reviewDB.get(artistName[0], `["${songName}"].Collab`));
+                artistsEmbed = artistsEmbed.join(' & ');
+            }
+        }
+
+        if (db.reviewDB.get(artistName[0], `["${songName}"].Vocals`) != undefined) {
+            if (db.reviewDB.get(artistName[0], `["${songName}"].Vocals`).length != 0) {
+                vocalistsEmbed = [];
+                vocalistsEmbed.push(db.reviewDB.get(artistName[0], `["${songName}"].Vocals`));
+                vocalistsEmbed = vocalistsEmbed.join(' & ');
+            }
+        }
+
+
         if (rmxArtist === false) {
             songObj = db.reviewDB.get(artistName[0], `["${songName}"]`);
             songEP = db.reviewDB.get(artistName[0], `["${songName}"].EP`);
+            remixObj = db.reviewDB.get(artistName[0], `["${songName}"].Remixers`);
+
+            if (remixObj != false && remixObj != undefined && remixObj != null) {
+                let remixObjKeys = Object.keys(remixObj);
+                console.log(remixObjKeys);
+
+                for (let i = 0; i < remixObjKeys.length; i++) {
+                    remixes.push(`\`${remixObjKeys[i]} Remix\``);
+                }
+            }
+
             if (songEP === undefined) songEP = false;
         } else {
             songObj = db.reviewDB.get(rmxArtist, `["${fullSongName}"]`);
@@ -107,12 +140,21 @@ module.exports = {
         userArray = userArray.filter(e => e !== 'EP');
         userArray = userArray.filter(e => e !== 'Image');
         userArray = userArray.filter(e => e !== 'Remixers');
+        userArray = userArray.filter(e => e !== 'Collab');
+        userArray = userArray.filter(e => e !== 'Vocals');
         
         const rankNumArray = [];
 
         const exampleEmbed = new Discord.MessageEmbed()
-            .setColor(`${message.member.displayHexColor}`)
-            .setTitle(`${args[0]} - ${fullSongName} ratings`);
+            .setColor(`${message.member.displayHexColor}`);
+
+            if (!args[1].includes('(feat') && !args[1].includes('(ft') && vocalistsEmbed.length != 0) {
+                vocalistsEmbed = `${args[1]} (ft. ${vocalistsEmbed})`;
+                exampleEmbed.setTitle(`${artistsEmbed} - ${vocalistsEmbed}`);
+            } else {
+                exampleEmbed.setTitle(`${artistsEmbed} - ${args[1]}`);
+            }
+
             for (let i = 0; i < userArray.length; i++) {
                 if (userArray[i] != 'EP') {
                     let rating;
@@ -137,6 +179,10 @@ module.exports = {
             } else {
                 exampleEmbed.addField('Reviews:', 'No reviews :(');
             }
+
+            if (remixes.length != 0) {
+                exampleEmbed.addField('Remixes:', remixes);
+            } 
 
             if (rmxArtist === false) {
                 if ((db.reviewDB.get(artistName[0], `["${songName}"].Image`)) === false) {

@@ -22,7 +22,20 @@ module.exports = {
             return message.channel.send('EPs/LPs/Remix Package review edits are not supported yet. Please contact Jeff to have your EP/LP/Remix Package review edited, if needed.');
         }
         
-        const artistArray = args[0].split(' & ');
+        let artistArray = args[0].split(' & ');
+
+        if (!args[0].includes(',')) {
+            artistArray = args[0].split(' & ');
+        } else {
+            artistArray = args[0].split(', ');
+            if (artistArray[artistArray.length - 1].includes('&')) {
+                let iter2 = artistArray.pop();
+                iter2 = iter2.split(' & ');
+                iter2 = iter2.map(a => artistArray.push(a));
+                console.log(iter2);
+            }
+        }
+
         let songName = args[1];
         let rmxArtist;
 

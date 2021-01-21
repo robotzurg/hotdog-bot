@@ -24,6 +24,19 @@ module.exports = {
         }
 
         let artistArray = args[0].split(' & ');
+
+        if (!args[0].includes(',')) {
+            artistArray = args[0].split(' & ');
+        } else {
+            artistArray = args[0].split(', ');
+            if (artistArray[artistArray.length - 1].includes('&')) {
+                let iter2 = artistArray.pop();
+                iter2 = iter2.split(' & ');
+                iter2 = iter2.map(a => artistArray.push(a));
+                console.log(iter2);
+            }
+        }
+        
         let rname;
         let songName;
         let fullSongName;

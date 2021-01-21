@@ -23,7 +23,7 @@ module.exports = {
             return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
         }
 
-        if (!args[1].includes('EP') && !args[1].includes('LP') && !args[1].includes('remixes') && !args[1].includes('/')) {
+        if (!args[1].includes('EP') && !args[1].includes('LP') && !args[1].toLowerCase().includes('remixes') && !args[1].includes('/')) {
             return message.channel.send('You can only use this command to rank EPs/LPs/Remix Packages. Comps are not yet supported.\nPlease use `!addReview` for singles!');
         }
 
@@ -94,9 +94,21 @@ module.exports = {
         let songRating;
         let rmxArtist = false;
         let featArtists = false;
-        let artistArray = args[0].split(' & ');
         let splitUpOverall;
         let overallString = -1;
+        let artistArray;
+
+        if (!args[0].includes(',')) {
+            artistArray = args[0].split(' & ');
+        } else {
+            artistArray = args[0].split(', ');
+            if (artistArray[artistArray.length - 1].includes('&')) {
+                let iter2 = artistArray.pop();
+                iter2 = iter2.split(' & ');
+                iter2 = iter2.map(a => artistArray.push(a));
+                console.log(iter2);
+            }
+        }
         
         collector.on('collect', m => {
 
@@ -105,13 +117,25 @@ module.exports = {
                 m.delete();
                 msgtoEdit.reactions.removeAll();
                 return;
-            } else if (m.content.includes(`Overall`)) {
+            } else if (m.content.includes(`!overall`)) {
 
                 if (overallString === -1) {
                     splitUpOverall = m.content.split('\n');
                     splitUpOverall.shift();
                     overallString = splitUpOverall;
                     m.delete();
+                }
+
+                if (!args[0].includes(',')) {
+                    artistArray = args[0].split(' & ');
+                } else {
+                    artistArray = args[0].split(', ');
+                    if (artistArray[artistArray.length - 1].includes('&')) {
+                        let iter2 = artistArray.pop();
+                        iter2 = iter2.split(' & ');
+                        iter2 = iter2.map(a => artistArray.push(a));
+                        console.log(iter2);
+                    }
                 }
                 
                 let songArray;
@@ -122,17 +146,24 @@ module.exports = {
                             let songRemixes = db.reviewDB.get(artistArray[ii], `${songArray[i]}.Remixers`);
                             let songEP;
 
-                            if (Object.keys(songRemixes).length === 0) {
+                            if (songRemixes != false && songRemixes != undefined && songRemixes != null) {
+                                if (Object.keys(songRemixes).length === 0) {
+                                    songEP = db.reviewDB.get(artistArray[ii], `${songArray[i]}.EP`);
+                                    if (songEP === args[1]) {
+                                        db.reviewDB.set(artistArray[ii], overallString[0], `${songArray[i]}.<@${message.author.id}>.EPOverall`);
+                                    }
+                                } else {
+                                    for (let rmxNum = 0; rmxNum < Object.keys(songRemixes).length; rmxNum++) {
+                                        songEP = db.reviewDB.get(artistArray[ii], `${songArray[i]}.Remixers.${Object.keys(songRemixes)[rmxNum]}.EP`);
+                                        if (songEP === args[1]) {
+                                            db.reviewDB.set(artistArray[ii], overallString[0], `${songArray[i]}.Remixers.${Object.keys(songRemixes)[rmxNum]}.<@${message.author.id}>.EPOverall`);
+                                        }  
+                                    }
+                                }
+                            } else {
                                 songEP = db.reviewDB.get(artistArray[ii], `${songArray[i]}.EP`);
                                 if (songEP === args[1]) {
                                     db.reviewDB.set(artistArray[ii], overallString[0], `${songArray[i]}.<@${message.author.id}>.EPOverall`);
-                                }
-                            } else {
-                                for (let rmxNum = 0; rmxNum < Object.keys(songRemixes).length; rmxNum++) {
-                                    songEP = db.reviewDB.get(artistArray[ii], `${songArray[i]}.Remixers.${Object.keys(songRemixes)[rmxNum]}.EP`);
-                                    if (songEP === args[1]) {
-                                        db.reviewDB.set(artistArray[ii], overallString[0], `${songArray[i]}.Remixers.${Object.keys(songRemixes)[rmxNum]}.<@${message.author.id}>.EPOverall`);
-                                    }  
                                 }
                             }
                         }
@@ -142,44 +173,23 @@ module.exports = {
                 msgtoEdit.reactions.removeAll();
 
             } else {
+
+                if (!m.content.includes('/10')) {
+                    m.delete();
+                    return message.channel.send(`You forgot to add a ranking! Here's what you sent, so that you can copy and fix it.\n\`${m.content}\``).then(msg => {
+                        msg.delete({ timeout: 15000 }); 
+                    })
+                    .catch(console.error);
+                }
+
+                featArtists = [];
+                rmxArtist = false;
                 artistArray = args[0].split(' & ');
                 rankPosition++; //Start by upping the rank position, so we can go from 1-whatever
                 rankArray.push(`${rankPosition}. ${m.content}`);
                 songRating = m.content.split(' '),
                 songName = songRating.splice(0, songRating.length - 1).join(" ");
                 songRating = songRating[0].slice(1, -1);
-
-                if (songName.includes('(feat') || songName.includes('(ft')) {
-                    songName = songName.split(` (f`);
-                    featArtists = songName[1].slice(3).slice(0, -1).split(' & ');
-
-                    if (songName[1].toLowerCase().includes('remix')) { 
-                        songName = [songName[0], songName[1].split(`[`)];
-                        rmxArtist = songName[1][1].slice(0, -7); 
-                        fullSongName = `${songName[0]} [${rmxArtist} Remix]`;
-                    } else {
-                        rmxArtist = false;
-                        fullSongName = false;
-                    }
-                    
-                    songName = songName[0];
-
-                    if (Array.isArray(featArtists)) {
-                        for (let i = 0; i < featArtists.length; i++) {
-                            featArtists[i] = featArtists[i].split(' ');
-                            featArtists[i] = featArtists[i].map(a => a.charAt(0).toUpperCase() + a.slice(1));
-                            featArtists[i] = featArtists[i].join(' ');
-        
-                            artistArray.push(featArtists[i]);
-                        }
-                    } else if (featArtists != false) {
-                        featArtists = featArtists.split(' ');
-                        featArtists = featArtists.map(a => a.charAt(0).toUpperCase() + a.slice(1));
-                        featArtists = featArtists.join(' ');
-        
-                        artistArray.push(featArtists);
-                    }
-                }
 
                 //Remix preparation
                 if (songName.toString().toLowerCase().includes('remix')) {
@@ -213,6 +223,39 @@ module.exports = {
                     rmxArtist = rmxArtist.join(' ');
                 }
 
+                if (songName.includes('(feat') || songName.includes('(ft')) {
+                    songName = songName.split(` (f`);
+                    featArtists = songName[1].slice(3).slice(0, -1).split(' & ');
+
+                    if (songName[1].toLowerCase().includes('remix')) { 
+                        songName = [songName[0], songName[1].split(`[`)];
+                        rmxArtist = songName[1][1].slice(0, -7); 
+                        fullSongName = `${songName[0]} [${rmxArtist} Remix]`;
+                    } else {
+                        rmxArtist = false;
+                        fullSongName = false;
+                    }
+                    
+                    songName = songName[0];
+
+                    if (Array.isArray(featArtists)) {
+                        for (let i = 0; i < featArtists.length; i++) {
+                            featArtists[i] = featArtists[i].split(' ');
+                            featArtists[i] = featArtists[i].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                            featArtists[i] = featArtists[i].join(' ');
+        
+                            artistArray.push(featArtists[i]);
+                        }
+                    } else if (featArtists != false) {
+                        featArtists = featArtists.split(' ');
+                        featArtists = featArtists.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                        featArtists = featArtists.join(' ');
+        
+                        artistArray.push(featArtists);
+                    }
+                }
+
+
                 if (songName.includes('(with')) {
                     songName = songName.split(' (with ');
                     let epSingleCollabArtists = songName[1].substring(0, songName[1].length - 1);
@@ -223,9 +266,9 @@ module.exports = {
 
                     if (Array.isArray(epSingleCollabArtists)) {
                         for (let i = 0; i < epSingleCollabArtists.length; i++) {
-                            epSingleCollabArtists = epSingleCollabArtists.split(' ');
-                            epSingleCollabArtists = epSingleCollabArtists.map(a => a.charAt(0).toUpperCase() + a.slice(1));
-                            epSingleCollabArtists = epSingleCollabArtists.join(' ');
+                            epSingleCollabArtists[i] = epSingleCollabArtists[i].split(' ');
+                            epSingleCollabArtists[i] = epSingleCollabArtists[i].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                            epSingleCollabArtists[i] = epSingleCollabArtists[i].join(' ');
 
                             artistArray.push(epSingleCollabArtists[i]);
                         }   
@@ -313,6 +356,8 @@ module.exports = {
                                 EP: args[1],
                                 Remixers: {},
                                 Image: thumbnailImage,
+                                Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                                Vocals: featArtists,
                             },
                         });
                     } else if(db.reviewDB.get(artistArray[i], `["${songName}"]`) === undefined) { //If the artist db exists, check if the song db doesn't exist
@@ -333,6 +378,8 @@ module.exports = {
                                 EP: args[1],
                                 Remixers: {},
                                 Image: thumbnailImage,
+                                Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                                Vocals: featArtists,
                             },
                         };
     
@@ -403,6 +450,8 @@ module.exports = {
                                 EP: args[1],
                                 Remixers: false,
                                 Image: thumbnailImage,
+                                Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                                Vocals: featArtists,
                             } : { // Create the SONG DB OBJECT, for the original artist
                                 EP: args[1],
                                 Remixers: {
@@ -417,6 +466,8 @@ module.exports = {
                                         },
                                         EP: args[1],
                                         Image: thumbnailImage,
+                                        Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                                        Vocals: featArtists,
                                     },
                                 },
                                 Image: thumbnailImage,
@@ -440,6 +491,8 @@ module.exports = {
                                 EP: args[1],
                                 Remixers: false,
                                 Image: thumbnailImage,
+                                Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                                Vocals: featArtists,
                             } : { // Create the SONG DB OBJECT, for the original artist
                                 EP: args[1],
                                 Remixers: {
@@ -454,6 +507,8 @@ module.exports = {
                                         },
                                         EP: args[1],
                                         Image: thumbnailImage,
+                                        Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                                        Vocals: featArtists,
                                     },
                                 },
                                 Image: thumbnailImage,
@@ -481,6 +536,8 @@ module.exports = {
                                 },
                                 EP: args[1],
                                 Image: thumbnailImage,
+                                Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                                Vocals: featArtists,
                             },
                         };
     
