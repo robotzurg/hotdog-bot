@@ -5,10 +5,12 @@ const { mailboxes } = require('../arrays.json');
 
 module.exports = {
     name: 'addreview',
+    type: 'Review DB',
     aliases: ['addreview', 'review', 'r'],
-    description: 'Create a song rating embed message!',
+    moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/794766841444433941',
+    description: 'Create a song review embed message!',
     args: true,
-    usage: '`<artist> | <song_name> | <rating> | <rate_desc> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>`',
+    usage: '<artist> | <song_name> | <rating> | <rate_desc> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>',
 	execute(message, args) {
 
         //Auto-adjustment to caps for each word
@@ -19,6 +21,32 @@ module.exports = {
         args[1] = args[1].split(' ');
         args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
         args[1] = args[1].join(' ');
+
+        let taggedUser = false;
+        let taggedMember = false;
+        let thumbnailImage;
+        
+        if (args.length < 4) {
+            return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
+        } else if (args.length === 5 || args.length === 6) {
+
+            if (message.mentions.users.first() === undefined) { // If there isn't a user mentioned, then we know it's 3 arguments with no user mention.
+                thumbnailImage = args[4];
+            } else if (args.length === 5) { // If there is a user mentioned but only 3 arguments, then we know no image.
+                taggedUser = message.mentions.users.first(); 
+                taggedMember = message.mentions.members.first();
+                is_mailbox = true;
+            } else if (args.length === 6) { // If there is both a user mentioned and 4 arguments, then we know both!
+                thumbnailImage = args[4];
+                taggedUser = message.mentions.users.first(); 
+                taggedMember = message.mentions.members.first();
+                is_mailbox = true;
+            }
+
+            if (thumbnailImage.includes('|')) {
+                return message.channel.send('Please make sure you don\'t have any **|** characters in your URL!');
+            }
+        }
 
         // [] check
         if (args[1].includes('Remix)')) {
@@ -72,7 +100,12 @@ module.exports = {
         if (args[1].includes('(feat')) {
 
             songName = args[1].split(` (feat`);
-            featArtists = songName[1].slice(2).slice(0, -1).split(' & ');
+            if (songName[1].includes(`[`)) {
+                featArtists = songName[1].split('[');
+                featArtists = featArtists[0].slice(2).slice(0, -2).split(' & ');
+            } else {
+                featArtists = songName[1].slice(2).slice(0, -1).split(' & ');
+            }
             if (args[1].toLowerCase().includes('remix')) { rmxArtist = songName[1].split(' [')[1].slice(0, -7); }
             songName = songName[0];
 
@@ -95,7 +128,12 @@ module.exports = {
         } else if (args[1].includes('(ft')) {
 
             songName = args[1].split(` (ft`);
-            featArtists = songName[1].slice(2).slice(0, -1).split(' & ');
+            if (songName[1].includes(`[`)) {
+                featArtists = songName[1].split('[');
+                featArtists = featArtists[0].slice(2).slice(0, -2).split(' & ');
+            } else {
+                featArtists = songName[1].slice(2).slice(0, -1).split(' & ');
+            }
             if (args[1].toLowerCase().includes('remix')) { rmxArtist = songName[1].split(' [')[1].slice(0, -7); }
             songName = songName[0];
 
@@ -139,9 +177,6 @@ module.exports = {
             songName = `${songName[0]} ${songName[1].slice(0, -1)}`;
         }
         
-        let taggedUser = false;
-        let taggedMember = false;
-        let thumbnailImage;
         if (db.reviewDB.has(artistArray[0])) {
             if (rmxArtist === false) {
                 thumbnailImage = db.reviewDB.get(artistArray[0], `["${songName}"].Image`);
@@ -152,28 +187,6 @@ module.exports = {
             }
         } else {
             thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
-        }
-
-        if (args.length < 4) {
-            return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
-        } else if (args.length === 5 || args.length === 6) {
-
-            if (message.mentions.users.first() === undefined) { // If there isn't a user mentioned, then we know it's 3 arguments with no user mention.
-                thumbnailImage = args[4];
-            } else if (args.length === 5) { // If there is a user mentioned but only 3 arguments, then we know no image.
-                taggedUser = message.mentions.users.first(); 
-                taggedMember = message.mentions.members.first();
-                is_mailbox = true;
-            } else if (args.length === 6) { // If there is both a user mentioned and 4 arguments, then we know both!
-                thumbnailImage = args[4];
-                taggedUser = message.mentions.users.first(); 
-                taggedMember = message.mentions.members.first();
-                is_mailbox = true;
-            }
-
-            if (thumbnailImage.includes('|')) {
-                return message.channel.send('Please make sure you don\'t have any **|** characters in your URL!');
-            }
         }
 
         const exampleEmbed = new Discord.MessageEmbed()

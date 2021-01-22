@@ -2,7 +2,8 @@ const db = require("../db.js");
 const { prefix } = require('../config.json');
 
 module.exports = {
-	name: 'setstatus',
+    name: 'setstatus',
+    type: 'Admin',
     description: 'Set the status of a current player in the Genre Roulette game. [Admin Only]',
     args: true,
     usage: '<key> <status>',

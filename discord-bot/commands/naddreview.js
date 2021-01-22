@@ -4,8 +4,10 @@ const { mailboxes } = require('../arrays.json');
 
 module.exports = {
     name: 'naddreview',
+    type: 'Review DB',
+    moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795728431983624213',
     aliases: ['naddreview', 'nreview'],
-    description: 'Create a song rating embed message!',
+    description: 'Create a song rating embed message! THIS DOES NOT ADD TO REVIEW DB.',
     args: true,
     usage: '`<artist> | <song_name> | <rating> | <review> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>`',
 	execute(message, args) {

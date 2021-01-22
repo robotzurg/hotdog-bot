@@ -2,6 +2,8 @@ const db = require("../db.js");
 
 module.exports = {
 	name: 'setartistimage',
+	type: 'Review DB',
+	moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795553872143187968',
 	aliases: ['setartistimage', 'setai'],
 	description: 'Set an image for an artist, for the database.',
 	args: true,

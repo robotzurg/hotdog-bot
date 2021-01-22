@@ -1,7 +1,8 @@
 const db = require("../db.js");
 
 module.exports = {
-	name: 'addsong',
+    name: 'addsong',
+    type: 'Admin',
     description: 'Add a song to Friday Listening! [ADMIN ONLY]',
     args: true,
     usage: '<artist> | <song> | <[op] friday>',

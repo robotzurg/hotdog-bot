@@ -50,7 +50,8 @@ cron.schedule('00 9 * * *', () => {
     }
 
     const channel = client.channels.cache.get('680864894006067263');
-    channel.send('Hello éveryone! I\'m here to téll you all today\'s **Pea of the Day** which is..............3.....');
+    channel.send('Hello everyone! I\'m here to tell you all today\'s **Pea of the Day** which is...');
+    
 }, {
     scheduled: true,
 });
@@ -67,6 +68,12 @@ client.on('message', async message => {
         message.guild.members.fetch(previousUser).then(a => a.roles.remove(myRole));
         message.guild.members.fetch(chosenUser).then(a => a.roles.add(myRole));
         message.channel.send(`<@${chosenUser}>! Congratulations!`);
+
+        const peachannel = client.channels.cache.get('802077628756525086');
+        peachannel.send(`<@${chosenUser}>, congrats on becoming pea of the day! In this chat, you'll get a chance to send a random message in this *s p e c i a l* chatroom!
+        \nYou only get a limited amount though, so make it count!`).then(msg => {
+            msg.delete({ timeout: 3.6e+6 });
+        });
 
         db.potdID.set('ID', chosenUser);
     }
@@ -125,6 +132,7 @@ client.on('message', async message => {
     }
 
     module.exports.updateGenreGameData = function() {
+        if (message.channel.type === 'dm') return;
         const genreIDmsg = db.genreID.get('genreID');
         const channeltoSearch = message.guild.channels.cache.find(ch => ch.name === 'listening-parties');
         (channeltoSearch.messages.fetch(genreIDmsg)).then((msg) => {
@@ -142,7 +150,7 @@ client.on('message', async message => {
 
     // Friday Music Listening Stuff
     if (message.content.startsWith(`${prefix}fridaylist`)) {
-        //if (message.member.hasPermission('ADMINISTRATOR')) {
+        if (message.member.hasPermission('ADMINISTRATOR')) {
             const introList = [];
             const singleList = [];
             const epList = [];
@@ -222,10 +230,11 @@ client.on('message', async message => {
             });
 
         message.delete();
-       //} else { return message.reply('You don\'t have the perms to use this command!'); }
+       } else { return message.reply('You don\'t have the perms to use this command!'); }
     }
 
     module.exports.updateFridayListData = function() {
+        if (message.channel.type === 'dm') return;
         const singleID = db.friID.get('singleID');
         const epID = db.friID.get('epID');
         const lpID = db.friID.get('lpID');

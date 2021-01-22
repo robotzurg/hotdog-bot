@@ -3,6 +3,7 @@ const db = require("../db.js");
 
 module.exports = {
     name: 'getreviewep',
+    type: 'Review DB',
     aliases: ['getreviewep', 'getrep', 'getreviewlp', 'getrlp'],
     description: 'Get an EP review from a user on the server that they have written! Putting nothing for <user> will replace <user> with yourself.',
     args: true,

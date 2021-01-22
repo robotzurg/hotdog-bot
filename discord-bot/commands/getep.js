@@ -3,8 +3,10 @@ const db = require("../db.js");
 
 module.exports = {
     name: 'getep',
+    type: 'Review DB',
+    moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795553162773266463',
     aliases: ['getep', 'getlp', 'gete'],
-    description: 'Get all the songs from a specific EP!',
+    description: 'Get all the songs from a specific EP and display them in an embed message.',
     args: true,
     usage: '<artist> | <ep>',
 	execute(message, args) {

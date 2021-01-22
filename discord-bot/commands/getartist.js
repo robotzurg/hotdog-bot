@@ -3,8 +3,10 @@ const db = require("../db.js");
 
 module.exports = {
     name: 'getartist',
+    type: 'Review DB',
+    moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795552571170357258',
     aliases: ['getartist', 'geta'],
-    description: 'Get all the songs from an artist.',
+    description: 'Get all the songs from an artist and display them in an embed message.',
     args: true,
     usage: '<artist>',
 	execute(message, args) {
@@ -19,6 +21,8 @@ module.exports = {
         const artistImage = artistObj.Image;
         let songArray = Object.keys(artistObj);
         songArray = songArray.filter(item => item !== 'Image');
+        songArray = songArray.filter(item => item !== 'Collab');
+        songArray = songArray.filter(item => item !== 'Vocals');
         const EPs = {};
         const EPsOnEmbed = [];
         const singleArray = [];

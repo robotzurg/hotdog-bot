@@ -2,7 +2,8 @@ const db = require("../db.js");
 const { genreList } = require('../arrays.json');
 
 module.exports = {
-	name: 'addmember',
+    name: 'addmember',
+    type: 'Admin',
     description: 'Adds a member to the genre roulette game! [Admin Only]',
     args: true,
     usage: '<user>',

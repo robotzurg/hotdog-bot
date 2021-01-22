@@ -2,7 +2,8 @@ const db = require("../db.js");
 
 module.exports = {
 	name: 'clearsongs',
-    description: 'Clear all Friday Listening Songs from the playlist [ADMIN ONLY]',
+	type: 'Admin',
+    description: 'Clear all Friday Listening Songs from the playlist. [ADMIN ONLY]',
 	execute(message) {
 		if (message.member.hasPermission('ADMINISTRATOR')) {
             db.friList.clear();

@@ -3,10 +3,12 @@ const db = require("../db.js");
 
 module.exports = {
     name: 'editreview',
+    type: 'Review DB',
+    moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/794771920717348874',
     aliases: ['editreview', 'editr'],
-    description: 'Edit a pre-existing review of your own.',
+    description: 'Edit a pre-existing review of your own in the review DB.',
     args: true,
-    usage: '<artist> | <song_name> | <rating> | <rate_desc>',
+    usage: '<artist> | <song_name> | <rating> | <rate_desc> | [op] <user_who_sent_song>',
 	execute(message, args) {
         
         //Auto-adjustment to caps for each word
@@ -17,6 +19,20 @@ module.exports = {
         args[1] = args[1].split(' ');
         args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
         args[1] = args[1].join(' ');
+
+        let taggedUser = false;
+        let taggedMember = false;
+        let userSentSong = false;
+
+        if (args.length === 5) {
+            userSentSong = args[4];
+            taggedUser = message.mentions.users.first(); 
+            taggedMember = message.mentions.members.first();
+        }
+
+        if (args[1].includes('Remix)')) {
+            return message.channel.send('Please use [] for remixes, not ()!');
+        }
 
         if (args[1].toLowerCase().includes('ep') || args[1].toLowerCase().includes('lp') || args[1].toLowerCase().includes('remixes')) {
             return message.channel.send('EPs/LPs/Remix Package review edits are not supported yet. Please contact Jeff to have your EP/LP/Remix Package review edited, if needed.');
@@ -64,6 +80,7 @@ module.exports = {
         let rname;
         let rreview;
         let rscore;
+
         for (let i = 0; i < artistArray.length; i++) {
             if (rmxArtist === false || artistArray[i] === rmxArtist) {
                 rname = db.reviewDB.get(artistArray[i], `["${songName}"].${message.author}.name`);
@@ -74,6 +91,8 @@ module.exports = {
 
                 db.reviewDB.set(artistArray[i], args[2], `["${songName}"].${message.author}.rate`);
                 rscore = db.reviewDB.get(artistArray[i], `["${songName}"].${message.author}.rate`);
+
+                db.reviewDB.set(artistArray[i], userSentSong, `["${songName}"].${message.author}.sentby`);
             } else {
                 rname = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"].${message.author}.name`);
                 if (rname === undefined) return message.channel.send('No review found.');
@@ -83,6 +102,8 @@ module.exports = {
 
                 db.reviewDB.set(artistArray[i], args[2], `["${songName}"].Remixers.["${rmxArtist}"].${message.author}.rate`);
                 rscore = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"].${message.author}.rate`);
+
+                db.reviewDB.set(artistArray[i], userSentSong, `["${songName}"].Remixers.["${rmxArtist}"].${message.author}.sentby`);
             }
         }
 
@@ -97,6 +118,10 @@ module.exports = {
                 exampleEmbed.setThumbnail(`${message.author.avatarURL({ format: "png", dynamic: false })}`);
             } else {
                 exampleEmbed.setThumbnail(thumbnailImage);
+            }
+
+            if (taggedUser != false) {
+                exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
             }
             
             exampleEmbed.addField('Rating: ', `**${rscore}**`, true);

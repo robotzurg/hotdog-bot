@@ -1,5 +1,6 @@
 module.exports = {
-	name: 'pog',
+    name: 'pog',
+    type: 'Fun',
 	description: 'Make the bot pog randomly!',
 	execute(message) {
         const pogchoices = [

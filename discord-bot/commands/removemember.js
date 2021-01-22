@@ -1,7 +1,8 @@
 const db = require("../db.js");
 
 module.exports = {
-	name: 'removemember',
+    name: 'removemember',
+    type: 'Admin',
     description: 'Remove a member from the genre roulette game. [Admin Only]',
     args: true,
     usage: '<user>',

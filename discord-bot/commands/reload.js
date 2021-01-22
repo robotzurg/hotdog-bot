@@ -1,6 +1,7 @@
 module.exports = {
-	name: 'reload',
-	description: 'Reloads a command.',
+    name: 'reload',
+    type: 'Bot',
+	description: 'Reloads a command. You don\'t need to use this.',
 	execute(message, args) {
 		const commandName = args[0].toLowerCase();
         const command = message.client.commands.get(commandName)

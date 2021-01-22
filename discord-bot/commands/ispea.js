@@ -2,7 +2,8 @@
 const db = require("../db.js");
 
 module.exports = {
-	name: 'ispea',
+    name: 'ispea',
+    type: 'Fun',
     description: 'Find out if someone is pea!',
     args: true,
     usage: '<user>',

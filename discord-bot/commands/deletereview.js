@@ -2,8 +2,10 @@ const db = require("../db.js");
 
 module.exports = {
     name: 'deletereview',
+    type: 'Review DB',
+    moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795552550249037855',
     aliases: ['deletereview', 'deleter', 'delreview', 'delr'],
-    description: 'Edit a pre-existing review of your own.',
+    description: 'Edit a pre-existing review of your own in the review DB.',
     args: true,
     usage: '<artist> | <song_name>',
     execute(message, args) {

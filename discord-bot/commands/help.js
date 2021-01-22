@@ -1,20 +1,47 @@
 const { prefix } = require('../config.json');
+const Discord = require('discord.js');
 
 module.exports = {
-	name: 'help',
+    name: 'help',
+    type: 'Support',
 	description: 'List all of my commands or info about a specific command.',
 	usage: '[command name]',
 	cooldown: 1,
 	execute(message, args) {
-		const data = [];
+        const data = [];
+        const support = [];
+        const admin = [];
+        const reviewdb = [];
+        const fun = [];
+        const botcmds = [];
         const { commands } = message.client;
 
         if (!args.length) {
-            data.push('Here\'s a list of all my commands:');
-            data.push(commands.map(command => command.name).join(', '));
-            data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
+            data.push(commands.map(command => command.name));
 
-            return message.author.send(data, { split: true })
+            for (let i = 0; i < data[0].length; i++) {
+                const cmdtype = commands.get(data[0][i]).type;
+
+                switch (cmdtype) {
+                    case "Bot": botcmds.push(data[0][i]); break;
+                    case 'Support': support.push(data[0][i]); break;
+                    case 'Review DB': reviewdb.push(data[0][i]); break;
+                    case "Admin": admin.push(data[0][i]); break;
+                    case 'Fun': fun.push(data[0][i]); break;
+                }
+            }
+
+            const exampleEmbed = new Discord.MessageEmbed()
+            .setColor(`${message.member.displayHexColor}`)
+            .setTitle(`Hotdog Water Bot Commmands`)
+            .setFooter('You can send !help <command_name> to get info on a specific command.')
+            .addField('Support Commands:', support)
+            .addField('Review DB Commands:', reviewdb)
+            .addField('Fun Commands:', fun)
+            .addField('Admin Commands:', admin)
+            .addField('Internal Commands (you shouldn\'t need to use these):', botcmds);
+
+            return message.author.send(exampleEmbed)
                 .then(() => {
                     if (message.channel.type === 'dm') return;
                     message.reply('I\'ve sent you a DM with all my commands!');
@@ -35,11 +62,19 @@ module.exports = {
         data.push(`**Name:** ${command.name}`);
 
         if (command.description) data.push(`**Description:** ${command.description}`);
-        if (command.usage) data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
+        if (command.usage) data.push(`**Usage:** \`${prefix}${command.name} ${command.usage}\``);
 
-        data.push(`**Cooldown:** ${command.cooldown || 0} second(s)`);
+        const specCommandEmbed = new Discord.MessageEmbed()
+            .setColor(`${message.member.displayHexColor}`)
+            .setTitle(`${prefix}${command.name}`);
+            specCommandEmbed.setDescription(`${command.description}`)
+            .addField('Example Usage:', `\`${prefix}${command.name} ${command.usage}\``);
+            if (command.type === 'Review DB') {
+                specCommandEmbed.addField(`For more info:`, command.moreinfo);
+            }
+            
 
-        message.channel.send(data, { split: true });
+        message.channel.send(specCommandEmbed);
 
 	},
 };

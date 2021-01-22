@@ -3,6 +3,8 @@ const db = require("../db.js");
 
 module.exports = {
     name: 'getreview',
+    type: 'Review DB',
+    moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/794775861592064031',
     aliases: ['getreview', 'getr'],
     description: 'Get a review from a user on the server that they have written! Putting nothing for <user> will replace <user> with yourself.',
     args: true,

@@ -3,7 +3,9 @@ const db = require("../db.js");
 
 module.exports = {
     name: 'getart',
-    description: 'Get a song art',
+    type: 'Review DB',
+    moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795553872143187968',
+    description: 'Get a single art.',
     args: true,
     usage: '<artist> | <song>',
 	execute(message, args) {

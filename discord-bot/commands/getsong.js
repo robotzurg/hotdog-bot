@@ -3,8 +3,10 @@ const db = require("../db.js");
 
 module.exports = {
     name: 'getsong',
+    type: 'Review DB',
     aliases: ['getsong', 'gets'],
-    description: 'Get all the data about a song.',
+    moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795552783960506370',
+    description: 'Get all the data about a song and displays it in an embed message.',
     args: true,
     usage: '<artist> | <song>',
 	execute(message, args) {

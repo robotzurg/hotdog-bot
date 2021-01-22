@@ -3,7 +3,8 @@ const { genreList } = require('../arrays.json');
 
 module.exports = {
 	name: 'reset',
-    description: 'Reset the game to base level with all current players.',
+	type: 'Admin',
+    description: 'Reset the game to base level with all current players. [ADMIN ONLY]',
 	execute(message) {
 		if (message.member.hasPermission('ADMINISTRATOR')) {
 		

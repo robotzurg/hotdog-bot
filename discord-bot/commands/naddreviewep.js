@@ -4,8 +4,10 @@ const { mailboxes } = require('../arrays.json');
 
 module.exports = {
     name: 'naddreviewep',
+    type: 'Review DB',
+    moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795728431983624213',
     aliases: ['naddreviewep', 'nreviewep'],
-    description: '(Main Method) Create an EP/LP rating embed message! Use !end to end the chain. (DATABASE TESTING VERSION THIS CANNOT BE USED ATM)',
+    description: '(Main Method) Create an EP/LP rating embed message! Use !end to end the chain. THIS DOES NOT ADD TO THE REVIEW DB.',
     args: true,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {

@@ -1,7 +1,8 @@
 const Trello = require('trello-node-api')('0b42eacc9105869df41592c003c09106', '299fc89e593775575a36b1cc7dec38084c7ebcd60dc7156241c9781a9c8f4864');
 
 module.exports = {
-	name: 'bugreport',
+    name: 'bugreport',
+    type: 'Support',
     description: 'Report a bug in the bot.',
     args: true,
     usage: `<bug> | <description_of_bug>`,

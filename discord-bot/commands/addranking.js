@@ -4,8 +4,10 @@ const { mailboxes } = require('../arrays.json');
 
 module.exports = {
     name: 'addranking',
+    type: 'Review DB',
+    moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/794770398041997324',
     aliases: ['addranking', 'rank', `rankEP`, `addrankingep`, 'ra'],
-    description: 'Create a ranking review of an EP/LP/Compilation/Remix Package or really anything.',
+    description: 'Create a ranking embed of an EP/LP.',
     args: true,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {

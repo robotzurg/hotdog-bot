@@ -2,8 +2,10 @@ const Discord = require('discord.js');
 const db = require("../db.js");
 
 module.exports = {
-    name: 'artistranking',
-    aliases: ['artistranking', 'artistrank'],
+    name: 'artistrank',
+    type: 'Review DB',
+    moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795553872143187968',
+    aliases: ['artistrank', 'artistranking'],
     description: 'Look at a ranking of all the artists songs, based on the average ratings in the server!',
     args: true,
     usage: '<artist>',
