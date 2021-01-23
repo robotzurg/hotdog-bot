@@ -24,7 +24,7 @@ module.exports = {
 
         let taggedUser = false;
         let taggedMember = false;
-        let thumbnailImage;
+        let thumbnailImage = false;
         
         if (args.length < 4) {
             return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
@@ -46,6 +46,7 @@ module.exports = {
             if (thumbnailImage.includes('|')) {
                 return message.channel.send('Please make sure you don\'t have any **|** characters in your URL!');
             }
+
         }
 
         // [] check
@@ -177,7 +178,7 @@ module.exports = {
             songName = `${songName[0]} ${songName[1].slice(0, -1)}`;
         }
         
-        if (db.reviewDB.has(artistArray[0])) {
+        if (db.reviewDB.has(artistArray[0]) && thumbnailImage === false) {
             if (rmxArtist === false) {
                 thumbnailImage = db.reviewDB.get(artistArray[0], `["${songName}"].Image`);
                 if (thumbnailImage === undefined || thumbnailImage === false || thumbnailImage === null) thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
@@ -185,7 +186,7 @@ module.exports = {
                 thumbnailImage = db.reviewDB.get(artistArray[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`);
                 if (thumbnailImage === undefined || thumbnailImage === false || thumbnailImage === null) thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
             }
-        } else {
+        } else if (thumbnailImage === false) {
             thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
         }
 
