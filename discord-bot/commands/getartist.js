@@ -31,7 +31,7 @@ module.exports = {
         for (let i = 0; i < songArray.length; i++) { //EP preparation
             const songEP = db.reviewDB.get(args[0], `["${songArray[i]}"].EP`);
             const songObj = db.reviewDB.get(args[0], `["${songArray[i]}"]`);
-            const reviewNum = Object.keys(songObj).length - 3;
+            const reviewNum = Object.keys(songObj).length - 5;
             if (songEP != false) {
                 if (EPs[`${songEP}`] === undefined) {
                     EPs[`${songEP}`] = { [songArray[i]]: reviewNum } ;

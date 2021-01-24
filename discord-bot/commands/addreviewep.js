@@ -372,6 +372,7 @@ module.exports = {
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
+                                msg_id: false,
                             },
                             EP: args[1],
                             Remixers: {},
@@ -393,6 +394,7 @@ module.exports = {
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
+                                msg_id: false,
                             },
                             EP: args[1],
                             Remixers: {},
@@ -417,6 +419,7 @@ module.exports = {
                             review: songReview,
                             rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
+                            msg_id: false,
                         },
                     };
 
@@ -436,6 +439,7 @@ module.exports = {
                             rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
                             EPOverall: false,
+                            msg_id: false,
                         },
                     };
 
@@ -463,6 +467,7 @@ module.exports = {
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
+                                msg_id: false,
                             },
                             EP: args[1],
                             Remixers: false,
@@ -479,6 +484,7 @@ module.exports = {
                                         rate: songRating,
                                         sentby: taggedUser === false ? false : taggedUser.id,
                                         EPOverall: false,
+                                        msg_id: false,
                                     },
                                     Image: thumbnailImage,
                                     EP: args[1],
@@ -502,6 +508,7 @@ module.exports = {
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
+                                msg_id: false,
                             },
                             EP: args[1],
                             Remixers: false,
@@ -518,6 +525,7 @@ module.exports = {
                                         rate: songRating,
                                         sentby: taggedUser === false ? false : taggedUser.id,
                                         EPOverall: false,
+                                        msg_id: false,
                                     },
                                     Image: thumbnailImage,
                                     EP: args[1],
@@ -546,6 +554,7 @@ module.exports = {
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
+                                msg_id: false,
                             },
                             EP: args[1],
                             Image: thumbnailImage,
@@ -568,6 +577,7 @@ module.exports = {
                             review: songReview,
                             rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
+                            msg_id: false,
                         },
                     };
 
@@ -594,6 +604,7 @@ module.exports = {
                             rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
                             EPOverall: false,
+                            msg_id: false,
                         },
                     };
 

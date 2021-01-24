@@ -185,7 +185,7 @@ client.on('message', async message => {
                 }
             });
 
-            db.friID.set(`Week`, 6);
+            db.friID.inc(`Week`);
 
             compList.join('\n');
             compList.unshift('**Compilations**');

@@ -1,4 +1,5 @@
 const db = require("../db.js");
+const forAsync = require('for-async');
 
 module.exports = {
     name: 'setimage',
@@ -32,7 +33,8 @@ module.exports = {
 			return message.channel.send('Please only use a direct image link, or an attachment, not both.');
 		}
 
-		let songName;
+        let songName = args[1];
+        let remixsongName;
 		let rmxArtist;
 		let featArtists = [];
 		let newSong = false;
@@ -96,13 +98,18 @@ module.exports = {
 
         }
 
-		if (args[1].toLowerCase().includes('remix')) {
-            songName = args[1].substring(0, args[1].length - 7).split(' (')[0];
-            rmxArtist = args[1].substring(0, args[1].length - 7).split(' (')[1];
-        } else {
-            songName = args[1];
-            rmxArtist = false;
-		}
+		//Remix preparation
+        if (songName.toLowerCase().includes('remix')) {
+            remixsongName = songName;
+            songName = args[1].split(` [`)[0];
+            rmxArtist = args[1].split(' [')[1].slice(0, -7);
+        } else if (songName.toLowerCase().includes('bootleg]')) {
+            songName = args[1].substring(0, args[1].length - 9).split(' [')[0];
+            rmxArtist = args[1].substring(0, args[1].length - 9).split(' [')[1];
+        } else if (songName.toLowerCase().includes('flip]') || songName.toLowerCase().includes('edit]')) {
+            songName = args[1].substring(0, args[1].length - 6).split(' [')[0];
+            rmxArtist = args[1].substring(0, args[1].length - 6).split(' [')[1];
+        }
 
 		let artistArray;
 
@@ -162,7 +169,7 @@ module.exports = {
 			for (let i = 0; i < artistArray.length; i++) {
 				// If the artist db doesn't exist
                 if (db.reviewDB.get(artistArray[i]) === undefined) {
-					if (artistArray[i] === rmxArtist) {songName = args[1];} //Set the songname to the full name for the remix artist
+					if (artistArray[i] === rmxArtist) {songName = remixsongName;} //Set the songname to the full name for the remix artist
 					newSong = true;
                     console.log('Artist Not Detected!');
                     db.reviewDB.set(artistArray[i], { 
@@ -185,7 +192,7 @@ module.exports = {
                         },
                     });
 				} else if (db.reviewDB.get(artistArray[i], `["${songName}"]`) === true) { //If the artist db exists, check if the song db doesn't exist
-					if (artistArray[i] === rmxArtist) {songName = args[1];} //Set the songname to the full name for the remix artist
+					if (artistArray[i] === rmxArtist) {songName = remixsongName;} //Set the songname to the full name for the remix artist
 					newSong = true;
 					console.log('Song Not Detected!');
 					const artistObj = db.reviewDB.get(artistArray[i]);
@@ -228,10 +235,61 @@ module.exports = {
 						db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Remixers.["${rmxArtist}"].Image`);
 					}
 				} else if (artistArray[i] === rmxArtist) {
-					db.reviewDB.set(artistArray[i], thumbnailImage, `["${args[1]}"].Image`);
+					db.reviewDB.set(artistArray[i], thumbnailImage, `["${remixsongName}"].Image`);
 				}
 			}
 		}
+
+        // Fix artwork on all reviews for this song
+        const imageSongObj = db.reviewDB.get(artistArray[0], `["${songName}"]`);
+        let remixerSongObj = db.reviewDB.get(artistArray[0], `["${songName}"].Remixers.["${rmxArtist}"]`);
+        if (remixerSongObj === undefined) { remixerSongObj = []; }
+        let msgstoEdit = [];
+
+        let userArray = Object.keys(imageSongObj);
+        userArray = userArray.filter(item => item !== 'Image');
+        userArray = userArray.filter(item => item !== 'Collab');
+        userArray = userArray.filter(item => item !== 'Vocals');
+        userArray = userArray.filter(item => item !== 'Remixers');
+        userArray = userArray.filter(item => item !== 'EP');
+
+        if (remixerSongObj.length != 0) {
+            userArray = Object.keys(remixerSongObj);
+            userArray = userArray.filter(item => item !== 'Image');
+            userArray = userArray.filter(item => item !== 'Collab');
+            userArray = userArray.filter(item => item !== 'Vocals');
+            userArray = userArray.filter(item => item !== 'EP');
+        }
+
+
+        userArray.forEach(user => {
+            if (rmxArtist === false) {
+                msgstoEdit.push(db.reviewDB.get(artistArray[0], `["${songName}"].["${user}"].msg_id`));
+            } else {
+                msgstoEdit.push(db.reviewDB.get(artistArray[0], `["${songName}"].Remixers.["${rmxArtist}"].["${user}"].msg_id`));
+            }
+        });
+
+        msgstoEdit = msgstoEdit.filter(item => item !== undefined);
+        if (msgstoEdit.length > 0) { 
+            let channelsearch = message.guild.channels.cache.get('680877758909382757');
+
+            forAsync(msgstoEdit, function(item) {
+                return new Promise(function(resolve) {
+                    let msgtoEdit = item;
+                    let msgEmbed;
+                    let embed_data;
+
+                    channelsearch.messages.fetch(`${msgtoEdit}`).then(msg => {
+                        embed_data = msg.embeds;
+                        msgEmbed = embed_data[0];
+                        msgEmbed.thumbnail.url = thumbnailImage;
+                        msg.edit(msgEmbed);
+                        resolve();
+                    });
+                });
+            });
+        }
 
 		return message.channel.send(`Image for ${args[0]} - ${args[1]} changed.`);
 	},

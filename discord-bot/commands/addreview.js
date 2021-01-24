@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const db = require("../db.js");
 const { prefix } = require('../config.json');
 const { mailboxes } = require('../arrays.json');
+const forAsync = require('for-async');
 
 module.exports = {
     name: 'addreview',
@@ -75,6 +76,7 @@ module.exports = {
             return message.channel.send('You can only use this command to rank singles/single remixes.\nPlease use `!addReviewEP` for EP Reviews/Rankings!');
         }
 
+        //Split up the artists into an array
         let artistArray;
 
         if (!args[0].includes(',')) {
@@ -89,6 +91,7 @@ module.exports = {
             }
         }
 
+        //Start doing things
         const command = message.client.commands.get('addreview');
         let is_mailbox = mailboxes.includes(message.channel.name);
 
@@ -169,13 +172,71 @@ module.exports = {
             rmxArtist = args[1].substring(0, args[1].length - 6).split(' [')[1];
         }
 
-        console.log(songName);
-        console.log(rmxArtist);
-
         //Adjust (VIP)
         if (songName.includes('(VIP)')) {
             songName = songName.split(' (');
             songName = `${songName[0]} ${songName[1].slice(0, -1)}`;
+        }
+
+        let imageSongObj;
+        let remixerSongObj;
+        let msgstoEdit;
+
+        // Fix artwork on all reviews for this song
+        if (thumbnailImage != false && db.reviewDB.has(artistArray[0])) {
+            imageSongObj = db.reviewDB.get(artistArray[0], `["${songName}"]`);
+            remixerSongObj = db.reviewDB.get(artistArray[0], `["${songName}"].Remixers.["${rmxArtist}"]`);
+            if (remixerSongObj === undefined) { remixerSongObj = []; }
+
+            if (imageSongObj != undefined) {
+                msgstoEdit = [];
+
+                let userArray = Object.keys(imageSongObj);
+                userArray = userArray.filter(item => item !== 'Image');
+                userArray = userArray.filter(item => item !== 'Collab');
+                userArray = userArray.filter(item => item !== 'Vocals');
+                userArray = userArray.filter(item => item !== 'Remixers');
+                userArray = userArray.filter(item => item !== 'EP');
+
+                if (remixerSongObj.length != 0) {
+                    userArray = Object.keys(remixerSongObj);
+                    userArray = userArray.filter(item => item !== 'Image');
+                    userArray = userArray.filter(item => item !== 'Collab');
+                    userArray = userArray.filter(item => item !== 'Vocals');
+                    userArray = userArray.filter(item => item !== 'EP');
+                }
+
+                if (userArray.length != 0) {
+                    userArray.forEach(user => {
+                        if (rmxArtist === false) {
+                            msgstoEdit.push(db.reviewDB.get(artistArray[0], `["${songName}"].["${user}"].msg_id`));
+                        } else {
+                            msgstoEdit.push(db.reviewDB.get(artistArray[0], `["${songName}"].Remixers.["${rmxArtist}"].["${user}"].msg_id`));
+                        }
+                    });
+
+                    msgstoEdit = msgstoEdit.filter(item => item !== undefined);
+                    if (msgstoEdit.length > 0) { 
+                        let channelsearch = message.guild.channels.cache.get('680877758909382757');
+
+                        forAsync(msgstoEdit, function(item) {
+                            return new Promise(function(resolve) {
+                                let msgtoEdit = item;
+                                let msgEmbed;
+                                let embed_data;
+
+                                channelsearch.messages.fetch(`${msgtoEdit}`).then(msg => {
+                                    embed_data = msg.embeds;
+                                    msgEmbed = embed_data[0];
+                                    msgEmbed.thumbnail.url = thumbnailImage;
+                                    msg.edit(msgEmbed);
+                                    resolve();
+                                });
+                            });
+                        });
+                    }
+                }
+            }
         }
         
         if (db.reviewDB.has(artistArray[0]) && thumbnailImage === false) {
@@ -211,6 +272,9 @@ module.exports = {
             thumbnailImage = false;
         }
 
+        // For the image changing that happens later.
+        let imageSongName = songName;
+
         if (rmxArtist === false || rmxArtist === undefined) {
             for (let i = 0; i < artistArray.length; i++) {
                 // If the artist db doesn't exist
@@ -223,6 +287,7 @@ module.exports = {
                                 rate: rating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: -1,
+                                msg_id: false,
                             },
                             EP: false, 
                             Remixers: {},
@@ -245,6 +310,7 @@ module.exports = {
                                 rate: rating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: -1,
+                                msg_id: false,
                             },
                             EP: false, 
                             Remixers: {},
@@ -273,6 +339,7 @@ module.exports = {
                             rate: rating,
                             sentby: taggedUser === false ? false : taggedUser.id,
                             rankPosition: -1,
+                            msg_id: false,
                         },
                     };
 
@@ -298,6 +365,7 @@ module.exports = {
                                 rate: rating,  
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: -1,
+                                msg_id: false,
                             },
                             EP: false,
                             Remixers: {},
@@ -314,6 +382,7 @@ module.exports = {
                                         rate: rating,  
                                         sentby: taggedUser === false ? false : taggedUser.id,
                                         rankPosition: -1,
+                                        msg_id: false,
                                     },
                                     Image: thumbnailImage,
                                     Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
@@ -336,6 +405,7 @@ module.exports = {
                                 rate: rating, 
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: -1,
+                                msg_id: false,
                             },
                             EP: false,
                             Remixers: {},
@@ -352,6 +422,7 @@ module.exports = {
                                         rate: rating,  
                                         sentby: taggedUser === false ? false : taggedUser.id,
                                         rankPosition: -1,
+                                        msg_id: false,
                                     },
                                     Image: thumbnailImage,
                                     Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
@@ -380,6 +451,7 @@ module.exports = {
                                 rate: rating,  
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: -1,
+                                msg_id: false,
                             },
                             Image: thumbnailImage,
                             Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
@@ -404,6 +476,7 @@ module.exports = {
                             rate: rating,
                             sentby: taggedUser === false ? false : taggedUser.id,
                             rankPosition: -1,
+                            msg_id: false,
                         },
                     };
 
@@ -420,6 +493,12 @@ module.exports = {
             }
         }
         // Send the embed rate message
-        return message.channel.send(exampleEmbed); 
+        return message.channel.send(exampleEmbed).then(msg => {
+            if (rmxArtist === false) {
+                db.reviewDB.set(artistArray[0], msg.id, `["${imageSongName}"].["<@${message.author.id}>"].msg_id`); 
+            } else {
+                db.reviewDB.set(artistArray[0], msg.id, `["${imageSongName}"].Remixers.["${rmxArtist}"].["<@${message.author.id}>"].msg_id`); 
+            }
+        }); 
     },
 };
