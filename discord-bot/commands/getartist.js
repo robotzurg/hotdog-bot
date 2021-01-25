@@ -27,11 +27,12 @@ module.exports = {
         const EPsOnEmbed = [];
         const singleArray = [];
         const remixArray = [];
+        let reviewNum;
 
         for (let i = 0; i < songArray.length; i++) { //EP preparation
             const songEP = db.reviewDB.get(args[0], `["${songArray[i]}"].EP`);
             const songObj = db.reviewDB.get(args[0], `["${songArray[i]}"]`);
-            const reviewNum = Object.keys(songObj).length - 5;
+            reviewNum = Object.keys(songObj).length - 5;
             if (songEP != false) {
                 if (EPs[`${songEP}`] === undefined) {
                     EPs[`${songEP}`] = { [songArray[i]]: reviewNum } ;
@@ -50,7 +51,15 @@ module.exports = {
             for (let i = 0; i < songArray.length; i++) {
                 const songObj = db.reviewDB.get(args[0], `["${songArray[i]}"]`);
                 const songEP = db.reviewDB.get(args[0], `["${songArray[i]}"].EP`);
-                const reviewNum = Object.keys(songObj).length - 3;
+                reviewNum = Object.keys(songObj);
+
+                reviewNum = reviewNum.filter(e => e !== 'Remixers');
+                reviewNum = reviewNum.filter(e => e !== 'EP');
+                reviewNum = reviewNum.filter(e => e !== 'Collab');
+                reviewNum = reviewNum.filter(e => e !== 'Image');
+                reviewNum = reviewNum.filter(e => e !== 'Vocals');
+
+                reviewNum = reviewNum.length;
 
                 if (songEP === false || songEP === undefined) {
 
