@@ -59,7 +59,7 @@ module.exports = {
                     }
 
                     epnum++;
-                    const reviewNum = Object.keys(songObj).length - 3;
+                    const reviewNum = Object.keys(songObj).length - 5;
                     exampleEmbed.addField(`**${epnum}. ${songArray[i]}**`, `\`${reviewNum} review${reviewNum > 1 ? 's' : ''}\``);
                 }
             }

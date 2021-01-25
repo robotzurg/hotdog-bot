@@ -6,7 +6,7 @@ module.exports = {
     name: 'naddreview',
     type: 'Review DB',
     moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795728431983624213',
-    aliases: ['naddreview', 'nreview'],
+    aliases: ['naddreview', 'nreview', 'nadd'],
     description: 'Create a song rating embed message! THIS DOES NOT ADD TO REVIEW DB.',
     args: true,
     usage: '`<artist> | <song_name> | <rating> | <review> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>`',
@@ -86,7 +86,7 @@ module.exports = {
         const exampleEmbed = new Discord.MessageEmbed()
         .setColor(`${message.member.displayHexColor}`)
         .setTitle(`${args[0]} - ${args[1]}`)
-        .setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review` : `${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+        .setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review (Not added to DB)` : `${message.member.displayName}'s review (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
         exampleEmbed.setDescription(review)
         .setThumbnail(thumbnailImage)
         .addField('Rating: ', `**${rating}**`, true);

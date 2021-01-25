@@ -14,6 +14,8 @@ module.exports = {
     usage: '<artist> | <song_name> | <rating> | <rate_desc> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>',
 	execute(message, args) {
 
+        let is_mailbox = mailboxes.includes(message.channel.name);
+
         //Auto-adjustment to caps for each word
         args[0] = args[0].split(' ');
         args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
@@ -44,8 +46,10 @@ module.exports = {
                 is_mailbox = true;
             }
 
-            if (thumbnailImage.includes('|')) {
-                return message.channel.send('Please make sure you don\'t have any **|** characters in your URL!');
+            if (thumbnailImage != false) {
+                if (thumbnailImage.includes('|')) {
+                    return message.channel.send('Please make sure you don\'t have any **|** characters in your URL!');
+                }
             }
 
         }
@@ -93,7 +97,6 @@ module.exports = {
 
         //Start doing things
         const command = message.client.commands.get('addreview');
-        let is_mailbox = mailboxes.includes(message.channel.name);
 
         let songName = args[1];
         let featArtists = [];

@@ -37,6 +37,7 @@ module.exports = {
         let taggedMember = false;
         let thumbnailImage = false;
         let msgtoEdit;
+        let message_id;
 
         if (args.length < 2) {
             return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
@@ -56,6 +57,43 @@ module.exports = {
             }
         }
         message.delete(message);
+
+        let artistArray;
+
+        if (!args[0].includes(',')) {
+            artistArray = args[0].split(' & ');
+        } else {
+            artistArray = args[0].split(', ');
+            if (artistArray[artistArray.length - 1].includes('&')) {
+                let iter2 = artistArray.pop();
+                iter2 = iter2.split(' & ');
+                iter2 = iter2.map(a => artistArray.push(a));
+                console.log(iter2);
+            }
+        }
+
+        if (db.reviewDB.has(artistArray[0]) && thumbnailImage === false) {
+
+                let iCheckSongObj = db.reviewDB.get(artistArray[0]);
+                iCheckSongObj = Object.keys(iCheckSongObj);
+                iCheckSongObj = iCheckSongObj.filter(e => e !== 'Image');
+
+                if (iCheckSongObj.length != 0) {
+                    for (let i = 0; i < iCheckSongObj.length; i++) {
+                        if (db.reviewDB.get(artistArray[0], `["${iCheckSongObj[i]}"].EP`) != args[1]) return;
+                        thumbnailImage = db.reviewDB.get(artistArray[0], `["${iCheckSongObj[i]}"].Image`);
+
+                        if (thumbnailImage === undefined || thumbnailImage === false || thumbnailImage === null) {
+                            thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+                        } else {
+                            break;
+                        }
+                    }
+                }
+
+        } else if (thumbnailImage === false) {
+            thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+        }
 
         let exampleEmbed = new Discord.MessageEmbed()
         .setColor(`${message.member.displayHexColor}`)
@@ -82,6 +120,7 @@ module.exports = {
         (message.channel.send(exampleEmbed)).then((msg) => {
             msgtoEdit = msg;
             msg.react('👂');
+            message_id = msg.id;
         });
 
         const filter = m => m.author.id === message.author.id && (m.content.includes('(') || m.content.includes('[') || m.content.toLowerCase().includes('overall') || m.content.includes('!end'));
@@ -96,19 +135,6 @@ module.exports = {
         let rmxArtist;
         let featArtists = false;
         let overallString = -1;
-        let artistArray;
-
-        if (!args[0].includes(',')) {
-            artistArray = args[0].split(' & ');
-        } else {
-            artistArray = args[0].split(', ');
-            if (artistArray[artistArray.length - 1].includes('&')) {
-                let iter2 = artistArray.pop();
-                iter2 = iter2.split(' & ');
-                iter2 = iter2.map(a => artistArray.push(a));
-                console.log(iter2);
-            }
-        }
         
         collector.on('collect', m => {
 
@@ -372,7 +398,7 @@ module.exports = {
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
-                                msg_id: false,
+                                msg_id: message_id,
                             },
                             EP: args[1],
                             Remixers: {},
@@ -394,7 +420,7 @@ module.exports = {
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
-                                msg_id: false,
+                                msg_id: message_id,
                             },
                             EP: args[1],
                             Remixers: {},
@@ -419,7 +445,7 @@ module.exports = {
                             review: songReview,
                             rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
-                            msg_id: false,
+                            msg_id: message_id,
                         },
                     };
 
@@ -439,7 +465,7 @@ module.exports = {
                             rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
                             EPOverall: false,
-                            msg_id: false,
+                            msg_id: message_id,
                         },
                     };
 
@@ -467,7 +493,7 @@ module.exports = {
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
-                                msg_id: false,
+                                msg_id: message_id,
                             },
                             EP: args[1],
                             Remixers: false,
@@ -484,7 +510,7 @@ module.exports = {
                                         rate: songRating,
                                         sentby: taggedUser === false ? false : taggedUser.id,
                                         EPOverall: false,
-                                        msg_id: false,
+                                        msg_id: message_id,
                                     },
                                     Image: thumbnailImage,
                                     EP: args[1],
@@ -508,7 +534,7 @@ module.exports = {
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
-                                msg_id: false,
+                                msg_id: message_id,
                             },
                             EP: args[1],
                             Remixers: false,
@@ -525,7 +551,7 @@ module.exports = {
                                         rate: songRating,
                                         sentby: taggedUser === false ? false : taggedUser.id,
                                         EPOverall: false,
-                                        msg_id: false,
+                                        msg_id: message_id,
                                     },
                                     Image: thumbnailImage,
                                     EP: args[1],
@@ -554,7 +580,7 @@ module.exports = {
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 EPOverall: false,
-                                msg_id: false,
+                                msg_id: message_id,
                             },
                             EP: args[1],
                             Image: thumbnailImage,
@@ -577,7 +603,7 @@ module.exports = {
                             review: songReview,
                             rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
-                            msg_id: false,
+                            msg_id: message_id,
                         },
                     };
 
@@ -604,7 +630,7 @@ module.exports = {
                             rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
                             EPOverall: false,
-                            msg_id: false,
+                            msg_id: message_id,
                         },
                     };
 

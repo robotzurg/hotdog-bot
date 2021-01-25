@@ -6,7 +6,7 @@ module.exports = {
     name: 'naddreviewep',
     type: 'Review DB',
     moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795728431983624213',
-    aliases: ['naddreviewep', 'nreviewep'],
+    aliases: ['naddreviewep', 'nreviewep', 'naddep'],
     description: '(Main Method) Create an EP/LP rating embed message! Use !end to end the chain. THIS DOES NOT ADD TO THE REVIEW DB.',
     args: true,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
@@ -46,11 +46,11 @@ module.exports = {
         .setTitle(`${args[0]} - ${args[1]}`);
 
         if (args[1].includes('EP') || args[1].includes('The Remixes')) {
-            exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox EP review` : `${message.member.displayName}'s EP review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+            exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox EP review (Not added to DB)` : `${message.member.displayName}'s EP review (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
         } else if (args[1].includes('LP')) {
-            exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox LP review` : `${message.member.displayName}'s LP review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+            exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox LP review (Not added to DB)` : `${message.member.displayName}'s LP review (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
         } else {
-            exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review` : `${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+            exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review (Not added to DB)` : `${message.member.displayName}'s review (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
         }
 
         if (thumbnailImage === false) {
@@ -166,11 +166,11 @@ module.exports = {
             .setTitle(`${args[0]} - ${args[1]}`);
 
             if (args[1].includes('EP')) {
-                exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox EP review` : `${message.member.displayName}'s EP review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+                exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox EP review (Not added to DB)` : `${message.member.displayName}'s EP review (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
             } else if (args[1].includes('LP')) {
-                exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox LP review` : `${message.member.displayName}'s LP review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+                exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox LP review (Not added to DB)` : `${message.member.displayName}'s LP review (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
             } else {
-                exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review` : `${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+                exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review (Not added to DB)` : `${message.member.displayName}'s review (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
             }
 
             if (thumbnailImage === false) {

@@ -6,9 +6,9 @@ module.exports = {
     type: 'Review DB',
     moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795553872143187968',
 	aliases: ['setimage', 'setI', 'setart'],
-	description: 'Set an image for a song! You can either do a link, or just attach an attachment.',
+	description: 'Set an image for a song/EP/LP! You can either do a link, or just attach an attachment.',
 	args: true,
-	usage: '`<artist> | <song> | [op] <url>',
+	usage: '<artist> | <song/EP/LP> | [op] <url>',
 	execute(message, args) {
 
 		//Auto-adjustment to caps for each word
@@ -31,11 +31,14 @@ module.exports = {
 
 		if (args.length === 3 && message.attachments.first() != undefined) {
 			return message.channel.send('Please only use a direct image link, or an attachment, not both.');
-		}
+        }
+        
+        // EP/LP check
+        if (!args[1].includes('EP') && !args[1].includes('LP') && !args[1].toLowerCase().includes('Remixes')) {
 
         let songName = args[1];
         let remixsongName;
-		let rmxArtist;
+		let rmxArtist = false;
 		let featArtists = [];
 		let newSong = false;
 		
@@ -290,6 +293,74 @@ module.exports = {
                 });
             });
         }
+
+    } else { //If this IS an EP/LP.
+
+        let EPartistArray;
+
+        if (!args[0].includes(',')) {
+            EPartistArray = args[0].split(' & ');
+        } else {
+            EPartistArray = args[0].split(', ');
+            if (EPartistArray[EPartistArray.length - 1].includes('&')) {
+                let iter2 = EPartistArray.pop();
+                iter2 = iter2.split(' & ');
+                iter2 = iter2.map(a => EPartistArray.push(a));
+                console.log(iter2);
+            }
+        }
+
+        let EPartistObj;
+        let EPsongArray;
+        let EPmsgstoEdit = [];
+
+        for (let i = 0; i < EPartistArray.length; i++) {
+            EPartistObj = db.reviewDB.get(EPartistArray[i]);
+            EPsongArray = Object.keys(EPartistObj);
+
+            EPsongArray = EPsongArray.filter(e => e !== 'Image');
+
+            for (let ii = 0; ii < EPsongArray.length; ii++) {
+                if (db.reviewDB.get(EPartistArray[i], `["${EPsongArray[ii]}"].EP`) === args[1]) {
+                    let userArray = Object.keys(db.reviewDB.get(EPartistArray[i], `["${EPsongArray[ii]}"]`));
+                    userArray = userArray.filter(item => item !== 'Image');
+                    userArray = userArray.filter(item => item !== 'Collab');
+                    userArray = userArray.filter(item => item !== 'Vocals');
+                    userArray = userArray.filter(item => item !== 'Remixers');
+                    userArray = userArray.filter(item => item !== 'EP');
+
+                    // Set the image
+                    db.reviewDB.set(EPartistArray[i], thumbnailImage, `["${EPsongArray[ii]}"].Image`);
+
+                    userArray.forEach(user => {
+                        EPmsgstoEdit.push(db.reviewDB.get(EPartistArray[i], `["${EPsongArray[ii]}"].["${user}"].msg_id`));
+                    });
+                }
+            }
+        }
+        
+        EPmsgstoEdit = EPmsgstoEdit.filter(item => item !== undefined);
+
+        if (EPmsgstoEdit.length > 0) { 
+            let channelsearch = message.guild.channels.cache.get('680877758909382757');
+
+            forAsync(EPmsgstoEdit, function(item) {
+                return new Promise(function(resolve) {
+                    let msgtoEdit = item;
+                    let msgEmbed;
+                    let embed_data;
+
+                    channelsearch.messages.fetch(`${msgtoEdit}`).then(msg => {
+                        embed_data = msg.embeds;
+                        msgEmbed = embed_data[0];
+                        msgEmbed.thumbnail.url = thumbnailImage;
+                        msg.edit(msgEmbed);
+                        resolve();
+                    });
+                });
+            });
+        }
+    }
 
 		return message.channel.send(`Image for ${args[0]} - ${args[1]} changed.`);
 	},

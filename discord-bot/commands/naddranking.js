@@ -47,11 +47,11 @@ module.exports = {
         .setTitle(`${args[0]} - ${args[1]}`);
 
         if (args[1].includes('EP') || args[1].includes('The Remixes')) {
-            exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox EP ranking` : `${message.member.displayName}'s EP ranking`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+            exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox EP ranking (Not added to DB)` : `${message.member.displayName}'s EP ranking (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
         } else if (args[1].includes('LP')) {
-            exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox LP ranking` : `${message.member.displayName}'s LP ranking`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+            exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox LP ranking (Not added to DB)` : `${message.member.displayName}'s LP ranking (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
         } else {
-            exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox ranking` : `${message.member.displayName}'s ranking`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+            exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox ranking (Not added to DB)` : `${message.member.displayName}'s ranking (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
         }
 
         if (thumbnailImage === false) {
@@ -149,11 +149,11 @@ module.exports = {
             .setTitle(`${args[0]} - ${args[1]}`);
 
             if (args[1].includes('EP') || args[1].includes('The Remixes')) {
-                exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox EP ranking` : `${message.member.displayName}'s EP ranking`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+                exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox EP ranking (Not added to DB)` : `${message.member.displayName}'s EP ranking (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
             } else if (args[1].includes('LP')) {
-                exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox LP ranking` : `${message.member.displayName}'s LP ranking`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+                exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox LP ranking (Not added to DB)` : `${message.member.displayName}'s LP ranking (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
             } else {
-                exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox ranking` : `${message.member.displayName}'s ranking`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
+                exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox ranking (Not added to DB)` : `${message.member.displayName}'s ranking (Not added to DB)`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
             }
 
             if (overallString != -1) {
