@@ -60,6 +60,11 @@ cron.schedule('00 9 * * *', () => {
 // Listen for messages
 client.on('message', async message => {
 
+    if (message.channel.name === 'server-playlist-voting' && message.content.includes('-')) {
+        message.react('✅');
+        message.react('❌');
+    }
+
     // Set pea of the day
     if (message.author.id === '784993334330130463' && message.content.includes('here to tell you all')) {
         const previousUser = db.potdID.get('ID');
