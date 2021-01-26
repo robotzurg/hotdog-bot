@@ -15,6 +15,7 @@
     "chance": "^1.1.7",
     "config.json": "0.0.4",
     "cron": "^1.8.2",
+    "discord-pages": "^1.0.2",
     "discord.js": "^12.5.1",
     "enmap": "^5.8.2",
     "eslint": "^7.15.0",

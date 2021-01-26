@@ -36,6 +36,20 @@ module.exports = {
         // EP/LP check
         if (!args[1].includes('EP') && !args[1].includes('LP') && !args[1].toLowerCase().includes('Remixes')) {
 
+        let artistArray;
+
+        if (!args[0].includes(',')) {
+            artistArray = args[0].split(' & ');
+        } else {
+            artistArray = args[0].split(', ');
+            if (artistArray[artistArray.length - 1].includes('&')) {
+                let iter2 = artistArray.pop();
+                iter2 = iter2.split(' & ');
+                iter2 = iter2.map(a => artistArray.push(a));
+                console.log(iter2);
+            }
+		}
+
         let songName = args[1];
         let remixsongName;
 		let rmxArtist = false;
@@ -113,20 +127,6 @@ module.exports = {
             songName = args[1].substring(0, args[1].length - 6).split(' [')[0];
             rmxArtist = args[1].substring(0, args[1].length - 6).split(' [')[1];
         }
-
-		let artistArray;
-
-        if (!args[0].includes(',')) {
-            artistArray = args[0].split(' & ');
-        } else {
-            artistArray = args[0].split(', ');
-            if (artistArray[artistArray.length - 1].includes('&')) {
-                let iter2 = artistArray.pop();
-                iter2 = iter2.split(' & ');
-                iter2 = iter2.map(a => artistArray.push(a));
-                console.log(iter2);
-            }
-		}
 		
 		if (rmxArtist != false) {
 			artistArray.push(rmxArtist);
