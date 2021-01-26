@@ -10,7 +10,7 @@ module.exports = {
 	args: true,
 	usage: '<artist> | <song/EP/LP> | [op] <url>',
 	execute(message, args) {
-
+        
 		//Auto-adjustment to caps for each word
         args[0] = args[0].split(' ');
         args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));

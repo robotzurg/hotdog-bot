@@ -6,56 +6,107 @@ module.exports = {
     type: 'Review DB',
     moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/794775861592064031',
     aliases: ['getreview', 'getr'],
-    description: 'Get a review from a user on the server that they have written! Putting nothing for <user> will replace <user> with yourself.',
+    description: 'Get a review from a user on the server that they have written! Putting nothing for <user> will replace <user> with yourself.\n\nYou can also put nothing for the artist name, which will search the database for a song of that name.',
     args: true,
-    usage: '<artist> | <song/ep/lp> | [op] <user>',
+    usage: '<artist> [op] | <song> | [op] <user>',
 	execute(message, args) {
+        let argArtistName;
+        let argSongName;
+        let taggedUser;
+        let taggedMember;
 
+        if (args.length === 2 && message.mentions.users.first() === undefined) {
+            argArtistName = args[0];
+            argSongName = args[1];
+            taggedUser = message.author;
+            taggedMember = message.member;
+        } else if (args.length === 3 && message.mentions.users.first() != undefined) {
+            argArtistName = args[0];
+            argSongName = args[1];
+            taggedUser = message.mentions.users.first();
+            taggedMember = message.mentions.members.first();
+        } else if (args.length === 1 && message.mentions.users.first() === undefined) {
+            argArtistName = args[0];
+            argSongName = false;
+            taggedUser = message.author;
+            taggedMember = message.member;
+        } else if (args.length === 2 && message.mentions.users.first() != undefined) {
+            argArtistName = args[0];
+            argSongName = false;
+            taggedUser = message.mentions.users.first();
+            taggedMember = message.mentions.members.first();
+        }
+    
         //Auto-adjustment to caps for each word
-        args[0] = args[0].split(' ');
-        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
-        args[0] = args[0].join(' ');
+        argArtistName = argArtistName.split(' ');
+        argArtistName = argArtistName.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        argArtistName = argArtistName.join(' ');
 
-        args[1] = args[1].split(' ');
-        args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
-        args[1] = args[1].join(' ');
+        if (argSongName === false) {
+            const dbKeyArray = db.reviewDB.keyArray();
+            let options = [];
+            
+            for (let i = 0; i < dbKeyArray.length; i++) {
+                let AsongArray = Object.keys(db.reviewDB.get(dbKeyArray[i]));
+                AsongArray = AsongArray.filter(item => item !== 'Image');
 
-        // Fix (VIP) if needed
-        if (args[1].includes('(VIP)')) {
-            args[1] = args[1].split(' (');
-            args[1] = `${args[1][0]} ${args[1][1].slice(0, -1)}`;
+                for (let ii = 0; ii < AsongArray.length; ii++) {
+                    if (AsongArray[ii] === argArtistName && !db.reviewDB.get(dbKeyArray[i], `["${AsongArray[ii]}"].Vocals`).includes(dbKeyArray[i])) {
+                        argArtistName = dbKeyArray[i];
+                        argSongName = AsongArray[ii];
+                        options.push([argArtistName, argSongName]);
+                        options[options.length - 1] = options[options.length - 1].join(' | ');
+                    } 
+                }
+            }
+            
+            if (options.length === 0) {
+                return message.channel.send('There is no song in the database that exists with this name.');
+            } else if (options.length > 1) {
+                return message.channel.send(`Looks like multiple songs of the same name exist in the database. Please use \`!getSong <artist> | <song>\` on one of these songs to get more details:\n\`\`\`${options.join('\n')}\`\`\`\n*(Hint: You can copy paste the above into \`!getSong\`)*`);
+            }
         }
 
-        let songName = args[1];
+        argSongName = argSongName.split(' ');
+        argSongName = argSongName.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        argSongName = argSongName.join(' ');
+
+
+        // Fix (VIP) if needed
+        if (argSongName.includes('(VIP)')) {
+            argSongName = argSongName.split(' (');
+            argSongName = `${argSongName[0]} ${argSongName[1].slice(0, -1)}`;
+        }
+
+        let songName = argSongName;
         let rmxArtist;
 
-        if (args[1].toLowerCase().includes('remix')) {
-            songName = args[1].substring(0, args[1].length - 7).split(' [')[0];
-            rmxArtist = args[1].substring(0, args[1].length - 7).split(' [')[1];
+        if (argSongName.toLowerCase().includes('remix')) {
+            songName = argSongName.substring(0, argSongName.length - 7).split(' [')[0];
+            rmxArtist = argSongName.substring(0, argSongName.length - 7).split(' [')[1];
         } else {
-            songName = args[1];
+            songName = argSongName;
             rmxArtist = false;
         }
 
         //Take out the ft./feat.
-        if (args[1].includes('(feat') || args[1].includes('(ft')) {
+        if (argSongName.includes('(feat') || argSongName.includes('(ft')) {
             songName = songName.split(` (f`);
             songName.splice(1);
-        } else if (args[1].includes('feat')) {
+        } else if (argSongName.includes('feat')) {
             songName = songName.split('feat');
             songName.splice(1);
-        } else if (args[1].includes('ft')) {
+        } else if (argSongName.includes('ft')) {
             songName = songName.split('ft');
             songName.splice(1);
         }
 
+        let artistName = argArtistName.split(' & ');
 
-        let artistName = args[0].split(' & ');
-
-        if (!args[0].includes(',')) {
-            artistName = args[0].split(' & ');
+        if (!argArtistName.includes(',')) {
+            artistName = argArtistName.split(' & ');
         } else {
-            artistName = args[0].split(', ');
+            artistName = argArtistName.split(', ');
             if (artistName[artistName.length - 1].includes('&')) {
                 let iter2 = artistName.pop();
                 iter2 = iter2.split(' & ');
@@ -64,15 +115,17 @@ module.exports = {
             }
         }
 
-        let taggedUser;
-        let taggedMember;
+        if (!db.reviewDB.has(artistName[0])) {
+            return message.channel.send('No artist found.');
+        }
+
         let rname;
         let rreview;
         let rscore;
         let rsentby;
         let usrSentBy;
         let thumbnailImage;
-        let artistsEmbed = args[0];
+        let artistsEmbed = argArtistName;
         let vocalistsEmbed = [];
         let epfrom = db.reviewDB.get(artistName[0], `["${songName}"].EP`);
 
@@ -93,13 +146,6 @@ module.exports = {
             }
         }
 
-        if (args.length > 2) {
-            taggedUser = message.mentions.users.first();
-            taggedMember = message.mentions.members.first();
-        } else {
-            taggedUser = message.author;
-            taggedMember = message.member;
-        }
         if (rmxArtist === false) {
             rname = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.name`);
             if (rname === undefined) return message.channel.send('No review found. *Note that for EP reviews, you need to use `!getReviewEP`.*');
@@ -135,11 +181,11 @@ module.exports = {
 
             const exampleEmbed = new Discord.MessageEmbed()
                 .setColor(`${taggedMember.displayHexColor}`);
-                if (!args[1].includes('(feat') && !args[1].includes('(ft') && vocalistsEmbed.length != 0) {
-                    vocalistsEmbed = `${args[1]} (ft. ${vocalistsEmbed})`;
+                if (!argSongName.includes('(feat') && !argSongName.includes('(ft') && vocalistsEmbed.length != 0) {
+                    vocalistsEmbed = `${argSongName} (ft. ${vocalistsEmbed})`;
                     exampleEmbed.setTitle(`${artistsEmbed} - ${vocalistsEmbed}`);
                 } else {
-                    exampleEmbed.setTitle(`${artistsEmbed} - ${args[1]}`);
+                    exampleEmbed.setTitle(`${artistsEmbed} - ${argSongName}`);
                 }
                 
                 exampleEmbed.setAuthor(rsentby != false ? `${rname}'s mailbox review` : `${rname}'s review`, `${taggedUser.avatarURL({ format: "png" })}`);

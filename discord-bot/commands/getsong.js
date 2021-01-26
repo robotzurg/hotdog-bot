@@ -6,25 +6,49 @@ module.exports = {
     type: 'Review DB',
     aliases: ['getsong', 'gets'],
     moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795552783960506370',
-    description: 'Get all the data about a song and displays it in an embed message.',
+    description: 'Get all the data about a song and displays it in an embed message.\n\nYou can also put nothing for the artist argument, which will make the bot search the database for the song in question and display it.',
     args: true,
-    usage: '<artist> | <song>',
+    usage: '<artist> [op] | <song>',
 	execute(message, args) {
 
-        //Auto-adjustment to caps for each word
-        args[0] = args[0].split(' ');
-        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
-        args[0] = args[0].join(' ');
+        let argArtistName = args[0];
+        let argSongName = args[1];
 
-        args[1] = args[1].split(' ');
-        args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
-        args[1] = args[1].join(' ');
+        //Auto-adjustment to caps for each word
+        argArtistName = argArtistName.split(' ');
+        argArtistName = argArtistName.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        argArtistName = argArtistName.join(' ');
 
         if (args.length === 1) {
-            return message.channel.send(`Missing arguments!\nProper usage is: \`<artist> | <song>\``);
+            const dbKeyArray = db.reviewDB.keyArray();
+            let options = [];
+            
+            for (let i = 0; i < dbKeyArray.length; i++) {
+                let AsongArray = Object.keys(db.reviewDB.get(dbKeyArray[i]));
+                AsongArray = AsongArray.filter(item => item !== 'Image');
+
+                for (let ii = 0; ii < AsongArray.length; ii++) {
+                    if (AsongArray[ii] === argArtistName && !db.reviewDB.get(dbKeyArray[i], `["${AsongArray[ii]}"].Vocals`).includes(dbKeyArray[i])) {
+                        argArtistName = dbKeyArray[i];
+                        argSongName = AsongArray[ii];
+                        options.push([argArtistName, argSongName]);
+                        options[options.length - 1] = options[options.length - 1].join(' | ');
+                    } 
+                }
+            }
+            
+            if (options.length === 0) {
+                return message.channel.send('There is no song in the database that exists with this name.');
+            } else if (options.length > 1) {
+                return message.channel.send(`Looks like multiple songs of the same name exist in the database. Please use \`!getSong <artist> | <song>\` on one of these songs to get more details:\n\`\`\`${options.join('\n')}\`\`\`\n*(Hint: You can copy paste the above into \`!getSong\`)*`);
+            }
         }
 
-        if (args[1].includes('EP') || args[1].includes('LP') || args[1].toLowerCase().includes('the remixes')) {
+        argSongName = argSongName.split(' ');
+        argSongName = argSongName.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        argSongName = argSongName.join(' ');
+
+        if (argSongName.includes('EP') || argSongName.includes('LP') || argSongName.toLowerCase().includes('the remixes')) {
             return message.channel.send('This isn\'t a single! Please use `!getEP` to get EP/LP overviews.');
         }
 
@@ -32,7 +56,7 @@ module.exports = {
         // Function to grab average of all ratings later
         let average = (array) => array.reduce((a, b) => a + b) / array.length;
 
-        const artistName = args[0].split(' & ');
+        const artistName = argArtistName.split(' & ');
 
         for (let i = 0; i < artistName.length; i++) {
             if (!db.reviewDB.has(artistName[i])) {
@@ -40,7 +64,7 @@ module.exports = {
             }
         }
         
-        let songName = args[1];
+        let songName = argSongName;
         let rmxArtist = false;
         let songObj;
         let songEP = false;
@@ -48,23 +72,23 @@ module.exports = {
         let remixes = [];
         let fullSongName = false;
 
-        let artistsEmbed = args[0];
+        let artistsEmbed = argArtistName;
         let vocalistsEmbed = [];
 
         //Take out the ft./feat.
-        if (args[1].includes('(feat')) {
+        if (argSongName.includes('(feat')) {
 
-            songName = args[1].split(` (feat`);
-            if (args[1].toLowerCase().includes('remix')) { 
+            songName = argSongName.split(` (feat`);
+            if (argSongName.toLowerCase().includes('remix')) { 
                 rmxArtist = songName[1].split(' [')[1].slice(0, -6);
                 fullSongName = `${songName} [${rmxArtist}Remix]`;
             }
             songName = songName[0];
 
-        } else if (args[1].includes('(ft')) {
+        } else if (argSongName.includes('(ft')) {
 
-            songName = args[1].split(` (ft`);
-            if (args[1].toLowerCase().includes('remix')) { 
+            songName = argSongName.split(` (ft`);
+            if (argSongName.toLowerCase().includes('remix')) { 
                 rmxArtist = songName[1].split(' [')[1].slice(0, -6); 
                 fullSongName = `${songName} [${rmxArtist}Remix]`;
             }
@@ -78,16 +102,16 @@ module.exports = {
     
         //Remix preparation
         if (songName.toLowerCase().includes('remix')) {
-            songName = args[1].split(` [`)[0];
-            rmxArtist = args[1].split(' [')[1].slice(0, -7);
+            songName = argSongName.split(` [`)[0];
+            rmxArtist = argSongName.split(' [')[1].slice(0, -7);
             fullSongName = `${songName} [${rmxArtist} Remix]`;
         } else if (songName.toLowerCase().includes('bootleg]')) {
-            songName = args[1].substring(0, args[1].length - 10).split(' [')[0];
-            rmxArtist = args[1].substring(0, args[1].length - 10).split(' [')[1];
+            songName = argSongName.substring(0, argSongName.length - 10).split(' [')[0];
+            rmxArtist = argSongName.substring(0, argSongName.length - 10).split(' [')[1];
             fullSongName = `${songName} [${rmxArtist} Bootleg]`;
         } else if (songName.toLowerCase().includes('flip]') || songName.toLowerCase().includes('edit]')) {
-            songName = args[1].substring(0, args[1].length - 6).split(' [')[0];
-            rmxArtist = args[1].substring(0, args[1].length - 6).split(' [')[1];
+            songName = argSongName.substring(0, argSongName.length - 6).split(' [')[0];
+            rmxArtist = argSongName.substring(0, argSongName.length - 6).split(' [')[1];
         }
 
         //Adjust (VIP)
@@ -121,7 +145,6 @@ module.exports = {
 
             if (remixObj != false && remixObj != undefined && remixObj != null) {
                 let remixObjKeys = Object.keys(remixObj);
-                console.log(remixObjKeys);
 
                 for (let i = 0; i < remixObjKeys.length; i++) {
                     remixes.push(`\`${remixObjKeys[i]} Remix\``);
@@ -150,11 +173,11 @@ module.exports = {
         const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`);
 
-            if (!args[1].includes('(feat') && !args[1].includes('(ft') && vocalistsEmbed.length != 0) {
-                vocalistsEmbed = `${args[1]} (ft. ${vocalistsEmbed})`;
+            if (!argSongName.includes('(feat') && !argSongName.includes('(ft') && vocalistsEmbed.length != 0) {
+                vocalistsEmbed = `${argSongName} (ft. ${vocalistsEmbed})`;
                 exampleEmbed.setTitle(`${artistsEmbed} - ${vocalistsEmbed}`);
             } else {
-                exampleEmbed.setTitle(`${artistsEmbed} - ${args[1]}`);
+                exampleEmbed.setTitle(`${artistsEmbed} - ${argSongName}`);
             }
 
             for (let i = 0; i < userArray.length; i++) {

@@ -32,7 +32,15 @@ module.exports = {
         for (let i = 0; i < songArray.length; i++) { //EP preparation
             const songEP = db.reviewDB.get(args[0], `["${songArray[i]}"].EP`);
             const songObj = db.reviewDB.get(args[0], `["${songArray[i]}"]`);
-            reviewNum = Object.keys(songObj).length - 5;
+            reviewNum = Object.keys(songObj);
+
+                reviewNum = reviewNum.filter(e => e !== 'Remixers');
+                reviewNum = reviewNum.filter(e => e !== 'EP');
+                reviewNum = reviewNum.filter(e => e !== 'Collab');
+                reviewNum = reviewNum.filter(e => e !== 'Image');
+                reviewNum = reviewNum.filter(e => e !== 'Vocals');
+
+            reviewNum = reviewNum.length;
             if (songEP != false) {
                 if (EPs[`${songEP}`] === undefined) {
                     EPs[`${songEP}`] = { [songArray[i]]: reviewNum } ;
@@ -84,8 +92,10 @@ module.exports = {
 
                     if (!songArray[i].includes('Remix')) {
                         singleArray.push(`-${songArray[i]}${songEP != false && songEP != undefined ? ` (${songEP})` : ''} ${songDetails}`);
+                        singleArray[singleArray.length - 1] = singleArray[singleArray.length - 1].replace('*', '\\*');
                     } else {
                         remixArray.push(`-${songArray[i]}${songEP != false && songEP != undefined ? ` (${songEP})` : ''} ${songDetails}`);
+                        remixArray[remixArray.length - 1] = remixArray[remixArray.length - 1].replace('*', '\\*');
                     }
                     
                 }
@@ -106,6 +116,7 @@ module.exports = {
                     let songsinEP = Object.keys(s);
                     songsinEP = songsinEP.map(x => x + ` \`${EPs[`${songEP}`][`${x}`]} review${EPs[`${songEP}`][`${x}`] > 1 ? 's' : ''}\``);
                     songsinEP = songsinEP.map(ii => '-' + ii);
+                    songsinEP = songsinEP.map(ii => ii.replace('*', '\\*'));
                     songsinEP.join('\n');
                     exampleEmbed.addField(`${songEP}: `, songsinEP);
                     EPsOnEmbed.push(songEP);
