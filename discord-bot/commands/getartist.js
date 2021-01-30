@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const db = require("../db.js");
-const DiscordPages = require("discord-pages");
+// const DiscordPages = require("discord-pages");
 
 module.exports = {
     name: 'getartist',
@@ -125,6 +125,6 @@ module.exports = {
                 }
             }
         
-        message.channel.send(exampleEmbed, { split: true });
+        message.channel.send(exampleEmbed);
 	},
 };

@@ -9,7 +9,7 @@ module.exports = {
 		if (message.member.hasPermission('ADMINISTRATOR')) {
 		
 			db.genreRoulette.forEach((prop, key) => {
-				const genrePick = genreList[Math.floor(Math.random() * message.client.genreList.length)];
+				const genrePick = genreList[Math.floor(Math.random() * genreList.length)];
 				db.genreRoulette.set(key, { genre: genrePick, status: 'alive' });
 			});
 
