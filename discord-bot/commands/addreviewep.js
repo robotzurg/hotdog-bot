@@ -27,7 +27,7 @@ module.exports = {
         }
 
         if (!args[1].toLowerCase().includes('ep') && !args[1].toLowerCase().includes('lp') && !args[1].toLowerCase().includes('remixes') && !args[1].includes('/')) {
-            return message.channel.send('You can only use this command to rank EPs/LPs/Remix Packages. Comps are not yet supported.\nPlease use `!addReview` for singles!');
+            args[1] = args[1].concat(' EP');
         }
 
         const command = message.client.commands.get('addreviewep');

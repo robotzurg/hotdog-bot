@@ -22,7 +22,7 @@ module.exports = {
 
 
         if (!args[1].includes('EP') && !args[1].includes('LP') && !args[1].toLowerCase().includes('remixes')) {
-            return message.channel.send('This isn\'t an EP! Please use `!getSong` to get single overviews.');
+            args[1] = args[1].concat(' EP');
         }
         
         let artistName = args[0].split(' & ');
@@ -59,7 +59,16 @@ module.exports = {
                     }
 
                     epnum++;
-                    const reviewNum = Object.keys(songObj).length - 5;
+                    let reviewNum = Object.keys(songObj);
+
+                    reviewNum = reviewNum.filter(e => e !== 'Remixers');
+                    reviewNum = reviewNum.filter(e => e !== 'EP');
+                    reviewNum = reviewNum.filter(e => e !== 'Collab');
+                    reviewNum = reviewNum.filter(e => e !== 'Image');
+                    reviewNum = reviewNum.filter(e => e !== 'Vocals');
+
+                    reviewNum = reviewNum.length;
+
                     exampleEmbed.addField(`**${epnum}. ${songArray[i]}**`, `\`${reviewNum} review${reviewNum > 1 ? 's' : ''}\``);
                 }
             }

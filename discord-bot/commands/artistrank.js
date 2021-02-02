@@ -19,7 +19,8 @@ module.exports = {
         let ranking = [];
 		const artistObj = db.reviewDB.get(args[0]);
         if (artistObj === undefined) return message.channel.send('Artist not found.');
-        const songArray = Object.keys(artistObj);
+        let songArray = Object.keys(artistObj);
+        songArray = songArray.filter(e => e !== 'Image');
         let average = (array) => array.reduce((a, b) => a + b) / array.length;
 
         for (let i = 0; i < songArray.length; i++) {
@@ -37,6 +38,8 @@ module.exports = {
                 let rating = parseFloat(db.reviewDB.get(args[0], `["${songArray[i]}"].${userArray[ii]}.rate`));
                 userRatingArray.push(rating);
             }
+
+            console.log(parseFloat(Math.round(average(userRatingArray) * 10) / 10));
 
             ranking.push({ name: songArray[i], rating: parseFloat(Math.round(average(userRatingArray) * 10) / 10), reviewnum: userArray.length });
             

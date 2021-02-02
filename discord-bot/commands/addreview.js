@@ -14,6 +14,7 @@ module.exports = {
     usage: '<artist> | <song_name> | <rating> | <rate_desc> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>',
 	execute(message, args) {
 
+        const command = message.client.commands.get('addreview');
         let is_mailbox = mailboxes.includes(message.channel.name);
 
         //Auto-adjustment to caps for each word
@@ -75,6 +76,10 @@ module.exports = {
             rating = rating.trim();
         } 
 
+        if (!rating.includes('/10')) {
+            rating = rating.concat('/10');
+        }
+
         // EP/LP check
         if (args[1].includes('EP') || args[1].toLowerCase().includes('LP') || args[1].toLowerCase().includes('Remixes')) {
             return message.channel.send('You can only use this command to rank singles/single remixes.\nPlease use `!addReviewEP` for EP Reviews/Rankings!');
@@ -96,8 +101,6 @@ module.exports = {
         }
 
         //Start doing things
-        const command = message.client.commands.get('addreview');
-
         let songName = args[1];
         let featArtists = [];
         let rmxArtist = false;

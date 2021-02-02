@@ -20,7 +20,7 @@ module.exports = {
         args[1] = args[1].join(' ');
 
         if (!args[1].toLowerCase().includes('ep') && !args[1].toLowerCase().includes('lp') && !args[1].toLowerCase().includes('remixes')) {
-            return message.channel.send('This isn\'t an EP/LP! Please use `!getReview` to get non-EP/LP reviews.');
+            args[1] = args[1].concat(' EP');
         }
 
         let artistName = args[0].split(' & ');
