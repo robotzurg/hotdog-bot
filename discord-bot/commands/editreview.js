@@ -56,7 +56,7 @@ module.exports = {
         
         let artistArray = args[0].split(' & ');
         let songName = args[1];
-        let rmxArtist;
+        let rmxArtist = false;
         let featArtists = [];
 
         //Take out the ft./feat.

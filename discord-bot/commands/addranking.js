@@ -25,8 +25,8 @@ module.exports = {
             return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
         }
 
-        if (!args[1].includes('EP') && !args[1].includes('LP') && !args[1].toLowerCase().includes('remixes') && !args[1].includes('/')) {
-            return message.channel.send('You can only use this command to rank EPs/LPs/Remix Packages. Comps are not yet supported.\nPlease use `!addReview` for singles!');
+        if (!args[1].toLowerCase().includes('ep') && !args[1].toLowerCase().includes('lp') && !args[1].toLowerCase().includes('remixes') && !args[1].includes('/')) {
+            args[1] = args[1].concat(' EP');
         }
 
         const command = message.client.commands.get('addranking');

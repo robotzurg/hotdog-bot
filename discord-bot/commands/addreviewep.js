@@ -56,6 +56,7 @@ module.exports = {
                 is_mailbox = true;
             }
         }
+
         message.delete(message);
 
         let artistArray;
@@ -80,7 +81,7 @@ module.exports = {
 
                 if (iCheckSongObj.length != 0) {
                     for (let i = 0; i < iCheckSongObj.length; i++) {
-                        if (db.reviewDB.get(artistArray[0], `["${iCheckSongObj[i]}"].EP`) != args[1]) return;
+                        if (db.reviewDB.get(artistArray[0], `["${iCheckSongObj[i]}"].EP`) != args[1]) break;
                         thumbnailImage = db.reviewDB.get(artistArray[0], `["${iCheckSongObj[i]}"].Image`);
 
                         if (thumbnailImage === undefined || thumbnailImage === false || thumbnailImage === null) {
