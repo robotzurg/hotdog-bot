@@ -332,7 +332,21 @@ module.exports = {
 
                 } else if (db.reviewDB.get(artistArray[i], `["${songName}"].${message.author}`)) { // Check if you are already in the system
                     console.log('User is in the system!');
-                    return message.reply(`You already have a review for ${artistArray[i]} - ${args[1]} in the system! Use \`!getreview\` to get your review, or \`!editreview\` to edit your pre-existing review.`);
+                    const songObj = db.reviewDB.get(artistArray[i], `["${songName}"]`);
+                    delete songObj[`<@${message.author.id}>`];
+        
+                    const newuserObj = {
+                        [`<@${message.author.id}>`]: { 
+                            name: message.member.displayName,
+                            review: review,
+                            rate: rating,
+                            sentby: taggedUser === false ? false : taggedUser.id,
+                            msg_id: false,
+                        },
+                    };
+
+                    Object.assign(songObj, newuserObj);
+                    db.reviewDB.set(artistArray[i], songObj, `["${songName}"]`);
                 } else {
                     console.log('User not detected!');
                     const songObj = db.reviewDB.get(artistArray[i], `["${songName}"]`);
@@ -469,8 +483,7 @@ module.exports = {
                     db.reviewDB.set(artistArray[i], remixObj, `["${songName}"].Remixers`);
 
                 } else if (db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"].${message.author}`)) { // Check if you are already in the system
-                    console.log('User is in the system!'); 
-                    return message.channel.send(`You already have a review for ${artistArray[i]} - ${args[1]} in the system! Use \`!getreview\` to get your review, or \`!editreview\` to edit your pre-existing review.`);
+                    console.log('User is in the system!');
                 } else {
                     console.log('User not detected!');
                     const remixsongObj = (artistArray[i] === rmxArtist) ? db.reviewDB.get(artistArray[i], `["${songName}"]`) : db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`);

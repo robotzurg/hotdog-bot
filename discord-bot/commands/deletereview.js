@@ -40,20 +40,96 @@ module.exports = {
         }
         
         let rname;
-        let songName;
-        let fullSongName;
-        let rmxArtist;
+        let rmxArtist = false;
+        let songName = args[1];
+        let featArtists = [];
+        let remixsongName;
 
-        if (args[1].toLowerCase().includes('remix')) {
-            fullSongName = args[1];
-            songName = args[1].substring(0, args[1].length - 7).split(' (')[0];
-            rmxArtist = args[1].substring(0, args[1].length - 7).split(' (')[1];
-            artistArray.push(rmxArtist);
+        //Take out the ft./feat.
+        if (args[1].includes('(feat')) {
 
-        } else {
-            songName = args[1];
-            rmxArtist = false;
+            songName = args[1].split(` (feat`);
+            if (songName[1].includes(`[`)) {
+                featArtists = songName[1].split('[');
+                featArtists = featArtists[0].slice(2).slice(0, -2).split(' & ');
+            } else {
+                featArtists = songName[1].slice(2).slice(0, -1).split(' & ');
+            }
+            if (args[1].toLowerCase().includes('remix')) { rmxArtist = songName[1].split(' [')[1].slice(0, -7); }
+            songName = songName[0];
+
+            if (Array.isArray(featArtists)) {
+                for (let i = 0; i < featArtists.length; i++) {
+                    featArtists[i] = featArtists[i].split(' ');
+                    featArtists[i] = featArtists[i].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                    featArtists[i] = featArtists[i].join(' ');
+
+                    artistArray.push(featArtists[i]);
+                }
+            } else if (featArtists != false) {
+                featArtists = featArtists.split(' ');
+                featArtists = featArtists.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                featArtists = featArtists.join(' ');
+
+                artistArray.push(featArtists);
+            }
+
+        } else if (args[1].includes('(ft')) {
+
+            songName = args[1].split(` (ft`);
+            if (songName[1].includes(`[`)) {
+                featArtists = songName[1].split('[');
+                featArtists = featArtists[0].slice(2).slice(0, -2).split(' & ');
+            } else {
+                featArtists = songName[1].slice(2).slice(0, -1).split(' & ');
+            }
+            if (args[1].toLowerCase().includes('remix')) { rmxArtist = songName[1].split(' [')[1].slice(0, -7); }
+            songName = songName[0];
+
+            if (Array.isArray(featArtists)) {
+                for (let i = 0; i < featArtists.length; i++) {
+                    featArtists[i] = featArtists[i].split(' ');
+                    featArtists[i] = featArtists[i].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                    featArtists[i] = featArtists[i].join(' ');
+
+                    artistArray.push(featArtists[i]);
+                }
+            } else {
+                featArtists = featArtists.split(' ');
+                featArtists = featArtists.map(a => a.charAt(0).toUpperCase() + a.slice(1));
+                featArtists = featArtists.join(' ');
+
+                artistArray.push(featArtists);
+            }
+
         }
+
+        //Remix preparation
+        if (songName.toLowerCase().includes('remix')) {
+            remixsongName = songName;
+            songName = args[1].split(` [`)[0];
+            rmxArtist = args[1].split(' [')[1].slice(0, -7);
+        } else if (songName.toLowerCase().includes('bootleg]')) {
+            songName = args[1].substring(0, args[1].length - 9).split(' [')[0];
+            rmxArtist = args[1].substring(0, args[1].length - 9).split(' [')[1];
+        } else if (songName.toLowerCase().includes('flip]') || songName.toLowerCase().includes('edit]')) {
+            songName = args[1].substring(0, args[1].length - 6).split(' [')[0];
+            rmxArtist = args[1].substring(0, args[1].length - 6).split(' [')[1];
+        }
+
+        // This is for adding in collaborators/vocalists into the name inputted into the embed title, NOT for getting data out.
+        if (db.reviewDB.get(artistArray[0], `["${songName}"].Collab`) != undefined) {
+            if (db.reviewDB.get(artistArray[0], `["${songName}"].Collab`).length != 0) {
+                artistArray.push(db.reviewDB.get(artistArray[0], `["${songName}"].Collab`));
+            }
+        }
+
+        if (db.reviewDB.get(artistArray[0], `["${songName}"].Vocals`) != undefined) {
+            if (db.reviewDB.get(artistArray[0], `["${songName}"].Vocals`).length != 0) {
+                artistArray.push(db.reviewDB.get(artistArray[0], `["${songName}"].Vocals`));
+            }
+        }
+
 
         let songObj;
         for (let i = 0; i < artistArray.length; i++) {
@@ -63,10 +139,10 @@ module.exports = {
             } else if (artistArray[i] != rmxArtist) {
                 rname = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"].<@${userToDelete.id}>.name`);
             } else if (artistArray[i] === rmxArtist) {
-                rname = db.reviewDB.get(rmxArtist, `["${fullSongName}"].<@${userToDelete.id}>.name`);
+                rname = db.reviewDB.get(rmxArtist, `["${remixsongName}"].<@${userToDelete.id}>.name`);
             }
 
-            if (rname === undefined) return message.channel.send('No review found. *Note that deleting EP reviews is currently not supported.*');
+            if (rname === undefined) break;
 
             //Non Single Stuff (if the artistArray[i] isn't the remix artist and there is no remix artist)
             if (artistArray[i] != rmxArtist && rmxArtist === false) {
@@ -85,11 +161,11 @@ module.exports = {
         
             //Lastly, if we are on the remix artist
             } else if (artistArray[i] === rmxArtist) {
-                songObj = db.reviewDB.get(artistArray[i], `["${fullSongName}"]`);
+                songObj = db.reviewDB.get(artistArray[i], `["${remixsongName}"]`);
                 delete songObj[`<@${userToDelete.id}>`];
                 console.log(songObj);
         
-                db.reviewDB.set(artistArray[i], songObj, `["${fullSongName}"]`);
+                db.reviewDB.set(artistArray[i], songObj, `["${remixsongName}"]`);
 
             }
         }
