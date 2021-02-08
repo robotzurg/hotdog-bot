@@ -89,7 +89,7 @@ module.exports = {
                     rsentby = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.sentby`);
                     roverall = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.EPOverall`);
                     rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.rankPosition`);
-                    if (rrankpos != undefined) songRanking.push(`${rrankpos}. ${songName} (${rscore})`);
+                    if (rrankpos != undefined) songRanking.push([parseInt(rrankpos), `${rrankpos}. ${songName} (${rscore})`]);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }
@@ -125,6 +125,16 @@ module.exports = {
         }
 
         if (songRanking.length != 0) {
+            songRanking = songRanking.sort(function(a, b) {
+                return a[0] - b[0];
+            });
+
+            songRanking = songRanking.flat(1);
+
+            for (let i = 0; i <= songRanking.length; i++) {
+                songRanking.splice(i, 1);
+            }
+
             exampleEmbed.addField('Ranking:', `\`\`\`${songRanking.join('\n')}\`\`\``);
         }
         // Check if any of the songs in the artist DB are attached to the requested EP

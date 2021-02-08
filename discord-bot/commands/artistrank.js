@@ -39,9 +39,9 @@ module.exports = {
                 userRatingArray.push(rating);
             }
 
-            console.log(parseFloat(Math.round(average(userRatingArray) * 10) / 10));
-
-            ranking.push({ name: songArray[i], rating: parseFloat(Math.round(average(userRatingArray) * 10) / 10), reviewnum: userArray.length });
+            if (userArray.length === 1) {
+                ranking.push({ name: songArray[i], rating: parseFloat(Math.round(average(userRatingArray) * 10) / 10), reviewnum: userArray.length });
+            }
             
         }
 

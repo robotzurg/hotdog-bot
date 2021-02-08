@@ -60,6 +60,10 @@ cron.schedule('00 9 * * *', () => {
 // Listen for messages
 client.on('message', async message => {
 
+    if (message.content.includes('‘')) {
+        message.content = message.content.replace('‘', '\'');
+    }
+
     if (message.channel.name === 'server-playlist-voting' && message.content.includes('-')) {
         message.react('✅');
         message.react('❌');
@@ -104,6 +108,15 @@ client.on('message', async message => {
 
     if (message.content.toLowerCase().includes('friday 🏀 we ball') && message.channel.name != 'serious-events') {
         message.react('🏀');
+    }
+
+        //#reviews Filter
+    if (message.channel.name === 'reviews') {
+        if (message.content.includes('(') || message.content.includes('!') || message.author.bot) {
+            // Leave Empty
+        } else {
+            message.delete();
+        }
     }
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;

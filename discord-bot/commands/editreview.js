@@ -183,10 +183,8 @@ module.exports = {
             }
             
             exampleEmbed.addField('Rating: ', `**${rscore}**`, true);
-        
-        message.channel.send('Review edited:');
 
-        message.channel.send(exampleEmbed);
+        message.channel.send('Review edited:', exampleEmbed);
 
         message.delete({ timeout: 15000 });
 	},

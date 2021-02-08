@@ -68,7 +68,7 @@ module.exports = {
         let thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
 
         if (args.length < 4) {
-            return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
+            return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``).then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
         } else if (args.length === 5 || args.length === 6) {
 
             if (message.mentions.users.first() === undefined) { // If there isn't a user mentioned, then we know it's 3 arguments with no user mention.

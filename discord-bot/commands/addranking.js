@@ -22,7 +22,7 @@ module.exports = {
         args[1] = args[1].join(' ');
         
         if (args[0].includes(',')) {
-            return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
+            return message.channel.send('Using `,` to separate artists is not currently supported with EPs/LPs. Please use & to separate artists!').then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
         }
 
         if (!args[1].toLowerCase().includes('ep') && !args[1].toLowerCase().includes('lp') && !args[1].toLowerCase().includes('remixes') && !args[1].includes('/')) {
@@ -40,7 +40,7 @@ module.exports = {
         let message_id;
 
         if (args.length < 2) {
-            return message.channel.send(`Missing arguments!\nProper usage is: \`${command.usage}\``);
+            return message.channel.send(`Missing arguments!\nProper usage is: \`${command.usage}\``).then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
         } else if (args.length === 3 || args.length === 4) {
 
             if (message.mentions.users.first() === undefined) { // If there isn't a user mentioned, then we know it's 3 arguments with no user mention.
@@ -125,7 +125,7 @@ module.exports = {
             message_id = msg.id;
         });
 
-        const filter = m => m.author.id === message.author.id && (m.content.includes('(') || m.content.includes(')') || m.content.toLowerCase().includes('overall') || m.content.includes('!end'));
+        const filter = m => m.author.id === message.author.id && (m.content.includes('(') || m.content.includes(')') || m.content.toLowerCase().includes('!overall') || m.content.includes('!end'));
         const collector = message.channel.createMessageCollector(filter, { idle: 900000 });
         const rankArray = ['\n'];
 
@@ -205,7 +205,7 @@ module.exports = {
                 if (!m.content.includes('/10')) {
                     m.delete();
                     return message.channel.send(`You forgot to add a ranking! Here's what you sent, so that you can copy and fix it.\n\`${m.content}\``).then(msg => {
-                        msg.delete({ timeout: 15000 }); 
+                        msg.delete({ timeout: 30000 }); 
                     })
                     .catch(console.error);
                 }

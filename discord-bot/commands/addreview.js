@@ -17,21 +17,12 @@ module.exports = {
         const command = message.client.commands.get('addreview');
         let is_mailbox = mailboxes.includes(message.channel.name);
 
-        //Auto-adjustment to caps for each word
-        args[0] = args[0].split(' ');
-        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
-        args[0] = args[0].join(' ');
-
-        args[1] = args[1].split(' ');
-        args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
-        args[1] = args[1].join(' ');
-
         let taggedUser = false;
         let taggedMember = false;
         let thumbnailImage = false;
         
         if (args.length < 4) {
-            return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
+            return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``).then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
         } else if (args.length === 5 || args.length === 6) {
 
             if (message.mentions.users.first() === undefined) { // If there isn't a user mentioned, then we know it's 3 arguments with no user mention.
@@ -49,15 +40,24 @@ module.exports = {
 
             if (thumbnailImage != false) {
                 if (thumbnailImage.includes('|')) {
-                    return message.channel.send('Please make sure you don\'t have any **|** characters in your URL!');
+                    return message.channel.send('Please make sure you don\'t have any **|** characters in your URL!').then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
                 }
             }
 
         }
 
+        //Auto-adjustment to caps for each word
+        args[0] = args[0].split(' ');
+        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[0] = args[0].join(' ');
+
+        args[1] = args[1].split(' ');
+        args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[1] = args[1].join(' ');
+
         // [] check
         if (args[1].includes('Remix)')) {
-            return message.channel.send('Please use [] for remixes, not ()!');
+            return message.channel.send('Please use [] for remixes, not ()!').then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
         }
 
         let rating = args[2].replace(/\s+/g, '');
@@ -82,7 +82,7 @@ module.exports = {
 
         // EP/LP check
         if (args[1].includes('EP') || args[1].toLowerCase().includes('LP') || args[1].toLowerCase().includes('Remixes')) {
-            return message.channel.send('You can only use this command to rank singles/single remixes.\nPlease use `!addReviewEP` for EP Reviews/Rankings!');
+            return message.channel.send('You can only use this command to rank singles/single remixes.\nPlease use `!addReviewEP` for EP Reviews/Rankings!').then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
         }
 
         //Split up the artists into an array
@@ -343,6 +343,8 @@ module.exports = {
                             sentby: taggedUser === false ? false : taggedUser.id,
                             msg_id: false,
                         },
+                        Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                        Vocals: featArtists,
                     };
 
                     Object.assign(songObj, newuserObj);
@@ -361,6 +363,8 @@ module.exports = {
                             rankPosition: -1,
                             msg_id: false,
                         },
+                        Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                        Vocals: featArtists,
                     };
 
                     //Inject the newsongobject into the songobject and then put it in the database
@@ -497,6 +501,8 @@ module.exports = {
                             rankPosition: -1,
                             msg_id: false,
                         },
+                        Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
+                        Vocals: featArtists,
                     };
 
                     //Inject the newsongobject into the songobject and then put it in the database

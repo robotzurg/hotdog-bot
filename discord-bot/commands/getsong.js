@@ -23,7 +23,8 @@ module.exports = {
         args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
         args[0] = args[0].join(' ');
 
-        if (args.length === 1) {
+        if (args.length === 1) {  
+            message.react('🔃');          
             const dbKeyArray = db.reviewDB.keyArray();
             let options = [];
             
@@ -49,8 +50,10 @@ module.exports = {
             }
             
             if (options.length === 0) {
+                message.reactions.removeAll();
                 return message.channel.send('There is no song in the database that exists with this name.');
             } else if (options.length > 1) {
+                message.reactions.removeAll();
                 return message.channel.send(`Looks like multiple songs of the same name exist in the database. Please use \`!getSong <artist> | <song>\` on one of these songs to get more details:\n\`\`\`${options.join('\n')}\`\`\`\n*(Tip: You can copy paste the above artist/song pairs into \`!getSong\` as arguments.)*`);
             }
         }
@@ -136,6 +139,7 @@ module.exports = {
             if (db.reviewDB.get(artistName[0], `["${songName}"].Collab`).length != 0) {
                 artistsEmbed = [artistName[0]];
                 artistsEmbed.push(db.reviewDB.get(artistName[0], `["${songName}"].Collab`));
+                artistsEmbed = artistsEmbed.flat(1);
                 artistsEmbed = artistsEmbed.join(' & ');
             }
         }
@@ -200,7 +204,7 @@ module.exports = {
                         rating = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${userArray[i]}.rate`);
                     }
                     rankNumArray.push(parseFloat(rating.slice(0, -3)));
-                    userArray[i] = `${userArray[i]} \`${rating}\``;
+                    userArray[i] = [parseFloat(rating.slice(0, -3)), `${userArray[i]} \`${rating}\``];
                 }
             }
             
@@ -211,6 +215,16 @@ module.exports = {
             }
 
             if (userArray != 0) {
+                userArray = userArray.sort(function(a, b) {
+                    return b[0] - a[0];
+                });
+    
+                userArray = userArray.flat(1);
+    
+                for (let i = 0; i <= userArray.length; i++) {
+                    userArray.splice(i, 1);
+                }
+
                 exampleEmbed.addField('Reviews:', userArray);
             } else {
                 exampleEmbed.addField('Reviews:', 'No reviews :(');
@@ -239,7 +253,8 @@ module.exports = {
                     }
                 }
             }
-        
+
+        message.reactions.removeAll();
         message.channel.send(exampleEmbed);
 	},
 };

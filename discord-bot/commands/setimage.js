@@ -249,49 +249,51 @@ module.exports = {
         if (remixerSongObj === undefined) { remixerSongObj = []; }
         let msgstoEdit = [];
 
-        let userArray = Object.keys(imageSongObj);
-        userArray = userArray.filter(item => item !== 'Image');
-        userArray = userArray.filter(item => item !== 'Collab');
-        userArray = userArray.filter(item => item !== 'Vocals');
-        userArray = userArray.filter(item => item !== 'Remixers');
-        userArray = userArray.filter(item => item !== 'EP');
-
-        if (remixerSongObj.length != 0) {
-            userArray = Object.keys(remixerSongObj);
+        if (imageSongObj != undefined) {
+            let userArray = Object.keys(imageSongObj);
             userArray = userArray.filter(item => item !== 'Image');
             userArray = userArray.filter(item => item !== 'Collab');
             userArray = userArray.filter(item => item !== 'Vocals');
+            userArray = userArray.filter(item => item !== 'Remixers');
             userArray = userArray.filter(item => item !== 'EP');
-        }
 
-
-        userArray.forEach(user => {
-            if (rmxArtist === false) {
-                msgstoEdit.push(db.reviewDB.get(artistArray[0], `["${songName}"].["${user}"].msg_id`));
-            } else {
-                msgstoEdit.push(db.reviewDB.get(artistArray[0], `["${songName}"].Remixers.["${rmxArtist}"].["${user}"].msg_id`));
+            if (remixerSongObj.length != 0) {
+                userArray = Object.keys(remixerSongObj);
+                userArray = userArray.filter(item => item !== 'Image');
+                userArray = userArray.filter(item => item !== 'Collab');
+                userArray = userArray.filter(item => item !== 'Vocals');
+                userArray = userArray.filter(item => item !== 'EP');
             }
-        });
 
-        msgstoEdit = msgstoEdit.filter(item => item !== undefined);
-        if (msgstoEdit.length > 0) { 
-            let channelsearch = message.guild.channels.cache.get('680877758909382757');
 
-            forAsync(msgstoEdit, function(item) {
-                return new Promise(function(resolve) {
-                    let msgtoEdit = item;
-                    let msgEmbed;
-                    let embed_data;
+            userArray.forEach(user => {
+                if (rmxArtist === false) {
+                    msgstoEdit.push(db.reviewDB.get(artistArray[0], `["${songName}"].["${user}"].msg_id`));
+                } else {
+                    msgstoEdit.push(db.reviewDB.get(artistArray[0], `["${songName}"].Remixers.["${rmxArtist}"].["${user}"].msg_id`));
+                }
+            });
 
-                    channelsearch.messages.fetch(`${msgtoEdit}`).then(msg => {
-                        embed_data = msg.embeds;
-                        msgEmbed = embed_data[0];
-                        msgEmbed.thumbnail.url = thumbnailImage;
-                        msg.edit(msgEmbed);
-                        resolve();
+            msgstoEdit = msgstoEdit.filter(item => item !== undefined);
+            if (msgstoEdit.length > 0) { 
+                let channelsearch = message.guild.channels.cache.get('680877758909382757');
+
+                forAsync(msgstoEdit, function(item) {
+                    return new Promise(function(resolve) {
+                        let msgtoEdit = item;
+                        let msgEmbed;
+                        let embed_data;
+
+                        channelsearch.messages.fetch(`${msgtoEdit}`).then(msg => {
+                            embed_data = msg.embeds;
+                            msgEmbed = embed_data[0];
+                            msgEmbed.thumbnail.url = thumbnailImage;
+                            msg.edit(msgEmbed);
+                            resolve();
+                        });
                     });
                 });
-            });
+            }
         }
 
     } else { //If this IS an EP/LP.

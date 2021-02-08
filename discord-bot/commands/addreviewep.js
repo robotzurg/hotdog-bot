@@ -23,7 +23,7 @@ module.exports = {
         args[1] = args[1].join(' ');
 
         if (args[0].includes(',')) {
-            return message.channel.send('Using `,` to separate artists is not currently supported. Please use & to separate artists!');
+            return message.channel.send('Using `,` to separate artists is not currently supported with EPs/LPs. Please use & to separate artists!').then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
         }
 
         if (!args[1].toLowerCase().includes('ep') && !args[1].toLowerCase().includes('lp') && !args[1].toLowerCase().includes('remixes') && !args[1].includes('/')) {
