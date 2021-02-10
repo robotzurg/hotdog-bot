@@ -38,6 +38,14 @@ module.exports = {
                 is_mailbox = true;
             }
 
+            if (thumbnailImage.includes('spotify')) {
+                message.author.presence.activities.forEach((activity) => {
+                    if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
+                        thumbnailImage = `https://i.scdn.co/image/${activity.assets.largeImage.slice(8)}`;
+                    }
+                });
+            }
+
             if (thumbnailImage != false) {
                 if (thumbnailImage.includes('|')) {
                     return message.channel.send('Please make sure you don\'t have any **|** characters in your URL!').then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });

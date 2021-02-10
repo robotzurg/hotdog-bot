@@ -81,6 +81,14 @@ module.exports = {
                 taggedUser = message.mentions.users.first(); 
                 taggedMember = message.mentions.members.first();
             }
+
+            if (thumbnailImage.includes('spotify')) {
+                message.author.presence.activities.forEach((activity) => {
+                    if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
+                        thumbnailImage = `https://i.scdn.co/image/${activity.assets.largeImage.slice(8)}`;
+                    }
+                });
+            }
         }
 
         const exampleEmbed = new Discord.MessageEmbed()

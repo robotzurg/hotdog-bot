@@ -55,6 +55,15 @@ module.exports = {
                 taggedMember = message.mentions.members.first();
                 is_mailbox = true;
             }
+
+            if (thumbnailImage.includes('spotify')) {
+                message.author.presence.activities.forEach((activity) => {
+                    if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
+                        thumbnailImage = `https://i.scdn.co/image/${activity.assets.largeImage.slice(8)}`;
+                    }
+                });
+            }
+
         }
 
         message.delete(message);
@@ -148,9 +157,13 @@ module.exports = {
             } else if (m.content.includes(`!overall`)) {
 
                 if (overallString === -1) {
-                    splitUpOverall = m.content.split('\n');
-                    splitUpOverall.shift();
-                    overallString = splitUpOverall;
+                    if (m.content.includes('\n')) {
+                        splitUpOverall = m.content.split('\n');
+                        splitUpOverall.shift();
+                        overallString = splitUpOverall;
+                    } else {
+                        overallString = m.content.slice(8);
+                    }
                     m.delete();
                 }
 

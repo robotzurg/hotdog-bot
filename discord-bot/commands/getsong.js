@@ -14,16 +14,33 @@ module.exports = {
         let argArtistName = args[0];
         let argSongName = args[1];
 
+        if (args[0] === 's') {
+            message.author.presence.activities.forEach((activity) => {
+                if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
+                    let artists = activity.state;
+                    let song = activity.details;
+                    if (artists.includes(';')) {
+                        artists = artists.split('; ');
+                        artists = artists.join(' & ');
+                    }
+                    argArtistName = artists;
+                    argSongName = song;
+                }
+            });
+        }
+
         //Auto-adjustment to caps for each word
         argArtistName = argArtistName.split(' ');
         argArtistName = argArtistName.map(a => a.charAt(0).toUpperCase() + a.slice(1));
         argArtistName = argArtistName.join(' ');
 
-        args[0] = args[0].split(' ');
-        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
-        args[0] = args[0].join(' ');
+        if (args[0] != 's') {
+            args[0] = args[0].split(' ');
+            args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+            args[0] = args[0].join(' ');
+        }
 
-        if (args.length === 1) {  
+        if (args.length === 1 && args[0] != 's') {  
             message.react('🔃');          
             const dbKeyArray = db.reviewDB.keyArray();
             let options = [];

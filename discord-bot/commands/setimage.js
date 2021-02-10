@@ -27,6 +27,14 @@ module.exports = {
 			thumbnailImage = message.attachments.first().attachment;
 		} else if (args.length === 3) {
 			thumbnailImage = args[2];
+
+            if (thumbnailImage === 's') {
+                message.author.presence.activities.forEach((activity) => {
+                    if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
+                        thumbnailImage = `https://i.scdn.co/image/${activity.assets.largeImage.slice(8)}`;
+                    }
+                });
+            }
 		}
 
 		if (args.length === 3 && message.attachments.first() != undefined) {

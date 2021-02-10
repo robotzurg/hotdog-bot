@@ -15,28 +15,53 @@ module.exports = {
         let taggedUser;
         let taggedMember;
 
-        if (args.length === 2 && message.mentions.users.first() === undefined) {
-            argArtistName = args[0];
-            argSongName = args[1];
-            taggedUser = message.author;
-            taggedMember = message.member;
-        } else if (args.length === 3 && message.mentions.users.first() != undefined) {
-            argArtistName = args[0];
-            argSongName = args[1];
-            taggedUser = message.mentions.users.first();
-            taggedMember = message.mentions.members.first();
-        } else if (args.length === 1 && message.mentions.users.first() === undefined) {
-            argArtistName = args[0];
-            argSongName = false;
-            taggedUser = message.author;
-            taggedMember = message.member;
-        } else if (args.length === 2 && message.mentions.users.first() != undefined) {
-            argArtistName = args[0];
-            argSongName = false;
-            taggedUser = message.mentions.users.first();
-            taggedMember = message.mentions.members.first();
+        if (args[0].includes('s')) {
+            message.author.presence.activities.forEach((activity) => {
+                if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
+                    let artists = activity.state;
+                    let song = activity.details;
+                    if (artists.includes(';')) {
+                        artists = artists.split('; ');
+                        artists = artists.join(' & ');
+                    }
+                    argArtistName = artists;
+                    argSongName = song;
+                }
+            });
         }
-    
+
+        if (args[0] != 's') {
+            if (args.length === 2 && message.mentions.users.first() === undefined) {
+                argArtistName = args[0];
+                argSongName = args[1];
+                taggedUser = message.author;
+                taggedMember = message.member;
+            } else if (args.length === 3 && message.mentions.users.first() != undefined) {
+                argArtistName = args[0];
+                argSongName = args[1];
+                taggedUser = message.mentions.users.first();
+                taggedMember = message.mentions.members.first();
+            } else if (args.length === 1 && message.mentions.users.first() === undefined) {
+                argArtistName = args[0];
+                argSongName = false;
+                taggedUser = message.author;
+                taggedMember = message.member;
+            } else if (args.length === 2 && message.mentions.users.first() != undefined) {
+                argArtistName = args[0];
+                argSongName = false;
+                taggedUser = message.mentions.users.first();
+                taggedMember = message.mentions.members.first();
+            }
+        } else {
+            if (args.length === 1 && message.mentions.users.first() === undefined) {
+                taggedUser = message.author;
+                taggedMember = message.member;
+            } else if (args.length === 1 && message.mentions.users.first() != undefined) {
+                taggedUser = message.mentions.users.first();
+                taggedMember = message.mentions.members.first();
+            }
+        }
+        
         //Auto-adjustment to caps for each word
         argArtistName = argArtistName.split(' ');
         argArtistName = argArtistName.map(a => a.charAt(0).toUpperCase() + a.slice(1));
