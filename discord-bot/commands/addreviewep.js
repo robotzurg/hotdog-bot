@@ -156,11 +156,17 @@ module.exports = {
             } else if (m.content.includes(`!overall`)) {
 
                 if (overallString === -1) {
-                    splitUpOverall = m.content.split('\n');
-                    splitUpOverall.shift();
-                    overallString = splitUpOverall;
+                    if (m.content.includes('\n')) {
+                        splitUpOverall = m.content.split('\n');
+                        splitUpOverall.shift();
+                        overallString = splitUpOverall;
+                    } else {
+                        overallString = m.content.slice(9);
+                    }
                     m.delete();
                 }
+
+                console.log(overallString);
 
                 if (!args[0].includes(',')) {
                     artistArray = args[0].split(' & ');

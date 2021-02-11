@@ -5,17 +5,13 @@ module.exports = {
     name: 'setimage',
     type: 'Review DB',
     moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795553872143187968',
-	aliases: ['setimage', 'setI', 'setart'],
+	aliases: ['setimage', 'setI', 'setart', 'addimage'],
 	description: 'Set an image for a song/EP/LP! You can either do a link, or just attach an attachment.',
 	args: true,
 	usage: '<artist> | <song/EP/LP> | [op] <url>',
 	execute(message, args) {
         
 		//Auto-adjustment to caps for each word
-        args[0] = args[0].split(' ');
-        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
-        args[0] = args[0].join(' ');
-
         args[1] = args[1].split(' ');
         args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
         args[1] = args[1].join(' ');
@@ -27,7 +23,6 @@ module.exports = {
 			thumbnailImage = message.attachments.first().attachment;
 		} else if (args.length === 3) {
 			thumbnailImage = args[2];
-
             if (thumbnailImage === 's') {
                 message.author.presence.activities.forEach((activity) => {
                     if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
@@ -36,6 +31,10 @@ module.exports = {
                 });
             }
 		}
+
+        args[0] = args[0].split(' ');
+        args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
+        args[0] = args[0].join(' ');
 
 		if (args.length === 3 && message.attachments.first() != undefined) {
 			return message.channel.send('Please only use a direct image link, or an attachment, not both.');

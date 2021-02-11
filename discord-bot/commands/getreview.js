@@ -15,7 +15,7 @@ module.exports = {
         let taggedUser;
         let taggedMember;
 
-        if (args[0].includes('s')) {
+        if (args[0] === 's') {
             message.author.presence.activities.forEach((activity) => {
                 if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
                     let artists = activity.state;

@@ -39,7 +39,7 @@ module.exports = {
                 userRatingArray.push(rating);
             }
 
-            if (userArray.length === 1) {
+            if (userArray.length >= 1) {
                 ranking.push({ name: songArray[i], rating: parseFloat(Math.round(average(userRatingArray) * 10) / 10), reviewnum: userArray.length });
             }
             
