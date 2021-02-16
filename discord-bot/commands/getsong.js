@@ -40,8 +40,7 @@ module.exports = {
             args[0] = args[0].join(' ');
         }
 
-        if (args.length === 1 && args[0] != 's') {  
-            message.react('🔃');          
+        if (args.length === 1 && args[0] != 's') {         
             const dbKeyArray = db.reviewDB.keyArray();
             let options = [];
             
@@ -67,10 +66,8 @@ module.exports = {
             }
             
             if (options.length === 0) {
-                message.reactions.removeAll();
                 return message.channel.send('There is no song in the database that exists with this name.');
             } else if (options.length > 1) {
-                message.reactions.removeAll();
                 return message.channel.send(`Looks like multiple songs of the same name exist in the database. Please use \`!getSong <artist> | <song>\` on one of these songs to get more details:\n\`\`\`${options.join('\n')}\`\`\`\n*(Tip: You can copy paste the above artist/song pairs into \`!getSong\` as arguments.)*`);
             }
         }
@@ -182,7 +179,6 @@ module.exports = {
                     remixes.push(`\`${remixObjKeys[i]} Remix\``);
                 }
             }
-
             if (songEP === undefined) songEP = false;
         } else {
             songObj = db.reviewDB.get(rmxArtist, `["${fullSongName}"]`);
@@ -254,19 +250,25 @@ module.exports = {
             if (rmxArtist === false) {
                 if ((db.reviewDB.get(artistName[0], `["${songName}"].Image`)) === false) {
                     exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png" }));
+                    if (songEP != false) {
+                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `["${songEP}"].Image`));
+                    }
                 } else {
                     exampleEmbed.setThumbnail(db.reviewDB.get(artistName[0], `["${songName}"].Image`));
                     if (songEP != false) {
-                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `["${songName}"].Image`));
+                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `["${songEP}"].Image`));
                     }
                 }
             } else {
                 if (db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`) === false) {
                     exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png" }));
+                    if (songEP != false) {
+                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `["${songEP}"].Image`));
+                    }
                 } else {
                     exampleEmbed.setThumbnail(db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`));
                     if (songEP != false) {
-                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`));
+                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `["${songEP}"].Image`));
                     }
                 }
             }

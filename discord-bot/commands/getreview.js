@@ -61,6 +61,10 @@ module.exports = {
                 taggedMember = message.mentions.members.first();
             }
         }
+
+        if (args[1].toLowerCase().includes('ep') || args[1].toLowerCase().includes('lp') || args[1].toLowerCase().includes('remixes')) {
+            return message.channel.send('Please use `!getReviewEP`, not this command.');
+        }
         
         //Auto-adjustment to caps for each word
         argArtistName = argArtistName.split(' ');
@@ -224,9 +228,13 @@ module.exports = {
                 }
                 
                 exampleEmbed.setAuthor(rsentby != false ? `${rname}'s mailbox review` : `${rname}'s review`, `${taggedUser.avatarURL({ format: "png" })}`);
-                exampleEmbed.setDescription(rreview)
-                .setThumbnail(thumbnailImage)
-                .addField('Rating: ', `**${rscore}**`, true);
+                if (rreview != '-') {
+                    exampleEmbed.setDescription(rreview);
+                } else {
+                    exampleEmbed.setDescription(`Rating: **${rscore}**`);
+                }
+                exampleEmbed.setThumbnail(thumbnailImage);
+                if (rreview != '-') exampleEmbed.addField('Rating: ', `**${rscore}**`, true);
                 if (rsentby != false) {
                     exampleEmbed.setFooter(`Sent by ${usrSentBy.displayName}`, `${usrSentBy.user.avatarURL({ format: "png" })}`);
                 } else if (epfrom != undefined && epfrom != false) {

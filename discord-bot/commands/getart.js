@@ -18,10 +18,6 @@ module.exports = {
         args[1] = args[1].split(' ');
         args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
         args[1] = args[1].join(' ');
-
-        if (args[1].includes('EP') && args[1].includes('LP') && args[1].toLowerCase().includes('remixes')) {
-            return message.channel.send('This command does not support EPs/LPs yet. Instead, check for a single from the EP/LP you are looking for.');
-        }
         
         const artistName = args[0].split(' & ')[0];
         if (!db.reviewDB.has(artistName)) return message.channel.send('No artist found.');
@@ -56,7 +52,7 @@ module.exports = {
             rmxArtist = args[1].substring(0, args[1].length - 6).split(' [')[1];
         }
 
-        if (db.reviewDB.get(artistName, `["${songName}"]`) === undefined) return message.channel.send(`No song found.`);
+        if (db.reviewDB.get(artistName, `["${songName}"]`) === undefined) return message.channel.send(`No song/EP/LP found.`);
 
         if (rmxArtist === false) {
             image = db.reviewDB.get(artistName, `["${songName}"].Image`);

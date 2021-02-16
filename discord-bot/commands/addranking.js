@@ -11,7 +11,7 @@ module.exports = {
     args: true,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {
-        
+
         //Auto-adjustment to caps for each word
         args[0] = args[0].split(' ');
         args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
@@ -20,18 +20,12 @@ module.exports = {
         args[1] = args[1].split(' ');
         args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
         args[1] = args[1].join(' ');
-        
-        if (args[0].includes(',')) {
-            return message.channel.send('Using `,` to separate artists is not currently supported with EPs/LPs. Please use & to separate artists!').then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
-        }
 
-        if (!args[1].toLowerCase().includes('ep') && !args[1].toLowerCase().includes('lp') && !args[1].toLowerCase().includes('remixes') && !args[1].includes('/')) {
-            args[1] = args[1].concat(' EP');
-        }
+        let ep_name = args[1];
+        let songs_in_ep = [];
 
         const command = message.client.commands.get('addranking');
         let is_mailbox = mailboxes.includes(message.channel.name);
-
 
         let taggedUser = false;
         let taggedMember = false;
@@ -82,28 +76,14 @@ module.exports = {
             }
         }
 
+        let OGartistArray = artistArray;
+
         if (db.reviewDB.has(artistArray[0]) && thumbnailImage === false) {
-
-            let iCheckSongObj = db.reviewDB.get(artistArray[0]);
-            iCheckSongObj = Object.keys(iCheckSongObj);
-            iCheckSongObj = iCheckSongObj.filter(e => e !== 'Image');
-
-            if (iCheckSongObj.length != 0) {
-                for (let i = 0; i < iCheckSongObj.length; i++) {
-                    if (db.reviewDB.get(artistArray[0], `["${iCheckSongObj[i]}"].EP`) != args[1]) return;
-                    thumbnailImage = db.reviewDB.get(artistArray[0], `["${iCheckSongObj[i]}"].Image`);
-
-                    if (thumbnailImage === undefined || thumbnailImage === false || thumbnailImage === null) {
-                        thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
-                    } else {
-                        break;
-                    }
-                }
-            }
-
-    } else if (thumbnailImage === false) {
-        thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
-    }
+            thumbnailImage = db.reviewDB.get(artistArray[0], `${args[1]}.Image`);
+            if (thumbnailImage === false || thumbnailImage === undefined) thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+        } else if (thumbnailImage === false) {
+            thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+        }
 
         let exampleEmbed = new Discord.MessageEmbed()
         .setColor(`${message.member.displayHexColor}`)
@@ -134,7 +114,7 @@ module.exports = {
             message_id = msg.id;
         });
 
-        const filter = m => m.author.id === message.author.id && (m.content.includes('(') || m.content.includes(')') || m.content.toLowerCase().includes('!overall') || m.content.includes('!end'));
+        const filter = m => m.author.id === message.author.id && (m.content.includes('(') || m.content.includes(')') || m.content.toLowerCase().includes('!overall') || m.content.includes('!end') || m.content.includes('!delete'));
         const collector = message.channel.createMessageCollector(filter, { idle: 900000 });
         const rankArray = ['\n'];
 
@@ -145,7 +125,8 @@ module.exports = {
         let rmxArtist = false;
         let featArtists = false;
         let splitUpOverall;
-        let overallString = -1;
+        let overallReview = false;
+        let overallRating = false;
         
         collector.on('collect', m => {
 
@@ -153,63 +134,44 @@ module.exports = {
                 collector.stop();
                 m.delete();
                 msgtoEdit.reactions.removeAll();
+                if (rankArray.length === 0) msgtoEdit.delete();
+                return;
+            } else if (m.content.includes('!delete')) {
+                collector.stop();
+                m.delete();
+                msgtoEdit.reactions.removeAll();
+                msgtoEdit.delete();
                 return;
             } else if (m.content.includes(`!overall`)) {
-
-                if (overallString === -1) {
-                    if (m.content.includes('\n')) {
-                        splitUpOverall = m.content.split('\n');
-                        splitUpOverall.shift();
-                        overallString = splitUpOverall;
-                    } else {
-                        overallString = m.content.slice(8);
-                    }
-                    m.delete();
-                }
-
-                if (!args[0].includes(',')) {
-                    artistArray = args[0].split(' & ');
-                } else {
-                    artistArray = args[0].split(', ');
-                    if (artistArray[artistArray.length - 1].includes('&')) {
-                        let iter2 = artistArray.pop();
-                        iter2 = iter2.split(' & ');
-                        iter2 = iter2.map(a => artistArray.push(a));
-                        console.log(iter2);
-                    }
-                }
+                if (m.content.includes('\n')) {
+                    splitUpOverall = m.content.split('\n');
+                    overallRating = splitUpOverall[0].slice(9);
+                    if (overallRating.includes('(') && overallRating.includes(')')) {
+                        overallRating = overallRating.split('(');
+                        overallRating = overallRating.join(' ');
+                        overallRating = overallRating.split(')');
+                        overallRating = overallRating.join(' ');
+                        overallRating = overallRating.trim();
+                    } 
+                    if (overallRating === '') overallRating = false;
+                    overallReview = splitUpOverall[1];
                 
-                let songArray;
-                for (let ii = 0; ii < artistArray.length; ii++) {
-                    songArray = Object.keys(db.reviewDB.get(artistArray[ii]));
-                    for (let i = 0; i < songArray.length; i++) {
-                        if (!songArray[i].includes('Remix')) {
-                            let songRemixes = db.reviewDB.get(artistArray[ii], `${songArray[i]}.Remixers`);
-                            let songEP;
-
-                            if (songRemixes != false && songRemixes != undefined && songRemixes != null) {
-                                if (Object.keys(songRemixes).length === 0) {
-                                    songEP = db.reviewDB.get(artistArray[ii], `${songArray[i]}.EP`);
-                                    if (songEP === args[1]) {
-                                        db.reviewDB.set(artistArray[ii], overallString[0], `${songArray[i]}.<@${message.author.id}>.EPOverall`);
-                                    }
-                                } else {
-                                    for (let rmxNum = 0; rmxNum < Object.keys(songRemixes).length; rmxNum++) {
-                                        songEP = db.reviewDB.get(artistArray[ii], `${songArray[i]}.Remixers.${Object.keys(songRemixes)[rmxNum]}.EP`);
-                                        if (songEP === args[1]) {
-                                            db.reviewDB.set(artistArray[ii], overallString[0], `${songArray[i]}.Remixers.${Object.keys(songRemixes)[rmxNum]}.<@${message.author.id}>.EPOverall`);
-                                        }  
-                                    }
-                                }
-                            } else {
-                                songEP = db.reviewDB.get(artistArray[ii], `${songArray[i]}.EP`);
-                                if (songEP === args[1]) {
-                                    db.reviewDB.set(artistArray[ii], overallString[0], `${songArray[i]}.<@${message.author.id}>.EPOverall`);
-                                }
-                            }
-                        }
-                    }
+                    
+                } else {
+                    return message.channel.send(`Please use a newline for overall reviews!\n Message sent: ${m.content}`);
                 }
+
+                m.delete();
+
+                for (let i = 0; i < OGartistArray.length; i++) {
+                    db.reviewDB.set(OGartistArray[i], overallReview, `["${ep_name}"].["<@${message.author.id}>"].EPReview`);
+                    db.reviewDB.set(OGartistArray[i], overallRating, `["${ep_name}"].["<@${message.author.id}>"].EPRating`);
+                    db.reviewDB.set(OGartistArray[i], message_id, `["${ep_name}"].["<@${message.author.id}>"].msg_id`);
+                    db.reviewDB.set(OGartistArray[i], message.member.displayName, `["${ep_name}"].["<@${message.author.id}>"].name`);
+                    db.reviewDB.set(OGartistArray[i], thumbnailImage, `["${ep_name}"].Image`);
+                    db.reviewDB.set(OGartistArray[i], songs_in_ep, `["${ep_name}"].Songs`);
+                }
+
                 collector.stop();
                 msgtoEdit.reactions.removeAll();
 
@@ -224,8 +186,20 @@ module.exports = {
                 }
 
                 featArtists = [];
+
+                if (!args[0].includes(',')) {
+                    artistArray = args[0].split(' & ');
+                } else {
+                    artistArray = args[0].split(', ');
+                    if (artistArray[artistArray.length - 1].includes('&')) {
+                        let iter2 = artistArray.pop();
+                        iter2 = iter2.split(' & ');
+                        iter2 = iter2.map(a => artistArray.push(a));
+                        console.log(iter2);
+                    }
+                }
+
                 rmxArtist = false;
-                artistArray = args[0].split(' & ');
                 rankPosition++; //Start by upping the rank position, so we can go from 1-whatever
                 rankArray.push(`${rankPosition}. ${m.content}`);
                 songRating = m.content.split(' '),
@@ -237,7 +211,6 @@ module.exports = {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 7).split(' [')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' [')[1];
-                    artistArray = args[0].split(' & ');
 
                     rmxArtist = rmxArtist.split(' ');
                     rmxArtist = rmxArtist.map(a => a.charAt(0).toUpperCase() + a.slice(1));
@@ -247,7 +220,6 @@ module.exports = {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 9).split(' [')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' [')[1];
-                    artistArray = args[0].split(' & ');
 
                     rmxArtist = rmxArtist.split(' ');
                     rmxArtist = rmxArtist.map(a => a.charAt(0).toUpperCase() + a.slice(1));
@@ -257,7 +229,6 @@ module.exports = {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 6).split(' [')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' [')[1];
-                    artistArray = args[0].split(' & ');
 
                     rmxArtist = rmxArtist.split(' ');
                     rmxArtist = rmxArtist.map(a => a.charAt(0).toUpperCase() + a.slice(1));
@@ -339,6 +310,12 @@ module.exports = {
                 songName = songName.join(' ');
 
                 m.delete();
+
+                if (rmxArtist === false) {
+                    songs_in_ep.push(songName);
+                } else {
+                    songs_in_ep.push(`${songName} [${rmxArtist} Remix]`);
+                }
             }
 
             exampleEmbed = new Discord.MessageEmbed()
@@ -353,8 +330,13 @@ module.exports = {
                 exampleEmbed.setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox ranking` : `${message.member.displayName}'s ranking`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
             }
 
-            if (overallString != -1) {
-                exampleEmbed.setDescription(`${overallString}`);
+            if (overallReview != false && rankArray.length != 0) {
+                if (overallRating === false) {
+                    exampleEmbed.setDescription(overallReview);
+                } else {
+                    exampleEmbed.setDescription(overallReview);
+                    exampleEmbed.setFooter(`Rating: ${overallRating}`);
+                }
             }
 
             if (thumbnailImage === false) {
@@ -365,11 +347,11 @@ module.exports = {
 
             exampleEmbed.addField('Ranking:', `\`\`\`${rankArray.join('\n')}\`\`\``, true);
             
-            if (taggedUser != false) {
+            if (taggedUser != false && overallRating === false) {
                 exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
             }
 
-            if (overallString != -1) {
+            if (overallReview != false) {
                 return msgtoEdit.edit(exampleEmbed); 
             }
 
@@ -379,6 +361,13 @@ module.exports = {
             // songName: Song Name
             // songRating: Song Rating
             // rmxArtist: Remix Artist
+
+            //Quick thumbnail image check to assure we aren't putting in an avatar
+            if (thumbnailImage === undefined || thumbnailImage === null || thumbnailImage === false) { 
+                thumbnailImage = false;
+            } else if (thumbnailImage.includes('avatar') === true) {
+                thumbnailImage = false;
+            }
 
             // If the artist db doesn't exist
             if (rmxArtist === false) {
@@ -401,7 +390,21 @@ module.exports = {
                                 Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
                                 Vocals: featArtists,
                             },
+                            [ep_name]: OGartistArray.includes(artistArray[i]) ? {
+                                Image: thumbnailImage,
+                                Songs: songs_in_ep,
+                                [`<@${message.author.id}>`]: {
+                                    msg_id: message_id,
+                                    name: message.member.displayName,
+                                    EPReview: false,
+                                    EPRating: false,
+                                },
+                            } : ep_name,
                         });
+
+                        if (!OGartistArray.includes(artistArray[i])) {
+                            db.reviewDB.delete(`${artistArray[i]}`, ep_name);
+                        }
                     } else if(db.reviewDB.get(artistArray[i], `["${songName}"]`) === undefined) { //If the artist db exists, check if the song db doesn't exist
                     console.log('Song Not Detected!');
                     const artistObj = db.reviewDB.get(artistArray[i]);
@@ -424,11 +427,25 @@ module.exports = {
                                 Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
                                 Vocals: featArtists,
                             },
+                            [ep_name]: OGartistArray.includes(artistArray[i]) ? {
+                                Image: thumbnailImage,
+                                Songs: songs_in_ep,
+                                [`<@${message.author.id}>`]: {
+                                    msg_id: message_id,
+                                    name: message.member.displayName,
+                                    EPReview: false,
+                                    EPRating: false,
+                                },
+                            } : ep_name,
                         };
     
                         //Inject the newsongobject into the artistobject and then put it in the database
                         Object.assign(artistObj, newsongObj);
                         db.reviewDB.set(artistArray[i], artistObj);
+
+                        if (!OGartistArray.includes(artistArray[i])) {
+                            db.reviewDB.delete(`${artistArray[i]}`, ep_name);
+                        }
     
                     } else if (db.reviewDB.get(artistArray[i], `["${songName}"].${message.author}`)) { // Check if you are already in the system
                         console.log('User is in the system!');
@@ -446,10 +463,39 @@ module.exports = {
                             },
                         };
 
+                        let newEPObj;
+    
+                        if (db.reviewDB.get(artistArray[i], `["${ep_name}"]`) === undefined) {
+                            newEPObj = {
+                                [ep_name]: OGartistArray.includes(artistArray[i]) ? {
+                                    Image: thumbnailImage,
+                                    Songs: songs_in_ep,
+                                    [`<@${message.author.id}>`]: {
+                                        msg_id: message_id,
+                                        name: message.member.displayName,
+                                        EPReview: false,
+                                        EPRating: false,
+                                    },
+                                } : ep_name,
+                            };
+                        } else {
+                            if (OGartistArray.includes(artistArray[i])) {
+                                db.reviewDB.set(artistArray[i], songs_in_ep, `["${ep_name}"].Songs`);
+                            }
+                        }
+
                         Object.assign(songObj, newuserObj);
                         db.reviewDB.set(artistArray[i], songObj, `["${songName}"]`);
                         db.reviewDB.set(artistArray[i], args[1], `["${songName}"].EP`); //Format song to include the EP
                         db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
+
+                        //EP review additions
+                        const aObj = db.reviewDB.get(artistArray[i]);
+                        if (!OGartistArray.includes(artistArray[i])) {
+                            Object.assign(aObj, newEPObj);
+                            db.reviewDB.delete(`${artistArray[i]}`, ep_name);
+                        }
+
                     } else {
                         console.log('User not detected!');
                         const songObj = db.reviewDB.get(artistArray[i], `["${songName}"]`);
@@ -466,12 +512,41 @@ module.exports = {
                                 msg_id: message_id,
                             },
                         };
+
+                        let newEPObj;
+    
+                        if (db.reviewDB.get(artistArray[i], `["${ep_name}"]`) === undefined) {
+                            newEPObj = {
+                                [ep_name]: OGartistArray.includes(artistArray[i]) ? {
+                                    Image: thumbnailImage,
+                                    Songs: songs_in_ep,
+                                    [`<@${message.author.id}>`]: {
+                                        msg_id: message_id,
+                                        name: message.member.displayName,
+                                        EPReview: false,
+                                        EPRating: false,
+                                    },
+                                } : ep_name,
+                            };
+                        } else {
+                            if (OGartistArray.includes(artistArray[i])) {
+                                db.reviewDB.set(artistArray[i], songs_in_ep, `["${ep_name}"].Songs`);
+                            }
+                        }
     
                         //Inject the newsongobject into the artistobject and then put it in the database
                         Object.assign(songObj, newuserObj);
                         db.reviewDB.set(artistArray[i], songObj, `["${songName}"]`);
                         db.reviewDB.set(artistArray[i], args[1], `["${songName}"].EP`); //Format song to include the EP
                         db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
+
+                        //EP review additions
+                        const aObj = db.reviewDB.get(artistArray[i]);
+                        if (!OGartistArray.includes(artistArray[i])) {
+                            Object.assign(aObj, newEPObj);
+                            db.reviewDB.delete(`${artistArray[i]}`, ep_name);
+                        }
+
                     }
                 }
             } else { //The same but for remixes
@@ -519,7 +594,22 @@ module.exports = {
                                 },
                                 Image: thumbnailImage,
                             },
+                            [ep_name]: OGartistArray.includes(artistArray[i]) ? {
+                                Image: thumbnailImage,
+                                Songs: songs_in_ep,
+                                [`<@${message.author.id}>`]: {
+                                    msg_id: message_id,
+                                    name: message.member.displayName,
+                                    EPReview: false,
+                                    EPRating: false,
+                                },
+                            } : ep_name,
                         });
+
+                        if (!OGartistArray.includes(artistArray[i])) {
+                            db.reviewDB.delete(`${artistArray[i]}`, ep_name);
+                        }
+
                     } else if(db.reviewDB.get(artistArray[i], `["${songName}"]`) === undefined) { //If the artist db exists, check if the song db doesn't exist
                     console.log('Song Not Detected!');
                     const artistObj = db.reviewDB.get(artistArray[i]);
@@ -562,11 +652,25 @@ module.exports = {
                                 },
                                 Image: thumbnailImage,
                             },
+                            [ep_name]: OGartistArray.includes(artistArray[i]) ? {
+                                Image: thumbnailImage,
+                                Songs: songs_in_ep,
+                                [`<@${message.author.id}>`]: {
+                                    msg_id: message_id,
+                                    name: message.member.displayName,
+                                    EPReview: false,
+                                    EPRating: false,
+                                },
+                            } : ep_name,
                         };
     
                         //Inject the newsongobject into the artistobject and then put it in the database
                         Object.assign(artistObj, newsongObj);
                         db.reviewDB.set(artistArray[i], artistObj);
+
+                        if (!OGartistArray.includes(artistArray[i])) {
+                            db.reviewDB.delete(`${artistArray[i]}`, ep_name);
+                        }
     
                     } else if (db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`) === undefined) { //If the song exists, check if the remix artist DB exists
                         console.log('Remix Artist not detected!');
@@ -590,10 +694,37 @@ module.exports = {
                                 Vocals: featArtists,
                             },
                         };
+
+                        let newEPObj;
+               
+                        if (db.reviewDB.get(artistArray[i], `["${ep_name}"]`) === undefined) {
+                            newEPObj = {
+                                [ep_name]: !OGartistArray.includes(artistArray[i]) ? {
+                                    Image: thumbnailImage,
+                                    Songs: songs_in_ep,
+                                    [`<@${message.author.id}>`]: {
+                                        msg_id: message_id,
+                                        name: message.member.displayName,
+                                        EPReview: false,
+                                        EPRating: false,
+                                    },
+                                } : ep_name,
+                            };
+                        } else {
+                            if (!OGartistArray.includes(artistArray[i])) {
+                                db.reviewDB.set(artistArray[i], songs_in_ep, `["${ep_name}"].Songs`);
+                            }
+                        }
     
                         Object.assign(remixObj, newremixObj);
                         db.reviewDB.set(artistArray[i], remixObj, `["${songName}"].Remixers`);
-    
+
+                        //EP review additions
+                        const aObj = db.reviewDB.get(artistArray[i]);
+                        if (!OGartistArray.includes(artistArray[i])) {
+                            Object.assign(aObj, newEPObj);
+                        }
+        
                     } else if (db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"].${message.author}`)) { // Check if you are already in the system
                         console.log('User is in the system!');
                         const remixsongObj = (artistArray[i] === rmxArtist) ? db.reviewDB.get(artistArray[i], `["${songName}"]`) : db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`);
@@ -610,6 +741,27 @@ module.exports = {
                             },
                         };
 
+                        let newEPObj;
+    
+                        if (db.reviewDB.get(artistArray[i], `["${ep_name}"]`) === undefined) {
+                            newEPObj = {
+                                [ep_name]: OGartistArray.includes(artistArray[i]) ? {
+                                    Image: thumbnailImage,
+                                    Songs: songs_in_ep,
+                                    [`<@${message.author.id}>`]: {
+                                        msg_id: message_id,
+                                        name: message.member.displayName,
+                                        EPReview: false,
+                                        EPRating: false,
+                                    },
+                                } : ep_name,
+                            };
+                        } else {
+                            if (OGartistArray.includes(artistArray[i])) {
+                                db.reviewDB.set(artistArray[i], songs_in_ep, `["${ep_name}"].Songs`);
+                            }
+                        }
+
                         Object.assign(remixsongObj, newuserObj);
                         if (artistArray[i] === rmxArtist) {
                             db.reviewDB.set(artistArray[i], remixsongObj, `["${songName}"]`);
@@ -620,6 +772,13 @@ module.exports = {
                             db.reviewDB.set(artistArray[i], args[1], `["${songName}"].Remixers.["${rmxArtist}"].EP`); //Format song to include the EP
                             db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Remixers.["${rmxArtist}"].Image`);
                         }
+
+                         //EP review additions
+                         const aObj = db.reviewDB.get(artistArray[i]);
+                         if (!OGartistArray.includes(artistArray[i])) {
+                             Object.assign(aObj, newEPObj);
+                             db.reviewDB.delete(`${artistArray[i]}`, ep_name);
+                         }
 
                     } else {
                         console.log('User not detected!');
@@ -637,6 +796,27 @@ module.exports = {
                                 msg_id: message_id,
                             },
                         };
+
+                        let newEPObj;
+    
+                        if (db.reviewDB.get(artistArray[i], `["${ep_name}"]`) === undefined) {
+                            newEPObj = {
+                                [ep_name]: OGartistArray.includes(artistArray[i]) ? {
+                                    Image: thumbnailImage,
+                                    Songs: songs_in_ep,
+                                    [`<@${message.author.id}>`]: {
+                                        msg_id: message_id,
+                                        name: message.member.displayName,
+                                        EPReview: false,
+                                        EPRating: false,
+                                    },
+                                } : ep_name,
+                            };
+                        } else {
+                            if (OGartistArray.includes(artistArray[i])) {
+                                db.reviewDB.set(artistArray[i], songs_in_ep, `["${ep_name}"].Songs`);
+                            }
+                        }
     
                         //Inject the newsongobject into the songobject and then put it in the database
                         Object.assign(remixsongObj, newuserObj);
@@ -648,6 +828,13 @@ module.exports = {
                             db.reviewDB.set(artistArray[i], remixsongObj, `["${songName}"].Remixers.["${rmxArtist}"]`); 
                             db.reviewDB.set(artistArray[i], args[1], `["${songName}"].Remixers.["${rmxArtist}"].EP`); //Format song to include the EP
                             db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Remixers.["${rmxArtist}"].Image`);
+                        }
+
+                        //EP review additions
+                        const aObj = db.reviewDB.get(artistArray[i]);
+                        if (!OGartistArray.includes(artistArray[i])) {
+                            Object.assign(aObj, newEPObj);
+                            db.reviewDB.delete(`${artistArray[i]}`, ep_name);
                         }
                     }
                 }

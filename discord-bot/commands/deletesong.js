@@ -17,11 +17,28 @@ module.exports = {
         args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
         args[1] = args[1].join(' ');
 
+        //Split up the artists into an array
+        let artistArray;
+
+        if (!args[0].includes(',')) {
+            artistArray = args[0].split(' & ');
+        } else {
+            artistArray = args[0].split(', ');
+            if (artistArray[artistArray.length - 1].includes('&')) {
+                let iter2 = artistArray.pop();
+                iter2 = iter2.split(' & ');
+                iter2 = iter2.map(a => artistArray.push(a));
+                console.log(iter2);
+            }
+        }
+
 		if (message.member.hasPermission('ADMINISTRATOR') || message.author.id === '122568101995872256') {
-            const artistObj = db.reviewDB.get(args[0]);
-            if (artistObj === undefined) return message.channel.send('Artist not found.');
-            delete artistObj[args[1]];
-            db.reviewDB.set(args[0], artistObj);
+            for (let i = 0; i < artistArray.length; i++) {
+                const artistObj = db.reviewDB.get(artistArray[i]);
+                if (artistObj === undefined) return message.channel.send('Artist not found.');
+                delete artistObj[args[1]];
+                db.reviewDB.set(artistArray[i], artistObj);
+            }
 
 			message.channel.send(`${args[0]} - ${args[1]} deleted from the database.`);
 		} else { return message.reply('You don\'t have the perms to use this command!'); }

@@ -6,7 +6,7 @@ module.exports = {
 	type: 'Admin',
     description: 'Reset the game to base level with all current players. [ADMIN ONLY]',
 	execute(message) {
-		if (message.member.hasPermission('ADMINISTRATOR')) {
+		if (message.member.hasPermission('ADMINISTRATOR') || message.author.id === '122568101995872256') {
 		
 			db.genreRoulette.forEach((prop, key) => {
 				const genrePick = genreList[Math.floor(Math.random() * genreList.length)];

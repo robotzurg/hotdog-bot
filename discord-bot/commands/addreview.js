@@ -38,7 +38,7 @@ module.exports = {
                 is_mailbox = true;
             }
 
-            if (thumbnailImage.includes('spotify')) {
+            if (thumbnailImage.toLowerCase().includes('spotify')) {
                 message.author.presence.activities.forEach((activity) => {
                     if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
                         thumbnailImage = `https://i.scdn.co/image/${activity.assets.largeImage.slice(8)}`;
@@ -269,9 +269,13 @@ module.exports = {
         .setColor(`${message.member.displayHexColor}`)
         .setTitle(`${args[0]} - ${args[1]}`)
         .setAuthor(is_mailbox ? `${message.member.displayName}'s mailbox review` : `${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
-        exampleEmbed.setDescription(review);
+        if (review != '-') {
+            exampleEmbed.setDescription(review);
+        } else {
+            exampleEmbed.setDescription(`Rating: **${rating}**`);
+        }
         exampleEmbed.setThumbnail(thumbnailImage);
-        exampleEmbed.addField('Rating: ', `**${rating}**`, true);
+        if (review != '-') exampleEmbed.addField('Rating: ', `**${rating}**`, true);
         if (taggedUser != false) {
             exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
         }

@@ -317,7 +317,7 @@ client.on('message', async message => {
         singleList.push('----------------------------------------------------------------------------------------------------------------');
 
         (channeltoSearch.messages.fetch(singleID)).then((msg) => {
-            //msg.edit(singleList);
+            msg.edit(singleList);
         });
 
         (channeltoSearch.messages.fetch(epID)).then((msg) => {

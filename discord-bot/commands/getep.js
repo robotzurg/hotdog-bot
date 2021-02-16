@@ -19,11 +19,6 @@ module.exports = {
         args[1] = args[1].split(' ');
         args[1] = args[1].map(a => a.charAt(0).toUpperCase() + a.slice(1));
         args[1] = args[1].join(' ');
-
-
-        if (!args[1].includes('EP') && !args[1].includes('LP') && !args[1].toLowerCase().includes('remixes')) {
-            args[1] = args[1].concat(' EP');
-        }
         
         let artistName = args[0].split(' & ');
 

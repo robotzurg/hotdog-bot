@@ -51,7 +51,7 @@ module.exports = {
         }
 
         if (args[1].toLowerCase().includes('ep') || args[1].toLowerCase().includes('lp') || args[1].toLowerCase().includes('remixes')) {
-            return message.channel.send('EPs/LPs/Remix Package review edits are not supported yet. Please contact Jeff to have your EP/LP/Remix Package review edited, if needed.');
+            return message.channel.send('EPs/LPs/Remix Package review edits with this command are not supported yet, however,\nYou can edit EP/LP/other reviews by simply using `!addReviewEP` or `!addRanking` with the same EP name, then just using it as normal.');
         }
         
         let artistArray = args[0].split(' & ');

@@ -62,7 +62,6 @@ module.exports = {
 		let rmxArtist = false;
 		let featArtists = [];
 		let newSong = false;
-		
 
 		if (args[1].includes('(feat')) {
 
@@ -320,32 +319,20 @@ module.exports = {
         }
 
         let EPartistObj;
-        let EPsongArray;
+        let EPuserArray;
         let EPmsgstoEdit = [];
 
         for (let i = 0; i < EPartistArray.length; i++) {
-            EPartistObj = db.reviewDB.get(EPartistArray[i]);
-            EPsongArray = Object.keys(EPartistObj);
+            db.reviewDB.set(EPartistArray[i], thumbnailImage, `["${args[1]}"].Image`);
 
-            EPsongArray = EPsongArray.filter(e => e !== 'Image');
+            EPartistObj = db.reviewDB.get(EPartistArray[i], `["${args[1]}"]`);
+            EPuserArray = Object.keys(EPartistObj);
+            EPuserArray = EPuserArray.filter(item => item !== 'Image');
+            EPuserArray = EPuserArray.filter(item => item !== 'Songs');
 
-            for (let ii = 0; ii < EPsongArray.length; ii++) {
-                if (db.reviewDB.get(EPartistArray[i], `["${EPsongArray[ii]}"].EP`) === args[1]) {
-                    let userArray = Object.keys(db.reviewDB.get(EPartistArray[i], `["${EPsongArray[ii]}"]`));
-                    userArray = userArray.filter(item => item !== 'Image');
-                    userArray = userArray.filter(item => item !== 'Collab');
-                    userArray = userArray.filter(item => item !== 'Vocals');
-                    userArray = userArray.filter(item => item !== 'Remixers');
-                    userArray = userArray.filter(item => item !== 'EP');
-
-                    // Set the image
-                    db.reviewDB.set(EPartistArray[i], thumbnailImage, `["${EPsongArray[ii]}"].Image`);
-
-                    userArray.forEach(user => {
-                        EPmsgstoEdit.push(db.reviewDB.get(EPartistArray[i], `["${EPsongArray[ii]}"].["${user}"].msg_id`));
-                    });
-                }
-            }
+            EPuserArray.forEach(user => {
+                EPmsgstoEdit.push(db.reviewDB.get(EPartistArray[i], `["${args[1]}"].["${user}"].msg_id`));
+            });
         }
         
         EPmsgstoEdit = EPmsgstoEdit.filter(item => item !== undefined);

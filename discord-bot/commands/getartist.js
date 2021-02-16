@@ -91,10 +91,10 @@ module.exports = {
                         songDetails = `\`${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''}\``;
                     }
 
-                    if (!songArray[i].includes('Remix')) {
+                    if (!songArray[i].includes('Remix') && !songArray[i].includes('EP') && !songArray[i].includes('LP') && !songArray[i].includes('/')) {
                         singleArray.push(`-${songArray[i]}${songEP != false && songEP != undefined ? ` (${songEP})` : ''} ${songDetails}`);
                         singleArray[singleArray.length - 1] = singleArray[singleArray.length - 1].replace('*', '\\*');
-                    } else {
+                    } else if (!songArray[i].includes('EP') && !songArray[i].includes('LP') && !songArray[i].includes('/')) {
                         remixArray.push(`-${songArray[i]}${songEP != false && songEP != undefined ? ` (${songEP})` : ''} ${songDetails}`);
                         remixArray[remixArray.length - 1] = remixArray[remixArray.length - 1].replace('*', '\\*');
                     }
