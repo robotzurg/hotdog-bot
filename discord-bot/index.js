@@ -332,15 +332,14 @@ client.on('message', async message => {
             msg.edit(compList);
         });
     };
-    
-
-	const command = client.commands.get(commandName) ||	client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-	if (!command) return;
 
     //Update the databases whenever a command is used, just to make sure we're good at most times
     module.exports.updateGenreGameData();
     module.exports.updateFridayListData();
+    
 
+	const command = client.commands.get(commandName) ||	client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	if (!command) return;
 
     if (command.args && !args.length) {
         let reply = `You didn't provide any arguments, ${message.author}!`;

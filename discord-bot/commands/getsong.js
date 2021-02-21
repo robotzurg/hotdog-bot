@@ -169,8 +169,8 @@ module.exports = {
 
         if (rmxArtist === false) {
             songObj = db.reviewDB.get(artistName[0], `["${songName}"]`);
-            songEP = db.reviewDB.get(artistName[0], `["${songName}"].EP`);
-            remixObj = db.reviewDB.get(artistName[0], `["${songName}"].Remixers`);
+            songEP = songObj.EP;
+            remixObj = songObj.Remixers;
 
             if (remixObj != false && remixObj != undefined && remixObj != null) {
                 let remixObjKeys = Object.keys(remixObj);
@@ -181,13 +181,18 @@ module.exports = {
             }
             if (songEP === undefined) songEP = false;
         } else {
-            songObj = db.reviewDB.get(rmxArtist, `["${fullSongName}"]`);
-            songEP = db.reviewDB.get(rmxArtist, `["${fullSongName}"].EP`);
+            songObj = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"]`);
+            if (db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].EP` === undefined)) {
+                songEP = songObj.EP;
+            } else {
+                songEP = false;
+            }
+            console.log(songObj);
             if (songEP === undefined) songEP = false;
         }
         
         if (songObj === undefined) return message.channel.send('The requested song does not exist.\nUse `!getArtist` to get a full list of this artist\'s songs.');
-
+        
         let userArray = Object.keys(songObj);
         
         userArray = userArray.filter(e => e !== 'EP');
@@ -195,6 +200,7 @@ module.exports = {
         userArray = userArray.filter(e => e !== 'Remixers');
         userArray = userArray.filter(e => e !== 'Collab');
         userArray = userArray.filter(e => e !== 'Vocals');
+        userArray = userArray.filter(e => e !== 'EPpos');
         
         const rankNumArray = [];
 
@@ -213,6 +219,7 @@ module.exports = {
                     let rating;
                     if (rmxArtist === false) {
                         rating = db.reviewDB.get(artistName[0], `["${songName}"].${userArray[i]}.rate`);
+                        console.log(userArray[i]);
                     } else {
                         rating = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${userArray[i]}.rate`);
                     }
@@ -251,24 +258,24 @@ module.exports = {
                 if ((db.reviewDB.get(artistName[0], `["${songName}"].Image`)) === false) {
                     exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png" }));
                     if (songEP != false) {
-                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `["${songEP}"].Image`));
+                        exampleEmbed.setFooter(`from ${songEP}`, db.reviewDB.get(artistName[0], `["${songEP}"].Image`));
                     }
                 } else {
                     exampleEmbed.setThumbnail(db.reviewDB.get(artistName[0], `["${songName}"].Image`));
                     if (songEP != false) {
-                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `["${songEP}"].Image`));
+                        exampleEmbed.setFooter(`from ${songEP}`, db.reviewDB.get(artistName[0], `["${songEP}"].Image`));
                     }
                 }
             } else {
                 if (db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`) === false) {
                     exampleEmbed.setThumbnail(message.author.avatarURL({ format: "png" }));
                     if (songEP != false) {
-                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `["${songEP}"].Image`));
+                        exampleEmbed.setFooter(`from ${songEP}`, db.reviewDB.get(artistName[0], `["${songEP}"].Image`));
                     }
                 } else {
                     exampleEmbed.setThumbnail(db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`));
                     if (songEP != false) {
-                        exampleEmbed.setFooter(`from the ${songEP}`, db.reviewDB.get(artistName[0], `["${songEP}"].Image`));
+                        exampleEmbed.setFooter(`from ${songEP}`, db.reviewDB.get(artistName[0], `["${songEP}"].Image`));
                     }
                 }
             }

@@ -201,7 +201,7 @@ module.exports = {
 
                 rmxArtist = false;
                 rankPosition++; //Start by upping the rank position, so we can go from 1-whatever
-                rankArray.push(`${rankPosition}. ${m.content}`);
+                rankArray.push(`${rankPosition}. ${m.content.replace('\\', '')}`);
                 songRating = m.content.split(' '),
                 songName = songRating.splice(0, songRating.length - 1).join(" ");
                 songRating = songRating[0].slice(1, -1);
@@ -381,7 +381,6 @@ module.exports = {
                                     rate: songRating,
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
-                                    EPOverall: false,
                                     msg_id: message_id,
                                 },
                                 EP: args[1],
@@ -418,7 +417,6 @@ module.exports = {
                                     rate: songRating,
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
-                                    EPOverall: false,
                                     msg_id: message_id,
                                 },
                                 EP: args[1],
@@ -508,7 +506,6 @@ module.exports = {
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: rankPosition,
-                                EPOverall: false,
                                 msg_id: message_id,
                             },
                         };
@@ -565,7 +562,6 @@ module.exports = {
                                     rate: songRating,
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
-                                    EPOverall: false,
                                     msg_id: message_id,
                                 },
                                 EP: args[1],
@@ -583,7 +579,6 @@ module.exports = {
                                             rate: songRating,
                                             sentby: taggedUser === false ? false : taggedUser.id,
                                             rankPosition: rankPosition,
-                                            EPOverall: false,
                                             msg_id: message_id,
                                         },
                                         EP: args[1],
@@ -623,7 +618,6 @@ module.exports = {
                                     rate: songRating,
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
-                                    EPOverall: false,
                                     msg_id: message_id,
                                 },
                                 EP: args[1],
@@ -641,7 +635,6 @@ module.exports = {
                                             rate: songRating,
                                             sentby: taggedUser === false ? false : taggedUser.id,
                                             rankPosition: rankPosition,
-                                            EPOverall: false,
                                             msg_id: message_id,
                                         },
                                         EP: args[1],
@@ -685,7 +678,6 @@ module.exports = {
                                     rate: songRating,
                                     sentby: taggedUser === false ? false : taggedUser.id,
                                     rankPosition: rankPosition,
-                                    EPOverall: false,
                                     msg_id: message_id,
                                 },
                                 EP: args[1],
@@ -792,7 +784,6 @@ module.exports = {
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 rankPosition: rankPosition,
-                                EPOverall: false,
                                 msg_id: message_id,
                             },
                         };

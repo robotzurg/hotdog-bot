@@ -67,6 +67,7 @@ module.exports = {
                 reviewNum = reviewNum.filter(e => e !== 'Collab');
                 reviewNum = reviewNum.filter(e => e !== 'Image');
                 reviewNum = reviewNum.filter(e => e !== 'Vocals');
+                reviewNum = reviewNum.filter(e => e !== 'EPpos');
 
                 reviewNum = reviewNum.length;
 

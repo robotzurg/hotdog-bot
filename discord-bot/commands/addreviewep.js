@@ -7,7 +7,7 @@ module.exports = {
     name: 'addreviewep',
     type: 'Review DB',
     moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/794769347443818527',
-    aliases: ['addreviewep', 'reviewep', 're', 'rep'],
+    aliases: ['addreviewep', 'reviewep', 're', 'rep', 'epreview'],
     description: 'Create an EP/LP review embed message! Use !end to end the chain.',
     args: true,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
@@ -33,6 +33,7 @@ module.exports = {
         let thumbnailImage = false;
         let msgtoEdit;
         let message_id;
+        let ep_pos = 0;
 
         if (args.length < 2) {
             return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
@@ -184,6 +185,8 @@ module.exports = {
                     })
                     .catch(console.error);
                 }
+
+                ep_pos++;
 
                 featArtists = [];
 
@@ -408,6 +411,7 @@ module.exports = {
                                 sentby: taggedUser === false ? false : taggedUser.id,
                                 msg_id: message_id,
                             },
+                            EPpos: ep_pos,
                             EP: args[1],
                             Remixers: {},
                             Image: thumbnailImage,
@@ -442,9 +446,9 @@ module.exports = {
                                 review: songReview,
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
-                                EPOverall: false,
                                 msg_id: message_id,
                             },
+                            EPpos: ep_pos,
                             EP: args[1],
                             Remixers: {},
                             Image: thumbnailImage,
@@ -509,6 +513,7 @@ module.exports = {
 
                     Object.assign(songObj, newuserObj);
                     db.reviewDB.set(artistArray[i], songObj, `["${songName}"]`);
+                    db.reviewDB.set(artistArray[i], ep_pos, `["${songName}"].EPpos`);
                     db.reviewDB.set(artistArray[i], args[1], `["${songName}"].EP`); //Format song to include the EP
                     db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
 
@@ -529,7 +534,6 @@ module.exports = {
                             review: songReview,
                             rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
-                            EPOverall: false,
                             msg_id: message_id,
                         },
                     };
@@ -558,6 +562,7 @@ module.exports = {
                     //Inject the newsongobject into the artistobject and then put it in the database
                     Object.assign(songObj, newuserObj);
                     db.reviewDB.set(artistArray[i], songObj, `["${songName}"]`);
+                    db.reviewDB.set(artistArray[i], ep_pos, `["${songName}"].EPpos`);
                     db.reviewDB.set(artistArray[i], args[1], `["${songName}"].EP`); //Format song to include the EP
                     db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
 
@@ -585,9 +590,9 @@ module.exports = {
                                 review: songReview,
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
-                                EPOverall: false,
                                 msg_id: message_id,
                             },
+                            EPpos: ep_pos,
                             EP: args[1],
                             Remixers: false,
                             Image: thumbnailImage,
@@ -602,10 +607,10 @@ module.exports = {
                                         review: songReview,
                                         rate: songRating,
                                         sentby: taggedUser === false ? false : taggedUser.id,
-                                        EPOverall: false,
                                         msg_id: message_id,
                                     },
                                     Image: thumbnailImage,
+                                    EPpos: ep_pos,
                                     EP: args[1],
                                     Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
                                     Vocals: featArtists,
@@ -644,6 +649,7 @@ module.exports = {
                                 EPOverall: false,
                                 msg_id: message_id,
                             },
+                            EPpos: ep_pos,
                             EP: args[1],
                             Remixers: false,
                             Image: thumbnailImage,
@@ -658,10 +664,10 @@ module.exports = {
                                         review: songReview,
                                         rate: songRating,
                                         sentby: taggedUser === false ? false : taggedUser.id,
-                                        EPOverall: false,
                                         msg_id: message_id,
                                     },
                                     Image: thumbnailImage,
+                                    EPpos: ep_pos,
                                     EP: args[1],
                                     Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
                                     Vocals: featArtists,    
@@ -701,9 +707,9 @@ module.exports = {
                                 review: songReview,
                                 rate: songRating,
                                 sentby: taggedUser === false ? false : taggedUser.id,
-                                EPOverall: false,
                                 msg_id: message_id,
                             },
+                            EPpos: ep_pos,
                             EP: args[1],
                             Image: thumbnailImage,
                             Collab: artistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
@@ -781,10 +787,12 @@ module.exports = {
                     if (artistArray[i] === rmxArtist) {
                         db.reviewDB.set(artistArray[i], remixsongObj, `["${songName}"]`);
                         db.reviewDB.set(artistArray[i], args[1], `["${songName}"].EP`); //Format song to include the EP
+                        db.reviewDB.set(artistArray[i], ep_pos, `["${songName}"].EPpos`);
                         db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
                     } else {
                         db.reviewDB.set(artistArray[i], remixsongObj, `["${songName}"].Remixers.["${rmxArtist}"]`); 
                         db.reviewDB.set(artistArray[i], args[1], `["${songName}"].Remixers.["${rmxArtist}"].EP`); //Format song to include the EP
+                        db.reviewDB.set(artistArray[i], ep_pos, `["${songName}"].Remixers.["${rmxArtist}"].EPpos`);
                         db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Remixers.["${rmxArtist}"].Image`);
                     }
 
@@ -805,7 +813,6 @@ module.exports = {
                             review: songReview,
                             rate: songRating,
                             sentby: taggedUser === false ? false : taggedUser.id,
-                            EPOverall: false,
                             msg_id: message_id,
                         },
                     };
@@ -836,10 +843,12 @@ module.exports = {
                     if (artistArray[i] === rmxArtist) {
                         db.reviewDB.set(artistArray[i], remixsongObj, `["${songName}"]`);
                         db.reviewDB.set(artistArray[i], args[1], `["${songName}"].EP`); //Format song to include the EP
+                        db.reviewDB.set(artistArray[i], ep_pos, `["${songName}"].EPpos`);
                         db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Image`);
                     } else {
                         db.reviewDB.set(artistArray[i], remixsongObj, `["${songName}"].Remixers.["${rmxArtist}"]`); 
                         db.reviewDB.set(artistArray[i], args[1], `["${songName}"].Remixers.["${rmxArtist}"].EP`); //Format song to include the EP
+                        db.reviewDB.set(artistArray[i], ep_pos, `["${songName}"].Remixers.["${rmxArtist}"].EPpos`);
                         db.reviewDB.set(artistArray[i], thumbnailImage, `["${songName}"].Remixers.["${rmxArtist}"].Image`);
                     }
 

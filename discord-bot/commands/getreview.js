@@ -15,6 +15,8 @@ module.exports = {
         let taggedUser;
         let taggedMember;
 
+        if (args.length >= 3 && message.mentions.users.first() === undefined) return message.channel.send('You didn\'t seem to specify a user! Make sure to check your mention.');
+
         if (args[0] === 's') {
             message.author.presence.activities.forEach((activity) => {
                 if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
@@ -60,10 +62,6 @@ module.exports = {
                 taggedUser = message.mentions.users.first();
                 taggedMember = message.mentions.members.first();
             }
-        }
-
-        if (args[1].toLowerCase().includes('ep') || args[1].toLowerCase().includes('lp') || args[1].toLowerCase().includes('remixes')) {
-            return message.channel.send('Please use `!getReviewEP`, not this command.');
         }
         
         //Auto-adjustment to caps for each word
@@ -238,7 +236,11 @@ module.exports = {
                 if (rsentby != false) {
                     exampleEmbed.setFooter(`Sent by ${usrSentBy.displayName}`, `${usrSentBy.user.avatarURL({ format: "png" })}`);
                 } else if (epfrom != undefined && epfrom != false) {
-                    exampleEmbed.setFooter(`from the ${epfrom}`, thumbnailImage);
+                    if (db.reviewDB.get(artistName[0], `["${epfrom}"].Image`) != false && db.reviewDB.get(artistName[0], `["${epfrom}"].Image`) != undefined) {
+                        exampleEmbed.setFooter(`from ${epfrom}`, db.reviewDB.get(artistName[0], `["${epfrom}"].Image`));
+                    } else {
+                        exampleEmbed.setFooter(`from ${epfrom}`, thumbnailImage);
+                    }
                 }
                 
             message.channel.send(exampleEmbed);

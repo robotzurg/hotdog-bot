@@ -88,7 +88,6 @@ module.exports = {
                 let iter2 = artistName.pop();
                 iter2 = iter2.split(' & ');
                 iter2 = iter2.map(a => artistName.push(a));
-                console.log(iter2);
             }
         }
 
@@ -104,6 +103,8 @@ module.exports = {
         let rscore;
         let rsentby = false;
         let rrankpos;
+        let rsongpos;
+        let songPositions = [];
         let songRanking = [];
         let usrSentBy = message.author;
 
@@ -112,7 +113,8 @@ module.exports = {
         const ep_overall_rating = db.reviewDB.get(artistName[0], `${args[1]}.${taggedUser}.EPRating`);
         const ep_overall_review = db.reviewDB.get(artistName[0], `${args[1]}.${taggedUser}.EPReview`);
         let ep_image = db.reviewDB.get(artistName[0], `${args[1]}.Image`);
-        const ep_songs = db.reviewDB.get(artistName[0], `${args[1]}.Songs`);
+        let ep_songs = db.reviewDB.get(artistName[0], `${args[1]}.Songs`);
+        if (ep_songs === false || ep_songs === undefined) ep_songs = [];
         rname = db.reviewDB.get(artistName[0], `${args[1]}.${taggedUser}.name`);
 
         if (ep_image === false) {
@@ -149,6 +151,7 @@ module.exports = {
                     rscore = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.rate`);
                     rsentby = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.sentby`);
                     rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.rankPosition`);
+                    rsongpos = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.EPpos`);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }
@@ -159,6 +162,7 @@ module.exports = {
                     rscore = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.rate`);
                     rsentby = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.sentby`);
                     rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.rankPosition`);
+                    rsongpos = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.EPpos`);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }
@@ -184,14 +188,18 @@ module.exports = {
                 if (rrankpos === undefined || rrankpos === -1) {
                     if (rmxArtist === false) {
                         exampleEmbed.addField(`${songName}${artistsEmbed.length != 0 ? ` (with ${artistsEmbed}) ` : ' '}${vocalistsEmbed.length != 0 ? `(ft. ${vocalistsEmbed}) ` : ''}(${rscore})`, `${rreview}`);
+                        // Do stuff with rsongpos here later
+                        //console.log(rsongpos);
+                        //console.log(songPositions);
+
                     } else {
                         exampleEmbed.addField(`${songName}${artistsEmbed.length != 0 ? ` (with ${artistsEmbed}) ` : ' '}${vocalistsEmbed.length != 0 ? ` (ft. ${vocalistsEmbed}) ` : ''}[${rmxArtist} Remix] (${rscore})`, `${rreview}`);
                     }
                 } else {
                     if (rmxArtist === false) {
-                        songRanking.push([parseInt(rrankpos), `${rrankpos}. ${songName}${artistsEmbed.length != 0 ? ` (with ${artistsEmbed}) ` : ' '}${vocalistsEmbed.length != 0 ? `(ft. ${vocalistsEmbed}) ` : ''}(${rscore})`]);
+                        songRanking.push([parseInt(rrankpos), `${rrankpos}. ${songName}${artistsEmbed.length != 0 ? ` (with ${artistsEmbed.replace('\\', '')}) ` : ' '}${vocalistsEmbed.length != 0 ? `(ft. ${vocalistsEmbed.replace('\\', '')}) ` : ''}(${rscore})`]);
                     } else {
-                        songRanking.push([parseInt(rrankpos), `${rrankpos}. ${songName}${artistsEmbed.length != 0 ? ` (with ${artistsEmbed}) ` : ' '}${vocalistsEmbed.length != 0 ? `(ft. ${vocalistsEmbed}) ` : ''}[${rmxArtist} Remix] (${rscore})`]);
+                        songRanking.push([parseInt(rrankpos), `${rrankpos}. ${songName}${artistsEmbed.length != 0 ? ` (with ${artistsEmbed.replace('\\', '')}) ` : ' '}${vocalistsEmbed.length != 0 ? `(ft. ${vocalistsEmbed.replace('\\', '')}) ` : ''}[${rmxArtist.replace('\\', '')} Remix] (${rscore})`]);
                     }   
                 }
             }
@@ -238,8 +246,6 @@ module.exports = {
             exampleEmbed.setAuthor(rsentby != false && rsentby != undefined && ep_songs.length != 0 ? `${rname}'s mailbox EP review` : `${rname}'s EP review`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
         } else if (args[1].includes('LP')) {
             exampleEmbed.setAuthor(rsentby != false && rsentby != undefined && ep_songs.length != 0 ? `${rname}'s mailbox LP review` : `${rname}'s LP review`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
-        } else {
-            exampleEmbed.setAuthor(rsentby != false && rsentby != undefined && ep_songs.length != 0 ? `${rname}'s mailbox EP review` : `${rname}'s EP review`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
         }
         exampleEmbed.setThumbnail(ep_image);
         if (rsentby != false && rsentby != undefined && ep_overall_rating === false) {

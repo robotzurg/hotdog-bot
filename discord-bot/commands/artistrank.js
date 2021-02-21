@@ -33,13 +33,15 @@ module.exports = {
             userArray = userArray.filter(e => e !== 'Remixers');
             userArray = userArray.filter(e => e !== 'Collab');
             userArray = userArray.filter(e => e !== 'Vocals');
+            userArray = userArray.filter(e => e !== 'EPpos');
+            console.log(userArray);
                     
             for (let ii = 0; ii < userArray.length; ii++) {
                 let rating = parseFloat(db.reviewDB.get(args[0], `["${songArray[i]}"].${userArray[ii]}.rate`));
                 userRatingArray.push(rating);
             }
 
-            if (userArray.length >= 1) {
+            if (userArray.length >= 1 && !songArray[i].includes('Remix') && !songArray[i].includes('EP') && !songArray[i].includes('LP') && !songArray[i].includes('/')) {
                 ranking.push({ name: songArray[i], rating: parseFloat(Math.round(average(userRatingArray) * 10) / 10), reviewnum: userArray.length });
             }
             
