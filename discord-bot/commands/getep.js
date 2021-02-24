@@ -121,6 +121,7 @@ module.exports = {
                 reviewNum = reviewNum.filter(e => e !== 'Image');
                 reviewNum = reviewNum.filter(e => e !== 'Vocals');
                 reviewNum = reviewNum.filter(e => e !== 'Songs');
+                reviewNum = reviewNum.filter(e => e !== 'EPpos');
                 reviewNum = reviewNum.length;
 
                 exampleEmbed.addField(`${epnum}. ${songArray[i]}`, `\`${reviewNum} review${reviewNum > 1 ? 's' : ''}\``);

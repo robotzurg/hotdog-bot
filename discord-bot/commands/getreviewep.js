@@ -78,12 +78,12 @@ module.exports = {
             }
         }
 
-        let artistName = args[0].split(' & ');
+        let artistName = argArtistName.split(' & ');
 
         if (!args[0].includes(',')) {
-            artistName = args[0].split(' & ');
+            artistName = argArtistName.split(' & ');
         } else {
-            artistName = args[0].split(', ');
+            artistName = argArtistName.split(', ');
             if (artistName[artistName.length - 1].includes('&')) {
                 let iter2 = artistName.pop();
                 iter2 = iter2.split(' & ');
@@ -96,6 +96,7 @@ module.exports = {
             return message.channel.send('No artist found.');
         }
 
+        console.log(artistName[0]);
         let artistsEmbed;
         let vocalistsEmbed;
         let rname;
@@ -108,14 +109,14 @@ module.exports = {
         let songRanking = [];
         let usrSentBy = message.author;
 
-        const ep_object = db.reviewDB.get(artistName[0], `${args[1]}`);
+        const ep_object = db.reviewDB.get(artistName[0], `${argEPName}`);
         if (ep_object === undefined) return message.channel.send('EP not found. *(EP Object not found in database.)*');
-        const ep_overall_rating = db.reviewDB.get(artistName[0], `${args[1]}.${taggedUser}.EPRating`);
-        const ep_overall_review = db.reviewDB.get(artistName[0], `${args[1]}.${taggedUser}.EPReview`);
-        let ep_image = db.reviewDB.get(artistName[0], `${args[1]}.Image`);
-        let ep_songs = db.reviewDB.get(artistName[0], `${args[1]}.Songs`);
+        const ep_overall_rating = db.reviewDB.get(artistName[0], `${argEPName}.${taggedUser}.EPRating`);
+        const ep_overall_review = db.reviewDB.get(artistName[0], `${argEPName}.${taggedUser}.EPReview`);
+        let ep_image = db.reviewDB.get(artistName[0], `${argEPName}.Image`);
+        let ep_songs = db.reviewDB.get(artistName[0], `${argEPName}.Songs`);
         if (ep_songs === false || ep_songs === undefined) ep_songs = [];
-        rname = db.reviewDB.get(artistName[0], `${args[1]}.${taggedUser}.name`);
+        rname = db.reviewDB.get(artistName[0], `${argEPName}.${taggedUser}.name`);
 
         if (ep_image === false) {
             ep_image = taggedUser.avatarURL({ format: "png" });
@@ -145,7 +146,7 @@ module.exports = {
                 }
 
                 if (rmxArtist === false) {
-                    rname = db.reviewDB.get(artistName[0], `["${args[1]}"].${taggedUser}.name`);
+                    rname = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.name`);
                     if (rname === undefined) return message.channel.send('No review found.');
                     rreview = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.review`);
                     rscore = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.rate`);
@@ -156,7 +157,7 @@ module.exports = {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }
                 } else {
-                    rname = db.reviewDB.get(artistName[0], `["${args[1]}"].["${taggedUser}"].name`);
+                    rname = db.reviewDB.get(artistName[0], `["${songName}"].["${taggedUser}"].name`);
                     if (rname === undefined) return message.channel.send('No review found.');
                     rreview = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.review`);
                     rscore = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.rate`);
@@ -240,11 +241,11 @@ module.exports = {
         }
 
         exampleEmbed.setColor(`${taggedMember.displayHexColor}`);
-        exampleEmbed.setTitle(`${args[0]} - ${args[1]}`);
+        exampleEmbed.setTitle(`${argArtistName} - ${argEPName}`);
         exampleEmbed.setAuthor(rsentby != false ? `${rname}'s mailbox review` : `${rname}'s review`, `${taggedUser.avatarURL({ format: "png" })}`);
-        if (args[1].includes('EP')) {
+        if (argEPName.includes('EP')) {
             exampleEmbed.setAuthor(rsentby != false && rsentby != undefined && ep_songs.length != 0 ? `${rname}'s mailbox EP review` : `${rname}'s EP review`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
-        } else if (args[1].includes('LP')) {
+        } else if (argEPName.includes('LP')) {
             exampleEmbed.setAuthor(rsentby != false && rsentby != undefined && ep_songs.length != 0 ? `${rname}'s mailbox LP review` : `${rname}'s LP review`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
         }
         exampleEmbed.setThumbnail(ep_image);

@@ -135,6 +135,15 @@ module.exports = {
                 m.delete();
                 msgtoEdit.reactions.removeAll();
                 if (rankArray.length === 0) msgtoEdit.delete();
+                
+                for (let i = 0; i < OGartistArray.length; i++) {
+                    db.reviewDB.set(OGartistArray[i], overallReview, `["${ep_name}"].["<@${message.author.id}>"].EPReview`);
+                    db.reviewDB.set(OGartistArray[i], overallRating, `["${ep_name}"].["<@${message.author.id}>"].EPRating`);
+                    db.reviewDB.set(OGartistArray[i], message_id, `["${ep_name}"].["<@${message.author.id}>"].msg_id`);
+                    db.reviewDB.set(OGartistArray[i], message.member.displayName, `["${ep_name}"].["<@${message.author.id}>"].name`);
+                    db.reviewDB.set(OGartistArray[i], thumbnailImage, `["${ep_name}"].Image`);
+                    db.reviewDB.set(OGartistArray[i], songs_in_ep, `["${ep_name}"].Songs`);
+                }
                 return;
             } else if (m.content.includes('!delete')) {
                 collector.stop();
