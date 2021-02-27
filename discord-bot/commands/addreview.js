@@ -38,7 +38,7 @@ module.exports = {
                 is_mailbox = true;
             }
 
-            if (thumbnailImage.toLowerCase().includes('spotify')) {
+            if (thumbnailImage.toLowerCase().includes('spotify') || thumbnailImage === 's') {
                 message.author.presence.activities.forEach((activity) => {
                     if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
                         thumbnailImage = `https://i.scdn.co/image/${activity.assets.largeImage.slice(8)}`;
@@ -120,9 +120,9 @@ module.exports = {
             songName = args[1].split(` (feat`);
             if (songName[1].includes(`[`)) {
                 featArtists = songName[1].split('[');
-                featArtists = featArtists[0].slice(2).slice(0, -2).split(' & ');
+                featArtists = featArtists[0].slice(4).slice(0, -2).split(' & ');
             } else {
-                featArtists = songName[1].slice(2).slice(0, -1).split(' & ');
+                featArtists = songName[1].slice(4).slice(0, -1).split(' & ');
             }
             if (args[1].toLowerCase().includes('remix')) { rmxArtist = songName[1].split(' [')[1].slice(0, -7); }
             songName = songName[0];

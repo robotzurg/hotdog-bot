@@ -8,7 +8,7 @@ module.exports = {
     usage: `<bug> | <description_of_bug>`,
 	execute(message, args) {
         const data = {
-            name: `${message.member.displayName}: ${args[0]}`,
+            name: (message.author.id != '122568101995872256' ? `${message.member.displayName}: ${args[0]}` : `${args[0]}`),
             desc: args[1],
             idList: "5fdd28493a6c8c6b6a4ac646", //REQUIRED
             idLabels: ["5fdda079280a9f065e7751d2"],

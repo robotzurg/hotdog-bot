@@ -22,6 +22,9 @@ module.exports = {
             argEPName = args[0];
         }
 
+        // Function to grab average of all ratings later
+        let average = (array) => array.reduce((a, b) => a + b) / array.length;
+
         args[0] = args[0].split(' ');
         args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
         args[0] = args[0].join(' ');
@@ -83,9 +86,26 @@ module.exports = {
         }
         let epThumbnail = db.reviewDB.get(artistName[0], `["${argEPName}"].Image`);
 
+        let rankNumArray = [];
+        let EPrankArray = [];
+        let songRankArray = [];
+        let rating;
+
 		const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)
             .setTitle(`${argArtistName} - ${argEPName} tracks`);
+
+            let reviewNum = Object.keys(db.reviewDB.get(artistName[0], `["${argEPName}"]`));
+            reviewNum = reviewNum.filter(e => e !== 'Image');
+            reviewNum = reviewNum.filter(e => e !== 'Songs');
+
+            for (let i = 0; i < reviewNum.length; i++) {
+                rating = db.reviewDB.get(artistName[0], `["${argEPName}"].["${reviewNum[i]}"].EPRating`);
+                if (rating != false) {
+                   EPrankArray.push(parseFloat(rating.slice(0, -3)));
+                }
+            }
+            
             let epnum = 0;
             for (let i = 0; i < songArray.length; i++) {
 
@@ -113,7 +133,7 @@ module.exports = {
 
                 epnum++;
 
-                let reviewNum = Object.keys(songObj);
+                reviewNum = Object.keys(songObj);
 
                 reviewNum = reviewNum.filter(e => e !== 'Remixers');
                 reviewNum = reviewNum.filter(e => e !== 'EP');
@@ -122,11 +142,28 @@ module.exports = {
                 reviewNum = reviewNum.filter(e => e !== 'Vocals');
                 reviewNum = reviewNum.filter(e => e !== 'Songs');
                 reviewNum = reviewNum.filter(e => e !== 'EPpos');
+
+                for (let ii = 0; ii < reviewNum.length; ii++) {
+                    if (rmxArtist === false) {
+                        rating = db.reviewDB.get(artistName[0], `["${songArray[i]}"].["${reviewNum[ii]}"].rate`);
+                    } else {
+                        rating = db.reviewDB.get(artistName[0], `["${songArray[i]}"].Remixers.["${rmxArtist}"].["${reviewNum[ii]}"].rate`);
+                    }
+                    rankNumArray.push(parseFloat(rating.slice(0, -3)));
+                }
+
                 reviewNum = reviewNum.length;
 
-                exampleEmbed.addField(`${epnum}. ${songArray[i]}`, `\`${reviewNum} review${reviewNum > 1 ? 's' : ''}\``);
+                exampleEmbed.addField(`${epnum}. ${songArray[i]} (Avg: ${Math.round(average(rankNumArray) * 10) / 10})`, `\`${reviewNum} review${reviewNum > 1 ? 's' : ''}\``);
+                songRankArray.push(Math.round(average(rankNumArray) * 10) / 10);
             }
 
+        
+            if (EPrankArray.length != 0) {
+                exampleEmbed.setDescription(`*The average overall user rating of this EP is* ***${Math.round(average(EPrankArray) * 10) / 10}!***\n*The total average rating of all songs on this EP is* ***${Math.round(average(songRankArray) * 10) / 10}!***`);
+            } else {
+                exampleEmbed.setDescription(`*This EP has no overall user ratings.*\n*The total average rating of all songs on this EP is* ***${Math.round(average(songRankArray) * 10) / 10}!***`);
+            }
         message.channel.send(exampleEmbed);
 	},
 };

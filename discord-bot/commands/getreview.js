@@ -171,6 +171,7 @@ module.exports = {
             if (db.reviewDB.get(artistName[0], `["${songName}"].Collab`).length != 0) {
                 artistsEmbed = [artistName[0]];
                 artistsEmbed.push(db.reviewDB.get(artistName[0], `["${songName}"].Collab`));
+                artistsEmbed = artistsEmbed.flat(1);
                 artistsEmbed = artistsEmbed.join(' & ');
             }
         }
@@ -179,6 +180,7 @@ module.exports = {
             if (db.reviewDB.get(artistName[0], `["${songName}"].Vocals`).length != 0) {
                 vocalistsEmbed = [];
                 vocalistsEmbed.push(db.reviewDB.get(artistName[0], `["${songName}"].Vocals`));
+                vocalistsEmbed = vocalistsEmbed.flat(1);
                 vocalistsEmbed = vocalistsEmbed.join(' & ');
             }
         }

@@ -30,7 +30,6 @@ for (const file of commandFiles) {
 // this event will only trigger one time after logging in
 client.once('ready', () => {
     console.log('Ready!');
-    client.user.setActivity('with hotdogs!');
     const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
     console.log(date);
 });
@@ -41,12 +40,12 @@ cron.schedule('00 9 * * *', () => {
     const myUserRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Hotdog Water Bot");
     client.user.setAvatar(ogrePick);
     switch (ogrePick) {
-        case './Ogres/ogreGold.png': myUserRole.setColor('#FFEF00'); break;
-        case './Ogres/ogreHappy.png': myUserRole.setColor('#83FF39'); break;
-        case './Ogres/ogreMad.png': myUserRole.setColor('#FF0000'); break;
-        case './Ogres/ogreSad.png': myUserRole.setColor('#3A41F9'); break;
-        case './Ogres/ogreSmug.png': myUserRole.setColor('#7E3BFF'); break;
-        case './Ogres/ogreSnow.png': myUserRole.setColor('#FFFFFF'); break;
+        case './Ogres/ogreGold.png': myUserRole.setColor('#FFEF00'); client.user.setActivity('with hotdogs!', { type: 'PLAYING' }); break;
+        case './Ogres/ogreHappy.png': myUserRole.setColor('#83FF39'); client.user.setActivity('Hotdog Water', { type: 'LISTENING' }); break;
+        case './Ogres/ogreMad.png': myUserRole.setColor('#FF0000'); client.user.setActivity('Ultimate Pea Warfare', { type: 'COMPETING' }); break;
+        case './Ogres/ogreSad.png': myUserRole.setColor('#3A41F9'); client.user.setActivity('all of you peas!', { type: 'WATCHING' }); break;
+        case './Ogres/ogreSmug.png': myUserRole.setColor('#7E3BFF'); client.user.setActivity('live pea viewings', { type: 'STREAMING' }); break;
+        case './Ogres/ogreSnow.png': myUserRole.setColor('#FFFFFF'); client.user.setActivity('with colddogs!', { type: 'PLAYING' }); break;
     }
 
     const channel = client.channels.cache.get('680864894006067263');

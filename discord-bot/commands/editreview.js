@@ -51,7 +51,7 @@ module.exports = {
         }
 
         if (args[1].toLowerCase().includes('ep') || args[1].toLowerCase().includes('lp') || args[1].toLowerCase().includes('remixes')) {
-            return message.channel.send('EPs/LPs/Remix Package review edits with this command are not supported yet, however,\nYou can edit EP/LP/other reviews by simply using `!addReviewEP` or `!addRanking` with the same EP name, then just using it as normal.');
+            return message.channel.send('You can edit EP/LP/other reviews by simply using `!addReviewEP` or `!addRanking` with the same EP name, then just using it as normal.');
         }
         
         let artistArray = args[0].split(' & ');
@@ -171,21 +171,26 @@ module.exports = {
             .setColor(`${message.member.displayHexColor}`)
             .setTitle(`${args[0]} - ${args[1]}`)
             .setAuthor(`${message.member.displayName}'s review`, `${message.author.avatarURL({ format: "png", dynamic: false })}`);
-            exampleEmbed.setDescription(rreview);
             if (thumbnailImage === false) {
                 exampleEmbed.setThumbnail(`${message.author.avatarURL({ format: "png", dynamic: false })}`);
             } else {
                 exampleEmbed.setThumbnail(thumbnailImage);
             }
 
+            if (rreview != '-') {
+                exampleEmbed.setDescription(rreview);
+            } else {
+                exampleEmbed.setDescription(`Rating: **${rscore}**`);
+            }
+
             if (taggedUser != false) {
                 exampleEmbed.setFooter(`Sent by ${taggedMember.displayName}`, `${taggedUser.avatarURL({ format: "png", dynamic: false })}`);
             }
             
-            exampleEmbed.addField('Rating: ', `**${rscore}**`, true);
+            if (rreview != '-') exampleEmbed.addField('Rating: ', `**${rscore}**`, true);
 
         message.channel.send('Review edited:', exampleEmbed);
 
-        message.delete({ timeout: 15000 });
+        message.delete();
 	},
 };

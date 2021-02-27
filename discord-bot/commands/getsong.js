@@ -162,6 +162,7 @@ module.exports = {
             if (db.reviewDB.get(artistName[0], `["${songName}"].Vocals`).length != 0) {
                 vocalistsEmbed = [];
                 vocalistsEmbed.push(db.reviewDB.get(artistName[0], `["${songName}"].Vocals`));
+                vocalistsEmbed = vocalistsEmbed.flat(1);
                 vocalistsEmbed = vocalistsEmbed.join(' & ');
             }
         }
@@ -187,7 +188,6 @@ module.exports = {
             } else {
                 songEP = false;
             }
-            console.log(songObj);
             if (songEP === undefined) songEP = false;
         }
         
@@ -219,7 +219,6 @@ module.exports = {
                     let rating;
                     if (rmxArtist === false) {
                         rating = db.reviewDB.get(artistName[0], `["${songName}"].${userArray[i]}.rate`);
-                        console.log(userArray[i]);
                     } else {
                         rating = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${userArray[i]}.rate`);
                     }

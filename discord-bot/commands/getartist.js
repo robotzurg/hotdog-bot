@@ -17,6 +17,9 @@ module.exports = {
         args[0] = args[0].map(a => a.charAt(0).toUpperCase() + a.slice(1));
         args[0] = args[0].join(' ');
 
+        // Function to grab average of all ratings later
+        let average = (array) => array.reduce((a, b) => a + b) / array.length;
+
         const artistObj = db.reviewDB.get(args[0]);
         if (artistObj === undefined) return message.channel.send('Artist not found.');
         const artistImage = artistObj.Image;
@@ -51,6 +54,8 @@ module.exports = {
             }
         }
 
+        let rankNumArray = [];
+
 		const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)
             .setTitle(`${args[0]}'s reviewed tracks`);
@@ -68,6 +73,14 @@ module.exports = {
                 reviewNum = reviewNum.filter(e => e !== 'Image');
                 reviewNum = reviewNum.filter(e => e !== 'Vocals');
                 reviewNum = reviewNum.filter(e => e !== 'EPpos');
+                
+                for (let ii = 0; ii < reviewNum.length; ii++) {
+                    if (!songArray[i].includes('EP') && !songArray[i].includes('LP') && !songArray[i].includes('/') && !songArray[i].includes('Remixes')) {
+                        let rating;
+                        rating = db.reviewDB.get(args[0], `["${songArray[i]}"].["${reviewNum[ii]}"].rate`);
+                        rankNumArray.push(parseFloat(rating.slice(0, -3)));
+                    }
+                }
 
                 reviewNum = reviewNum.length;
 
@@ -109,6 +122,8 @@ module.exports = {
             if (remixArray.length != 0) {
                 exampleEmbed.addField('Remixes:', remixArray);
             }
+
+            exampleEmbed.setDescription(`*The average rating of this artist is* ***${Math.round(average(rankNumArray) * 10) / 10}!***`);
             
             for (let i = 0; i < songArray.length; i++) {
                 const songEP = db.reviewDB.get(args[0], `["${songArray[i]}"].EP`);

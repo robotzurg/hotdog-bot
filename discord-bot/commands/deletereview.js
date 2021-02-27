@@ -144,26 +144,44 @@ module.exports = {
 
             if (rname === undefined) break;
 
+            let reviewMsgID;
+
             //Non Single Stuff (if the artistArray[i] isn't the remix artist and there is no remix artist)
             if (artistArray[i] != rmxArtist && rmxArtist === false) {
                 songObj = db.reviewDB.get(artistArray[i], `["${songName}"]`);
+                reviewMsgID = db.reviewDB.get(artistArray[i], `["${songName}"].["<@${userToDelete.id}>"].msg_id`);
                 delete songObj[`<@${userToDelete.id}>`];
+
+                let channelsearch = message.guild.channels.cache.get('680877758909382757');
+                channelsearch.messages.fetch(`${reviewMsgID}`).then(msg => {
+                    msg.delete();
+                });
 
                 db.reviewDB.set(artistArray[i], songObj, `["${songName}"]`);
         
             // If there is a remix but we aren't on the remix artist
             } else if (artistArray[i] != rmxArtist && rmxArtist != false) {
                 songObj = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`);
+                reviewMsgID = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"].["<@${userToDelete.id}>"].msg_id`);
                 delete songObj[`<@${userToDelete.id}>`];
-                console.log(songObj);
         
+                let channelsearch = message.guild.channels.cache.get('680877758909382757');
+                channelsearch.messages.fetch(`${reviewMsgID}`).then(msg => {
+                    msg.delete();
+                });
+
                 db.reviewDB.set(artistArray[i], songObj, `["${songName}"].Remixers.["${rmxArtist}"]`);
         
             //Lastly, if we are on the remix artist
             } else if (artistArray[i] === rmxArtist) {
                 songObj = db.reviewDB.get(artistArray[i], `["${remixsongName}"]`);
+                reviewMsgID = db.reviewDB.get(artistArray[i], `["${remixsongName}"].["<@${userToDelete.id}>"].msg_id`);
                 delete songObj[`<@${userToDelete.id}>`];
-                console.log(songObj);
+
+                let channelsearch = message.guild.channels.cache.get('680877758909382757');
+                channelsearch.messages.fetch(`${reviewMsgID}`).then(msg => {
+                    msg.delete();
+                });
         
                 db.reviewDB.set(artistArray[i], songObj, `["${remixsongName}"]`);
 
