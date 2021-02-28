@@ -14,6 +14,8 @@ module.exports = {
         let argArtistName;
         let argEPName;
 
+        message.channel.startTyping();
+
         if (args.length === 2) {
             argArtistName = args[0];
             argEPName = args[1];
@@ -34,30 +36,31 @@ module.exports = {
             let options = [];
             
             for (let i = 0; i < dbKeyArray.length; i++) {
-                let AsongArray = Object.keys(db.reviewDB.get(dbKeyArray[i]));
+                let aI = dbKeyArray.length - 1 - i;
+                let AsongArray = Object.keys(db.reviewDB.get(dbKeyArray[aI]));
                 AsongArray = AsongArray.filter(item => item !== 'Image');
 
                 for (let ii = 0; ii < AsongArray.length; ii++) {
-                    let vocalCheck = [db.reviewDB.get(dbKeyArray[i], `["${AsongArray[ii]}"].Vocals`)].flat(1);
-                    let collabCheck = db.reviewDB.get(dbKeyArray[i], `["${AsongArray[ii]}"].Collab`);
+                    let vocalCheck = [db.reviewDB.get(dbKeyArray[aI], `["${AsongArray[ii]}"].Vocals`)].flat(1);
+                    let collabCheck = db.reviewDB.get(dbKeyArray[aI], `["${AsongArray[ii]}"].Collab`);
 
                     if (Array.isArray(collabCheck)) {
                         collabCheck = collabCheck.toString();
                     }
 
-                    if (AsongArray[ii] === args[0] && !vocalCheck.includes(dbKeyArray[i]) && !options.includes(`${collabCheck} | ${AsongArray[ii]}`)) {
-                        argArtistName = dbKeyArray[i];
+                    if (AsongArray[ii] === args[0] && !vocalCheck.includes(dbKeyArray[aI]) && !options.includes(`${collabCheck} | ${AsongArray[ii]}`)) {
+                        argArtistName = dbKeyArray[aI];
                         argEPName = AsongArray[ii];
                         options.push([argArtistName, argEPName]);
                         options[options.length - 1] = options[options.length - 1].join(' | ');
                     } 
                 }
+                
+                if (options.length > 0) break;
             }
             
             if (options.length === 0) {
                 return message.channel.send('There is no EP/LP in the database that exists with this name.');
-            } else if (options.length > 1) {
-                return message.channel.send(`Looks like multiple EPs/LPs of the same name exist in the database. Please use \`!getReviewEP <artist> | <ep/lp>\` on one of these songs to get the review:\n\`\`\`${options.join('\n')}\`\`\`\n*(Tip: You can copy paste the above artist/eplp pairs into \`!getReviewEP\` as arguments.)*`);
             }
         }
 
@@ -165,5 +168,6 @@ module.exports = {
                 exampleEmbed.setDescription(`*This EP has no overall user ratings.*\n*The total average rating of all songs on this EP is* ***${Math.round(average(songRankArray) * 10) / 10}!***`);
             }
         message.channel.send(exampleEmbed);
+        message.channel.stopTyping();
 	},
 };

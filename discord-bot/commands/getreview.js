@@ -15,6 +15,8 @@ module.exports = {
         let taggedUser;
         let taggedMember;
 
+        message.channel.startTyping();
+
         if (args.length >= 3 && message.mentions.users.first() === undefined) return message.channel.send('You didn\'t seem to specify a user! Make sure to check your mention.');
 
         if (args[0] === 's') {
@@ -78,24 +80,27 @@ module.exports = {
             let options = [];
             
             for (let i = 0; i < dbKeyArray.length; i++) {
-                let AsongArray = Object.keys(db.reviewDB.get(dbKeyArray[i]));
+                let aI = dbKeyArray.length - 1 - i;
+                let AsongArray = Object.keys(db.reviewDB.get(dbKeyArray[aI]));
                 AsongArray = AsongArray.filter(item => item !== 'Image');
 
                 for (let ii = 0; ii < AsongArray.length; ii++) {
-                    let vocalCheck = [db.reviewDB.get(dbKeyArray[i], `["${AsongArray[ii]}"].Vocals`)].flat(1);
-                    let collabCheck = db.reviewDB.get(dbKeyArray[i], `["${AsongArray[ii]}"].Collab`);
+                    let vocalCheck = [db.reviewDB.get(dbKeyArray[aI], `["${AsongArray[ii]}"].Vocals`)].flat(1);
+                    let collabCheck = db.reviewDB.get(dbKeyArray[aI], `["${AsongArray[ii]}"].Collab`);
 
                     if (Array.isArray(collabCheck)) {
                         collabCheck = collabCheck.toString();
                     }
 
-                    if (AsongArray[ii] === args[0] && !vocalCheck.includes(dbKeyArray[i]) && !options.includes(`${collabCheck} | ${AsongArray[ii]}`)) {
-                        argArtistName = dbKeyArray[i];
+                    if (AsongArray[ii] === args[0] && !vocalCheck.includes(dbKeyArray[aI]) && !options.includes(`${collabCheck} | ${AsongArray[ii]}`)) {
+                        argArtistName = dbKeyArray[aI];
                         argSongName = AsongArray[ii];
                         options.push([argArtistName, argSongName]);
                         options[options.length - 1] = options[options.length - 1].join(' | ');
                     } 
                 }
+
+                if (options.length > 0) break;
             }
             
             if (options.length === 0) {
@@ -246,5 +251,6 @@ module.exports = {
                 }
                 
             message.channel.send(exampleEmbed);
+            message.channel.stopTyping();
 	},
 };

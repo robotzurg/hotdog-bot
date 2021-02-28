@@ -13,6 +13,7 @@ module.exports = {
 
         let argArtistName = args[0];
         let argSongName = args[1];
+        message.channel.startTyping();
 
         if (args[0] === 's') {
             message.author.presence.activities.forEach((activity) => {
@@ -43,32 +44,33 @@ module.exports = {
         if (args.length === 1 && args[0] != 's') {         
             const dbKeyArray = db.reviewDB.keyArray();
             let options = [];
-            
+
             for (let i = 0; i < dbKeyArray.length; i++) {
-                let AsongArray = Object.keys(db.reviewDB.get(dbKeyArray[i]));
+                let aI = dbKeyArray.length - 1 - i;
+                let AsongArray = Object.keys(db.reviewDB.get(dbKeyArray[aI]));
                 AsongArray = AsongArray.filter(item => item !== 'Image');
 
                 for (let ii = 0; ii < AsongArray.length; ii++) {
-                    let vocalCheck = [db.reviewDB.get(dbKeyArray[i], `["${AsongArray[ii]}"].Vocals`)].flat(1);
-                    let collabCheck = db.reviewDB.get(dbKeyArray[i], `["${AsongArray[ii]}"].Collab`);
+                    let vocalCheck = [db.reviewDB.get(dbKeyArray[aI], `["${AsongArray[ii]}"].Vocals`)].flat(1);
+                    let collabCheck = db.reviewDB.get(dbKeyArray[aI], `["${AsongArray[ii]}"].Collab`);
 
                     if (Array.isArray(collabCheck)) {
                         collabCheck = collabCheck.toString();
                     }
 
-                    if (AsongArray[ii] === args[0] && !vocalCheck.includes(dbKeyArray[i]) && !options.includes(`${collabCheck} | ${AsongArray[ii]}`)) {
-                        argArtistName = dbKeyArray[i];
+                    if (AsongArray[ii] === args[0] && !vocalCheck.includes(dbKeyArray[aI]) && !options.includes(`${collabCheck} | ${AsongArray[ii]}`)) {
+                        argArtistName = dbKeyArray[aI];
                         argSongName = AsongArray[ii];
                         options.push([argArtistName, argSongName]);
                         options[options.length - 1] = options[options.length - 1].join(' | ');
                     } 
                 }
+
+                if (options.length > 0) break;
             }
             
             if (options.length === 0) {
                 return message.channel.send('There is no song in the database that exists with this name.');
-            } else if (options.length > 1) {
-                return message.channel.send(`Looks like multiple songs of the same name exist in the database. Please use \`!getSong <artist> | <song>\` on one of these songs to get more details:\n\`\`\`${options.join('\n')}\`\`\`\n*(Tip: You can copy paste the above artist/song pairs into \`!getSong\` as arguments.)*`);
             }
         }
 
@@ -281,5 +283,6 @@ module.exports = {
 
         message.reactions.removeAll();
         message.channel.send(exampleEmbed);
+        message.channel.stopTyping();
 	},
 };
