@@ -155,8 +155,9 @@ module.exports = {
                         overallRating = overallRating.trim();
                     } 
                     if (overallRating === '') overallRating = false;
-                    overallReview = splitUpOverall[1];
-                
+                    splitUpOverall.shift();
+                    splitUpOverall = splitUpOverall.join('\n');
+                    overallReview = splitUpOverall;                
                     
                 } else {
                     return message.channel.send(`Please use a newline for overall reviews!\n Message sent: ${m.content}`);
@@ -203,13 +204,16 @@ module.exports = {
                 }
                 
                 splitUpArray = m.content.split('\n'); 
-                songReview = splitUpArray[1];
+                splitUpArray.shift();
+                splitUpArray = splitUpArray.join('\n');
+                songReview = splitUpArray;  
                 if (songReview === undefined) {
                     songReview = 'No written review.';
-                    splitUpArray[1] = 'No written review.';
                 }
 
-                rankArray.push(splitUpArray);
+                splitUpArray = m.content.split('\n');
+                
+                rankArray.push([splitUpArray[0], songReview]);
                 songRating = splitUpArray[0].split(' '),
                 songName = songRating.splice(0, songRating.length - 1).join(" ");
                 songRating = songRating[0].slice(0, -1);
@@ -226,7 +230,7 @@ module.exports = {
                     rmxArtist = rmxArtist.map(a => a.charAt(0).toUpperCase() + a.slice(1));
                     rmxArtist = rmxArtist.join(' ');
 
-                } else if (songName.toString().toLowerCase().includes('bootleg')) {
+                } else if (songName.toString().toLowerCase().includes('bootleg]')) {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 9).split(' [')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' [')[1];
@@ -236,7 +240,7 @@ module.exports = {
                     rmxArtist = rmxArtist.map(a => a.charAt(0).toUpperCase() + a.slice(1));
                     rmxArtist = rmxArtist.join(' ');
 
-                } else if (songName.toString().toLowerCase().includes('flip') || songName.toString().toLowerCase().includes('edit')) {
+                } else if (songName.toString().toLowerCase().includes('flip]') || songName.toString().toLowerCase().includes('edit]')) {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 6).split(' [')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' [')[1];
@@ -701,10 +705,10 @@ module.exports = {
                         db.reviewDB.delete(`${artistArray[i]}`, ep_name);
                     }
 
-                } else if (db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`) === undefined) { //If the song exists, check if the remix artist DB exists
+                } else if (db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`) === undefined && artistArray[i] != rmxArtist) { //If the song exists, check if the remix artist DB exists
                     console.log('Remix Artist not detected!');
 
-                    const remixObj = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers`);
+                    let remixObj = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers`);
                     //Create the object that will be injected into the Remixers object
                     const newremixObj = { 
                         [rmxArtist]: {

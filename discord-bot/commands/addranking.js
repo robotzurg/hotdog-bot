@@ -163,7 +163,9 @@ module.exports = {
                         overallRating = overallRating.trim();
                     } 
                     if (overallRating === '') overallRating = false;
-                    overallReview = splitUpOverall[1];
+                    splitUpOverall.shift();
+                    splitUpOverall = splitUpOverall.join('\n');
+                    overallReview = splitUpOverall;     
                 
                     
                 } else {
@@ -680,7 +682,7 @@ module.exports = {
                             db.reviewDB.delete(`${artistArray[i]}`, ep_name);
                         }
     
-                    } else if (db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`) === undefined) { //If the song exists, check if the remix artist DB exists
+                    } else if (db.reviewDB.get(artistArray[i], `["${songName}"].Remixers.["${rmxArtist}"]`) === undefined && artistArray[i] != rmxArtist) { //If the song exists, check if the remix artist DB exists
                         console.log('Remix Artist not detected!');
     
                         const remixObj = db.reviewDB.get(artistArray[i], `["${songName}"].Remixers`);

@@ -15,8 +15,6 @@ module.exports = {
         let taggedUser;
         let taggedMember;
 
-        message.channel.startTyping();
-
         if (args.length === 2 && message.mentions.users.first() === undefined) {
             argArtistName = args[0];
             argEPName = args[1];
@@ -101,7 +99,6 @@ module.exports = {
             return message.channel.send('No artist found.');
         }
 
-        console.log(artistName[0]);
         let artistsEmbed;
         let vocalistsEmbed;
         let rname;
@@ -140,35 +137,35 @@ module.exports = {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 7).split(' [')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 7).split(' [')[1];
-                } else if (songName.toString().toLowerCase().includes('bootleg')) {
+                } else if (songName.toString().toLowerCase().includes('bootleg]')) {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 9).split(' [')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 9).split(' [')[1];
-                } else if (songName.toString().toLowerCase().includes('flip') || songName.toString().toLowerCase().includes('edit')) {
+                } else if (songName.toString().toLowerCase().includes('flip]') || songName.toString().toLowerCase().includes('edit]')) {
                     fullSongName = songName;
                     songName = fullSongName.substring(0, fullSongName.length - 6).split(' [')[0];
                     rmxArtist = fullSongName.substring(0, fullSongName.length - 6).split(' [')[1];
                 }
 
                 if (rmxArtist === false) {
-                    rname = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.name`);
+                    rname = db.reviewDB.get(artistName[0], `["${songName}"].["${taggedUser}"].name`);
                     if (rname === undefined) return message.channel.send('No review found.');
-                    rreview = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.review`);
-                    rscore = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.rate`);
-                    rsentby = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.sentby`);
-                    rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.rankPosition`);
-                    rsongpos = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.EPpos`);
+                    rreview = db.reviewDB.get(artistName[0], `["${songName}"].["${taggedUser}"].review`);
+                    rscore = db.reviewDB.get(artistName[0], `["${songName}"].["${taggedUser}"].rate`);
+                    rsentby = db.reviewDB.get(artistName[0], `["${songName}"].["${taggedUser}"].sentby`);
+                    rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].["${taggedUser}"].rankPosition`);
+                    rsongpos = db.reviewDB.get(artistName[0], `["${songName}"].["${taggedUser}"].EPpos`);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }
                 } else {
-                    rname = db.reviewDB.get(artistName[0], `["${songName}"].["${taggedUser}"].name`);
+                    rname = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].name`);
                     if (rname === undefined) return message.channel.send('No review found.');
-                    rreview = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.review`);
-                    rscore = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.rate`);
-                    rsentby = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.sentby`);
-                    rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.rankPosition`);
-                    rsongpos = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.${rmxArtist}.${taggedUser}.EPpos`);
+                    rreview = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].review`);
+                    rscore = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].rate`);
+                    rsentby = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].sentby`);
+                    rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].rankPosition`);
+                    rsongpos = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].EPpos`);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }
@@ -259,6 +256,5 @@ module.exports = {
         }
         
         message.channel.send(exampleEmbed);
-        message.channel.stopTyping();
 	},
 };

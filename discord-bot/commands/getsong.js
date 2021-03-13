@@ -13,7 +13,7 @@ module.exports = {
 
         let argArtistName = args[0];
         let argSongName = args[1];
-        message.channel.startTyping();
+        let sent = false;
 
         if (args[0] === 's') {
             message.author.presence.activities.forEach((activity) => {
@@ -22,12 +22,42 @@ module.exports = {
                     let song = activity.details;
                     if (artists.includes(';')) {
                         artists = artists.split('; ');
+                        if (activity.details.includes('')) {
+                            artists.pop();
+                        }
                         artists = artists.join(' & ');
                     }
+
+                    // Fix some formatting for a couple things
+                    if (song.includes('- Extended Mix')) {
+                        song = song.replace('- Extended Mix', `(Extended Mix)`);
+                    }
+
+                    if (song.includes('Remix') && song.includes('-')) {
+                        let title = song.split(' - ');
+                        rmxArtist = title[1].slice(0, -6);
+                        song = `${title[0]} [${rmxArtist} Remix]`;
+                    }
+
+                    if (song.includes('VIP') && song.includes('-')) {
+                        let title = song.split(' - ');
+                        song = `${title[0]} VIP`;
+                    }
+    
+                    if (song.includes('(VIP)')) {
+                        let title = song.split(' (V');
+                        song = `${title[0]} VIP`;
+                    }
+                    
                     argArtistName = artists;
                     argSongName = song;
+                    sent = true;
                 }
             });
+        }
+
+        if (sent === false && args[0] === 's') {
+            return message.channel.send('You aren\'t listening to a song on Spotify!');
         }
 
         //Auto-adjustment to caps for each word
@@ -77,7 +107,7 @@ module.exports = {
         argSongName = argSongName.split(' ');
         argSongName = argSongName.map(a => a.charAt(0).toUpperCase() + a.slice(1));
         argSongName = argSongName.join(' ');
-
+        
         if (argSongName.includes('EP') || argSongName.includes('LP') || argSongName.toLowerCase().includes('the remixes')) {
             return message.channel.send('This isn\'t a single! Please use `!getEP` to get EP/LP overviews.');
         }
@@ -283,6 +313,5 @@ module.exports = {
 
         message.reactions.removeAll();
         message.channel.send(exampleEmbed);
-        message.channel.stopTyping();
 	},
 };

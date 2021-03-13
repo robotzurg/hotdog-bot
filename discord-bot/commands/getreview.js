@@ -14,8 +14,7 @@ module.exports = {
         let argSongName;
         let taggedUser;
         let taggedMember;
-
-        message.channel.startTyping();
+        let sent = false;
 
         if (args.length >= 3 && message.mentions.users.first() === undefined) return message.channel.send('You didn\'t seem to specify a user! Make sure to check your mention.');
 
@@ -26,13 +25,44 @@ module.exports = {
                     let song = activity.details;
                     if (artists.includes(';')) {
                         artists = artists.split('; ');
+                        if (activity.details.includes('')) {
+                            artists.pop();
+                        }
                         artists = artists.join(' & ');
                     }
+
+                    // Fix some formatting for a couple things
+                    if (song.includes('- Extended Mix')) {
+                        song = song.replace('- Extended Mix', `(Extended Mix)`);
+                    }
+
+                    if (song.includes('Remix') && song.includes('-')) {
+                        let title = song.split(' - ');
+                        rmxArtist = title[1].slice(0, -6);
+                        song = `${title[0]} [${rmxArtist} Remix]`;
+                    }
+
+                    if (song.includes('VIP') && song.includes('-')) {
+                        let title = song.split(' - ');
+                        song = `${title[0]} VIP`;
+                    }
+    
+                    if (song.includes('(VIP)')) {
+                        let title = song.split(' (V');
+                        song = `${title[0]} VIP`;
+                    }
+                    
                     argArtistName = artists;
                     argSongName = song;
+                    sent = true;
                 }
             });
         }
+
+        if (sent === false && args[0] === 's') {
+            return message.channel.send('You aren\'t listening to a song on Spotify!');
+        }
+
 
         if (args[0] != 's') {
             if (args.length === 2 && message.mentions.users.first() === undefined) {
@@ -251,6 +281,5 @@ module.exports = {
                 }
                 
             message.channel.send(exampleEmbed);
-            message.channel.stopTyping();
 	},
 };

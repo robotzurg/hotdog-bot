@@ -14,8 +14,6 @@ module.exports = {
         let argArtistName;
         let argEPName;
 
-        message.channel.startTyping();
-
         if (args.length === 2) {
             argArtistName = args[0];
             argEPName = args[1];
@@ -150,7 +148,8 @@ module.exports = {
                     if (rmxArtist === false) {
                         rating = db.reviewDB.get(artistName[0], `["${songArray[i]}"].["${reviewNum[ii]}"].rate`);
                     } else {
-                        rating = db.reviewDB.get(artistName[0], `["${songArray[i]}"].Remixers.["${rmxArtist}"].["${reviewNum[ii]}"].rate`);
+                        console.log(songArray[i]);
+                        rating = db.reviewDB.get(rmxArtist, `["${songArray[i]}"].["${reviewNum[ii]}"].rate`);
                     }
                     rankNumArray.push(parseFloat(rating.slice(0, -3)));
                 }
@@ -168,6 +167,5 @@ module.exports = {
                 exampleEmbed.setDescription(`*This EP has no overall user ratings.*\n*The total average rating of all songs on this EP is* ***${Math.round(average(songRankArray) * 10) / 10}!***`);
             }
         message.channel.send(exampleEmbed);
-        message.channel.stopTyping();
 	},
 };

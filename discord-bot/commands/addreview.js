@@ -30,6 +30,7 @@ module.exports = {
             } else if (args.length === 5) { // If there is a user mentioned but only 3 arguments, then we know no image.
                 taggedUser = message.mentions.users.first(); 
                 taggedMember = message.mentions.members.first();
+                console.log('???');
                 is_mailbox = true;
             } else if (args.length === 6) { // If there is both a user mentioned and 4 arguments, then we know both!
                 thumbnailImage = args[4];
@@ -38,12 +39,14 @@ module.exports = {
                 is_mailbox = true;
             }
 
-            if (thumbnailImage.toLowerCase().includes('spotify') || thumbnailImage === 's') {
-                message.author.presence.activities.forEach((activity) => {
-                    if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
-                        thumbnailImage = `https://i.scdn.co/image/${activity.assets.largeImage.slice(8)}`;
-                    }
-                });
+            if (thumbnailImage != false) {
+                if (thumbnailImage.toLowerCase().includes('spotify') || thumbnailImage === 's') {
+                    message.author.presence.activities.forEach((activity) => {
+                        if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
+                            thumbnailImage = `https://i.scdn.co/image/${activity.assets.largeImage.slice(8)}`;
+                        }
+                    });
+                }
             }
 
             if (thumbnailImage != false) {
