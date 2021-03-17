@@ -20,9 +20,11 @@ module.exports = {
 			return message.channel.send('Image missing!');
 		} else if (args.length === 1 && message.attachments.first() != undefined) {
 			thumbnailImage = message.attachments.first().attachment;
-		} else if (args.length === 1) {
+		} else if (args.length === 2) {
 			thumbnailImage = args[1];
 		}
+
+		console.log(thumbnailImage);
 
 		if (args.length === 3 && message.attachments.first() != undefined) {
 			return message.channel.send('Please only use a direct image link, or an attachment, not both.');

@@ -57,8 +57,11 @@ module.exports = {
         }
 
         if (sent === false && args[0] === 's') {
-            return message.channel.send('You aren\'t listening to a song on Spotify!');
+            return message.channel.send('You aren\'t listening to a song on Spotify, or the song you tried to query does not exist.');
         }
+
+        console.log(argArtistName);
+        console.log(argSongName);
 
         //Auto-adjustment to caps for each word
         argArtistName = argArtistName.split(' ');
@@ -202,6 +205,7 @@ module.exports = {
 
         if (rmxArtist === false) {
             songObj = db.reviewDB.get(artistName[0], `["${songName}"]`);
+            if (songObj === undefined) return message.channel.send('The requested song does not exist.\nUse `!getArtist` to get a full list of this artist\'s songs.');
             songEP = songObj.EP;
             remixObj = songObj.Remixers;
 
@@ -215,6 +219,7 @@ module.exports = {
             if (songEP === undefined) songEP = false;
         } else {
             songObj = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"]`);
+            if (songObj === undefined) return message.channel.send('The requested song does not exist.\nUse `!getArtist` to get a full list of this artist\'s songs.');
             if (db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].EP` === undefined)) {
                 songEP = songObj.EP;
             } else {

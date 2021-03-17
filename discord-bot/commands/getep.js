@@ -135,6 +135,7 @@ module.exports = {
                 epnum++;
 
                 reviewNum = Object.keys(songObj);
+                rankNumArray = [];
 
                 reviewNum = reviewNum.filter(e => e !== 'Remixers');
                 reviewNum = reviewNum.filter(e => e !== 'EP');

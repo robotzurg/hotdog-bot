@@ -9,7 +9,7 @@ module.exports = {
     aliases: ['naddreview', 'nreview', 'nadd'],
     description: 'Create a song rating embed message! THIS DOES NOT ADD TO REVIEW DB.',
     args: true,
-    usage: '`<artist> | <song_name> | <rating> | <review> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>`',
+    usage: '<artist> | <song_name> | <rating> | <review> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>',
 	execute(message, args) {
         let rating = args[2];
         let review = args[3];
