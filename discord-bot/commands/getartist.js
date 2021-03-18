@@ -123,7 +123,7 @@ module.exports = {
                 exampleEmbed.addField('Remixes:', remixArray);
             }
 
-            if (singleArray.length != 0 && remixArray.length != 0) {
+            if (singleArray.length != 0 || remixArray.length != 0) {
                 exampleEmbed.setDescription(`*The average rating of this artist is* ***${Math.round(average(rankNumArray) * 10) / 10}!***`);
             } else {
                 exampleEmbed.setDescription(`No reviewed songs. :(`);

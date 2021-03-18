@@ -165,6 +165,88 @@ client.on('message', async message => {
         });
     };
 
+    module.exports.updateFridayListData = function() {
+        if (message.channel.type === 'dm') return;
+        const singleID = db.friID.get('singleID');
+        const epID = db.friID.get('epID');
+        const lpID = db.friID.get('lpID');
+        const compID = db.friID.get('compID');
+        const channeltoSearch = message.guild.channels.cache.find(ch => ch.name === 'friday-playlist');
+
+        const epList = [];
+        const lpList = [];
+        const compList = [];
+        const singleList = [];
+
+        db.friList.forEach((prop) => {
+            if (prop.friday === false) {
+                let artistName = prop.artist.replace('*', '\\*');
+                let songName = prop.song.replace('*', '\\*');
+                const songString = `**--** ${artistName} - ${songName}`;
+
+                if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
+                    singleList.push(songString);
+                } else if (prop.song.includes('EP')) {
+                    epList.push(songString);
+                } else if (prop.song.includes('LP')) {
+                    lpList.push(songString);
+                } else if (prop.song.toLowerCase().includes('comp')) {
+                    compList.push(songString.substring(0, songString.length - 5));
+                }
+            } else if (prop.friday === true) {
+                let artistName = prop.artist.replace('*', '\\*');
+                let songName = prop.song.replace('*', '\\*');
+                const songString = `**--** :regional_indicator_f: **${artistName} - ${songName}**`;
+
+                if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
+                    singleList.unshift(songString);
+                } else if (prop.song.includes('EP')) {
+                    epList.unshift(songString);
+                } else if (prop.song.includes('LP')) {
+                    lpList.unshift(songString);
+                } else if (prop.song.toLowerCase().includes('comp')) {
+                    compList.push(songString.substring(0, songString.length - 6) + '**');
+                }
+            }
+        });
+
+        compList.join('\n');
+        compList.unshift('**Compilations**');
+        compList.unshift(' ');
+        compList.push('----------------------------------------------------------------------------------------------------------------');
+
+        lpList.join('\n');
+        lpList.unshift('**LPs**');
+        lpList.unshift(' ');
+        lpList.push('----------------------------------------------------------------------------------------------------------------');
+
+        epList.join('\n');
+        epList.unshift('**EPs**');
+        epList.unshift(' ');
+        epList.push('----------------------------------------------------------------------------------------------------------------');
+
+        singleList.join('\n');
+        singleList.unshift('**Singles**');
+        singleList.unshift(' ');
+        singleList.push('----------------------------------------------------------------------------------------------------------------');
+
+        (channeltoSearch.messages.fetch(singleID)).then((msg) => {
+            msg.edit(singleList);
+        });
+
+        (channeltoSearch.messages.fetch(epID)).then((msg) => {
+            msg.edit(epList);
+        });
+
+        (channeltoSearch.messages.fetch(lpID)).then((msg) => {
+            msg.edit(lpList);
+        });
+
+        (channeltoSearch.messages.fetch(compID)).then((msg) => {
+            msg.edit(compList);
+        });
+    };
+
     // Friday Music Listening Stuff
     if (message.content.startsWith(`${prefix}fridaylist`)) {
         if (message.member.hasPermission('ADMINISTRATOR')) {
@@ -249,88 +331,6 @@ client.on('message', async message => {
         message.delete();
        } else { return message.reply('You don\'t have the perms to use this command!'); }
     }
-
-    module.exports.updateFridayListData = function() {
-        if (message.channel.type === 'dm') return;
-        const singleID = db.friID.get('singleID');
-        const epID = db.friID.get('epID');
-        const lpID = db.friID.get('lpID');
-        const compID = db.friID.get('compID');
-        const channeltoSearch = message.guild.channels.cache.find(ch => ch.name === 'friday-playlist');
-
-        const epList = [];
-        const lpList = [];
-        const compList = [];
-        const singleList = [];
-
-        db.friList.forEach((prop) => {
-            if (prop.friday === false) {
-                let artistName = prop.artist.replace('*', '\\*');
-                let songName = prop.song.replace('*', '\\*');
-                const songString = `**--** ${artistName} - ${songName}`;
-
-                if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
-                    singleList.push(songString);
-                } else if (prop.song.includes('EP')) {
-                    epList.push(songString);
-                } else if (prop.song.includes('LP')) {
-                    lpList.push(songString);
-                } else if (prop.song.toLowerCase().includes('comp')) {
-                    compList.push(songString.substring(0, songString.length - 5));
-                }
-            } else if (prop.friday === true) {
-                let artistName = prop.artist.replace('*', '\\*');
-                let songName = prop.song.replace('*', '\\*');
-                const songString = `**--** :regional_indicator_f: **${artistName} - ${songName}**`;
-
-                if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
-                    singleList.unshift(songString);
-                } else if (prop.song.includes('EP')) {
-                    epList.unshift(songString);
-                } else if (prop.song.includes('LP')) {
-                    lpList.unshift(songString);
-                } else if (prop.song.toLowerCase().includes('comp')) {
-                    compList.push(songString.substring(0, songString.length - 6) + '**');
-                }
-            }
-        });
-
-        compList.join('\n');
-        compList.unshift('**Compilations**');
-        compList.unshift(' ');
-        compList.push('----------------------------------------------------------------------------------------------------------------');
-
-        lpList.join('\n');
-        lpList.unshift('**LPs**');
-        lpList.unshift(' ');
-        lpList.push('----------------------------------------------------------------------------------------------------------------');
-
-        epList.join('\n');
-        epList.unshift('**EPs**');
-        epList.unshift(' ');
-        epList.push('----------------------------------------------------------------------------------------------------------------');
-
-        singleList.join('\n');
-        singleList.unshift('**Singles**');
-        singleList.unshift(' ');
-        singleList.push('----------------------------------------------------------------------------------------------------------------');
-
-        (channeltoSearch.messages.fetch(singleID)).then((msg) => {
-            msg.edit(singleList);
-        });
-
-        (channeltoSearch.messages.fetch(epID)).then((msg) => {
-            msg.edit(epList);
-        });
-
-        (channeltoSearch.messages.fetch(lpID)).then((msg) => {
-            msg.edit(lpList);
-        });
-
-        (channeltoSearch.messages.fetch(compID)).then((msg) => {
-            msg.edit(compList);
-        });
-    };
 
     //Update the databases whenever a command is used, just to make sure we're good at most times
     module.exports.updateGenreGameData();
