@@ -442,6 +442,9 @@ module.exports = {
                     });
 
                     if (!OGartistArray.includes(artistArray[i])) {
+                        console.log(OGartistArray);
+                        console.log(artistArray[i]);
+                        console.log(ep_name);
                         db.reviewDB.delete(`${artistArray[i]}`, ep_name);
                     }
                 } else if(db.reviewDB.get(artistArray[i], `["${songName}"]`) === undefined) { //If the artist db exists, check if the song db doesn't exist

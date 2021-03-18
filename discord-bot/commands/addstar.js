@@ -24,11 +24,8 @@ module.exports = {
 
                     for (let k = 0; k < songObjArray.length; k++) {
                         db.reviewDB.set(keyArray[i], false, `["${keyObjArray[j]}"].["${songObjArray[k]}"].starred`);
-                        break;
                     }
-                break;
                 }
-            break;
             }
 
             return message.channel.send('Finished.');
