@@ -55,6 +55,8 @@ module.exports = {
         }
 
         let rankNumArray = [];
+        let starNum = 0;
+        let fullStarNum = 0;
 
 		const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)
@@ -63,6 +65,7 @@ module.exports = {
                 exampleEmbed.setThumbnail(artistImage);
             }
             for (let i = 0; i < songArray.length; i++) {
+                starNum = 0;
                 const songObj = db.reviewDB.get(args[0], `["${songArray[i]}"]`);
                 const songEP = db.reviewDB.get(args[0], `["${songArray[i]}"].EP`);
                 reviewNum = Object.keys(songObj);
@@ -79,6 +82,10 @@ module.exports = {
                         let rating;
                         rating = db.reviewDB.get(args[0], `["${songArray[i]}"].["${reviewNum[ii]}"].rate`);
                         rankNumArray.push(parseFloat(rating.slice(0, -3)));
+                        if (db.reviewDB.get(args[0], `["${songArray[i]}"].["${reviewNum[ii]}"].starred`) === true) { 
+                            starNum++; 
+                            fullStarNum++;
+                        }
                     }
                 }
 
@@ -98,11 +105,12 @@ module.exports = {
                     if (remixerKeys.length > 0) {
                         const songRemixersObj = db.reviewDB.get(args[0], `["${songArray[i]}"].Remixers`);
                         const songRemixersAmt = Object.keys(songRemixersObj).length;
-                        songDetails = [`\`${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''}\``, `\`${songRemixersAmt} remix${songRemixersAmt > 1 ? 'es' : ''}\``];
+                        songDetails = [`\`${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''}\``, `\`${songRemixersAmt} remix${songRemixersAmt > 1 ? 'es' : ''}\``,
+                        `${starNum != 0 ? `\`${starNum} stars\`` : ''}`];
                         songDetails = songDetails.join(' ');
 
                     } else {
-                        songDetails = `\`${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''}\``;
+                        songDetails = `\`${reviewNum} review${reviewNum > 1 || reviewNum === 0 ? 's' : ''}\`${starNum != 0 ? ` \`${starNum} ⭐\`` : ''}`;
                     }
 
                     if (!songArray[i].includes('Remix') && !songArray[i].includes('EP') && !songArray[i].includes('LP') && !songArray[i].includes('/')) {
@@ -122,12 +130,6 @@ module.exports = {
             if (remixArray.length != 0) {
                 exampleEmbed.addField('Remixes:', remixArray);
             }
-
-            if (singleArray.length != 0 || remixArray.length != 0) {
-                exampleEmbed.setDescription(`*The average rating of this artist is* ***${Math.round(average(rankNumArray) * 10) / 10}!***`);
-            } else {
-                exampleEmbed.setDescription(`No reviewed songs. :(`);
-            }
             
             for (let i = 0; i < songArray.length; i++) {
                 const songEP = db.reviewDB.get(args[0], `["${songArray[i]}"].EP`);
@@ -141,8 +143,17 @@ module.exports = {
                     songsinEP.join('\n');
                     exampleEmbed.addField(`${songEP}: `, songsinEP);
                     EPsOnEmbed.push(songEP);
-                    
                 }
+            }
+
+            if (singleArray.length != 0 || remixArray.length != 0 || EPs.length != 0) {
+                if (fullStarNum != 0) {
+                    exampleEmbed.setDescription(`*The average rating of this artist is* ***${Math.round(average(rankNumArray) * 10) / 10}!***\n:star2: **This artist has ${fullStarNum} total stars!** :star2:`);
+                } else {
+                    exampleEmbed.setDescription(`*The average rating of this artist is* ***${Math.round(average(rankNumArray) * 10) / 10}!***`);
+                }
+            } else {
+                exampleEmbed.setDescription(`No reviewed songs. :(`);
             }
         
         message.channel.send(exampleEmbed);

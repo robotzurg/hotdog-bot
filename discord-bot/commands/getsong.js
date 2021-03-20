@@ -60,9 +60,6 @@ module.exports = {
             return message.channel.send('You aren\'t listening to a song on Spotify, or the song you tried to query does not exist.');
         }
 
-        console.log(argArtistName);
-        console.log(argSongName);
-
         //Auto-adjustment to caps for each word
         argArtistName = argArtistName.split(' ');
         argArtistName = argArtistName.map(a => a.charAt(0).toUpperCase() + a.slice(1));
@@ -134,6 +131,7 @@ module.exports = {
         let remixObj;
         let remixes = [];
         let fullSongName = false;
+        let starCount = 0;
 
         let artistsEmbed = argArtistName;
         let vocalistsEmbed = [];
@@ -254,18 +252,35 @@ module.exports = {
             for (let i = 0; i < userArray.length; i++) {
                 if (userArray[i] != 'EP') {
                     let rating;
+                    let starred = false;
                     if (rmxArtist === false) {
-                        rating = db.reviewDB.get(artistName[0], `["${songName}"].${userArray[i]}.rate`);
+                        rating = db.reviewDB.get(artistName[0], `["${songName}"].["${userArray[i]}"].rate`);
+                        if (db.reviewDB.get(artistName[0], `["${songName}"].["${userArray[i]}"].starred`) === true) {
+                            starCount++;
+                            starred = true;
+                        }
                     } else {
-                        rating = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${userArray[i]}.rate`);
+                        rating = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${userArray[i]}"].rate`);
+                        if (db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${userArray[i]}"].starred`) === true) {
+                            starCount++;
+                            starred = true;
+                        }
                     }
                     rankNumArray.push(parseFloat(rating.slice(0, -3)));
-                    userArray[i] = [parseFloat(rating.slice(0, -3)), `${userArray[i]} \`${rating}\``];
+                    if (starred === true) {
+                        userArray[i] = [parseFloat(rating.slice(0, -3)), `:star2: ${userArray[i]} \`${rating}\``];
+                    } else {
+                        userArray[i] = [parseFloat(rating.slice(0, -3)), `${userArray[i]} \`${rating}\``];
+                    }
                 }
             }
             
             if (rankNumArray.length != 0) {
-                exampleEmbed.setDescription(`*The average rating of this song is* ***${Math.round(average(rankNumArray) * 10) / 10}!***`);
+                if (starCount != 0) {
+                    exampleEmbed.setDescription(`*The average rating of this song is* ***${Math.round(average(rankNumArray) * 10) / 10}!***\n:star2: **This song has ${starCount} star${starCount === 1 ? '' : 's'}!** :star2:`);
+                } else {
+                    exampleEmbed.setDescription(`*The average rating of this song is* ***${Math.round(average(rankNumArray) * 10) / 10}!***`);
+                }
             } else {
                 exampleEmbed.setDescription(`*The average rating of this song is N/A*`);
             }

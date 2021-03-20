@@ -90,6 +90,7 @@ module.exports = {
                         userArray = userArray.filter(e => e !== 'EPpos');
                         
                         const rankNumArray = [];
+                        let starNum = 0;
 
                             for (let i = 0; i < userArray.length; i++) {
                                 
@@ -99,12 +100,17 @@ module.exports = {
                                 if (userArray[i] != 'EP') {
                                     let rating;
                                     rating = db.reviewDB.get(artistArray[0], `["${activity.details}"].${userArray[i]}.rate`);
+
+                                    if (db.reviewDB.get(artistArray[0], `["${activity.details}"].${userArray[i]}.starred`) === true) {
+                                        starNum++;
+                                    }
+
                                     rankNumArray.push(parseFloat(rating.slice(0, -3)));
                                     userArray[i] = [parseFloat(rating.slice(0, -3)), `${userArray[i]} \`${rating}\``];
                                 }
                             }
 
-                        exampleEmbed.setDescription(`Reviews: \`${userArray.length} reviews\`\nAverage Rating: \`${Math.round(average(rankNumArray) * 10) / 10}\`${yourReview != false ? `\nYour Rating: \`${yourReview}\`` : ''}`);
+                        exampleEmbed.setDescription(`Reviews: \`${userArray.length} reviews\`\nAverage Rating: \`${Math.round(average(rankNumArray) * 10) / 10}\`${yourReview != false ? `${starNum > 0 ? `\nStars: \`${starNum} ⭐\`` : ''}\nYour Rating: \`${yourReview}\`` : ''}`);
 
                         if (db.reviewDB.get(artistArray[0], `["${activity.details}"].EP`) != undefined && db.reviewDB.get(artistArray[0], `["${activity.details}"].EP`) != false) {
                             exampleEmbed.setFooter(`from ${db.reviewDB.get(artistArray[0], `["${activity.details}"].EP`)}`, db.reviewDB.get(artistArray[0], `["${db.reviewDB.get(artistArray[0], `["${activity.details}"].EP`)}"].Image`));

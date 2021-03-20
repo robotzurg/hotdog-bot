@@ -195,6 +195,7 @@ module.exports = {
         let rreview;
         let rscore;
         let rsentby;
+        let rstarred;
         let usrSentBy;
         let thumbnailImage;
         let artistsEmbed = argArtistName;
@@ -226,6 +227,7 @@ module.exports = {
             rreview = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.review`);
             rscore = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.rate`);
             rsentby = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.sentby`);
+            rstarred = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.starred`);
             if (rsentby != false) {
                 usrSentBy = message.guild.members.cache.get(rsentby);              
             }
@@ -241,6 +243,7 @@ module.exports = {
             rreview = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.review`);
             rscore = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.rate`);
             rsentby = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.sentby`);
+            rstarred = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.starred`);
             if (rsentby != false) {
                 usrSentBy = message.guild.members.cache.get(rsentby);              
             }     
@@ -257,9 +260,18 @@ module.exports = {
                 .setColor(`${taggedMember.displayHexColor}`);
                 if (!argSongName.includes('(feat') && !argSongName.includes('(ft') && vocalistsEmbed.length != 0) {
                     vocalistsEmbed = `${argSongName} (ft. ${vocalistsEmbed})`;
-                    exampleEmbed.setTitle(`${artistsEmbed} - ${vocalistsEmbed}`);
+                    if (rstarred === true) {
+                        exampleEmbed.setTitle(`:star2: ${artistsEmbed} - ${vocalistsEmbed} :star2:`);
+                    } else {
+                        exampleEmbed.setTitle(`${artistsEmbed} - ${vocalistsEmbed}`);
+                    }
                 } else {
                     exampleEmbed.setTitle(`${artistsEmbed} - ${argSongName}`);
+                    if (rstarred === true) {
+                        exampleEmbed.setTitle(`:star2: ${artistsEmbed} - ${argSongName} :star2:`);
+                    } else {
+                        exampleEmbed.setTitle(`${artistsEmbed} - ${argSongName}`);
+                    }
                 }
                 
                 exampleEmbed.setAuthor(rsentby != false ? `${rname}'s mailbox review` : `${rname}'s review`, `${taggedUser.avatarURL({ format: "png" })}`);
