@@ -1,19 +1,24 @@
 const db = require("../db.js");
+const { filter_users } = require("../func.js");
+const Discord = require('discord.js');
 
 module.exports = {
     name: 'addstar',
     type: 'Admin',
-    aliases: ['star', 'as', 'addstar'],
+    aliases: ['star', 'as', 'addstar', 'adds'],
     description: 'Give an existing rating of yours a star!',
     args: true,
     usage: '<artist> | <song>',
 	execute(message, args) {
+
+        if (message.content.includes('remix')) return message.channel.send('Remixes don\'t currently work with starring.');
 
         let artistArray = [args[0]];
         let vocalsArray = [];
         let argSongName = args[1];
         let sent = false;
         let rmxArtist = false;
+        let star_count = 0;
 
         if (args[0] === 's') {
             message.author.presence.activities.forEach((activity) => {
@@ -212,7 +217,7 @@ module.exports = {
             }
         }
 
-        message.channel.send(`Star added to ${artistArray.join(' & ')} - ${fullSongName}${vocalsArray.length != 0 ? ` (ft. ${vocalsArray.join(' & ')})` : '' }!`);
+        const ogArtistArray = artistArray;
 
         if (vocalsArray.length != 0) {
             artistArray.push(vocalsArray);
@@ -245,9 +250,72 @@ module.exports = {
             }
         }
 
-        let msgtoEdit;
+        message.channel.send(`Star added to ${ogArtistArray.join(' & ')} - ${fullSongName}${vocalsArray.length != 0 ? ` (ft. ${vocalsArray.join(' & ')})` : '' }!`);
+        const hofMessage = [`${ogArtistArray.join(' & ')}`, `${fullSongName}${vocalsArray.length != 0 ? ` (ft. ${vocalsArray.join(' & ')})` : '' }`];
 
-        console.log(songName);
+        const songObj = db.reviewDB.get(artistArray[0], `["${songName}"]`);
+
+        let userArray = Object.keys(songObj);
+        let star_array = [];
+
+        userArray = filter_users(userArray);
+
+        for (let i = 0; i < userArray.length; i++) {
+            let star_check;
+            if (rmxArtist === false) {
+                star_check = db.reviewDB.get(artistArray[0], `["${songName}"].["${userArray[i]}"].starred`);
+            } else {
+                star_check = db.reviewDB.get(artistArray[0], `["${songName}"].Remixers.["${rmxArtist}"].["${userArray[i]}"].starred`);
+            }
+            if (star_check === true) {
+                star_count++;
+                star_array.push(`:star2: ${userArray[i]}`);
+            }
+        }
+
+        if (star_count >= 3) {
+            const hofChannel = message.client.channels.cache.get('817516612777279519');
+            const hofEmbed = new Discord.MessageEmbed()
+            
+            .setColor(`#FFFF00`)
+            .setTitle(`${hofMessage[0]} - ${hofMessage[1]}`)
+            .setDescription(`:star2: **This song currently has ${star_count} stars!** :star2:`)
+            .addField('Starred Reviews:', star_array);
+            
+            if (db.reviewDB.get(artistArray[0], `["${songName}"].Image`) === false) {
+                hofEmbed.setImage(message.guild.iconURL());
+            } else {
+                hofEmbed.setImage(db.reviewDB.get(artistArray[0], `["${songName}"].Image`));
+            }
+
+            if (rmxArtist === false) {
+                hofEmbed.setFooter(`Use !getSong ${songName} to get more details about this song!`);
+
+                if (!db.hall_of_fame.has(songName)) {
+                    hofChannel.send(hofEmbed).then(hof_msg => {
+                        db.hall_of_fame.set(songName, hof_msg.id);
+                    });
+                } else {
+                    hofChannel.messages.fetch(`${db.hall_of_fame.get(songName)}`).then(hof_msg => {
+                        hof_msg.edit(hofEmbed);
+                    });
+                }
+            } else {
+                hofEmbed.setFooter(`Use !getSong ${fullSongName} to get more details about this remix!`);
+
+                if (!db.hall_of_fame.has(fullSongName)) {
+                    hofChannel.send(hofEmbed).then(hof_msg => {
+                        db.hall_of_fame.set(fullSongName, hof_msg.id);
+                    });
+                } else {
+                    hofChannel.messages.fetch(`${db.hall_of_fame.get(fullSongName)}`).then(hof_msg => {
+                        hof_msg.edit(hofEmbed);
+                    });
+                }
+            }
+        }
+
+        let msgtoEdit;
 
         if (rmxArtist === false) {
             msgtoEdit = db.reviewDB.get(artistArray[0], `["${songName}"].["<@${message.author.id}>"].msg_id`);
@@ -263,6 +331,7 @@ module.exports = {
                 let msgEmbedTitle = msgEmbed.title;
                 if (!msgEmbedTitle.includes(':star2:')) {
                     msgEmbed.title = `:star2: ${msgEmbedTitle} :star2:`;
+                    console.log(msgEmbed.title);
                 }
                 msg.edit(msgEmbed);
             });

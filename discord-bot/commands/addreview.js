@@ -2,12 +2,13 @@ const Discord = require('discord.js');
 const db = require("../db.js");
 const { prefix } = require('../config.json');
 const { mailboxes } = require('../arrays.json');
+const { msg_delete_timeout, filter_users } = require('../func.js');
 const forAsync = require('for-async');
 
 module.exports = {
     name: 'addreview',
     type: 'Review DB',
-    aliases: ['addreview', 'review', 'r'],
+    aliases: ['addreview', 'review', 'r', 'addr'],
     moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/794766841444433941',
     description: 'Create a song review embed message!',
     args: true,
@@ -22,7 +23,8 @@ module.exports = {
         let thumbnailImage = false;
         
         if (args.length < 4) {
-            return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``).then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
+            msg_delete_timeout(message, 15000);
+            return msg_delete_timeout(message, 15000, `Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
         } else if (args.length === 5 || args.length === 6) {
 
             if (message.mentions.users.first() === undefined) { // If there isn't a user mentioned, then we know it's 3 arguments with no user mention.
@@ -39,7 +41,7 @@ module.exports = {
             }
 
             if (thumbnailImage != false) {
-                if (thumbnailImage.toLowerCase().includes('spotify') || thumbnailImage === 's') {
+                if (thumbnailImage.toLowerCase().includes('spotify') || thumbnailImage.toLowerCase() === 's') {
                     message.author.presence.activities.forEach((activity) => {
                         if (activity.type === 'LISTENING' && activity.name === 'Spotify' && activity.assets !== null) {
                             thumbnailImage = `https://i.scdn.co/image/${activity.assets.largeImage.slice(8)}`;
@@ -50,7 +52,8 @@ module.exports = {
 
             if (thumbnailImage != false) {
                 if (thumbnailImage.includes('|')) {
-                    return message.channel.send('Please make sure you don\'t have any **|** characters in your URL!').then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
+                    msg_delete_timeout(message, 15000);
+                    return msg_delete_timeout(message, 15000, `Make sure not to include \`|\` in your thumbnail image link!`);
                 }
             }
 
@@ -67,7 +70,8 @@ module.exports = {
 
         // [] check
         if (args[1].includes('Remix)')) {
-            return message.channel.send('Please use [] for remixes, not ()!').then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
+            msg_delete_timeout(message, 15000, 'Please use [] for remixes, not ()!');
+            return msg_delete_timeout(message, 15000);
         }
 
         let rating = args[2].replace(/\s+/g, '');
@@ -92,7 +96,8 @@ module.exports = {
 
         // EP/LP check
         if (args[1].includes('EP') || args[1].toLowerCase().includes('LP') || args[1].toLowerCase().includes('Remixes')) {
-            return message.channel.send('You can only use this command to rank singles/single remixes.\nPlease use `!addReviewEP` for EP Reviews/Rankings!').then(msg => { msg.delete({ timeout: 15000 }); message.delete({ timeout: 15000 }); });
+            msg_delete_timeout(message, 15000);
+            return msg_delete_timeout(message, 15000, 'You can only use this command to rank singles/single remixes.\nPlease use `!addReviewEP` for EP Reviews/Rankings!');
         }
 
         //Split up the artists into an array
@@ -148,6 +153,7 @@ module.exports = {
         } else if (args[1].includes('(ft')) {
 
             songName = args[1].split(` (ft`);
+
             if (songName[1].includes(`[`)) {
                 featArtists = songName[1].split('[');
                 featArtists = featArtists[0].slice(2).slice(0, -2).split(' & ');
@@ -186,6 +192,10 @@ module.exports = {
         } else if (songName.toLowerCase().includes('flip]') || songName.toLowerCase().includes('edit]')) {
             songName = args[1].substring(0, args[1].length - 6).split(' [')[0];
             rmxArtist = args[1].substring(0, args[1].length - 6).split(' [')[1];
+        }
+
+        if (rmxArtist != false) {
+            remixsongName = `${songName} [${rmxArtist} Remix]`;
         }
 
         //Adjust (VIP)
@@ -406,6 +416,7 @@ module.exports = {
         } else { //Same version of the above, but this time for REMIXES
             artistArray.push(rmxArtist);
             for (let i = 0; i < artistArray.length; i++) {
+                console.log(remixsongName);
                 if (artistArray[i] === rmxArtist) {songName = remixsongName;} //Set the songname to the full name for the remix artist
                 // If the artist db doesn't exist
                 if (db.reviewDB.get(artistArray[i]) === undefined) {
@@ -555,19 +566,26 @@ module.exports = {
         }
         // Send the embed rate message
         message.channel.send(exampleEmbed).then(msg => {
-            if (rmxArtist === false) {
-                db.reviewDB.set(artistArray[0], msg.id, `["${imageSongName}"].["<@${message.author.id}>"].msg_id`); 
-            } else {
-                db.reviewDB.set(artistArray[0], msg.id, `["${imageSongName}"].Remixers.["${rmxArtist}"].["<@${message.author.id}>"].msg_id`); 
-            }
 
+            for (let i = 0; i < artistArray.length; i++) {
+                if (rmxArtist === false) {
+                    db.reviewDB.set(artistArray[i], msg.id, `["${imageSongName}"].["<@${message.author.id}>"].msg_id`); 
+                } else if (artistArray[i] != rmxArtist) {
+                    db.reviewDB.set(artistArray[i], msg.id, `["${imageSongName}"].Remixers.["${rmxArtist}"].["<@${message.author.id}>"].msg_id`); 
+                } else if (artistArray[i] === rmxArtist) {
+                    db.reviewDB.set(artistArray[i], msg.id, `["${remixsongName}"].["<@${message.author.id}>"].msg_id`); 
+                }    
+            }
+            
             if (rating === '10/10') {
 
                 const filter = (reaction, user) => {
                     return (reaction.emoji.name === '🌟') && user.id === message.author.id;
                 };
 
-                msg.react('🌟');
+                if (rmxArtist === false) {
+                    msg.react('🌟');
+                }
                 msg.awaitReactions(filter, { max: 1, time: 10000, errors: ['time'] })
                 .then(collected => {
                     const reaction = collected.first();
@@ -582,14 +600,74 @@ module.exports = {
                                     db.reviewDB.set(artistArray[i], true, `["${imageSongName}"].Remixers.["${rmxArtist}"].["<@${message.author.id}>"].starred`); 
                                 }
                             }
-
-                            msg.reactions.removeAll();
-                            let embed_data = msg.embeds;
-                            let msgEmbed = embed_data[0];
-                            let msgEmbedTitle = msgEmbed.title;
-                            msgEmbed.title = `:star2: ${msgEmbedTitle} :star2:`;
-                            msg.edit(msgEmbed);
                         }
+
+                        const songObj = db.reviewDB.get(artistArray[0], `["${songName}"]`);
+
+                        let userArray = Object.keys(songObj);
+                        let star_array = [];
+                        let star_count = 0;
+
+                        userArray = filter_users(userArray);
+
+                        for (let i = 0; i < userArray.length; i++) {
+                            let star_check;
+                            console.log(artistArray[0]);
+                            if (rmxArtist === false) {
+                                star_check = db.reviewDB.get(artistArray[0], `["${songName}"].["${userArray[i]}"].starred`);
+                            } else {
+                                star_check = db.reviewDB.get(artistArray[0], `["${songName}"].Remixers.["${rmxArtist}"].["${userArray[i]}"].starred`);
+                            }
+
+                            if (star_check === true) {
+                                star_count++;
+                                star_array.push(`:star2: ${userArray[i]}`);
+                            }
+                        }
+
+                        if (star_count >= 3) {
+                            const hofChannel = message.client.channels.cache.get('817516612777279519');
+                            const hofEmbed = new Discord.MessageEmbed()
+                            
+                            .setColor(`#FFFF00`)
+                            .setTitle(`${args[0]} - ${args[1]}`)
+                            .setDescription(`:star2: **This song currently has ${star_count} stars!** :star2:`)
+                            .addField('Starred Reviews:', star_array)
+                            .setImage(thumbnailImage);
+                            if (rmxArtist === false) {
+                                exampleEmbed.setFooter(`Use !getSong ${songName} to get more details about this song!`);
+
+                                if (!db.hall_of_fame.has(songName)) {
+                                    hofChannel.send(hofEmbed).then(hof_msg => {
+                                        db.hall_of_fame.set(songName, hof_msg.id);
+                                    });
+                                } else {
+                                    hofChannel.messages.fetch(`${db.hall_of_fame.get(songName)}`).then(hof_msg => {
+                                        hof_msg.edit(hofEmbed);
+                                    });
+                                }
+                            } else {
+                                exampleEmbed.setFooter(`Use !getSong ${remixsongName} to get more details about this remix!`);
+
+                                if (!db.hall_of_fame.has(remixsongName)) {
+                                    hofChannel.send(hofEmbed).then(hof_msg => {
+                                        db.hall_of_fame.set(remixsongName, hof_msg.id);
+                                    });
+                                } else {
+                                    hofChannel.messages.fetch(`${db.hall_of_fame.get(remixsongName)}`).then(hof_msg => {
+                                        hof_msg.edit(hofEmbed);
+                                    });
+                                }
+                            }
+                        }
+
+
+                        msg.reactions.removeAll();
+                        let embed_data = msg.embeds;
+                        let msgEmbed = embed_data[0];
+                        let msgEmbedTitle = msgEmbed.title;
+                        msgEmbed.title = `:star2: ${msgEmbedTitle} :star2:`;
+                        msg.edit(msgEmbed);
                     }
                 })
                 .catch(collected => {

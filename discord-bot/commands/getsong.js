@@ -175,6 +175,10 @@ module.exports = {
             rmxArtist = argSongName.substring(0, argSongName.length - 6).split(' [')[1];
         }
 
+        if (artistName[0] === rmxArtist) {
+            artistName[0] = db.reviewDB.get(rmxArtist, `["${songName} [${rmxArtist} Remix]"].Collab`)[0];
+        }
+
         //Adjust (VIP)
         if (songName.includes('(VIP)')) {
             songName = songName.split(' (');

@@ -8,7 +8,7 @@ module.exports = {
     args: true,
     usage: '<key> <status>',
 	execute(message, args) {
-        if (message.member.hasPermission('ADMINISTRATOR')) {
+        if (message.member.hasPermission('ADMINISTRATOR') || message.author.id === '122568101995872256') {
             const command = message.client.commands.get(`setstatus`);
             if (!db.genreRoulette.has(args[0])) return message.reply(`${args[0]} is not in the game!`);
             if (args.length < 2) return message.reply(`Not enough arguments!\nThe proper usage would be \`${prefix}setStatus ${command.usage}\`.`);

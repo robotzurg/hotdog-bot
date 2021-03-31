@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const { prefix } = require('../config.json');
 const db = require("../db.js");
 const { mailboxes } = require('../arrays.json');
+const { filter_users, msg_delete_timeout } = require('../func');
 
 module.exports = {
     name: 'addreviewep',
@@ -36,7 +37,8 @@ module.exports = {
         let ep_pos = 0;
 
         if (args.length < 2) {
-            return message.channel.send(`Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
+            msg_delete_timeout(message, 15000);
+            return msg_delete_timeout(message, 15000, `Missing arguments!\nProper usage is: \`${prefix}${command.name} ${command.usage}\``);
         } else if (args.length === 3 || args.length === 4) {
 
             if (message.mentions.users.first() === undefined) { // If there isn't a user mentioned, then we know it's 3 arguments with no user mention.
@@ -207,7 +209,7 @@ module.exports = {
                 splitUpArray.shift();
                 splitUpArray = splitUpArray.join('\n');
                 songReview = splitUpArray;  
-                if (songReview === undefined) {
+                if (songReview === undefined || songReview === '') {
                     songReview = 'No written review.';
                 }
 
@@ -874,7 +876,107 @@ module.exports = {
             }
         }
 
-            msgtoEdit.edit(exampleEmbed);
+            msgtoEdit.edit(exampleEmbed).then(msg => {
+                if (songRating === '10/10') {
+
+                    const hofFilter = (reaction, user) => {
+                        return (reaction.emoji.name === '🌟') && user.id === message.author.id;
+                    };
+    
+                    if (rmxArtist === false) {
+                        msg.react('🌟');
+                    }
+                    msg.awaitReactions(hofFilter, { max: 1, time: 10000, errors: ['time'] })
+                    .then(collected => {
+                        const reaction = collected.first();
+                        if (reaction.emoji.name === '🌟') {
+                            for (let i = 0; i < artistArray.length; i++) {
+                                if (rmxArtist === false) {
+                                    db.reviewDB.set(artistArray[i], true, `["${songName}"].["<@${message.author.id}>"].starred`);
+                                } else {
+                                    if (artistArray[i] === rmxArtist) {
+                                        db.reviewDB.set(artistArray[i], true, `["${songName}"].["<@${message.author.id}>"].starred`);
+                                    } else {
+                                        db.reviewDB.set(artistArray[i], true, `["${songName}"].Remixers.["${rmxArtist}"].["<@${message.author.id}>"].starred`); 
+                                    }
+                                }
+                            }
+    
+                            const songObj = db.reviewDB.get(artistArray[0], `["${songName}"]`);
+    
+                            let userArray = Object.keys(songObj);
+                            let star_array = [];
+                            let star_count = 0;
+    
+                            userArray = filter_users(userArray);
+    
+                            for (let i = 0; i < userArray.length; i++) {
+                                let star_check;
+                                console.log(artistArray[0]);
+                                if (rmxArtist === false) {
+                                    star_check = db.reviewDB.get(artistArray[0], `["${songName}"].["${userArray[i]}"].starred`);
+                                } else {
+                                    star_check = db.reviewDB.get(artistArray[0], `["${songName}"].Remixers.["${rmxArtist}"].["${userArray[i]}"].starred`);
+                                }
+    
+                                if (star_check === true) {
+                                    star_count++;
+                                    star_array.push(`:star2: ${userArray[i]}`);
+                                }
+                            }
+    
+                            if (star_count >= 3) {
+                                const hofChannel = message.client.channels.cache.get('817516612777279519');
+                                const hofEmbed = new Discord.MessageEmbed()
+                                
+                                .setColor(`#FFFF00`)
+                                .setTitle(`${args[0]} - ${fullSongName}`)
+                                .setDescription(`:star2: **This song currently has ${star_count} stars!** :star2:`)
+                                .addField('Starred Reviews:', star_array)
+                                .setImage(thumbnailImage);
+                                if (rmxArtist === false) {
+                                    exampleEmbed.setFooter(`Use !getSong ${songName} to get more details about this song!`);
+    
+                                    if (!db.hall_of_fame.has(songName)) {
+                                        hofChannel.send(hofEmbed).then(hof_msg => {
+                                            db.hall_of_fame.set(songName, hof_msg.id);
+                                        });
+                                    } else {
+                                        hofChannel.messages.fetch(`${db.hall_of_fame.get(songName)}`).then(hof_msg => {
+                                            hof_msg.edit(hofEmbed);
+                                        });
+                                    }
+                                } else {
+                                    exampleEmbed.setFooter(`Use !getSong ${fullSongName} to get more details about this remix!`);
+    
+                                    if (!db.hall_of_fame.has(fullSongName)) {
+                                        hofChannel.send(hofEmbed).then(hof_msg => {
+                                            db.hall_of_fame.set(fullSongName, hof_msg.id);
+                                        });
+                                    } else {
+                                        hofChannel.messages.fetch(`${db.hall_of_fame.get(fullSongName)}`).then(hof_msg => {
+                                            hof_msg.edit(hofEmbed);
+                                        });
+                                    }
+                                }
+                            }
+    
+    
+                            msg.reactions.removeAll();
+                            msg.react('👂');
+                            let embed_data = msg.embeds;
+                            let msgEmbed = embed_data[0];
+                            msgEmbed.fields[msgEmbed.fields.length - 1].name = `🌟 ${msgEmbed.fields[msgEmbed.fields.length - 1].name} 🌟`;
+                            rankArray[rankArray.length - 1][0] = `${msgEmbed.fields[msgEmbed.fields.length - 1].name}`;
+                            msg.edit(msgEmbed);
+                        }
+                    })
+                    .catch(collected => {
+                        console.log(collected.size);
+                        msg.reactions.removeAll();
+                    });
+                }
+            });
 
         });
     },

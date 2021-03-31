@@ -136,6 +136,7 @@ module.exports = {
 
                 reviewNum = Object.keys(songObj);
                 rankNumArray = [];
+                let star_num = 0;
 
                 reviewNum = reviewNum.filter(e => e !== 'Remixers');
                 reviewNum = reviewNum.filter(e => e !== 'EP');
@@ -148,16 +149,22 @@ module.exports = {
                 for (let ii = 0; ii < reviewNum.length; ii++) {
                     if (rmxArtist === false) {
                         rating = db.reviewDB.get(artistName[0], `["${songArray[i]}"].["${reviewNum[ii]}"].rate`);
+                        if (db.reviewDB.get(artistName[0], `["${songArray[i]}"].["${reviewNum[ii]}"].starred`) === true) {
+                            star_num++;
+                        }
                     } else {
                         console.log(songArray[i]);
                         rating = db.reviewDB.get(rmxArtist, `["${songArray[i]}"].["${reviewNum[ii]}"].rate`);
+                        if (db.reviewDB.get(rmxArtist, `["${songArray[i]}"].["${reviewNum[ii]}"].starred`) === true) {
+                            star_num++;
+                        }
                     }
                     rankNumArray.push(parseFloat(rating.slice(0, -3)));
                 }
 
                 reviewNum = reviewNum.length;
 
-                exampleEmbed.addField(`${epnum}. ${songArray[i]} (Avg: ${Math.round(average(rankNumArray) * 10) / 10})`, `\`${reviewNum} review${reviewNum > 1 ? 's' : ''}\``);
+                exampleEmbed.addField(`${epnum}. ${songArray[i]} (Avg: ${Math.round(average(rankNumArray) * 10) / 10})`, `\`${reviewNum} review${reviewNum > 1 ? 's' : ''}\` ${star_num > 0 ? `\`${star_num} 🌟\`` : ''}`);
                 songRankArray.push(Math.round(average(rankNumArray) * 10) / 10);
             }
 

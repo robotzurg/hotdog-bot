@@ -202,6 +202,10 @@ module.exports = {
         let vocalistsEmbed = [];
         let epfrom = db.reviewDB.get(artistName[0], `["${songName}"].EP`);
 
+        if (artistName[0] === rmxArtist) {
+            artistName[0] = db.reviewDB.get(rmxArtist, `["${songName} [${rmxArtist} Remix]"].Collab`)[0];
+        }
+
         // This is for adding in collaborators/vocalists into the name inputted into the embed title, NOT for getting data out.
         if (db.reviewDB.get(artistName[0], `["${songName}"].Collab`) != undefined) {
             if (db.reviewDB.get(artistName[0], `["${songName}"].Collab`).length != 0) {
@@ -238,7 +242,8 @@ module.exports = {
                 thumbnailImage = taggedUser.avatarURL({ format: "png" });
             }
         } else {
-            rname = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.name`);
+
+            rname = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].name`);
             if (rname === undefined) return message.channel.send('No review found. *Note that for EP reviews, you need to use `!getReviewEP`.*');
             rreview = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.review`);
             rscore = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.rate`);

@@ -1,4 +1,5 @@
 const db = require("../db.js");
+const { msg_delete_timeout } = require("../func.js");
 
 module.exports = {
     name: 'addsong',
@@ -23,12 +24,12 @@ module.exports = {
 
             db.friList.set(`${keyNum}`, songObj);
 
-            message.channel.send(`Added ${db.friList.get(`${db.friList.count}`, `artist`)} - ${db.friList.get(`${db.friList.count}`, `song`)} to the Music Listening Playlist!`).then(msg => {
-                msg.delete({ timeout: 10000 }); 
-            })
-            .catch(console.error);
+            msg_delete_timeout(message, 10000);
+            msg_delete_timeout(message, 10000, `Added ${db.friList.get(`${db.friList.count}`, `artist`)} - ${db.friList.get(`${db.friList.count}`, `song`)} to the Music Listening Playlist!`);
 
-            message.delete({ timeout: 10000 });
-        } else { return message.reply('You don\'t have the perms to use this command!').then(msg => { msg.delete({ timeout: 10000 }); }); }
+        } else { 
+            msg_delete_timeout(message, 10000);
+            msg_delete_timeout(message, 10000, 'You don\'t have the perms to use this command!');
+        }
 	},
 };
