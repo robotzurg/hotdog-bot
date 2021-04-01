@@ -246,10 +246,12 @@ module.exports = {
                 if (db.reviewDB.get(artistArray[i], `["${fullSongName}"].["<@${message.author.id}>"]`) === undefined) return message.channel.send(`You haven't reviewed ${artistArray[i]} - ${argSongName}.`);
                 if (db.reviewDB.get(artistArray[i], `["${fullSongName}"].["<@${message.author.id}>"].rate`) != '10/10') return message.channel.send(`You can only give stars to songs you gave a 10/10.`);
 
+
                 db.reviewDB.set(artistArray[i], true, `["${fullSongName}"].["<@${message.author.id}>"].starred`);
             }
         }
 
+        db.user_stats.push(message.author.id, `${ogArtistArray.join(' & ')} - ${fullSongName}${vocalsArray.length != 0 ? ` (ft. ${vocalsArray.join(' & ')})` : '' }`, 'star_list');
         message.channel.send(`Star added to ${ogArtistArray.join(' & ')} - ${fullSongName}${vocalsArray.length != 0 ? ` (ft. ${vocalsArray.join(' & ')})` : '' }!`);
         const hofMessage = [`${ogArtistArray.join(' & ')}`, `${fullSongName}${vocalsArray.length != 0 ? ` (ft. ${vocalsArray.join(' & ')})` : '' }`];
 

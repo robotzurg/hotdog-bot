@@ -590,6 +590,8 @@ module.exports = {
                 .then(collected => {
                     const reaction = collected.first();
                     if (reaction.emoji.name === '🌟') {
+                        db.user_stats.push(message.author.id, `${artistArray.join(' & ')} - ${imageSongName}`, 'star_list');
+                        
                         for (let i = 0; i < artistArray.length; i++) {
                             if (rmxArtist === false) {
                                 db.reviewDB.set(artistArray[i], true, `["${imageSongName}"].["<@${message.author.id}>"].starred`);

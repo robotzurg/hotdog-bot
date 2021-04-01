@@ -107,6 +107,7 @@ module.exports = {
         let rsentby = false;
         let rrankpos;
         let rsongpos;
+        let rstarred;
         let songPositions = [];
         let songRanking = [];
         let usrSentBy = message.author;
@@ -155,6 +156,7 @@ module.exports = {
                     rsentby = db.reviewDB.get(artistName[0], `["${songName}"].["${taggedUser}"].sentby`);
                     rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].["${taggedUser}"].rankPosition`);
                     rsongpos = db.reviewDB.get(artistName[0], `["${songName}"].["${taggedUser}"].EPpos`);
+                    rstarred = db.reviewDB.get(artistName[0], `["${songName}"].["${taggedUser}"].starred`);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }
@@ -166,6 +168,7 @@ module.exports = {
                     rsentby = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].sentby`);
                     rrankpos = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].rankPosition`);
                     rsongpos = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].EPpos`);
+                    rstarred = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].starred`);
                     if (rsentby != false) {
                         usrSentBy = message.guild.members.cache.get(rsentby);              
                     }
@@ -190,19 +193,17 @@ module.exports = {
 
                 if (rrankpos === undefined || rrankpos === -1) {
                     if (rmxArtist === false) {
-                        exampleEmbed.addField(`${songName}${artistsEmbed.length != 0 ? ` (with ${artistsEmbed}) ` : ' '}${vocalistsEmbed.length != 0 ? `(ft. ${vocalistsEmbed}) ` : ''}(${rscore})`, `${rreview}`);
+                        exampleEmbed.addField(`${rstarred === true ? `🌟 ${songName} 🌟` : songName }${artistsEmbed.length != 0 ? ` (with ${artistsEmbed}) ` : ' '}${vocalistsEmbed.length != 0 ? `(ft. ${vocalistsEmbed}) ` : ''}(${rscore})`, `${rreview}`);
                         // Do stuff with rsongpos here later
-                        //console.log(rsongpos);
-                        //console.log(songPositions);
 
                     } else {
-                        exampleEmbed.addField(`${songName}${artistsEmbed.length != 0 ? ` (with ${artistsEmbed}) ` : ' '}${vocalistsEmbed.length != 0 ? ` (ft. ${vocalistsEmbed}) ` : ''}[${rmxArtist} Remix] (${rscore})`, `${rreview}`);
+                        exampleEmbed.addField(`${rstarred === true ? `🌟 ${songName} 🌟` : songName }${artistsEmbed.length != 0 ? ` (with ${artistsEmbed}) ` : ' '}${vocalistsEmbed.length != 0 ? ` (ft. ${vocalistsEmbed}) ` : ''}[${rmxArtist} Remix] (${rscore})`, `${rreview}`);
                     }
                 } else {
                     if (rmxArtist === false) {
-                        songRanking.push([parseInt(rrankpos), `${rrankpos}. ${songName}${artistsEmbed.length != 0 ? ` (with ${artistsEmbed.replace('\\', '')}) ` : ' '}${vocalistsEmbed.length != 0 ? `(ft. ${vocalistsEmbed.replace('\\', '')}) ` : ''}(${rscore})`]);
+                        songRanking.push([parseInt(rrankpos), `${rrankpos}. ${rstarred === true ? `🌟 ${songName} 🌟` : songName }${artistsEmbed.length != 0 ? ` (with ${artistsEmbed.replace('\\', '')}) ` : ' '}${vocalistsEmbed.length != 0 ? `(ft. ${vocalistsEmbed.replace('\\', '')}) ` : ''}(${rscore})`]);
                     } else {
-                        songRanking.push([parseInt(rrankpos), `${rrankpos}. ${songName}${artistsEmbed.length != 0 ? ` (with ${artistsEmbed.replace('\\', '')}) ` : ' '}${vocalistsEmbed.length != 0 ? `(ft. ${vocalistsEmbed.replace('\\', '')}) ` : ''}[${rmxArtist.replace('\\', '')} Remix] (${rscore})`]);
+                        songRanking.push([parseInt(rrankpos), `${rrankpos}. ${rstarred === true ? `🌟 ${songName} 🌟` : songName }${artistsEmbed.length != 0 ? ` (with ${artistsEmbed.replace('\\', '')}) ` : ' '}${vocalistsEmbed.length != 0 ? `(ft. ${vocalistsEmbed.replace('\\', '')}) ` : ''}[${rmxArtist.replace('\\', '')} Remix] (${rscore})`]);
                     }   
                 }
             }

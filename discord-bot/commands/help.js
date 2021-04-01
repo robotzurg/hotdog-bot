@@ -13,7 +13,6 @@ module.exports = {
         const admin = [];
         const reviewdb = [];
         const fun = [];
-        const botcmds = [];
         const { commands } = message.client;
 
         if (!args.length) {
@@ -23,7 +22,7 @@ module.exports = {
                 const cmdtype = commands.get(data[0][i]).type;
 
                 switch (cmdtype) {
-                    case "Bot": botcmds.push(data[0][i]); break;
+                    case "Bot": break;
                     case 'Support': support.push(data[0][i]); break;
                     case 'Review DB': reviewdb.push(data[0][i]); break;
                     case "Admin": admin.push(data[0][i]); break;
@@ -38,8 +37,7 @@ module.exports = {
             .addField('Support Commands:', support)
             .addField('Review DB Commands:', reviewdb)
             .addField('Fun Commands:', fun)
-            .addField('Admin Commands:', admin)
-            .addField('Internal Commands (you shouldn\'t need to use these):', botcmds);
+            .addField('Admin Commands:', admin);
 
             return message.author.send(exampleEmbed)
                 .then(() => {

@@ -200,7 +200,7 @@ module.exports = {
         let thumbnailImage;
         let artistsEmbed = argArtistName;
         let vocalistsEmbed = [];
-        let epfrom = db.reviewDB.get(artistName[0], `["${songName}"].EP`);
+        let epfrom = db.reviewDB.get(rmxArtist === false ? artistName[0] : rmxArtist, `["${songName}"].EP`);
 
         if (artistName[0] === rmxArtist) {
             artistName[0] = db.reviewDB.get(rmxArtist, `["${songName} [${rmxArtist} Remix]"].Collab`)[0];
@@ -248,7 +248,7 @@ module.exports = {
             rreview = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.review`);
             rscore = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.rate`);
             rsentby = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.sentby`);
-            rstarred = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.starred`);
+            rstarred = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].starred`);
             if (rsentby != false) {
                 usrSentBy = message.guild.members.cache.get(rsentby);              
             }     

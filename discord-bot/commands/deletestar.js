@@ -215,6 +215,7 @@ module.exports = {
             }
         }
 
+        db.user_stats.remove(message.author.id, `${artistArray.join(' & ')} - ${fullSongName}${vocalsArray.length != 0 ? ` (ft. ${vocalsArray.join(' & ')})` : '' }`, 'star_list');
         message.channel.send(`Star removed from ${artistArray.join(' & ')} - ${fullSongName}${vocalsArray.length != 0 ? ` (ft. ${vocalsArray.join(' & ')})` : '' }!`);
         const hofMessage = [`${artistArray.join(' & ')}`, `${fullSongName}${vocalsArray.length != 0 ? ` (ft. ${vocalsArray.join(' & ')})` : '' }`];
 
@@ -269,6 +270,7 @@ module.exports = {
         }
 
         if (star_count >= 3) {
+            console.log(star_count);
             const hofChannel = message.client.channels.cache.get('817516612777279519');
             const hofEmbed = new Discord.MessageEmbed()
             
@@ -317,7 +319,7 @@ module.exports = {
                 }
             }
 
-        } else {
+        } else if (db.hall_of_fame.has(songName)) {
             const hofChannel = message.client.channels.cache.get('817516612777279519');
             hofChannel.messages.fetch(`${db.hall_of_fame.get(songName)}`).then(msg => {
                 msg.delete();

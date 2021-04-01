@@ -27,6 +27,7 @@ module.exports = {
         songArray = songArray.filter(item => item !== 'Image');
         songArray = songArray.filter(item => item !== 'Collab');
         songArray = songArray.filter(item => item !== 'Vocals');
+
         const EPs = {};
         const EPsOnEmbed = [];
         const singleArray = [];
@@ -43,6 +44,7 @@ module.exports = {
                 reviewNum = reviewNum.filter(e => e !== 'Collab');
                 reviewNum = reviewNum.filter(e => e !== 'Image');
                 reviewNum = reviewNum.filter(e => e !== 'Vocals');
+                reviewNum = reviewNum.filter(e => e !== 'EPpos');
 
             reviewNum = reviewNum.length;
             if (songEP != false) {

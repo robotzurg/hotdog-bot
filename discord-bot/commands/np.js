@@ -91,6 +91,7 @@ module.exports = {
                         
                         const rankNumArray = [];
                         let starNum = 0;
+                        let yourStar = '';
 
                             for (let i = 0; i < userArray.length; i++) {
                                 
@@ -103,6 +104,10 @@ module.exports = {
 
                                     if (db.reviewDB.get(artistArray[0], `["${activity.details}"].${userArray[i]}.starred`) === true) {
                                         starNum++;
+                                        console.log(userArray[i]);
+                                        if (userArray[i] === `<@${message.author.id}>`) {
+                                            yourStar = '⭐'; //Added to the end of your rating tab
+                                        }
                                     }
 
                                     rankNumArray.push(parseFloat(rating.slice(0, -3)));
@@ -110,7 +115,7 @@ module.exports = {
                                 }
                             }
 
-                        exampleEmbed.setDescription(`Reviews: \`${userArray.length} reviews\`\nAverage Rating: \`${Math.round(average(rankNumArray) * 10) / 10}\`${yourReview != false ? `${starNum > 0 ? `\nStars: \`${starNum} ⭐\`` : ''}\nYour Rating: \`${yourReview}\`` : ''}`);
+                        exampleEmbed.setDescription(`Reviews: \`${userArray.length} reviews\`\nAverage Rating: \`${Math.round(average(rankNumArray) * 10) / 10}\`${starNum >= 1 ? `\nStars: \`${starNum} ⭐\`` : ''}${yourReview != false ? `\nYour Rating: \`${yourReview}${yourStar}\`` : ''}`);
 
                         if (db.reviewDB.get(artistArray[0], `["${activity.details}"].EP`) != undefined && db.reviewDB.get(artistArray[0], `["${activity.details}"].EP`) != false) {
                             exampleEmbed.setFooter(`from ${db.reviewDB.get(artistArray[0], `["${activity.details}"].EP`)}`, db.reviewDB.get(artistArray[0], `["${db.reviewDB.get(artistArray[0], `["${activity.details}"].EP`)}"].Image`));

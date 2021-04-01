@@ -272,7 +272,7 @@ module.exports = {
                     }
                     rankNumArray.push(parseFloat(rating.slice(0, -3)));
                     if (starred === true) {
-                        userArray[i] = [parseFloat(rating.slice(0, -3)), `:star2: ${userArray[i]} \`${rating}\``];
+                        userArray[i] = [parseFloat(rating.slice(0, -3)) + 1, `:star2: ${userArray[i]} \`${rating}\``];
                     } else {
                         userArray[i] = [parseFloat(rating.slice(0, -3)), `${userArray[i]} \`${rating}\``];
                     }
@@ -290,6 +290,7 @@ module.exports = {
             }
 
             if (userArray != 0) {
+                console.log(userArray);
                 userArray = userArray.sort(function(a, b) {
                     return b[0] - a[0];
                 });
