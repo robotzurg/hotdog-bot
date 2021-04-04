@@ -271,17 +271,19 @@ module.exports = {
                 if (thumbnailImage === undefined || thumbnailImage === false || thumbnailImage === null) {
                     if (db.reviewDB.get(artistArray[0], 'Image') === false || db.reviewDB.get(artistArray[0], 'Image') === undefined) {
                         thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
-                    } else {
-                        thumbnailImage = db.reviewDB.get(artistArray[0], 'Image');
                     }
                 }
             } else {
                 thumbnailImage = db.reviewDB.get(artistArray[0], `["${songName}"].Remixers.["${rmxArtist}"].Image`);
                 if (thumbnailImage === undefined || thumbnailImage === false || thumbnailImage === null) {
-                    if (db.reviewDB.get(rmxArtist, 'Image') === false || db.reviewDB.get(rmxArtist, 'Image') === undefined) {
-                        thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+                    if (db.reviewDB.has(rmxArtist)) {
+                        if (db.reviewDB.get(rmxArtist, 'Image') === false || db.reviewDB.get(rmxArtist, 'Image') === undefined) {
+                            thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
+                        } else {
+                            thumbnailImage = db.reviewDB.get(rmxArtist, 'Image');
+                        }
                     } else {
-                        thumbnailImage = db.reviewDB.get(rmxArtist, 'Image');
+                        thumbnailImage = message.author.avatarURL({ format: "png", dynamic: false });
                     }
                 }
             }

@@ -151,7 +151,7 @@ client.on('message', async message => {
     module.exports.updateGenreGameData = function() {
         if (message.channel.type === 'dm') return;
         const genreIDmsg = db.genreID.get('genreID');
-        const channeltoSearch = message.guild.channels.cache.find(ch => ch.name === 'listening-parties');
+        const channeltoSearch = message.guild.channels.cache.get('731919003219656795');
         (channeltoSearch.messages.fetch(genreIDmsg)).then((msg) => {
 
             const statusList = ['**Genre Roulette Game Status**'];
@@ -171,7 +171,7 @@ client.on('message', async message => {
         const epID = db.friID.get('epID');
         const lpID = db.friID.get('lpID');
         const compID = db.friID.get('compID');
-        const channeltoSearch = message.guild.channels.cache.find(ch => ch.name === 'friday-playlist');
+        const channeltoSearch = message.guild.channels.cache.get('786071855454224404');
 
         const epList = [];
         const lpList = [];
