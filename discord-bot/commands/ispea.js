@@ -6,6 +6,7 @@ module.exports = {
     type: 'Fun',
     description: 'Find out if someone is pea!',
     args: true,
+    arg_num: 1,
     usage: '<user>',
 	execute(message) {
         if (!message.mentions.members.first()) {

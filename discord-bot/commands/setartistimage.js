@@ -7,6 +7,7 @@ module.exports = {
 	aliases: ['setartistimage', 'setai'],
 	description: 'Set an image for an artist, for the database.',
 	args: true,
+	arg_num: 2,
 	usage: '<artist> | [op] <url>',
 	execute(message, args) {
 

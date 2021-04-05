@@ -6,7 +6,8 @@ module.exports = {
     type: 'Admin',
     description: 'Set the status of a current player in the Genre Roulette game. [Admin Only]',
     args: true,
-    usage: '<key> <status>',
+    arg_num: 2,
+    usage: '<key> | <status>',
 	execute(message, args) {
         if (message.member.hasPermission('ADMINISTRATOR') || message.author.id === '122568101995872256') {
             const command = message.client.commands.get(`setstatus`);

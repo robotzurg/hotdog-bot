@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const db = require("../db.js");
+const { arrayRemove } = require('../func.js');
 // const DiscordPages = require("discord-pages");
 
 module.exports = {
@@ -9,6 +10,7 @@ module.exports = {
     aliases: ['getartist', 'geta'],
     description: 'Get all the songs from an artist and display them in an embed message.',
     args: true,
+    arg_num: 1,
     usage: '<artist>',
 	execute(message, args) {
 
@@ -27,12 +29,14 @@ module.exports = {
         songArray = songArray.filter(item => item !== 'Image');
         songArray = songArray.filter(item => item !== 'Collab');
         songArray = songArray.filter(item => item !== 'Vocals');
-
-        const EPs = {};
-        const EPsOnEmbed = [];
+        let epArray = songArray.filter(item => item.includes('EP') || item.includes('/') || item.includes('LP'));
+        songArray = songArray.filter(item => (!item.includes('EP')) && (!item.includes('/')) && (!item.includes('LP')));
+        let reviewNum;
         const singleArray = [];
         const remixArray = [];
-        let reviewNum;
+        /*const EPsOnEmbed = [];
+        
+        
 
         for (let i = 0; i < songArray.length; i++) { //EP preparation
             const songEP = db.reviewDB.get(args[0], `["${songArray[i]}"].EP`);
@@ -51,10 +55,10 @@ module.exports = {
                 if (EPs[`${songEP}`] === undefined) {
                     EPs[`${songEP}`] = { [songArray[i]]: reviewNum } ;
                 } else {
-                EPs[`${songEP}`][`${songArray[i]}`] = reviewNum;
+                    EPs[`${songEP}`][`${songArray[i]}`] = reviewNum;
                 }
             }
-        }
+        }*/
 
         let rankNumArray = [];
         let starNum = 0;
@@ -80,14 +84,12 @@ module.exports = {
                 reviewNum = reviewNum.filter(e => e !== 'EPpos');
                 
                 for (let ii = 0; ii < reviewNum.length; ii++) {
-                    if (!songArray[i].includes('EP') && !songArray[i].includes('LP') && !songArray[i].includes('/') && !songArray[i].includes('Remixes')) {
-                        let rating;
-                        rating = db.reviewDB.get(args[0], `["${songArray[i]}"].["${reviewNum[ii]}"].rate`);
-                        rankNumArray.push(parseFloat(rating.slice(0, -3)));
-                        if (db.reviewDB.get(args[0], `["${songArray[i]}"].["${reviewNum[ii]}"].starred`) === true) { 
-                            starNum++; 
-                            fullStarNum++;
-                        }
+                    let rating;
+                    rating = db.reviewDB.get(args[0], `["${songArray[i]}"].["${reviewNum[ii]}"].rate`);
+                    rankNumArray.push(parseFloat(rating.slice(0, -3)));
+                    if (db.reviewDB.get(args[0], `["${songArray[i]}"].["${reviewNum[ii]}"].starred`) === true) { 
+                        starNum++; 
+                        fullStarNum++;
                     }
                 }
 
@@ -118,14 +120,15 @@ module.exports = {
                     if (!songArray[i].includes('Remix') && !songArray[i].includes('EP') && !songArray[i].includes('LP') && !songArray[i].includes('/')) {
                         singleArray.push(`-${songArray[i]}${songEP != false && songEP != undefined ? ` (${songEP})` : ''} ${songDetails}`);
                         singleArray[singleArray.length - 1] = singleArray[singleArray.length - 1].replace('*', '\\*');
+
                     } else if (!songArray[i].includes('EP') && !songArray[i].includes('LP') && !songArray[i].includes('/')) {
                         remixArray.push(`-${songArray[i]}${songEP != false && songEP != undefined ? ` (${songEP})` : ''} ${songDetails}`);
                         remixArray[remixArray.length - 1] = remixArray[remixArray.length - 1].replace('*', '\\*');
                     }
-                    
+                
                 }
             }
-            
+
             if (singleArray.length != 0) {
                 exampleEmbed.addField('Singles:', singleArray);
             }
@@ -133,7 +136,7 @@ module.exports = {
                 exampleEmbed.addField('Remixes:', remixArray);
             }
             
-            for (let i = 0; i < songArray.length; i++) {
+            /*for (let i = 0; i < songArray.length; i++) {
                 const songEP = db.reviewDB.get(args[0], `["${songArray[i]}"].EP`);
 
                 if (songEP != false && songEP != undefined && !EPsOnEmbed.includes(songEP)) { //If it's an EP and the field doesn't already exist
@@ -146,7 +149,7 @@ module.exports = {
                     exampleEmbed.addField(`${songEP}: `, songsinEP);
                     EPsOnEmbed.push(songEP);
                 }
-            }
+            }*/
 
             if (singleArray.length != 0 || remixArray.length != 0 || EPs.length != 0) {
                 if (fullStarNum != 0) {

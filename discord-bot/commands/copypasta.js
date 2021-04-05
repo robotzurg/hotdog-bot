@@ -5,6 +5,7 @@ module.exports = {
 	type: 'Fun',
 	description: 'Post one of the servers... many... copypastas.\nOptions: bold, egg',
     args: true,
+    arg_num: 1,
     usage: '<copypasta>',
 	execute(message, args) {
         if (args[0].toLowerCase() === 'bold') {

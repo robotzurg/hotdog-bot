@@ -10,6 +10,7 @@ module.exports = {
     aliases: ['naddreviewep', 'nreviewep', 'naddep'],
     description: '(Main Method) Create an EP/LP rating embed message! Use !end to end the chain. THIS DOES NOT ADD TO THE REVIEW DB.',
     args: true,
+    arg_num: 4,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {
 

@@ -8,6 +8,7 @@ module.exports = {
     aliases: ['editreview', 'editr'],
     description: 'Edit a pre-existing review of your own in the review DB.',
     args: true,
+    arg_num: 5,
     usage: '<artist> | <song_name> | <rating> | <rate_desc> | [op] <user_who_sent_song>',
 	execute(message, args) {
         

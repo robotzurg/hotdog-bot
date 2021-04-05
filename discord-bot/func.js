@@ -35,4 +35,11 @@ module.exports = {
 
         return array;
     },
+
+    arrayRemove: function(arr, value) { 
+    
+        return arr.filter(function(ele) { 
+            return ele != value; 
+        });
+    },
 };

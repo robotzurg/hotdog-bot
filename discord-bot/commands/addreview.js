@@ -12,6 +12,7 @@ module.exports = {
     moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/794766841444433941',
     description: 'Create a song review embed message!',
     args: true,
+    arg_num: 6,
     usage: '<artist> | <song_name> | <rating> | <rate_desc> |  [op] <link_to_song_picture> | [op] <user_that_sent_song>',
 	execute(message, args) {
 

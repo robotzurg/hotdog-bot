@@ -6,6 +6,7 @@ module.exports = {
 	type: 'Admin',
     description: 'Deletes a song from the database. [ADMIN/BOT OWNER ONLY]',
     args: true,
+    arg_num: 2,
     usage: '<artist> | <song>',
 	execute(message, args) {
         //Auto-adjustment to caps for each word

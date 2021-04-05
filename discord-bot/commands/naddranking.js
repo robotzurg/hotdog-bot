@@ -10,6 +10,7 @@ module.exports = {
     aliases: ['naddranking', 'nrank', `nrankep`, `naddrankingep`],
     description: 'Create a ranking review of an EP/LP/Compilation/Remix Package or really anything. THIS DOES NOT ADD TO THE REVIEW DB.',
     args: true,
+    arg_num: 4,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {
 

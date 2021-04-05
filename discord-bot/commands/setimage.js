@@ -8,6 +8,7 @@ module.exports = {
 	aliases: ['setimage', 'setI', 'setart', 'addimage'],
 	description: 'Set an image for a song/EP/LP! You can either do a link, or just attach an attachment.',
 	args: true,
+    arg_num: 3,
 	usage: '<artist> | <song/EP/LP> | [op] <url>',
 	execute(message, args) {
         

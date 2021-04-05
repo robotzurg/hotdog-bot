@@ -5,6 +5,7 @@ module.exports = {
     type: 'Support',
     description: 'Request a feature to be added to the bot!',
     args: true,
+    arg_num: 2,
     usage: `<feature> | <description_of_feature>`,
 	execute(message, args) {
         const data = {

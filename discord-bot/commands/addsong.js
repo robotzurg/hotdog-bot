@@ -6,6 +6,7 @@ module.exports = {
     type: 'Admin',
     description: 'Add a song to Friday Listening! [ADMIN ONLY]',
     args: true,
+    arg_num: 3,
     usage: '<artist> | <song> | <[op] friday>',
 	execute(message, args) {
         if (message.member.hasPermission('ADMINISTRATOR')) {

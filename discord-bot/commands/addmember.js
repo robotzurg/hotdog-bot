@@ -6,6 +6,7 @@ module.exports = {
     type: 'Admin',
     description: 'Adds a member to the genre roulette game! [Admin Only]',
     args: true,
+    arg_num: 1,
     usage: '<user>',
 	execute(message, args) {
         if (message.member.hasPermission('ADMINISTRATOR')) {

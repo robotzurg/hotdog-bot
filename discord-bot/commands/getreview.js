@@ -8,6 +8,7 @@ module.exports = {
     aliases: ['getreview', 'getr'],
     description: 'Get a review from a user on the server that they have written! Putting nothing for <user> will replace <user> with yourself.\n\nYou can also put nothing for the artist name, which will search the database for a song of that name.',
     args: true,
+    arg_num: 3,
     usage: '<artist> [op] | <song> | [op] <user>',
 	execute(message, args) {
         let argArtistName;
@@ -227,7 +228,7 @@ module.exports = {
 
         if (rmxArtist === false) {
             rname = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.name`);
-            if (rname === undefined) return message.channel.send('No review found. *Note that for EP reviews, you need to use `!getReviewEP`.*');
+            if (rname === undefined) return message.channel.send(`No review found for \`${argArtistName} - ${argSongName}\`. *Note that for EP reviews, you need to use \`!getReviewEP\`.*`);
             rreview = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.review`);
             rscore = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.rate`);
             rsentby = db.reviewDB.get(artistName[0], `["${songName}"].${taggedUser}.sentby`);
@@ -244,7 +245,7 @@ module.exports = {
         } else {
 
             rname = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].["${taggedUser}"].name`);
-            if (rname === undefined) return message.channel.send('No review found. *Note that for EP reviews, you need to use `!getReviewEP`.*');
+            if (rname === undefined) return message.channel.send(`No review found for \`${argArtistName} - ${argSongName}\`. *Note that for EP reviews, you need to use \`!getReviewEP\``);
             rreview = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.review`);
             rscore = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.rate`);
             rsentby = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"].${taggedUser}.sentby`);

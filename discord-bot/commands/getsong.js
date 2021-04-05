@@ -8,6 +8,7 @@ module.exports = {
     moreinfo: 'https://discord.com/channels/680864893552951306/794751896823922708/795552783960506370',
     description: 'Get all the data about a song and displays it in an embed message.\n\nYou can also put nothing for the artist argument, which will make the bot search the database for the song in question and display it.',
     args: true,
+    arg_num: 2,
     usage: '<artist> [op] | <song>',
 	execute(message, args) {
 

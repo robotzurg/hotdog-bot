@@ -11,6 +11,7 @@ module.exports = {
     aliases: ['addreviewep', 'reviewep', 're', 'rep', 'epreview'],
     description: 'Create an EP/LP review embed message! Use !end to end the chain.',
     args: true,
+    arg_num: 4,
     usage: '<artist> | <ep/lp_name> | [op] <image> | [op] <user_that_sent_ep/lp>',
 	execute(message, args) {
 
@@ -25,6 +26,7 @@ module.exports = {
 
         let ep_name = args[1];
         let songs_in_ep = [];
+        let songs_in_rep = [];
 
         const command = message.client.commands.get('addreviewep');
         let is_mailbox = mailboxes.includes(message.channel.name);
@@ -344,10 +346,21 @@ module.exports = {
                 songName = songName.join(' ');
 
                 if (rmxArtist === false) {
-                    songs_in_ep.push(songName);
+                    songs_in_rep.push(songName);
                 } else {
-                    songs_in_ep.push(`${songName} [${rmxArtist} Remix]`);
+                    songs_in_rep.push(`${songName} [${rmxArtist} Remix]`);
                 }
+
+                if (db.reviewDB.has(artistArray[0])) {
+                    if (db.reviewDB.get(artistArray[0], `["${args[1]}"].Songs`) != undefined) {
+                        if (songs_in_rep.length > db.reviewDB.get(artistArray[0], `["${args[1]}"].Songs`).length) {
+                            songs_in_ep = songs_in_rep;
+                        } else {
+                            songs_in_ep = db.reviewDB.get(artistArray[0], `["${args[1]}"].Songs`);
+                        }
+                    }
+                }
+
                 m.delete();
             }
             
@@ -473,6 +486,7 @@ module.exports = {
                         [ep_name]: OGartistArray.includes(artistArray[i]) ? {
                             Image: thumbnailImage,
                             Songs: songs_in_ep,
+                            Collab: OGartistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
                             [`<@${message.author.id}>`]: {
                                 msg_id: message_id,
                                 name: message.member.displayName,
@@ -512,6 +526,7 @@ module.exports = {
                             [ep_name]: OGartistArray.includes(artistArray[i]) ? {
                                 Image: thumbnailImage,
                                 Songs: songs_in_ep,
+                                Collab: OGartistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
                                 [`<@${message.author.id}>`]: {
                                     msg_id: message_id,
                                     name: message.member.displayName,
@@ -560,6 +575,7 @@ module.exports = {
                             [ep_name]: !OGartistArray.includes(artistArray[i]) ? {
                                 Image: thumbnailImage,
                                 Songs: songs_in_ep,
+                                Collab: OGartistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
                                 [`<@${message.author.id}>`]: {
                                     msg_id: message_id,
                                     name: message.member.displayName,
@@ -636,6 +652,7 @@ module.exports = {
                         [ep_name]: OGartistArray.includes(artistArray[i]) ? {
                             Image: thumbnailImage,
                             Songs: songs_in_ep,
+                            Collab: OGartistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
                             [`<@${message.author.id}>`]: {
                                 msg_id: message_id,
                                 name: message.member.displayName,
@@ -693,6 +710,7 @@ module.exports = {
                         [ep_name]: OGartistArray.includes(artistArray[i]) ? {
                             Image: thumbnailImage,
                             Songs: songs_in_ep,
+                            Collab: OGartistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
                             [`<@${message.author.id}>`]: {
                                 msg_id: message_id,
                                 name: message.member.displayName,
@@ -739,6 +757,7 @@ module.exports = {
                             [ep_name]: !OGartistArray.includes(artistArray[i]) ? {
                                 Image: thumbnailImage,
                                 Songs: songs_in_ep,
+                                Collab: OGartistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
                                 [`<@${message.author.id}>`]: {
                                     msg_id: message_id,
                                     name: message.member.displayName,
@@ -784,6 +803,7 @@ module.exports = {
                             [ep_name]: !OGartistArray.includes(artistArray[i]) ? {
                                 Image: thumbnailImage,
                                 Songs: songs_in_ep,
+                                Collab: OGartistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
                                 [`<@${message.author.id}>`]: {
                                     msg_id: message_id,
                                     name: message.member.displayName,
@@ -839,6 +859,7 @@ module.exports = {
                             [ep_name]: !OGartistArray.includes(artistArray[i]) ? {
                                 Image: thumbnailImage,
                                 Songs: songs_in_ep,
+                                Collab: OGartistArray.filter(word => !featArtists.includes(word) && artistArray[i] != word),
                                 [`<@${message.author.id}>`]: {
                                     msg_id: message_id,
                                     name: message.member.displayName,

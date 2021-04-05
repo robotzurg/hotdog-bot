@@ -8,6 +8,7 @@ module.exports = {
     aliases: ['star', 'as', 'addstar', 'adds'],
     description: 'Give an existing rating of yours a star!',
     args: true,
+    arg_num: 2,
     usage: '<artist> | <song>',
 	execute(message, args) {
 

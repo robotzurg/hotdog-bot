@@ -5,6 +5,7 @@ module.exports = {
     type: 'Support',
     description: 'Report a bug in the bot.',
     args: true,
+    arg_num: 2,
     usage: `<bug> | <description_of_bug>`,
 	execute(message, args) {
         const data = {

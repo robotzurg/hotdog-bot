@@ -5,8 +5,8 @@ module.exports = {
     name: 'help',
     type: 'Support',
 	description: 'List all of my commands or info about a specific command.',
+    arg_num: 1,
 	usage: '[command name]',
-	cooldown: 1,
 	execute(message, args) {
         const data = [];
         const support = [];
@@ -66,6 +66,7 @@ module.exports = {
             .setColor(`${message.member.displayHexColor}`)
             .setTitle(`${prefix}${command.name}`);
             specCommandEmbed.setDescription(`${command.description}`)
+            .addField('Aliases:', `\`${command.aliases.join(', ')}\``)
             .addField('Example Usage:', `\`${prefix}${command.name} ${command.usage}\``);
             if (command.type === 'Review DB') {
                 specCommandEmbed.addField(`For more info:`, command.moreinfo);

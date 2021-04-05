@@ -8,6 +8,7 @@ module.exports = {
     aliases: ['dstar', 'ds', 'delestestar'],
     description: 'Remove a star from a review you have a star in!',
     args: true,
+    arg_num: 2,
     usage: '<artist> | <song>',
 	execute(message, args) {
 

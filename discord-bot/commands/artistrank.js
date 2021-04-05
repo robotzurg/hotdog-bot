@@ -8,6 +8,7 @@ module.exports = {
     aliases: ['artistrank', 'artistranking'],
     description: 'Look at a ranking of all the artists songs, based on the average ratings in the server!',
     args: true,
+    arg_num: 1,
     usage: '<artist>',
 	execute(message, args) {
 

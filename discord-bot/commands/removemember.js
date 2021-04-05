@@ -5,6 +5,7 @@ module.exports = {
     type: 'Admin',
     description: 'Remove a member from the genre roulette game. [Admin Only]',
     args: true,
+    arg_num: 1,
     usage: '<user>',
 	execute(message, args) {
         if (message.member.hasPermission('ADMINISTRATOR')) {

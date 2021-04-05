@@ -6,6 +6,7 @@ module.exports = {
 	type: 'Admin',
     description: 'Deletes an artist from the database. [ADMIN/BOT OWNER ONLY]',
     args: true,
+    arg_num: 1,
     usage: '<artist>',
 	execute(message, args) {
         

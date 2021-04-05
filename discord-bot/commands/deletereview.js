@@ -7,6 +7,7 @@ module.exports = {
     aliases: ['deletereview', 'deleter', 'delreview', 'delr'],
     description: 'Edit a pre-existing review of your own in the review DB.',
     args: true,
+    arg_num: 2,
     usage: '<artist> | <song_name>',
     execute(message, args) {
         //Auto-adjustment to caps for each word

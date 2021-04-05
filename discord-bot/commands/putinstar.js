@@ -6,6 +6,7 @@ module.exports = {
 	type: 'Review DB',
 	description: 'Put star into list manually',
     args: true,
+    arg_num: 2,
     usage: '<user_id> | <song>',
 	execute(message, args) {
         if (message.author.id === '122568101995872256') {

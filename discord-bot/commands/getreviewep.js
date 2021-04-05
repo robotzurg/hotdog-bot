@@ -7,6 +7,7 @@ module.exports = {
     aliases: ['getreviewep', 'getrep', 'getreviewlp', 'getrlp'],
     description: 'Get an EP review from a user on the server that they have written! Putting nothing for <user> will replace <user> with yourself.',
     args: true,
+    arg_num: 3,
     usage: '<artist> | <song/ep/lp> | [op] <user>',
 	execute(message, args) {
 

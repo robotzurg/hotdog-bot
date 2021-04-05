@@ -5,6 +5,7 @@ const { prefix, token } = require('./config.json');
 const { ogreList, memberIDList } = require('./arrays.json');
 const db = require("./db.js");
 const cron = require('node-cron');
+const { msg_delete_timeout } = require('./func');
 
 // Set up random number function
 function randomNumber(min, max) {  
@@ -336,7 +337,6 @@ client.on('message', async message => {
     module.exports.updateGenreGameData();
     module.exports.updateFridayListData();
     
-
 	const command = client.commands.get(commandName) ||	client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 	if (!command) return;
 
@@ -348,6 +348,11 @@ client.on('message', async message => {
 		}
 
 		return message.channel.send(reply);	
+    } else if (command.arg_num != undefined) {
+        if (args.length > command.arg_num) {
+            msg_delete_timeout(message, 10000);
+            return msg_delete_timeout(message, 10000, `Too many arguments! See \`!help ${command.name}\` for more assistance.`);
+        } 
     }
 
     if (!cooldowns.has(command.name)) {

@@ -8,6 +8,7 @@ module.exports = {
     aliases: ['getep', 'getlp', 'gete'],
     description: 'Get all the songs from a specific EP and display them in an embed message.',
     args: true,
+    arg_num: 2,
     usage: '<artist> | <ep>',
 	execute(message, args) {
 
@@ -99,9 +100,13 @@ module.exports = {
             let reviewNum = Object.keys(db.reviewDB.get(artistName[0], `["${argEPName}"]`));
             reviewNum = reviewNum.filter(e => e !== 'Image');
             reviewNum = reviewNum.filter(e => e !== 'Songs');
+            reviewNum = reviewNum.filter(e => e !== 'Collab');
 
             for (let i = 0; i < reviewNum.length; i++) {
+                console.log(argEPName);
+                console.log(reviewNum[i]);
                 rating = db.reviewDB.get(artistName[0], `["${argEPName}"].["${reviewNum[i]}"].EPRating`);
+                console.log(rating);
                 if (rating != false) {
                    EPrankArray.push(parseFloat(rating.slice(0, -3)));
                 }
@@ -121,7 +126,9 @@ module.exports = {
                 let songObj;
 
                 if (rmxArtist === false) {
+                    console.log(songArray[i]);
                     songObj = db.reviewDB.get(artistName[0], `["${songArray[i]}"]`);
+
                 } else {
                     songObj = db.reviewDB.get(artistName[0], `["${songName}"].Remixers.["${rmxArtist}"]`);
                 }
