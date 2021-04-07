@@ -23,19 +23,7 @@ module.exports = {
             });
         }
     },
-
-    filter_users: function(array) {
-        array = array.filter(e => e !== 'Remixers');
-        array = array.filter(e => e !== 'EP');
-        array = array.filter(e => e !== 'Collab');
-        array = array.filter(e => e !== 'Image');
-        array = array.filter(e => e !== 'Vocals');
-        array = array.filter(e => e !== 'Songs');
-        array = array.filter(e => e !== 'EPpos');
-
-        return array;
-    },
-
+    
     arrayRemove: function(arr, value) { 
     
         return arr.filter(function(ele) { 

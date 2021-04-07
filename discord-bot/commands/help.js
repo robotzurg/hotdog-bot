@@ -11,7 +11,6 @@ module.exports = {
         const data = [];
         const support = [];
         const admin = [];
-        const reviewdb = [];
         const fun = [];
         const { commands } = message.client;
 
@@ -24,7 +23,6 @@ module.exports = {
                 switch (cmdtype) {
                     case "Bot": break;
                     case 'Support': support.push(data[0][i]); break;
-                    case 'Review DB': reviewdb.push(data[0][i]); break;
                     case "Admin": admin.push(data[0][i]); break;
                     case 'Fun': fun.push(data[0][i]); break;
                 }
@@ -33,9 +31,8 @@ module.exports = {
             const exampleEmbed = new Discord.MessageEmbed()
             .setColor(`${message.member.displayHexColor}`)
             .setTitle(`Hotdog Water Bot Commmands`)
-            .setFooter('You can send !help <command_name> to get info on a specific command.')
+            .setFooter('You can send -help <command_name> to get info on a specific command.')
             .addField('Support Commands:', support)
-            .addField('Review DB Commands:', reviewdb)
             .addField('Fun Commands:', fun)
             .addField('Admin Commands:', admin);
 
@@ -68,9 +65,6 @@ module.exports = {
             specCommandEmbed.setDescription(`${command.description}`)
             .addField('Aliases:', `\`${command.aliases.join(', ')}\``)
             .addField('Example Usage:', `\`${prefix}${command.name} ${command.usage}\``);
-            if (command.type === 'Review DB') {
-                specCommandEmbed.addField(`For more info:`, command.moreinfo);
-            }
             
 
         message.channel.send(specCommandEmbed);
