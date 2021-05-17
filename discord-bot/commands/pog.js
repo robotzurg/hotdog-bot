@@ -1,8 +1,8 @@
 module.exports = {
     name: 'pog',
-    type: 'Fun',
 	description: 'Make the bot pog randomly!',
-	execute(message) {
+    options: [],
+	execute(interaction) {
         const pogchoices = [
             '<:pogcat:731386480563454002>',
             '<:monkeypog:705919224245387275>',
@@ -11,12 +11,11 @@ module.exports = {
             '<:pogclose:796973676934594590>',
             '<:apogg:802041048700157953>',
             '<:MoyaiPog:809278354871681065>',
-            '<:Pogchimp:809278346474160150>',
             '<:PogChamp:809279078829522984>',
         ];
 
         const pick = pogchoices[Math.floor(Math.random() * pogchoices.length)];
-        message.delete();
-		message.channel.send(pick);
+        interaction.deleteReply();
+		interaction.channel.send(pick);
 	},
 };

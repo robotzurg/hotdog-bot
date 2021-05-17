@@ -6,6 +6,7 @@ const { ogreList, memberIDList } = require('./arrays.json');
 const db = require("./db.js");
 const cron = require('node-cron');
 const { msg_delete_timeout } = require('./func');
+// const wait = require('util').promisify(setTimeout);
 
 // Set up random number function
 function randomNumber(min, max) {  
@@ -13,7 +14,11 @@ function randomNumber(min, max) {
 }  
 
 // create a new Discord client and give it some variables
-const client = new Discord.Client();
+const { Client, Intents } = require('discord.js');
+const myIntents = new Intents();
+myIntents.add('GUILD_PRESENCES', 'GUILD_MEMBERS');
+
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const cooldowns = new Discord.Collection();
@@ -29,7 +34,17 @@ for (const file of commandFiles) {
 
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
-client.once('ready', () => {
+client.once('ready', async () => {
+    const data = [];
+    client.commands.forEach(function(value, key) {
+        data.push({
+            name: key,
+            description: value.description,
+            options: value.options,
+            defaultPermission: !value.admin,
+        });
+    });
+    await client.guilds.cache.get('680864893552951306')?.commands.set(data);
     console.log('Ready!');
     const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
     console.log(date);
@@ -56,13 +71,38 @@ cron.schedule('00 9 * * *', () => {
     scheduled: true,
 });
 
+// Listen for interactions (INTERACTION COMMAND HANDLER)
+client.on('interaction', async interaction => {
+	if (!interaction.isCommand()) return;
+
+    const command = client.commands.get(interaction.commandName);
+    await interaction.defer();
+
+    console.log(interaction.commandID);
+
+    try {
+        await command.execute(interaction, client);
+    } catch (error) {
+        await console.error(error);
+        await interaction.reply(`There was an error trying to execute that command!`);
+    }
+});
 
 // Listen for messages
 client.on('message', async message => {
-
+    
     if (message.content.includes('‘')) {
         message.content = message.content.replace('‘', '\'');
     }
+
+        if (!client.application?.owner) await client.application?.fetch();
+
+        if (message.content.toLowerCase() === '!deploy' && message.author.id === client.application?.owner.id) {
+            const data = {};
+    
+            const command = await client.application?.commands.create(data);
+            console.log(command);
+        }
 
     if (message.channel.name === 'server-playlist-voting' && message.content.includes('-')) {
         message.react('✅');

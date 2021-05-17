@@ -2,20 +2,34 @@ const Trello = require('trello-node-api')('0b42eacc9105869df41592c003c09106', '2
 
 module.exports = {
     name: 'suggest',
-    type: 'Support',
-    description: 'Request a feature to be added to the bot!',
-    args: true,
-    arg_num: 2,
-    usage: `<feature> | <description_of_feature>`,
-	execute(message, args) {
+    description: 'Suggest a feature for the bot!',
+    options: [
+        {
+            name: 'suggestion',
+            type: 'STRING',
+            description: 'One sentence description of the suggestion',
+            required: true,
+        }, {
+            name: 'description',
+            type: 'STRING',
+            description: 'Any further detail you may want to say about the suggestion.',
+        },
+    ],
+	execute(interaction) {
+        const sug_name = interaction.options[0].value;
+        let sug_desc = '';
+        if (interaction.options.length > 1) {
+            sug_desc = interaction.options[1].value;
+        }
+        
         const data = {
-            name: (message.author.id != '122568101995872256' ? `${message.member.displayName}: ${args[0]}` : `${args[0]}`),
-            desc: args[1],
+            name: (interaction.user.id != '122568101995872256' ? `${interaction.member.displayName}: ${sug_name}` : `${sug_name}`),
+            desc: sug_desc,
             idList: '5fdd279b8c0f807ba3822448', //REQUIRED
             idLabels: ['5fdda073f579d381c8503ada'],
         };
         Trello.card.create(data).then(function() {
-            message.channel.send('Request submitted.');
+            interaction.editReply('Request submitted.');
         }).catch(function(error) {
             console.log('error', error);
         });     
