@@ -110,15 +110,6 @@ client.on('message', async message => {
         message.react('🏀');
     }
 
-        //#reviews Filter
-    if (message.channel.name === 'reviews') {
-        if (message.content.includes('(') || message.content.includes('!') || message.author.bot) {
-            // Leave Empty
-        } else {
-            message.delete();
-        }
-    }
-
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     let args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -334,6 +325,8 @@ client.on('message', async message => {
     }
 
     //Update the databases whenever a command is used, just to make sure we're good at most times
+    module.exports.updateGenreGameData();
+    module.exports.updateFridayListData();
     module.exports.updateGenreGameData();
     module.exports.updateFridayListData();
     
