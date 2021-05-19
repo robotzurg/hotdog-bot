@@ -4,7 +4,7 @@ module.exports = {
 	name: 'clearsongs',
     description: 'Clear all Friday Listening Songs from the playlist. [ADMIN ONLY]',
 	options: [],
-	admin: true,
+	admin: false,
 	execute(interaction) {
 		db.friList.clear();
 		interaction.editReply('Friday Playlist cleared.');

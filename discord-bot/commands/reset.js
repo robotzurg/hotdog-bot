@@ -4,6 +4,7 @@ const { genreList } = require('../arrays.json');
 module.exports = {
 	name: 'reset',
     description: 'Reset the game to base level with all current players. [ADMIN ONLY]',
+admin: true,
 	execute(interaction) {
 		
 			db.genreRoulette.forEach((prop, key) => {

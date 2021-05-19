@@ -281,7 +281,6 @@ client.on('message', async message => {
 
     // Friday Music Listening Stuff
     if (message.content.startsWith(`${prefix}fridaylist`)) {
-        if (message.member.hasPermission('ADMINISTRATOR')) {
             const introList = [];
             const singleList = [];
             const epList = [];
@@ -361,7 +360,6 @@ client.on('message', async message => {
             });
 
         message.delete();
-       } else { return message.reply('You don\'t have the perms to use this command!'); }
     }
 
     //Update the databases whenever a command is used, just to make sure we're good at most times

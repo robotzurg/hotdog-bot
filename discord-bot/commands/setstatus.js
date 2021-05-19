@@ -16,7 +16,7 @@ module.exports = {
             required: true,
         },
     ],
-    admin: true,
+    admin: false,
 	execute(interaction) {
         const args = [];
         args[0] = interaction.options[0].value;
