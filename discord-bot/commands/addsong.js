@@ -30,7 +30,7 @@ module.exports = {
         };
 
         if (interaction.options.length === 3) {
-            songObj.friday = true;
+            songObj.friday = interaction.options[2].value;
         }
 
 
@@ -38,6 +38,7 @@ module.exports = {
 
         db.friList.set(`${keyNum}`, songObj);
 
-        interaction.editReply(`Added ${db.friList.get(`${db.friList.count}`, `artist`)} - ${db.friList.get(`${db.friList.count}`, `song`)} to the Music Listening Playlist!`);
+        //interaction.editReply(`Added ${db.friList.get(`${db.friList.count}`, `artist`)} - ${db.friList.get(`${db.friList.count}`, `song`)} to the Music Listening Playlist!`);
+        interaction.deleteReply();
 	},
 };

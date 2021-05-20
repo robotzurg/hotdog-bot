@@ -80,8 +80,113 @@ client.on('interaction', async interaction => {
 
     console.log(interaction.commandID);
 
+    
+    // Genre Roulette GameStatus Stuff
+
+    async function updateGenreGameData() {
+        if (interaction.channel.type === 'dm') return;
+        const genreIDmsg = db.genreID.get('genreID');
+        const channeltoSearch = interaction.guild.channels.cache.get('731919003219656795');
+        (channeltoSearch.messages.fetch(genreIDmsg)).then((msg) => {
+
+            const statusList = ['**Genre Roulette Game Status**'];
+
+            db.genreRoulette.forEach((prop, key) => {
+                const statusString = `${prop.status === 'alive' ? ':white_check_mark:' : ':x:'} **${key}** *(${prop.genre})*`;
+                statusList.push(statusString);
+            });
+
+            msg.edit(statusList);
+        });
+    }
+
+    async function updateFridayListData() {
+        if (interaction.channel.type === 'dm') return;
+        const singleID = db.friID.get('singleID');
+        const epID = db.friID.get('epID');
+        const lpID = db.friID.get('lpID');
+        const compID = db.friID.get('compID');
+        const channeltoSearch = interaction.guild.channels.cache.get('786071855454224404');
+
+        const epList = [];
+        const lpList = [];
+        const compList = [];
+        const singleList = [];
+
+        db.friList.forEach(async (prop) => {
+            if (prop.friday === false) {
+                let artistName = prop.artist.replace('*', '\\*');
+                let songName = prop.song.replace('*', '\\*');
+                const songString = `**--** ${artistName} - ${songName}`;
+
+                if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
+                    singleList.push(songString);
+                } else if (prop.song.includes('EP')) {
+                    epList.push(songString);
+                } else if (prop.song.includes('LP')) {
+                    lpList.push(songString);
+                } else if (prop.song.toLowerCase().includes('comp')) {
+                    compList.push(songString.substring(0, songString.length - 5));
+                }
+            } else if (prop.friday === true) {
+                let artistName = prop.artist.replace('*', '\\*');
+                let songName = prop.song.replace('*', '\\*');
+                const songString = `**--** :regional_indicator_f: **${artistName} - ${songName}**`;
+
+                if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
+                    singleList.unshift(songString);
+                } else if (prop.song.includes('EP')) {
+                    epList.unshift(songString);
+                } else if (prop.song.includes('LP')) {
+                    lpList.unshift(songString);
+                } else if (prop.song.toLowerCase().includes('comp')) {
+                    compList.push(songString.substring(0, songString.length - 6) + '**');
+                }
+            }
+        });
+
+        compList.join('\n');
+        compList.unshift('**Compilations**');
+        compList.unshift(' ');
+        compList.push('----------------------------------------------------------------------------------------------------------------');
+
+        lpList.join('\n');
+        lpList.unshift('**LPs**');
+        lpList.unshift(' ');
+        lpList.push('----------------------------------------------------------------------------------------------------------------');
+
+        epList.join('\n');
+        epList.unshift('**EPs**');
+        epList.unshift(' ');
+        epList.push('----------------------------------------------------------------------------------------------------------------');
+
+        singleList.join('\n');
+        singleList.unshift('**Singles**');
+        singleList.unshift(' ');
+        singleList.push('----------------------------------------------------------------------------------------------------------------');
+
+        (channeltoSearch.messages.fetch(singleID)).then((msg) => {
+            msg.edit(singleList);
+        });
+
+        (channeltoSearch.messages.fetch(epID)).then((msg) => {
+            msg.edit(epList);
+        });
+
+        (channeltoSearch.messages.fetch(lpID)).then((msg) => {
+            msg.edit(lpList);
+        });
+
+        (channeltoSearch.messages.fetch(compID)).then((msg) => {
+            msg.edit(compList);
+        });
+    }
+
+
     try {
         await command.execute(interaction, client);
+        updateGenreGameData();
+        updateFridayListData();
     } catch (error) {
         await console.error(error);
         await interaction.reply(`There was an error trying to execute that command!`);
@@ -161,9 +266,7 @@ client.on('message', async message => {
         commandName = firstargs.shift().toLowerCase();  
         args[0] = args[0].slice(commandName.length + 1).trim(); 
     }
-    
 
-    // Genre Roulette GameStatus Stuff
     if (message.content.startsWith(`${prefix}gamestatus`)) {
         if (message.member.hasPermission('ADMINISTRATOR')) {
             const statusList = ['**Genre Roulette Game Status**'];
@@ -179,195 +282,90 @@ client.on('message', async message => {
             });
         } else { return message.reply('You don\'t have the perms to use this command!'); }
     }
-
-    module.exports.updateGenreGameData = function() {
-        if (message.channel.type === 'dm') return;
-        const genreIDmsg = db.genreID.get('genreID');
-        const channeltoSearch = message.guild.channels.cache.get('731919003219656795');
-        (channeltoSearch.messages.fetch(genreIDmsg)).then((msg) => {
-
-            const statusList = ['**Genre Roulette Game Status**'];
-
-            db.genreRoulette.forEach((prop, key) => {
-                const statusString = `${prop.status === 'alive' ? ':white_check_mark:' : ':x:'} **${key}** *(${prop.genre})*`;
-                statusList.push(statusString);
-            });
-
-            msg.edit(statusList);
-        });
-    };
-
-    module.exports.updateFridayListData = function() {
-        if (message.channel.type === 'dm') return;
-        const singleID = db.friID.get('singleID');
-        const epID = db.friID.get('epID');
-        const lpID = db.friID.get('lpID');
-        const compID = db.friID.get('compID');
-        const channeltoSearch = message.guild.channels.cache.get('786071855454224404');
-
-        const epList = [];
-        const lpList = [];
-        const compList = [];
-        const singleList = [];
-
-        db.friList.forEach((prop) => {
-            if (prop.friday === false) {
-                let artistName = prop.artist.replace('*', '\\*');
-                let songName = prop.song.replace('*', '\\*');
-                const songString = `**--** ${artistName} - ${songName}`;
-
-                if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
-                    singleList.push(songString);
-                } else if (prop.song.includes('EP')) {
-                    epList.push(songString);
-                } else if (prop.song.includes('LP')) {
-                    lpList.push(songString);
-                } else if (prop.song.toLowerCase().includes('comp')) {
-                    compList.push(songString.substring(0, songString.length - 5));
-                }
-            } else if (prop.friday === true) {
-                let artistName = prop.artist.replace('*', '\\*');
-                let songName = prop.song.replace('*', '\\*');
-                const songString = `**--** :regional_indicator_f: **${artistName} - ${songName}**`;
-
-                if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
-                    singleList.unshift(songString);
-                } else if (prop.song.includes('EP')) {
-                    epList.unshift(songString);
-                } else if (prop.song.includes('LP')) {
-                    lpList.unshift(songString);
-                } else if (prop.song.toLowerCase().includes('comp')) {
-                    compList.push(songString.substring(0, songString.length - 6) + '**');
-                }
-            }
-        });
-
-        compList.join('\n');
-        compList.unshift('**Compilations**');
-        compList.unshift(' ');
-        compList.push('----------------------------------------------------------------------------------------------------------------');
-
-        lpList.join('\n');
-        lpList.unshift('**LPs**');
-        lpList.unshift(' ');
-        lpList.push('----------------------------------------------------------------------------------------------------------------');
-
-        epList.join('\n');
-        epList.unshift('**EPs**');
-        epList.unshift(' ');
-        epList.push('----------------------------------------------------------------------------------------------------------------');
-
-        singleList.join('\n');
-        singleList.unshift('**Singles**');
-        singleList.unshift(' ');
-        singleList.push('----------------------------------------------------------------------------------------------------------------');
-
-        (channeltoSearch.messages.fetch(singleID)).then((msg) => {
-            msg.edit(singleList);
-        });
-
-        (channeltoSearch.messages.fetch(epID)).then((msg) => {
-            msg.edit(epList);
-        });
-
-        (channeltoSearch.messages.fetch(lpID)).then((msg) => {
-            msg.edit(lpList);
-        });
-
-        (channeltoSearch.messages.fetch(compID)).then((msg) => {
-            msg.edit(compList);
-        });
-    };
-
-    // Friday Music Listening Stuff
-    if (message.content.startsWith(`${prefix}fridaylist`)) {
-            const introList = [];
-            const singleList = [];
-            const epList = [];
-            const lpList = [];
-            const compList = [];
-
-            db.friList.forEach((prop) => {
-                if (prop.friday === false) {
-                    const songString = `**--** ${prop.artist} - ${prop.song}`;
-
-                    if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
-                        singleList.push(songString);
-                    } else if (prop.song.includes('EP')) {
-                        epList.push(songString);
-                    } else if (prop.song.includes('LP')) {
-                        lpList.push(songString);
-                    } else if (prop.song.toLowerCase().includes('comp')) {
-                        compList.push(songString.substring(0, songString.length - 5));
-                    }
-                } else if (prop.friday === true) {
-                    const songString = `**--** :regional_indicator_f: **${prop.artist} - ${prop.song}**`;
-
-                    if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
-                        singleList.unshift(songString);
-                    } else if (prop.song.includes('EP')) {
-                        epList.unshift(songString);
-                    } else if (prop.song.includes('LP')) {
-                        lpList.unshift(songString);
-                    } else if (prop.song.toLowerCase().includes('comp')) {
-                        compList.push(songString.substring(0, songString.length - 6) + '**');
-                    }
-                }
-            });
-
-            db.friID.inc(`Week`);
-
-            compList.join('\n');
-            compList.unshift('**Compilations**');
-            compList.unshift(' ');
-            compList.push('----------------------------------------------------------------------------------------------------------------');
-
-            lpList.join('\n');
-            lpList.unshift('**LPs**');
-            lpList.unshift(' ');
-            lpList.push('----------------------------------------------------------------------------------------------------------------');
-
-            epList.join('\n');
-            epList.unshift('**EPs**');
-            epList.unshift(' ');
-            epList.push('----------------------------------------------------------------------------------------------------------------');
-
-            singleList.join('\n');
-            singleList.unshift('**Singles**');
-            singleList.unshift(' ');
-            singleList.push('----------------------------------------------------------------------------------------------------------------');
-
-            introList.unshift('(:regional_indicator_f: means that it is on the Friday Playlist for this week.)');
-            introList.unshift(`**Music Listening Playlist (Week ${db.friID.get('Week')})**`);
-            introList.push('----------------------------------------------------------------------------------------------------------------');
-            
-            message.channel.send(introList);
-
-            (message.channel.send(singleList)).then((msg) => {
-                db.friID.set(`singleID`, msg.id);
-            });
-
-            (message.channel.send(epList)).then((msg) => {
-                db.friID.set(`epID`, msg.id);
-            });
-
-            (message.channel.send(lpList)).then((msg) => {
-                db.friID.set(`lpID`, msg.id);
-            });
-
-            (message.channel.send(compList)).then((msg) => {
-                db.friID.set(`compID`, msg.id);
-            });
-
-        message.delete();
-    }
-
-    //Update the databases whenever a command is used, just to make sure we're good at most times
-    module.exports.updateGenreGameData();
-    module.exports.updateFridayListData();
-    module.exports.updateGenreGameData();
-    module.exports.updateFridayListData();
     
+// Friday Music Listening Stuff
+if (message.content.startsWith(`${prefix}fridaylist`)) {
+    const introList = [];
+    const singleList = [];
+    const epList = [];
+    const lpList = [];
+    const compList = [];
+
+    db.friList.forEach((prop) => {
+        if (prop.friday === false) {
+            const songString = `**--** ${prop.artist} - ${prop.song}`;
+
+            if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
+                singleList.push(songString);
+            } else if (prop.song.includes('EP')) {
+                epList.push(songString);
+            } else if (prop.song.includes('LP')) {
+                lpList.push(songString);
+            } else if (prop.song.toLowerCase().includes('comp')) {
+                compList.push(songString.substring(0, songString.length - 5));
+            }
+        } else if (prop.friday === true) {
+            const songString = `**--** :regional_indicator_f: **${prop.artist} - ${prop.song}**`;
+
+            if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
+                singleList.unshift(songString);
+            } else if (prop.song.includes('EP')) {
+                epList.unshift(songString);
+            } else if (prop.song.includes('LP')) {
+                lpList.unshift(songString);
+            } else if (prop.song.toLowerCase().includes('comp')) {
+                compList.push(songString.substring(0, songString.length - 6) + '**');
+            }
+        }
+    });
+
+    db.friID.inc(`Week`);
+
+    compList.join('\n');
+    compList.unshift('**Compilations**');
+    compList.unshift(' ');
+    compList.push('----------------------------------------------------------------------------------------------------------------');
+
+    lpList.join('\n');
+    lpList.unshift('**LPs**');
+    lpList.unshift(' ');
+    lpList.push('----------------------------------------------------------------------------------------------------------------');
+
+    epList.join('\n');
+    epList.unshift('**EPs**');
+    epList.unshift(' ');
+    epList.push('----------------------------------------------------------------------------------------------------------------');
+
+    singleList.join('\n');
+    singleList.unshift('**Singles**');
+    singleList.unshift(' ');
+    singleList.push('----------------------------------------------------------------------------------------------------------------');
+
+    introList.unshift('(:regional_indicator_f: means that it is on the Friday Playlist for this week.)');
+    introList.unshift(`**Music Listening Playlist (Week ${db.friID.get('Week')})**`);
+    introList.push('----------------------------------------------------------------------------------------------------------------');
+    
+    message.channel.send(introList);
+
+    (message.channel.send(singleList)).then((msg) => {
+        db.friID.set(`singleID`, msg.id);
+    });
+
+    (message.channel.send(epList)).then((msg) => {
+        db.friID.set(`epID`, msg.id);
+    });
+
+    (message.channel.send(lpList)).then((msg) => {
+        db.friID.set(`lpID`, msg.id);
+    });
+
+    (message.channel.send(compList)).then((msg) => {
+        db.friID.set(`compID`, msg.id);
+    });
+
+message.delete();
+}
+
 	const command = client.commands.get(commandName) ||	client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 	if (!command) return;
 
