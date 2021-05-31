@@ -36,15 +36,36 @@ for (const file of commandFiles) {
 // this event will only trigger one time after logging in
 client.once('ready', async () => {
     const data = [];
+	const admin_list = [];
+	let permissions;
     client.commands.forEach(function(value, key) {
         data.push({
             name: key,
             description: value.description,
             options: value.options,
-            defaultPermission: !value.admin,
+			defaultPermission: !value.admin,
         });
+		if (value.admin === true) {
+			admin_list.push(key);
+		}
     });
     await client.guilds.cache.get('680864893552951306')?.commands.set(data);
+	let perm_command;
+	const command_list = await client.guilds.cache.get('680864893552951306')?.commands.cache.array();
+	for (let i = 0; i < command_list.length; i++) {
+		if (admin_list.includes(command_list[i].name)) {
+			perm_command = await client.guilds.cache.get('680864893552951306')?.commands.fetch(command_list[i].id);
+			permissions = [
+				{
+					id: '847223926782296064',
+					type: 'ROLE',
+					permission: true,
+				},
+			];
+			await perm_command.setPermissions(permissions);
+		}
+	}
+
     console.log('Ready!');
     const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
     console.log(date);

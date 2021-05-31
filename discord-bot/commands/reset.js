@@ -4,21 +4,17 @@ const { genreList } = require('../arrays.json');
 module.exports = {
 	name: 'reset',
     description: 'Reset the game to base level with all current players. [ADMIN ONLY]',
-admin: true,
+	admin: true,
 	execute(interaction) {
+		let genreListRemove = genreList;
 		
-			db.genreRoulette.forEach((prop, key) => {
-				const genrePick = genreList[Math.floor(Math.random() * genreList.length)];
-				db.genreRoulette.set(key, { genre: genrePick, status: 'alive' });
-			});
+		db.genreRoulette.forEach((prop, key) => {
+			console.log(genreListRemove);
+			const genrePick = genreListRemove[Math.floor(Math.random() * genreListRemove.length)];
+			db.genreRoulette.set(key, { genre: genrePick, status: 'alive' });
+			genreListRemove = genreListRemove.filter(item => item != genrePick);
+		});
 
-			const friIDmsg = db.friID.get('friID');
-			const channeltoSearch = interaction.guild.channels.cache.find(ch => ch.name === 'friday-playlist');
-			(channeltoSearch.messages.fetch(friIDmsg)).then((msg) => {
-				msg.reactions.removeAll();
-			});
-
-			interaction.editReply('Game reset.');
-
+		interaction.editReply('Game reset.');
 	},
 };
