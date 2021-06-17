@@ -15,6 +15,10 @@ module.exports = {
             name: "chair",
             description: "Post the crying clapping chair copypasta.",
             type: "SUB_COMMAND"
+        }, {
+            name: "bass_house",
+            description: "Post the bass house copypasta.",
+            type: "SUB_COMMAND"
         }],
 	execute(interaction) {
         choice = interaction.options[0].name;
@@ -28,9 +32,15 @@ module.exports = {
 
         } else if (choice === 'chair') {
 
-	    interaction.editReply('Mcat WISHES they had music this good\nThey had some cool music yeah but nothing like this\nI got out of my chair and clapped and cried 5 different times during the song
+	        interaction.editReply('Mcat WISHES they had music this good\nThey had some cool music yeah but nothing like this\nI got out of my chair and clapped and cried 5 different times during the song');
 
-	}
+	    } else if (choice === 'bass_house') {
+
+	        interaction.editReply('People here call out others for hating bass house and treating it like it killed their pets.\n\n' +
+            'But it did. My 10-year old music label owning cat, Monstercat, was horrendously murdered by bass house. He was my best friend. My heart and soul. And bass house killed him. They say cats are man\'s best friend, but Monstercat went above and beyond. He was the #1 pet on the planet, and we would spend all of our days listening to electro and bantering with the community together. In this cruel, miserable world, Monstercat was my light in the darkness. My only hope. And bass house took him from me.\n\n' +   
+            'I have never been the same ever since. Every time I listen to music, I lose my hearing for two hours. Shivering and crying. I have never been more sad and angry in my entire life. My mind is fueled only by my eternal vendetta against bass house. I remember the very second my precious Monstercat started spasming when I played So Good by Good Times Ahead, and later went into cardiac arrest. Needless to say, there are not good times ahead. Quite the opposite actually. There are only bad times ahead for the ones who murdered my poor Monstercat, because I will find them and I will kill them. Fuck bass house and I hope it sucks a dick. I am so livid right now that I am ready to cancel bass house for being very stupid and killing my pet. Rest in peace, Monstercat, for I will join you in heaven when I avenge your death in this world.');
+
+	    }
 
 	},
 };
