@@ -21,7 +21,7 @@ module.exports = {
             required: false,
         },
     ],
-    admin: false,
+    admin: true,
 	execute(interaction) {
         const songObj = {
             artist: interaction.options[0].value,
