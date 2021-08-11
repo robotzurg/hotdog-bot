@@ -18,7 +18,8 @@ const { Client, Intents } = require('discord.js');
 const myIntents = new Intents();
 myIntents.add('GUILD_PRESENCES', 'GUILD_MEMBERS');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, 
+                            Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES], partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const cooldowns = new Discord.Collection();
@@ -93,11 +94,11 @@ cron.schedule('00 9 * * *', () => {
 });
 
 // Listen for interactions (INTERACTION COMMAND HANDLER)
-client.on('interaction', async interaction => {
+client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 
     const command = client.commands.get(interaction.commandName);
-    await interaction.defer();
+    await interaction.deferReply();
 
     console.log(interaction.commandID);
 
@@ -215,7 +216,7 @@ client.on('interaction', async interaction => {
 });
 
 // Listen for messages
-client.on('message', async message => {
+client.on('messageCreate', async message => {
     
     if (message.content.includes('‘')) {
         message.content = message.content.replace('‘', '\'');
