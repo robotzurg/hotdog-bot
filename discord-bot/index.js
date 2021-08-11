@@ -52,7 +52,7 @@ client.once('ready', async () => {
     });
     await client.guilds.cache.get('680864893552951306')?.commands.set(data);
 	let perm_command;
-	const command_list = await client.guilds.cache.get('680864893552951306')?.commands.cache.array();
+	const command_list = await client.guilds.cache.get('680864893552951306')?.commands.cache.keys();
 	for (let i = 0; i < command_list.length; i++) {
 		if (admin_list.includes(command_list[i].name)) {
 			perm_command = await client.guilds.cache.get('680864893552951306')?.commands.fetch(command_list[i].id);
@@ -99,9 +99,6 @@ client.on('interactionCreate', async interaction => {
 
     const command = client.commands.get(interaction.commandName);
     await interaction.deferReply();
-
-    console.log(interaction.commandID);
-
     
     // Genre Roulette GameStatus Stuff
 
