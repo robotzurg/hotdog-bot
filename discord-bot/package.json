@@ -3,6 +3,7 @@
     "discord.js": "^13.0.1",
     "enmap": "^5.8.7",
     "node-cron": "^3.0.0",
+    "node.js": "*",
     "trello-node-api": "^0.0.9"
   }
 }

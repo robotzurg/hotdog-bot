@@ -21,7 +21,7 @@ module.exports = {
             type: "SUB_COMMAND"
         }],
 	execute(interaction) {
-        choice = interaction.options[0].name;
+        choice = interaction.options._subcommand;
         if (choice === 'bold') {
 
             interaction.editReply(`Gonna drop a bold opinion. A lot of people can't seem to understand what makes Carol of the Cartels so lackluster to me, but it's pretty simple. It's not that the song itself is bad, it's the drops. While I am not normally a fan of Bossfight, this was a bigger disappointment than just being a Bossfight release, compared to other Bossfight it's actually pretty good. The issue with Carol of the Cartels is that it takes the original song, Carol of the Bells, and kind of kills the atmosphere it had. It starts out quite well, very true to the original but with enough difference to be unique, and then the drop hits. That's were it all goes wrong. It would have been so easy to make the drop sound remotely Christmas related, but instead he got lazy and made just kind of a standard banger drop with cut-ins of Carol of the Bells here and there. It just sounded incredibly lazy, almost like Bossfight had been making the drops before he heard about the Christmas album and then he kind of took them, changed them slightly (to add the Carol of the Bells cut ins) and slapped them onto a Carol of the Bells buildup. It just killed the atmosphere that the original carried. I get wanting to do something different but this ain't it, chief.`);

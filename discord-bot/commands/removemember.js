@@ -11,7 +11,7 @@ module.exports = {
     }],
     admin: true,
 	execute(interaction) {
-            const user = interaction.options[0].value;
+            const user = interaction.options._hoistedOptions[0].value;
             if (!db.genreRoulette.has(user)) return interaction.editReply(`${user} is not in the game!`);
 
             db.genreRoulette.delete(user);

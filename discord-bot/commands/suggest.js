@@ -16,10 +16,10 @@ module.exports = {
         },
     ],
 	execute(interaction) {
-        const sug_name = interaction.options[0].value;
+        const sug_name = interaction.options._hoistedOptions[0].value;
         let sug_desc = '';
         if (interaction.options.length > 1) {
-            sug_desc = interaction.options[1].value;
+            sug_desc = interaction.options._hoistedOptions[1].value;
         }
         
         const data = {

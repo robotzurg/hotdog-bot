@@ -11,7 +11,7 @@ module.exports = {
         required: true,
     }],
 	execute(interaction) {
-        const taggedMember = interaction.options[0].value;
+        const taggedMember = interaction.options._hoistedOptions[0].value;
 
         const responses = [
             'pea.',

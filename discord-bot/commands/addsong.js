@@ -24,13 +24,13 @@ module.exports = {
     admin: true,
 	execute(interaction) {
         const songObj = {
-            artist: interaction.options[0].value,
-            song: interaction.options[1].value,
+            artist: interaction.options._hoistedOptions[0].value,
+            song: interaction.options._hoistedOptions[1].value,
             friday: false,
         };
 
         if (interaction.options.length === 3) {
-            songObj.friday = interaction.options[2].value;
+            songObj.friday = interaction.options._hoistedOptions[2].value;
         }
 
 

@@ -16,10 +16,10 @@ module.exports = {
         },
     ],
 	execute(interaction) {
-        const bug_name = interaction.options[0].value;
+        const bug_name = interaction.options._hoistedOptions[0].value;
         let bug_desc = '';
         if (interaction.options.length > 1) {
-            bug_desc = interaction.options[1].value;
+            bug_desc = interaction.options._hoistedOptions[1].value;
         }
         
         const data = {

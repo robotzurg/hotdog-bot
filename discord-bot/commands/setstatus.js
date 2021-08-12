@@ -19,8 +19,8 @@ module.exports = {
     admin: false,
 	execute(interaction) {
         const args = [];
-        args[0] = interaction.options[0].value;
-        args[1] = interaction.options[1].value;
+        args[0] = interaction.options._hoistedOptions[0].value;
+        args[1] = interaction.options._hoistedOptions[1].value;
 
         if (!db.genreRoulette.has(args[0])) return interaction.editReply(`${args[0]} is not in the game!`);
 
