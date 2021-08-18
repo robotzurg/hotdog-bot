@@ -185,19 +185,19 @@ client.on('interactionCreate', async interaction => {
         singleList.push('----------------------------------------------------------------------------------------------------------------');
 
         (channeltoSearch.messages.fetch(singleID)).then((msg) => {
-            msg.edit(singleList);
+            msg.edit(singleList.join('\n'));
         });
 
         (channeltoSearch.messages.fetch(epID)).then((msg) => {
-            msg.edit(epList);
+            msg.edit(epList.join('\n'));
         });
 
         (channeltoSearch.messages.fetch(lpID)).then((msg) => {
-            msg.edit(lpList);
+            msg.edit(lpList.join('\n'));
         });
 
         (channeltoSearch.messages.fetch(compID)).then((msg) => {
-            msg.edit(compList);
+            msg.edit(compList.join('\n'));
         });
     }
 
@@ -366,19 +366,19 @@ if (message.content.startsWith(`${prefix}fridaylist`)) {
     
     message.channel.send(introList.join('\n'));
 
-    (message.channel.send(singleList)).then((msg) => {
+    (message.channel.send(singleList.join('\n'))).then((msg) => {
         db.friID.set(`singleID`, msg.id);
     });
 
-    (message.channel.send(epList)).then((msg) => {
+    (message.channel.send(epList.join('\n'))).then((msg) => {
         db.friID.set(`epID`, msg.id);
     });
 
-    (message.channel.send(lpList)).then((msg) => {
+    (message.channel.send(lpList.join('\n'))).then((msg) => {
         db.friID.set(`lpID`, msg.id);
     });
 
-    (message.channel.send(compList)).then((msg) => {
+    (message.channel.send(compList.join('\n'))).then((msg) => {
         db.friID.set(`compID`, msg.id);
     });
 
