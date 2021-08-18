@@ -52,10 +52,11 @@ client.once('ready', async () => {
     });
     await client.guilds.cache.get('680864893552951306')?.commands.set(data);
 	let perm_command;
-	const command_list = await client.guilds.cache.get('680864893552951306')?.commands.cache.keys();
+	let command_list = await client.guilds.cache.get('680864893552951306')?.commands.cache.keys();
+    command_list = Array.from(command_list)
 	for (let i = 0; i < command_list.length; i++) {
-		if (admin_list.includes(command_list[i].name)) {
-			perm_command = await client.guilds.cache.get('680864893552951306')?.commands.fetch(command_list[i].id);
+		if (admin_list.includes(command_list[i])) {
+			perm_command = await client.guilds.cache.get('680864893552951306')?.commands.fetch(command_list[i]);
 			permissions = [
 				{
 					id: '847223926782296064',
@@ -63,7 +64,7 @@ client.once('ready', async () => {
 					permission: true,
 				},
 			];
-			await perm_command.setPermissions(permissions);
+			await perm_command.permissions.add(permissions);
 		}
 	}
 
@@ -204,8 +205,8 @@ client.on('interactionCreate', async interaction => {
 
     try {
         await command.execute(interaction, client);
-        updateGenreGameData();
-        updateFridayListData();
+        await updateGenreGameData();
+        await updateFridayListData();
     } catch (error) {
         await console.error(error);
         await interaction.reply(`There was an error trying to execute that command!`);
