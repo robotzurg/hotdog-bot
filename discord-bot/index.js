@@ -364,7 +364,7 @@ if (message.content.startsWith(`${prefix}fridaylist`)) {
     introList.unshift(`**Music Listening Playlist (Week ${db.friID.get('Week')})**`);
     introList.push('----------------------------------------------------------------------------------------------------------------');
     
-    message.channel.send(introList);
+    message.channel.send(introList.join('\n'));
 
     (message.channel.send(singleList)).then((msg) => {
         db.friID.set(`singleID`, msg.id);
