@@ -67,6 +67,9 @@ client.once('ready', async () => {
 			await perm_command.permissions.add(permissions);
 		}
 	}
+    
+    //let meme_channel = client.channels.cache.get(`680864894006067263`);
+    //meme_channel.send(`I hate u <@156110247004471296>`);
 
     console.log('Ready!');
     const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
