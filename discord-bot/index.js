@@ -256,6 +256,15 @@ client.on('messageCreate', async message => {
     }
 
     // NON-COMMAND CHECKS
+    
+    if (message.author.id == '341979797129527297' && message.channel.id == '922186211446095902') {
+        await message.react('😍');
+        await message.react('👍');
+        await message.react('🤷');
+        await message.react('👎');
+        await message.react('🤢');
+    }
+    
     if (Math.round(randomNumber(1, 500)) == 1 && message.channel.name != 'serious-events' && message.author.id != db.potdID.get('ID')) {
         message.react('<:pepehehe:784594747406286868>');
         const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
