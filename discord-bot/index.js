@@ -2,7 +2,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
-const { ogreList, memberIDList } = require('./arrays.json');
+const { ogreList } = require('./arrays.json');
 const db = require("./db.js");
 const cron = require('node-cron');
 const { msg_delete_timeout } = require('./func');
@@ -67,9 +67,6 @@ client.once('ready', async () => {
 			await perm_command.permissions.add(permissions);
 		}
 	}
-    
-    //let meme_channel = client.channels.cache.get(`680864894006067263`);
-    //meme_channel.send(`I hate u <@156110247004471296>`);
 
     console.log('Ready!');
     const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
@@ -82,10 +79,15 @@ cron.schedule('00 9 * * *', () => {
     const myUserRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Hotdog Water Bot");
     client.user.setAvatar(ogrePick);
     switch (ogrePick) {
+        case './Ogres/girlGold.png':
         case './Ogres/ogreGold.png': myUserRole.setColor('#FFEF00'); client.user.setActivity('with hotdogs!', { type: 'PLAYING' }); break;
+        case './Ogres/girlHappy.png':
         case './Ogres/ogreHappy.png': myUserRole.setColor('#83FF39'); client.user.setActivity('Hotdog Water', { type: 'LISTENING' }); break;
+        case './Ogres/girlMad.png':
         case './Ogres/ogreMad.png': myUserRole.setColor('#FF0000'); client.user.setActivity('Ultimate Pea Warfare', { type: 'COMPETING' }); break;
+        case './Ogres/girlSad.png':
         case './Ogres/ogreSad.png': myUserRole.setColor('#3A41F9'); client.user.setActivity('all of you peas!', { type: 'WATCHING' }); break;
+        case './Ogres/girlSmug.png':
         case './Ogres/ogreSmug.png': myUserRole.setColor('#7E3BFF'); client.user.setActivity('live pea viewings', { type: 'STREAMING' }); break;
         case './Ogres/ogreSnow.png': myUserRole.setColor('#FFFFFF'); client.user.setActivity('with colddogs!', { type: 'PLAYING' }); break;
     }
@@ -240,6 +242,9 @@ client.on('messageCreate', async message => {
     // Set pea of the day
     if (message.author.id === '784993334330130463' && message.content.includes('here to tell you all')) {
         const previousUser = db.potdID.get('ID');
+        const guild = await client.guilds.fetch('680864893552951306')
+        const members = await guild.members.fetch();
+        let memberIDList = members.map(v => v.user.id);
         const chosenUser = memberIDList[Math.floor(Math.random() * memberIDList.length)];
         const myRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Pea of the Day");
         message.guild.members.fetch(previousUser).then(a => a.roles.remove(myRole));

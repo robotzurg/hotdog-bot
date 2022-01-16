@@ -6,13 +6,7 @@
     ],
     
     "ogreList": [
-        "./Ogres/ogreGold.png", "./Ogres/ogreHappy.png", "./Ogres/ogreMad.png", "./Ogres/ogreSad.png", "./Ogres/ogreSmug.png", "./Ogres/ogreSnow.png"
-    ],
-    
-    "memberIDList": [
-        "398369363784368128", "487747924361478155", "156110247004471296", "289178868118716416", "331821722594443274", "166644275793100801", "341299011971448835", 
-        "229617545651552256", "341979797129527297", "122568101995872256", "784993334330130463", "143091697096720384", "221087833534889994", "221006870129803264", 
-        "431134660857298955", "449314134387982347", "229249397203009536", "269546196723302409", "138491222934159360", "129721859783524352", "543278565219631145",
-        "619356605497999381", "734123244868862052", "906905303197573120"
+        "./Ogres/ogreGold.png", "./Ogres/ogreHappy.png", "./Ogres/ogreMad.png", "./Ogres/ogreSad.png", "./Ogres/ogreSmug.png", "./Ogres/ogreSnow.png",
+        "./Ogres/girlGold.png", "./Ogres/girlHappy.png", "./Ogres/girlMad.png", "./Ogres/girlSad.png", "./Ogres/girlSmug.png"
     ]
 }
