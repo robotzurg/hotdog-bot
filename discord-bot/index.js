@@ -81,13 +81,13 @@ cron.schedule('00 9 * * *', () => {
     switch (ogrePick) {
         case './Ogres/girlGold.png':
         case './Ogres/ogreGold.png': myUserRole.setColor('#FFEF00'); client.user.setActivity('with hotdogs!', { type: 'PLAYING' }); break;
-        case './Ogres/girlHappy.png':
+        case './Ogres/girlHappy.jpg':
         case './Ogres/ogreHappy.png': myUserRole.setColor('#83FF39'); client.user.setActivity('Hotdog Water', { type: 'LISTENING' }); break;
-        case './Ogres/girlMad.png':
+        case './Ogres/girlMad.jpg':
         case './Ogres/ogreMad.png': myUserRole.setColor('#FF0000'); client.user.setActivity('Ultimate Pea Warfare', { type: 'COMPETING' }); break;
-        case './Ogres/girlSad.png':
+        case './Ogres/girlSad.jpg':
         case './Ogres/ogreSad.png': myUserRole.setColor('#3A41F9'); client.user.setActivity('all of you peas!', { type: 'WATCHING' }); break;
-        case './Ogres/girlSmug.png':
+        case './Ogres/girlSmug.jpg':
         case './Ogres/ogreSmug.png': myUserRole.setColor('#7E3BFF'); client.user.setActivity('live pea viewings', { type: 'STREAMING' }); break;
         case './Ogres/ogreSnow.png': myUserRole.setColor('#FFFFFF'); client.user.setActivity('with colddogs!', { type: 'PLAYING' }); break;
     }
