@@ -452,5 +452,11 @@ message.delete();
 });
 
 
+client.on('guildMemberAdd', async (member) => {
+    let role = message.guild.roles.cache.find(r => r.name === "Members");
+    member.roles.add(role).catch(console.error);
+});
+
+
 // login to Discord
 client.login(token);
