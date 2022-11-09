@@ -291,6 +291,14 @@ client.on('messageCreate', async message => {
     if (message.content.toLowerCase().includes('friday 🏀 we ball') && message.channel.name != 'serious-events') {
         message.react('🏀');
     }
+    
+    if (message.content.toLowerCase().includes('i love you all') && message.channel.name != 'serious-events') {
+        message.react('❤️');
+    }
+    
+    if (message.content.toLowerCase().includes('<@784993334330130463>') && message.channel.name != 'serious-events') {
+        message.channel.send('Do not speak to me mere mortal, I am far beyond your simple mind');
+    }
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
