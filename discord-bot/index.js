@@ -245,6 +245,11 @@ client.on('messageCreate', async message => {
         const guild = await client.guilds.fetch('680864893552951306')
         const members = await guild.members.fetch();
         let memberIDList = members.map(v => v.user.id);
+        memberIDList = memberIDList.filter(v => v != '828651073136361472')
+        memberIDList = memberIDList.filter(v => v != '537353774205894676')
+        memberIDList = memberIDList.filter(v => v != '791144786685067274')
+        memberIDList = memberIDList.filter(v => v != '852935182897643591')
+        memberIDList = memberIDList.filter(v => v != '506576587903336453')
         const chosenUser = memberIDList[Math.floor(Math.random() * memberIDList.length)];
         const myRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Pea of the Day");
         message.guild.members.fetch(previousUser).then(a => a.roles.remove(myRole));
