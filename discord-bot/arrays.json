@@ -1,10 +1,4 @@
-{
-    "genreList": [
-        "Brostep/Riddim", "Future Riddim", "Color Bass", "Melodic Dubstep", "Electro House", "Midtempo/New Beat", "Techno", "Hardstyle", "Happy Hardcore", 
-        "Other Hardcore", "Psytrance", "Other Trance", "Progressive House", "Future House", "Big Room House", "Bass House", "Trap", "Future Bass", "Glitch Hop/Moombah", "Dancefloor DnB",
-        "Liquid DnB", "Neuro DnB", "Other DnB", "Indie Dance/Nu Disco", "Synthwave", "Garage", "Other Chillout", "Non-EDM"
-    ],
-    
+{   
     "ogreList": [
         "./Ogres/ogreGold.png", "./Ogres/ogreHappy.png", "./Ogres/ogreMad.png", "./Ogres/ogreSad.png", "./Ogres/ogreSmug.png", "./Ogres/ogreSnow.png",
         "./Ogres/girlGold.png", "./Ogres/girlHappy.jpg", "./Ogres/girlMad.jpg", "./Ogres/girlSad.jpg", "./Ogres/girlSmug.jpg"

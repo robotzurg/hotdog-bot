@@ -1,12 +1,12 @@
 // require the discord.js module
 const fs = require('fs');
 const Discord = require('discord.js');
-const { prefix, token } = require('./config.json');
+const { token } = require('./config.json');
 const { ogreList } = require('./arrays.json');
 const db = require("./db.js");
 const cron = require('node-cron');
-const { msg_delete_timeout } = require('./func');
-// const wait = require('util').promisify(setTimeout);
+const { REST } = require('@discordjs/rest');
+const { Routes, InteractionType } = require('discord-api-types/v9');
 
 // Set up random number function
 function randomNumber(min, max) {  
@@ -14,66 +14,58 @@ function randomNumber(min, max) {
 }  
 
 // create a new Discord client and give it some variables
-const { Client, Intents } = require('discord.js');
-const myIntents = new Intents();
-myIntents.add('GUILD_PRESENCES', 'GUILD_MEMBERS');
+const { Client, GatewayIntentBits, Partials } = require('discord.js');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, 
-                            Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES], partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, 
+    GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent], partials: [Partials.Channel, Partials.Message, Partials.Reaction] });
 client.commands = new Discord.Collection();
+client.cooldowns = new Discord.Collection();
+const registerCommands = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const cooldowns = new Discord.Collection();
 
-// Command Collections
+// Place your client and guild ids here
+const mainClientId = '784993334330130463';
+const mainGuildId = '680864893552951306';
+
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
-
-	// set a new item in the Collection
-	// with the key as the command name and the value as the exported module
-	client.commands.set(command.name, command);
+    if (command.type === undefined) {
+        // Slash Commands
+        client.commands.set(command.data.name, command);
+        registerCommands.push(command.data.toJSON());
+    } else {
+        // Context Menu Commands (these have a different structure)
+        client.commands.set(command.name, command);
+        registerCommands.push(command);
+    }
 }
+
+const rest = new REST({ version: '9' }).setToken(token);
+
+(async () => {
+	try {
+		console.log('Started refreshing application (/) commands.');
+
+		await rest.put(
+			Routes.applicationGuildCommands(mainClientId, mainGuildId),
+			{ body: registerCommands },
+		);
+
+		console.log('Successfully reloaded application (/) commands.');
+	} catch (error) {
+		console.error(error);
+	}
+})();
 
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
 client.once('ready', async () => {
-    const data = [];
-	const admin_list = [];
-	let permissions;
-    client.commands.forEach(function(value, key) {
-        data.push({
-            name: key,
-            description: value.description,
-            options: value.options,
-			defaultPermission: !value.admin,
-        });
-		if (value.admin === true) {
-			admin_list.push(key);
-		}
-    });
-    await client.guilds.cache.get('680864893552951306')?.commands.set(data);
-	let perm_command;
-	let command_list = await client.guilds.cache.get('680864893552951306')?.commands.cache.keys();
-    command_list = Array.from(command_list)
-	for (let i = 0; i < command_list.length; i++) {
-		if (admin_list.includes(command_list[i])) {
-			perm_command = await client.guilds.cache.get('680864893552951306')?.commands.fetch(command_list[i]);
-			permissions = [
-				{
-					id: '847223926782296064',
-					type: 'ROLE',
-					permission: true,
-				},
-			];
-			await perm_command.permissions.add(permissions);
-		}
-	}
-
     console.log('Ready!');
     const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
     console.log(date);
 });
 
-// Change avatar at 9:00am and set pea of the day
+// Change avatar at 9:00am and set first pea of the day
 cron.schedule('00 9 * * *', () => { 
     const ogrePick = ogreList[Math.floor(Math.random() * ogreList.length)];
     const myUserRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Hotdog Water Bot");
@@ -93,8 +85,16 @@ cron.schedule('00 9 * * *', () => {
     }
 
     const channel = client.channels.cache.get('680864894006067263');
-    channel.send('Hello everyone! I\'m here to tell you all today\'s **Pea of the Day** which is...');
+    channel.send('Hello everyone! I\'m here to tell you all today\'s first **Pea of the Day** which is...');
     
+}, {
+    scheduled: true,
+});
+
+// Set second pea of the day
+cron.schedule('00 17 * * *', () => {
+    const channel = client.channels.cache.get('680864894006067263');
+    channel.send('Hello everyone! I\'m here to tell you all today\'s second **Pea of the Day** which is...');
 }, {
     scheduled: true,
 });
@@ -102,116 +102,11 @@ cron.schedule('00 9 * * *', () => {
 // Listen for interactions (INTERACTION COMMAND HANDLER)
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
-
     const command = client.commands.get(interaction.commandName);
     await interaction.deferReply();
-    
-    // Genre Roulette GameStatus Stuff
-
-    async function updateGenreGameData() {
-        if (interaction.channel.type === 'dm') return;
-        const genreIDmsg = db.genreID.get('genreID');
-        const channeltoSearch = interaction.guild.channels.cache.get('731919003219656795');
-        (channeltoSearch.messages.fetch(genreIDmsg)).then((msg) => {
-
-            const statusList = ['**Genre Roulette Game Status**'];
-
-            db.genreRoulette.forEach((prop, key) => {
-                const statusString = `${prop.status === 'alive' ? ':white_check_mark:' : ':x:'} **${key}** *(${prop.genre})*`;
-                statusList.push(statusString);
-            });
-
-            msg.edit(statusList);
-        });
-    }
-
-    async function updateFridayListData() {
-        if (interaction.channel.type === 'dm') return;
-        const singleID = db.friID.get('singleID');
-        const epID = db.friID.get('epID');
-        const lpID = db.friID.get('lpID');
-        const compID = db.friID.get('compID');
-        const channeltoSearch = interaction.guild.channels.cache.get('786071855454224404');
-
-        const epList = [];
-        const lpList = [];
-        const compList = [];
-        const singleList = [];
-
-        db.friList.forEach(async (prop) => {
-            if (prop.friday === false) {
-                let artistName = prop.artist.replace('*', '\\*');
-                let songName = prop.song.replace('*', '\\*');
-                const songString = `**--** ${artistName} - ${songName}`;
-
-                if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
-                    singleList.push(songString);
-                } else if (prop.song.includes('EP')) {
-                    epList.push(songString);
-                } else if (prop.song.includes('LP')) {
-                    lpList.push(songString);
-                } else if (prop.song.toLowerCase().includes('comp')) {
-                    compList.push(songString.substring(0, songString.length - 5));
-                }
-            } else if (prop.friday === true) {
-                let artistName = prop.artist.replace('*', '\\*');
-                let songName = prop.song.replace('*', '\\*');
-                const songString = `**--** :regional_indicator_f: **${artistName} - ${songName}**`;
-
-                if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
-                    singleList.unshift(songString);
-                } else if (prop.song.includes('EP')) {
-                    epList.unshift(songString);
-                } else if (prop.song.includes('LP')) {
-                    lpList.unshift(songString);
-                } else if (prop.song.toLowerCase().includes('comp')) {
-                    compList.push(songString.substring(0, songString.length - 6) + '**');
-                }
-            }
-        });
-
-        compList.join('\n');
-        compList.unshift('**Compilations**');
-        compList.unshift(' ');
-        compList.push('----------------------------------------------------------------------------------------------------------------');
-
-        lpList.join('\n');
-        lpList.unshift('**LPs**');
-        lpList.unshift(' ');
-        lpList.push('----------------------------------------------------------------------------------------------------------------');
-
-        epList.join('\n');
-        epList.unshift('**EPs**');
-        epList.unshift(' ');
-        epList.push('----------------------------------------------------------------------------------------------------------------');
-
-        singleList.join('\n');
-        singleList.unshift('**Singles**');
-        singleList.unshift(' ');
-        singleList.push('----------------------------------------------------------------------------------------------------------------');
-
-        (channeltoSearch.messages.fetch(singleID)).then((msg) => {
-            msg.edit(singleList.join('\n'));
-        });
-
-        (channeltoSearch.messages.fetch(epID)).then((msg) => {
-            msg.edit(epList.join('\n'));
-        });
-
-        (channeltoSearch.messages.fetch(lpID)).then((msg) => {
-            msg.edit(lpList.join('\n'));
-        });
-
-        (channeltoSearch.messages.fetch(compID)).then((msg) => {
-            msg.edit(compList.join('\n'));
-        });
-    }
-
 
     try {
         await command.execute(interaction, client);
-        await updateGenreGameData();
-        await updateFridayListData();
     } catch (error) {
         await console.error(error);
         await interaction.reply(`There was an error trying to execute that command!`);
@@ -220,254 +115,66 @@ client.on('interactionCreate', async interaction => {
 
 // Listen for messages
 client.on('messageCreate', async message => {
-    
-    if (message.content.includes('‘')) {
-        message.content = message.content.replace('‘', '\'');
-    }
-
-        if (!client.application?.owner) await client.application?.fetch();
-
-        if (message.content.toLowerCase() === '!deploy' && message.author.id === client.application?.owner.id) {
-            const data = {};
-    
-            const command = await client.application?.commands.create(data);
-            console.log(command);
-        }
-
-    if (message.channel.name === 'server-playlist-voting' && message.content.includes('-')) {
-        message.react('✅');
-        message.react('❌');
-    }
 
     // Set pea of the day
     if (message.author.id === '784993334330130463' && message.content.includes('here to tell you all')) {
-        const previousUser = db.potdID.get('ID');
-        const guild = await client.guilds.fetch('680864893552951306')
+        const previousUser = db.potd.get('current_potd');
+        const guild = await client.guilds.fetch(mainGuildId)
         const members = await guild.members.fetch();
+
         let memberIDList = members.map(v => v.user.id);
         memberIDList = memberIDList.filter(v => v != '828651073136361472')
-        memberIDList = memberIDList.filter(v => v != '537353774205894676')
+        memberIDList = memberIDList.filter(v => v != '537353774205894676') // Chuu
         memberIDList = memberIDList.filter(v => v != '791144786685067274')
         memberIDList = memberIDList.filter(v => v != '852935182897643591')
         memberIDList = memberIDList.filter(v => v != '506576587903336453')
+        // TODO: Setup cutting out users who haven't talked in 2 weeks.
+
         const chosenUser = memberIDList[Math.floor(Math.random() * memberIDList.length)];
         const myRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Pea of the Day");
         message.guild.members.fetch(previousUser).then(a => a.roles.remove(myRole));
         message.guild.members.fetch(chosenUser).then(a => a.roles.add(myRole));
         message.channel.send(`<@${chosenUser}>! Congratulations!`);
-
-        const peachannel = client.channels.cache.get('802077628756525086');
-        peachannel.send(`<@${chosenUser}>, congrats on becoming pea of the day! In this chat, you'll get a chance to send a random message in this *s p e c i a l* chatroom!
-        \nYou only get a limited amount though, so make it count!`).then(msg => {
-            msg.delete({ timeout: 3.6e+6 });
-        });
-
-        db.potdID.set('ID', chosenUser);
+        db.potd.set('current_potd', chosenUser);
+        db.potd.inc('leaderboard', `${chosenUser}`);
     }
 
     // NON-COMMAND CHECKS
-    
-    if (message.author.id == '341979797129527297' && message.channel.id == '922186211446095902') {
-        await message.react('😍');
-        await message.react('👍');
-        await message.react('🤷');
-        await message.react('👎');
-        await message.react('🤢');
-    }
-    
-    if (Math.round(randomNumber(1, 500)) == 1 && message.channel.name != 'serious-events' && message.author.id != db.potdID.get('ID')) {
+    // pepehehe deployment
+    if (Math.round(randomNumber(1, 500)) == 1 && message.channel.name != 'serious-events' && message.author.id != db.potd.get('current_potd')) {
         message.react('<:pepehehe:784594747406286868>');
         const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
         console.log(`Deploying pepehehe at ${date}`);
-    } else if (Math.round(randomNumber(1, 100)) == 1 && message.channel.name != 'serious-events' && message.author.id === db.potdID.get('ID')) {
+    } else if (Math.round(randomNumber(1, 100)) == 1 && message.channel.name != 'serious-events' && message.author.id ===db.potd.get('current_potd')) {
         message.react('<:pepehehe:784594747406286868>');
         const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
         console.log(`Deploying pepehehe at ${date}`);
     }
 
+    // wth pepehehe reaction
     if (message.content.toLowerCase().includes('wth') && message.content.length <= 4 && message.channel.name != 'serious-events') {
         message.react('<:pepehehe:784594747406286868>');
     }
 
+    // craig reaction
     if (message.content.toLowerCase().includes('craig') && message.channel.name != 'serious-events') {
         message.react('<:craig:714689464760533092>');
     }
 
+    // friday we ball reaction
     if (message.content.toLowerCase().includes('friday 🏀 we ball') && message.channel.name != 'serious-events') {
         message.react('🏀');
     }
     
+    // i love you all reaction
     if (message.content.toLowerCase().includes('i love you all') && message.channel.name != 'serious-events') {
         message.react('❤️');
     }
     
+    // pinging the bot message
     if (message.content.toLowerCase().includes('<@784993334330130463>') && message.channel.name != 'serious-events') {
         message.channel.send('Do not speak to me mere mortal, I am far beyond your simple mind');
     }
-
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-    let args = message.content.slice(prefix.length).trim().split(/ +/);
-    let commandName = args.shift().toLowerCase();
-
-    if (args.length > 1) {
-        args = message.content.slice(prefix.length).trim().split(/ \| +/);
-        const firstargs = args[0].split(/ +/);
-        commandName = firstargs.shift().toLowerCase();  
-        args[0] = args[0].slice(commandName.length + 1).trim(); 
-    }
-
-    if (message.content.startsWith(`${prefix}gamestatus`)) {
-        if (message.member.hasPermission('ADMINISTRATOR')) {
-            const statusList = ['**Genre Roulette Game Status**'];
-
-                db.genreRoulette.forEach((prop, key) => {
-                    const statusString = `${prop.status === 'alive' ? ':white_check_mark:' : ':x:'} **${key}** *(${prop.genre})*`;
-                    statusList.push(statusString);
-                });
-                
-            (message.channel.send(statusList)).then((msg) => {
-                db.genreID.set(`genreID`, msg.id);
-                console.log(db.genreID.get('genreID'));
-            });
-        } else { return message.reply('You don\'t have the perms to use this command!'); }
-    }
-    
-// Friday Music Listening Stuff
-if (message.content.startsWith(`${prefix}fridaylist`)) {
-    const introList = [];
-    const singleList = [];
-    const epList = [];
-    const lpList = [];
-    const compList = [];
-
-    db.friList.forEach((prop) => {
-        if (prop.friday === false) {
-            const songString = `**--** ${prop.artist} - ${prop.song}`;
-
-            if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
-                singleList.push(songString);
-            } else if (prop.song.includes('EP')) {
-                epList.push(songString);
-            } else if (prop.song.includes('LP')) {
-                lpList.push(songString);
-            } else if (prop.song.toLowerCase().includes('comp')) {
-                compList.push(songString.substring(0, songString.length - 5));
-            }
-        } else if (prop.friday === true) {
-            const songString = `**--** :regional_indicator_f: **${prop.artist} - ${prop.song}**`;
-
-            if (!prop.song.includes('EP') && !prop.song.includes('LP') && !prop.song.toLowerCase().includes('comp')) {
-                singleList.unshift(songString);
-            } else if (prop.song.includes('EP')) {
-                epList.unshift(songString);
-            } else if (prop.song.includes('LP')) {
-                lpList.unshift(songString);
-            } else if (prop.song.toLowerCase().includes('comp')) {
-                compList.push(songString.substring(0, songString.length - 6) + '**');
-            }
-        }
-    });
-
-    db.friID.inc(`Week`);
-
-    compList.join('\n');
-    compList.unshift('**Compilations**');
-    compList.unshift(' ');
-    compList.push('----------------------------------------------------------------------------------------------------------------');
-
-    lpList.join('\n');
-    lpList.unshift('**LPs**');
-    lpList.unshift(' ');
-    lpList.push('----------------------------------------------------------------------------------------------------------------');
-
-    epList.join('\n');
-    epList.unshift('**EPs**');
-    epList.unshift(' ');
-    epList.push('----------------------------------------------------------------------------------------------------------------');
-
-    singleList.join('\n');
-    singleList.unshift('**Singles**');
-    singleList.unshift(' ');
-    singleList.push('----------------------------------------------------------------------------------------------------------------');
-
-    introList.unshift('(:regional_indicator_f: means that it is on the Friday Playlist for this week.)');
-    introList.unshift(`**Music Listening Playlist (Week ${db.friID.get('Week')})**`);
-    introList.push('----------------------------------------------------------------------------------------------------------------');
-    
-    message.channel.send(introList.join('\n'));
-
-    (message.channel.send(singleList.join('\n'))).then((msg) => {
-        db.friID.set(`singleID`, msg.id);
-    });
-
-    (message.channel.send(epList.join('\n'))).then((msg) => {
-        db.friID.set(`epID`, msg.id);
-    });
-
-    (message.channel.send(lpList.join('\n'))).then((msg) => {
-        db.friID.set(`lpID`, msg.id);
-    });
-
-    (message.channel.send(compList.join('\n'))).then((msg) => {
-        db.friID.set(`compID`, msg.id);
-    });
-
-message.delete();
-}
-
-	const command = client.commands.get(commandName) ||	client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-	if (!command) return;
-
-    if (command.args && !args.length) {
-        let reply = `You didn't provide any arguments, ${message.author}!`;
-
-		if (command.usage) {
-			reply += `\nThe proper usage would be: \`${command.usage}\``;
-		}
-
-		return message.channel.send(reply);	
-    } else if (command.arg_num != undefined) {
-        if (args.length > command.arg_num) {
-            msg_delete_timeout(message, 10000);
-            return msg_delete_timeout(message, 10000, `Too many arguments! See \`!help ${command.name}\` for more assistance.`);
-        } 
-    }
-
-    if (!cooldowns.has(command.name)) {
-        cooldowns.set(command.name, new Discord.Collection());
-    }
-    
-    const now = Date.now();
-    const timestamps = cooldowns.get(command.name);
-    const cooldownAmount = (command.cooldown || 0) * 1000;
-    
-    if (timestamps.has(message.author.id)) {
-        const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-        if (now < expirationTime) {
-            const timeLeft = (expirationTime - now) / 1000;
-            return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
-        }
-
-    }
-
-    timestamps.set(message.author.id, now);
-    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount); 
-
-    try {
-        command.execute(message, args);
-    } catch (error) {
-        console.error(error);
-        message.reply(`There was an error trying to execute that command!\nMessage sent: \`${message.content}\`\nPing Jeff and tell him to look into it!`);
-    }
-
-});
-
-
-client.on('guildMemberAdd', async (member) => {
-    let role = message.guild.roles.cache.find(r => r.name === "Members");
-    member.roles.add(role).catch(console.error);
 });
 
 
