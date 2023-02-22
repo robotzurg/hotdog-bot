@@ -134,7 +134,7 @@ client.on('messageCreate', async message => {
         const myRole = client.guilds.cache.find(guild => guild.id === mainGuildId).roles.cache.find(role => role.name === "Pea of the Day");
         message.guild.members.fetch(previousUser).then(a => a.roles.remove(myRole));
         message.guild.members.fetch(chosenUser).then(a => a.roles.add(myRole));
-        message.channel.send(`${chosenUser}! Congratulations!\nMake sure to send your 1 message in #pea-of-the-day, or take the chance to view others messages!`);
+        message.channel.send(`<@${chosenUser}>! Congratulations!\nMake sure to send your 1 message in #pea-of-the-day, or take the chance to view others messages!`);
         db.potd.set('current_potd', chosenUser);
 
         let peaderboard_all = db.potd.get('peaderboard_all');
