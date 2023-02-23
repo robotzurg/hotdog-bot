@@ -85,16 +85,8 @@ cron.schedule('00 9 * * *', () => {
     }
 
     const channel = client.channels.cache.get('680864894006067263');
-    channel.send('Hello everyone! I\'m here to tell you all today\'s first **Pea of the Day** which is...');
+    channel.send('Hello everyone! I\'m here to tell you all today\'s **Pea of the Day** which is...');
     
-}, {
-    scheduled: true,
-});
-
-// Set second pea of the day
-cron.schedule('00 17 * * *', () => {
-    const channel = client.channels.cache.get('1077464393018773616'); // HWRC pea of the day channel id: 680864894006067263
-    channel.send('Hello everyone! I\'m here to tell you all today\'s second **Pea of the Day** which is...');
 }, {
     scheduled: true,
 });
@@ -127,15 +119,18 @@ client.on('messageCreate', async message => {
         memberIDList = memberIDList.filter(v => v != '537353774205894676') // Chuu
         activity_list = db.potd.get('activity_tracker');
         for (let user in activity_list) {
-            if (activity_list[user] > 14) memberIDList = memberIDList.filter(v => v != user);
+            if (activity_list[user] <= 0) memberIDList = memberIDList.filter(v => v != user);
         }
+
+        console.log(memberIDList);
 
         const chosenUser = memberIDList[Math.floor(Math.random() * memberIDList.length)];
         const myRole = client.guilds.cache.find(guild => guild.id === mainGuildId).roles.cache.find(role => role.name === "Pea of the Day");
         message.guild.members.fetch(previousUser).then(a => a.roles.remove(myRole));
         message.guild.members.fetch(chosenUser).then(a => a.roles.add(myRole));
-        message.channel.send(`<@${chosenUser}>! Congratulations!\nMake sure to send your 1 message in #pea-of-the-day, or take the chance to view others messages!`);
+        message.channel.send(`<${chosenUser}>! Congratulations!\nMake sure to send your 1 message in <#680864894006067263>, or take the chance to view others messages!`);
         db.potd.set('current_potd', chosenUser);
+        db.potd.set('potd_message', false);
 
         let peaderboard_all = db.potd.get('peaderboard_all');
         // let peaderboard_month = db.potd.get('peaderboard_month');
@@ -154,12 +149,16 @@ client.on('messageCreate', async message => {
     }
 
     // NON-COMMAND CHECKS
+    if (message.channel.id == '1077464393018773616') {
+        if (db.potd.get('potd_message') == false && message.author.id == db.potd.get('current_potd')) {
+            db.potd.set('potd_message', true);
+        } else {
+            message.delete();
+        }
+    }
+
     // activity tracker (for potd)
-    // let user_activity = db.potd.get("activity_tracker", message.author.id);
-    // if (user_activity[1] == false) {
-    //     user_activity = [user_activity[0] + 1, true]
-    //     db.potd.set("activity_tracker", user_activity, message.author.id);
-    // }
+    db.potd.set("activity_tracker", 14, message.author.id);
 
     // pepehehe deployment
     if (Math.round(randomNumber(1, 500)) == 1 && message.channel.name != 'serious-events' && message.author.id != db.potd.get('current_potd')) {
