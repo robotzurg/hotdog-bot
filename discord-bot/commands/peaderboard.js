@@ -15,19 +15,19 @@ module.exports = {
             subcommand.setName('month')
             .setDescription('View the pea of the day leaderboard for the month.')),
 	async execute(interaction, client) {
-        // db.potd.set("peaderboard", []);
-        // db.potd.set("activity_tracker", {});
-        // db.potd.set("potd_message", false);
+        db.potd.set("peaderboard", []);
+        db.potd.set("activity_tracker", {});
+        db.potd.set("potd_message", false);
 
-        // const guild = await client.guilds.fetch('784994152189919264')
-        // const members = await guild.members.fetch();
+        const guild = await client.guilds.fetch('784994152189919264')
+        const members = await guild.members.fetch();
 
-        // let memberIDList = members.map(v => v.user.id);
+        let memberIDList = members.map(v => v.user.id);
 
-        // for (let id of memberIDList) {
-        //     db.potd.push("peaderboard", [id, 0]); // [ID, Pea amount]
-        //     db.potd.set("activity_tracker", 0, `${id}`);
-        // }
+        for (let id of memberIDList) {
+            db.potd.push("peaderboard", [id, 0]); // [ID, Pea amount]
+            db.potd.set("activity_tracker", 0, `${id}`);
+        }
         let timeframe = interaction.options.getSubcommand();
         (timeframe == 'all_time' ? timeframe = 'peaderboard_all' : timeframe = 'peaderboard_month');
 
