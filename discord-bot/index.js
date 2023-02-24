@@ -122,13 +122,11 @@ client.on('messageCreate', async message => {
             if (activity_list[user] <= 0) memberIDList = memberIDList.filter(v => v != user);
         }
 
-        console.log(memberIDList);
-
         const chosenUser = memberIDList[Math.floor(Math.random() * memberIDList.length)];
         const myRole = client.guilds.cache.find(guild => guild.id === mainGuildId).roles.cache.find(role => role.name === "Pea of the Day");
         message.guild.members.fetch(previousUser).then(a => a.roles.remove(myRole));
         message.guild.members.fetch(chosenUser).then(a => a.roles.add(myRole));
-        message.channel.send(`<${chosenUser}>! Congratulations!\nMake sure to send your 1 message in <#680864894006067263>, or take the chance to view others messages!`);
+        message.channel.send(`<@${chosenUser}>! Congratulations!\nMake sure to send your 1 message in <#802077628756525086>, or take the chance to view others messages!`);
         db.potd.set('current_potd', chosenUser);
         db.potd.set('potd_message', false);
 
