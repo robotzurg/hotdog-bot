@@ -7,6 +7,6 @@ module.exports = {
         .setDescription('Beans...')
         .setDMPermission(false),
 	async execute(interaction) {
-        interaction.editReply({ files: [{ attachment: `./beans_pics/beans${_.random(1, 5)}.jpeg` }] });
+        interaction.editReply({ files: [{ attachment: `./beans_pics/beans${_.random(1, 10)}.jpeg` }] });
     },
 };

@@ -6,7 +6,7 @@ const { ogreList } = require('./arrays.json');
 const db = require("./db.js");
 const cron = require('node-cron');
 const { REST } = require('@discordjs/rest');
-const { Routes, InteractionType } = require('discord-api-types/v9');
+const { Routes } = require('discord-api-types/v9');
 
 // Set up random number function
 function randomNumber(min, max) {  
@@ -84,9 +84,26 @@ cron.schedule('00 9 * * *', () => {
         case './Ogres/ogreSnow.png': myUserRole.setColor('#FFFFFF'); client.user.setActivity('with colddogs!', { type: 'PLAYING' }); break;
     }
 
+    let activityArray = db.potd.keyArray('activity_tracker');
+
+    for (let user of activityArray) {
+        db.potd.math('activity_tracker', '-', 1, `${user}`);
+    }
+
     const channel = client.channels.cache.get('680864894006067263');
     channel.send('Hello everyone! I\'m here to tell you all today\'s **Pea of the Day** which is...');
     
+}, {
+    scheduled: true,
+});
+
+// At 8am on the first of every month, reset the month peaderboard list
+cron.schedule('00 8 1 * *', () => { 
+    let peaderboardList = db.potd.get('peaderboard_month');
+    for (let i = 0; i < peaderboardList.length; i++) {
+        peaderboardList[i][1] = 0;
+    }
+    db.potd.set('peaderboard_month', peaderboardList);
 }, {
     scheduled: true,
 });
@@ -96,7 +113,6 @@ client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
     const command = client.commands.get(interaction.commandName);
     await interaction.deferReply();
-
     try {
         await command.execute(interaction, client);
     } catch (error) {
@@ -117,6 +133,7 @@ client.on('messageCreate', async message => {
         let memberIDList = members.map(v => v.user.id);
         memberIDList = memberIDList.filter(v => v != '828651073136361472') // Waveform
         memberIDList = memberIDList.filter(v => v != '537353774205894676') // Chuu
+        memberIDList = memberIDList.filter(v => v != '784993334330130463') // Hotdog Water Bot
         activity_list = db.potd.get('activity_tracker');
         for (let user in activity_list) {
             if (activity_list[user] <= 0) memberIDList = memberIDList.filter(v => v != user);
@@ -124,33 +141,46 @@ client.on('messageCreate', async message => {
 
         const chosenUser = memberIDList[Math.floor(Math.random() * memberIDList.length)];
         const myRole = client.guilds.cache.find(guild => guild.id === mainGuildId).roles.cache.find(role => role.name === "Pea of the Day");
+        let member = await message.guild.members.fetch(chosenUser);
         message.guild.members.fetch(previousUser).then(a => a.roles.remove(myRole));
         message.guild.members.fetch(chosenUser).then(a => a.roles.add(myRole));
-        message.channel.send(`<@${chosenUser}>! Congratulations!\nMake sure to send your 1 message in <#802077628756525086>, or take the chance to view others messages!`);
+        message.channel.send(`<@${member.user.id}>! Congratulations!\nMake sure to send your 1 message in <#802077628756525086>, or take the chance to view others messages!`);
         db.potd.set('current_potd', chosenUser);
         db.potd.set('potd_message', false);
 
         let peaderboard_all = db.potd.get('peaderboard_all');
-        // let peaderboard_month = db.potd.get('peaderboard_month');
-        let pea_entry_all, /*pea_entry_month,*/ pea_idx;
+        let peaderboard_month = db.potd.get('peaderboard_month');
+        let pea_entry_all, pea_entry_month, pea_idx;
         for (let i = 0; i < peaderboard_all.length; i++) {
             if (peaderboard_all[i][0] == chosenUser) {
                 pea_entry_all = peaderboard_all[i];
-                // pea_entry_month = peaderboard_month[i];
                 pea_idx = i;
                 break;
             }
         }
 
-        db.potd.set('peaderboard_all', [pea_entry_all[0], pea_entry_all[1] + 1], pea_idx);
-        //db.potd.set('peaderboard_month', [pea_entry_month[0], pea_entry_month[1] + 1], pea_idx);
+        for (let i = 0; i < peaderboard_month.length; i++) {
+            if (peaderboard_month[i][0] == chosenUser) {
+                pea_entry_month = peaderboard_month[i];
+                pea_idx = i;
+                break;
+            }
+        }
+
+        if (pea_entry_all != undefined) {
+            db.potd.set('peaderboard_all', [pea_entry_all[0], pea_entry_all[1] + 1], pea_idx);
+            db.potd.set('peaderboard_month', [pea_entry_month[0], pea_entry_month[1] + 1], pea_idx);
+        } else {
+            db.potd.push('peaderboard_all', [chosenUser, 1]);
+            db.potd.push('peaderboard_month', [chosenUser, 1]);
+        }
     }
 
     // NON-COMMAND CHECKS
-    if (message.channel.id == '1077464393018773616') {
+    if (message.channel.id == '802077628756525086') {
         if (db.potd.get('potd_message') == false && message.author.id == db.potd.get('current_potd')) {
             db.potd.set('potd_message', true);
-        } else {
+        } else if (db.potd.get('current_potd') == message.author.id) {
             message.delete();
         }
     }
@@ -163,7 +193,7 @@ client.on('messageCreate', async message => {
         message.react('<:pepehehe:784594747406286868>');
         const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
         console.log(`Deploying pepehehe at ${date}`);
-    } else if (Math.round(randomNumber(1, 100)) == 1 && message.channel.name != 'serious-events' && message.author.id ===db.potd.get('current_potd')) {
+    } else if (Math.round(randomNumber(1, 100)) == 1 && message.channel.name != 'serious-events' && message.author.id === db.potd.get('current_potd')) {
         message.react('<:pepehehe:784594747406286868>');
         const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
         console.log(`Deploying pepehehe at ${date}`);
