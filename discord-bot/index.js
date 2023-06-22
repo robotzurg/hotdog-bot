@@ -66,7 +66,7 @@ client.once('ready', async () => {
 });
 
 // Change avatar at 9:00am and set first pea of the day
-cron.schedule('00 9 * * *', () => { 
+cron.schedule('51 9 * * *', () => { 
     const ogrePick = ogreList[Math.floor(Math.random() * ogreList.length)];
     const myUserRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Hotdog Water Bot");
     client.user.setAvatar(ogrePick);
