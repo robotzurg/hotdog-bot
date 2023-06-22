@@ -66,7 +66,16 @@ client.once('ready', async () => {
 });
 
 // Change avatar at 9:00am and set first pea of the day
-cron.schedule('51 9 * * *', () => { 
+cron.schedule('00 9 * * *', async () => { 
+    let activityArray = Object.keys(db.potd.get('activity_tracker'));
+
+    for (let user of activityArray) {
+        db.potd.math('activity_tracker', '-', 1, `${user}`);
+    }
+
+    const channel = client.channels.cache.get('680864894006067263');
+    channel.send('Hello everyone! I\'m here to tell you all today\'s **Pea of the Day** which is...');
+
     const ogrePick = ogreList[Math.floor(Math.random() * ogreList.length)];
     const myUserRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Hotdog Water Bot");
     client.user.setAvatar(ogrePick);
@@ -83,16 +92,6 @@ cron.schedule('51 9 * * *', () => {
         case './Ogres/ogreSmug.png': myUserRole.setColor('#7E3BFF'); client.user.setActivity('live pea viewings', { type: 'STREAMING' }); break;
         case './Ogres/ogreSnow.png': myUserRole.setColor('#FFFFFF'); client.user.setActivity('with colddogs!', { type: 'PLAYING' }); break;
     }
-
-    let activityArray = db.potd.keyArray('activity_tracker');
-
-    for (let user of activityArray) {
-        db.potd.math('activity_tracker', '-', 1, `${user}`);
-    }
-
-    const channel = client.channels.cache.get('680864894006067263');
-    channel.send('Hello everyone! I\'m here to tell you all today\'s **Pea of the Day** which is...');
-    
 }, {
     scheduled: true,
 });
