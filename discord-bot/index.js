@@ -65,8 +65,8 @@ client.once('ready', async () => {
     console.log(date);
 });
 
-// Change avatar at 9:00am and set first pea of the day
-cron.schedule('00 9 * * *', async () => { 
+// Change avatar at 9:00am (MST) and set first pea of the day
+cron.schedule('00 16 * * *', async () => { 
     let activityArray = Object.keys(db.potd.get('activity_tracker'));
 
     for (let user of activityArray) {
@@ -97,7 +97,7 @@ cron.schedule('00 9 * * *', async () => {
 });
 
 // At 8am on the first of every month, reset the month peaderboard list
-cron.schedule('00 8 1 * *', () => { 
+cron.schedule('00 15 1 * *', () => { 
     let peaderboardList = db.potd.get('peaderboard_month');
     for (let i = 0; i < peaderboardList.length; i++) {
         peaderboardList[i][1] = 0;
