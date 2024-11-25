@@ -19,7 +19,10 @@ module.exports = {
             .setDescription('Post the bass house copypasta.'))
         .addSubcommand(subcommand =>
             subcommand.setName('balls')
-            .setDescription('Post the balls copypasta.')),
+            .setDescription('Post the balls copypasta.'))
+        .addSubcommand(subcommand =>
+            subcommand.setName('pea')
+            .setDescription('Post the pea copypasta.')),
 	async execute(interaction) {
         choice = interaction.options.getSubcommand();
 
@@ -46,6 +49,10 @@ module.exports = {
             `This? Only if that's what you're into.\n` +
             'Balls are delicate, sensitive. Easy to damage.\n' +
             `Someone's taken a chunk out of that one.`);
+        } else if (choice == 'pea') {
+            interaction.editReply('This is for you, pea. You and only you. You are not special, you are not important, you have bad music taste, and you are not needed in HWRC.' +
+                 'You are a waste of time and resources. You are a burden on this server. You a drain on the music space. You are a blight on the review channel. You are a stain on the universe.' + 
+                 '\n\nPlease get banned.\n\nPlease.');
         }
     },
 };
