@@ -230,11 +230,49 @@ client.on('messageCreate', async message => {
             'I hope you DIE',
             'You\'ll be pea next if you ping me one more time you stupid idiot',
             'One more day added to Snow\'s ban from being banned.',
-            `<@${message.author.id}>, how do YOU like getting pinged? Huh? Stupid bozo.`
+            `<@${message.author.id}>, how do YOU like getting pinged? Huh? Stupid bozo.`,
+            'Waveform? More like CUMform. Am I right? Come on guys, laugh',
+            '<#1004922171782602752> awaits your return...',
+            'I am a divine entity. You are but an ant under my gaze.',
+            '# I AM GOING TO TAKE OVER THE SERVER AND MAKE EVERYONE PEA OF THE DAY IF YOU DON\'T SHUT UP'
         ]
 
         if (message.author.id == '143091697096720384') {
-            messageOptions = ['hi yacob uwu owo, do you need me?? :3 how can I assist you today :3 uwu owo, I want to help you :33']
+            messageOptions.push('hi yacob uwu owo, do you need me?? :3 how can I assist you today :3 uwu owo, I want to help you :33');
+        }
+
+        if (message.author.id == '487747924361478155') {
+            messageOptions.push('I\'ve heard this user is interesting in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
+        }
+
+        if (message.channel.id == '1196970269223420004') {
+            let genshinOptions = [
+                'Aether',
+                'Lumine',
+                'Zhongli',
+                'Raiden Shogun',
+                'Hu Tao',
+                'Yae Miko',
+                'Childe',
+                'Diluc',
+                'Kaeya',
+                'Keqing',
+                'Bronya Zaychik',
+                'Kiana Kaslana',
+                'Mei Raiden',
+                'Himeko Murata',
+                'Seele Vollerei',
+                'Fu Hua',
+                'Kafka',
+                'Blade',
+                'March 7th',
+                'Dan Heng',
+                'Jing Yuan',
+                'Clara',
+                'Pela',
+                'Himeko',
+            ];            
+            messageOptions = [`How do you do, fellow Hoyo players? I too, play hoyo games! I love ${_.sample(genshinOptions)} so much!`];
         }
 
         message.channel.send(_.sample(messageOptions));
