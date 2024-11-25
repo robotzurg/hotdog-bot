@@ -282,7 +282,18 @@ client.on('messageCreate', async message => {
                 'Clara',
                 'Pela',
                 'Himeko',
-            ];            
+                'Anby Demara',
+                'Nicole Demara',
+                'Von Lycaon',
+                'Billy Kid',
+                'Nekomata',
+                'Ben Bigghands',
+                'Gentle House Chief',
+                'Belle',
+                'Unagi Nanami',
+                'Burnice',
+                'Aoko Kurosawa'
+            ];              
             messageOptions = [`How do you do, fellow Hoyo players? I too, play hoyo games! I love ${_.sample(genshinOptions)} so much!`];
         }
 
