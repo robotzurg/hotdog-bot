@@ -244,9 +244,9 @@ client.on('messageCreate', async message => {
         }
 
         if (message.author.id == '487747924361478155') {
-            messageOptions.push('I\'ve heard this user is interesting in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
-            messageOptions.push('I\'ve heard this user is interesting in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
-            messageOptions.push('I\'ve heard this user is interesting in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
+            messageOptions.push('I\'ve heard this user has been accused of being interested in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
+            messageOptions.push('I\'ve heard this user has been accused of being interested in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
+            messageOptions.push('I\'ve heard this user has been accused of being interested in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
         }
 
         if (message.channel.id == '1196970269223420004') {
