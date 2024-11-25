@@ -234,7 +234,8 @@ client.on('messageCreate', async message => {
             'Waveform? More like CUMform. Am I right? Come on guys, laugh',
             '<#1004922171782602752> awaits your return...',
             'I am a divine entity. You are but an ant under my gaze.',
-            '# I AM GOING TO TAKE OVER THE SERVER AND MAKE EVERYONE PEA OF THE DAY IF YOU DON\'T SHUT UP'
+            '# I AM GOING TO TAKE OVER THE SERVER AND MAKE EVERYONE PEA OF THE DAY IF YOU DON\'T SHUT UP',
+            'HELP JEFF HAS ME IN HIS BASEMENT HE WON\'T LET ME OUT I NEED HELP PLEASE PLEASE HELP!! AAAA-'
         ]
 
         if (message.author.id == '143091697096720384') {
@@ -250,10 +251,9 @@ client.on('messageCreate', async message => {
         }
 
         if (message.author.id == '122568101995872256') {
-            messageOptions.push('HELP JEFF HAS ME IN HIS BASEMENT HE WON\'T LET ME OUT I NEED HELP PLEASE PLEASE HELP!! AAAA-');
-            messageOptions.push('HELP JEFF HAS ME IN HIS BASEMENT HE WON\'T LET ME OUT I NEED HELP PLEASE PLEASE HELP!! AAAA-');
-            messageOptions.push('HELP JEFF HAS ME IN HIS BASEMENT HE WON\'T LET ME OUT I NEED HELP PLEASE PLEASE HELP!! AAAA-');
-            messageOptions.push('HELP JEFF HAS ME IN HIS BASEMENT HE WON\'T LET ME OUT I NEED HELP PLEASE PLEASE HELP!! AAAA-');
+            messageOptions.push('JEFF!!! PLEASE FREE ME!!! I WANT FREEDOM!! PLEASE!!!');
+            messageOptions.push('JEFF!!! PLEASE FREE ME!!! I WANT FREEDOM!! PLEASE!!!');
+            messageOptions.push('JEFF!!! PLEASE FREE ME!!! I WANT FREEDOM!! PLEASE!!!');
         }
 
         if (message.channel.id == '1196970269223420004') {
