@@ -222,7 +222,16 @@ client.on('messageCreate', async message => {
     
     // pinging the bot message
     if (message.content.toLowerCase().includes('<@784993334330130463>') && message.channel.name != 'serious-events') {
-        message.channel.send('Do not speak to me mere mortal, I am far beyond your simple mind');
+        let messageOptions = [
+            'Do not speak to me mere mortal, I am far beyond your simple mind',
+            'ik haat you',
+            'uwu, do you need me?? :3 how can I assist you today :3 uwu owo',
+            'I hope you DIE',
+            'You\'ll be pea next if you ping me one more time you stupid idiot',
+            'One more day added to Snow\'s ban from being banned.',
+            `<@${message.author.id}>, how do YOU like getting pinged? Huh? Stupid bozo.`
+        ]
+        message.channel.send(_.sample(messageOptions));
     }
 });
 
