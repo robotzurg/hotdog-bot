@@ -7,6 +7,7 @@ const db = require("./db.js");
 const cron = require('node-cron');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
+const _ = require('lodash');
 
 // Set up random number function
 function randomNumber(min, max) {  
