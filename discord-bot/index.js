@@ -232,6 +232,11 @@ client.on('messageCreate', async message => {
             'One more day added to Snow\'s ban from being banned.',
             `<@${message.author.id}>, how do YOU like getting pinged? Huh? Stupid bozo.`
         ]
+
+        if (message.author.id == '143091697096720384') {
+            messageOptions = ['hi yacob uwu owo, do you need me?? :3 how can I assist you today :3 uwu owo, I want to help you :33']
+        }
+
         message.channel.send(_.sample(messageOptions));
     }
 });
