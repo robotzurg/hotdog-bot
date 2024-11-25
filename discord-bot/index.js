@@ -244,12 +244,6 @@ client.on('messageCreate', async message => {
             messageOptions.push('hi yacob uwu owo, do you need me?? :3 how can I assist you today :3 uwu owo, I want to help you :33');
         }
 
-        if (message.author.id == '487747924361478155') {
-            messageOptions.push('I\'ve heard this user has been accused of being interested in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
-            messageOptions.push('I\'ve heard this user has been accused of being interested in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
-            messageOptions.push('I\'ve heard this user has been accused of being interested in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
-        }
-
         if (message.author.id == '122568101995872256') {
             messageOptions.push('JEFF!!! PLEASE FREE ME!!! I WANT FREEDOM!! PLEASE!!!');
             messageOptions.push('JEFF!!! PLEASE FREE ME!!! I WANT FREEDOM!! PLEASE!!!');
