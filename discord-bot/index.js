@@ -249,6 +249,13 @@ client.on('messageCreate', async message => {
             messageOptions.push('I\'ve heard this user has been accused of being interested in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
         }
 
+        if (message.author.id == '122568101995872256') {
+            messageOptions.push('HELP JEFF HAS ME IN HIS BASEMENT HE WON\'T LET ME OUT I NEED HELP PLEASE PLEASE HELP!! AAAA-');
+            messageOptions.push('HELP JEFF HAS ME IN HIS BASEMENT HE WON\'T LET ME OUT I NEED HELP PLEASE PLEASE HELP!! AAAA-');
+            messageOptions.push('HELP JEFF HAS ME IN HIS BASEMENT HE WON\'T LET ME OUT I NEED HELP PLEASE PLEASE HELP!! AAAA-');
+            messageOptions.push('HELP JEFF HAS ME IN HIS BASEMENT HE WON\'T LET ME OUT I NEED HELP PLEASE PLEASE HELP!! AAAA-');
+        }
+
         if (message.channel.id == '1196970269223420004') {
             let genshinOptions = [
                 'Aether',
