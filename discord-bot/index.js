@@ -239,9 +239,13 @@ client.on('messageCreate', async message => {
 
         if (message.author.id == '143091697096720384') {
             messageOptions.push('hi yacob uwu owo, do you need me?? :3 how can I assist you today :3 uwu owo, I want to help you :33');
+            messageOptions.push('hi yacob uwu owo, do you need me?? :3 how can I assist you today :3 uwu owo, I want to help you :33');
+            messageOptions.push('hi yacob uwu owo, do you need me?? :3 how can I assist you today :3 uwu owo, I want to help you :33');
         }
 
         if (message.author.id == '487747924361478155') {
+            messageOptions.push('I\'ve heard this user is interesting in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
+            messageOptions.push('I\'ve heard this user is interesting in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
             messageOptions.push('I\'ve heard this user is interesting in a certain department... perhaps in the lower area... could you tell me more about such a thing?');
         }
 
