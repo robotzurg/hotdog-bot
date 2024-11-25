@@ -287,13 +287,30 @@ client.on('messageCreate', async message => {
                 'Von Lycaon',
                 'Billy Kid',
                 'Nekomata',
-                'Ben Bigghands',
-                'Gentle House Chief',
+                'Ben Bigger',
+                'Bangboo',
                 'Belle',
-                'Unagi Nanami',
+                'Acheron',
                 'Burnice',
-                'Aoko Kurosawa'
-            ];              
+                'Yae Miko',
+                'Thoma',
+                'Stelle',
+                'Sparkle',
+                'Ellen Joe',
+                'Tingyun',
+                'Kevin Kaslana',
+                'Feixiao',
+                'Numby',
+                'Guoba',
+                'Xiangling',
+                'Herta',
+                'Tighnari',
+                'Furina',
+                'Neuvalette',
+                'Arlecchino',
+                'John Genshin',
+                'Frank Honkai',
+            ];    
             messageOptions = [`How do you do, fellow Hoyo players? I too, play hoyo games! I love ${_.sample(genshinOptions)} so much!`];
         }
 
