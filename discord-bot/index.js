@@ -1,18 +1,16 @@
-// require the discord.js module
 const fs = require('fs');
 const Discord = require('discord.js');
 const { token } = require('./config.json');
-const { ogreList } = require('./arrays.json');
 const db = require("./db.js");
 const cron = require('node-cron');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const _ = require('lodash');
 
-// Set up random number function
-function randomNumber(min, max) {  
-    return Math.random() * (max - min) + min; 
-}  
+const ogreList = [
+    "./Ogres/ogreGold.png", "./Ogres/ogreHappy.png", "./Ogres/ogreMad.png", "./Ogres/ogreSad.png", "./Ogres/ogreSmug.png", "./Ogres/ogreSnow.png",
+    "./Ogres/girlGold.png", "./Ogres/girlHappy.jpg", "./Ogres/girlMad.jpg", "./Ogres/girlSad.jpg", "./Ogres/girlSmug.jpg"
+]
 
 // create a new Discord client and give it some variables
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
@@ -20,7 +18,6 @@ const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, 
     GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent], partials: [Partials.Channel, Partials.Message, Partials.Reaction] });
 client.commands = new Discord.Collection();
-client.cooldowns = new Discord.Collection();
 const registerCommands = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -48,7 +45,7 @@ const rest = new REST({ version: '9' }).setToken(token);
 		console.log('Started refreshing application (/) commands.');
 
 		await rest.put(
-			Routes.applicationGuildCommands(mainClientId, mainGuildId),
+			Routes.applicationCommands(mainClientId),
 			{ body: registerCommands },
 		);
 
@@ -114,7 +111,6 @@ cron.schedule('00 15 1 * *', () => {
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
     const command = client.commands.get(interaction.commandName);
-    await interaction.deferReply();
     try {
         await command.execute(interaction, client);
     } catch (error) {
@@ -190,125 +186,123 @@ client.on('messageCreate', async message => {
     // activity tracker (for potd)
     db.potd.set("activity_tracker", 14, message.author.id);
 
-    // pepehehe deployment
-    if (Math.round(randomNumber(1, 500)) == 1 && message.channel.name != 'serious-events' && message.author.id != db.potd.get('current_potd')) {
-        message.react('<:pepehehe:784594747406286868>');
-        const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
-        console.log(`Deploying pepehehe at ${date}`);
-    } else if (Math.round(randomNumber(1, 100)) == 1 && message.channel.name != 'serious-events' && message.author.id === db.potd.get('current_potd')) {
-        message.react('<:pepehehe:784594747406286868>');
-        const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
-        console.log(`Deploying pepehehe at ${date}`);
-    }
+    // Don't do any of these in the vent channel
+    if (message.channel.id != '1275932134116298802') {
 
-    // wth pepehehe reaction
-    if (message.content.toLowerCase().includes('wth') && message.content.length <= 4 && message.channel.name != 'serious-events') {
-        message.react('<:pepehehe:784594747406286868>');
-    }
-
-    // craig reaction
-    if (message.content.toLowerCase().includes('craig') && message.channel.name != 'serious-events') {
-        message.react('<:craig:714689464760533092>');
-    }
-
-    // friday we ball reaction
-    if (message.content.toLowerCase().includes('friday 🏀 we ball') && message.channel.name != 'serious-events') {
-        message.react('🏀');
-    }
-    
-    // i love you all reaction
-    if (message.content.toLowerCase().includes('i love you all') && message.channel.name != 'serious-events') {
-        message.react('❤️');
-    }
-    
-    // pinging the bot message
-    if (message.content.toLowerCase().includes('<@784993334330130463>') && message.channel.name != 'serious-events') {
-        let messageOptions = [
-            'Do not speak to me mere mortal, I am far beyond your simple mind',
-            'ik haat you',
-            'uwu, do you need me?? :3 how can I assist you today :3 uwu owo',
-            'I hope you DIE',
-            'You\'ll be pea next if you ping me one more time you stupid idiot',
-            'One more day added to Snow\'s ban from being banned.',
-            `<@${message.author.id}>, how do YOU like getting pinged? Huh? Stupid bozo.`,
-            'Waveform? More like CUMform. Am I right? Come on guys, laugh',
-            '<#1004922171782602752> awaits your return...',
-            'I am a divine entity. You are but an ant under my gaze.',
-            '# I AM GOING TO TAKE OVER THE SERVER AND MAKE EVERYONE PEA OF THE DAY IF YOU DON\'T SHUT UP',
-            'HELP JEFF HAS ME IN HIS BASEMENT HE WON\'T LET ME OUT I NEED HELP PLEASE PLEASE HELP!! AAAA-'
-        ]
-
-        if (message.author.id == '143091697096720384') {
-            messageOptions.push('hi yacob uwu owo, do you need me?? :3 how can I assist you today :3 uwu owo, I want to help you :33');
-            messageOptions.push('hi yacob uwu owo, do you need me?? :3 how can I assist you today :3 uwu owo, I want to help you :33');
-            messageOptions.push('hi yacob uwu owo, do you need me?? :3 how can I assist you today :3 uwu owo, I want to help you :33');
+        // pepehehe deployment
+        if (Math.round(_.random(1, 500)) == 1 && message.author.id != db.potd.get('current_potd')) {
+            message.react('<:pepehehe:784594747406286868>');
+            const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
+            console.log(`Deploying pepehehe at ${date}`);
+        } else if (Math.round(_.random(1, 100)) == 1 && message.author.id === db.potd.get('current_potd')) {
+            message.react('<:pepehehe:784594747406286868>');
+            const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
+            console.log(`Deploying pepehehe at ${date}`);
         }
 
-        if (message.author.id == '122568101995872256') {
-            messageOptions.push('JEFF!!! PLEASE FREE ME!!! I WANT FREEDOM!! PLEASE!!!');
-            messageOptions.push('JEFF!!! PLEASE FREE ME!!! I WANT FREEDOM!! PLEASE!!!');
-            messageOptions.push('JEFF!!! PLEASE FREE ME!!! I WANT FREEDOM!! PLEASE!!!');
+        // wth pepehehe reaction
+        if (message.content.toLowerCase().includes('wth') && message.content.length <= 4) {
+            message.react('<:pepehehe:784594747406286868>');
         }
 
-        if (message.channel.id == '1196970269223420004') {
-            let genshinOptions = [
-                'Aether',
-                'Lumine',
-                'Zhongli',
-                'Raiden Shogun',
-                'Hu Tao',
-                'Yae Miko',
-                'Childe',
-                'Diluc',
-                'Kaeya',
-                'Keqing',
-                'Bronya Zaychik',
-                'Kiana Kaslana',
-                'Mei Raiden',
-                'Himeko Murata',
-                'Seele Vollerei',
-                'Fu Hua',
-                'Kafka',
-                'Blade',
-                'March 7th',
-                'Dan Heng',
-                'Jing Yuan',
-                'Clara',
-                'Pela',
-                'Himeko',
-                'Anby Demara',
-                'Nicole Demara',
-                'Von Lycaon',
-                'Billy Kid',
-                'Nekomata',
-                'Ben Bigger',
-                'Bangboo',
-                'Belle',
-                'Acheron',
-                'Burnice',
-                'Yae Miko',
-                'Thoma',
-                'Stelle',
-                'Sparkle',
-                'Ellen Joe',
-                'Tingyun',
-                'Kevin Kaslana',
-                'Feixiao',
-                'Numby',
-                'Guoba',
-                'Xiangling',
-                'Herta',
-                'Tighnari',
-                'Furina',
-                'Neuvalette',
-                'Arlecchino',
-                'John Genshin',
-                'Frank Honkai',
-            ];    
-            messageOptions = [`How do you do, fellow Hoyo players? I too, play hoyo games! I love ${_.sample(genshinOptions)} so much!`];
+        // craig reaction
+        if (message.content.toLowerCase().includes('craig')) {
+            message.react('<:craig:714689464760533092>');
         }
 
-        message.channel.send(_.sample(messageOptions));
+        // friday we ball reaction
+        if (message.content.toLowerCase().includes('friday 🏀 we ball')) {
+            message.react('🏀');
+        }
+        
+        // i love you all reaction
+        if (message.content.toLowerCase().includes('i love you all')) {
+            message.react('❤️');
+        }
+        
+        // pinging the bot message
+        if (message.content.includes('<@784993334330130463>')) {
+            let messageOptions = [
+                'Do not speak to me mere mortal, I am far beyond your simple mind',
+                'ik haat you',
+                'uwu, do you need me?? :3 how can I assist you today :3 uwu owo',
+                'I hope you DIE',
+                'You\'ll be pea next if you ping me one more time you stupid idiot',
+                'One more day added to Snow\'s ban from being banned.',
+                `<@${message.author.id}>, how do YOU like getting pinged? Huh? Stupid bozo.`,
+                'Waveform? More like CUMform. Am I right? Come on guys, laugh',
+                '<#1004922171782602752> awaits your return...',
+                'I am a divine entity. You are but an ant under my gaze.',
+                '# I AM GOING TO TAKE OVER THE SERVER AND MAKE EVERYONE PEA OF THE DAY IF YOU DON\'T SHUT UP',
+                'HELP JEFF HAS ME IN HIS BASEMENT HE WON\'T LET ME OUT I NEED HELP PLEASE PLEASE HELP!! AAAA-'
+            ]
+            
+            if (message.author.id == '122568101995872256') {
+                messageOptions.push('JEFF!!! PLEASE FREE ME!!! I WANT FREEDOM!! PLEASE!!!');
+                messageOptions.push('JEFF!!! PLEASE FREE ME!!! I WANT FREEDOM!! PLEASE!!!');
+                messageOptions.push('JEFF!!! PLEASE FREE ME!!! I WANT FREEDOM!! PLEASE!!!');
+            }
+
+            if (message.channel.id == '1196970269223420004') {
+                let genshinOptions = [
+                    'Aether',
+                    'Lumine',
+                    'Zhongli',
+                    'Raiden Shogun',
+                    'Hu Tao',
+                    'Yae Miko',
+                    'Childe',
+                    'Diluc',
+                    'Kaeya',
+                    'Keqing',
+                    'Bronya Zaychik',
+                    'Kiana Kaslana',
+                    'Mei Raiden',
+                    'Himeko Murata',
+                    'Seele Vollerei',
+                    'Fu Hua',
+                    'Kafka',
+                    'Blade',
+                    'March 7th',
+                    'Dan Heng',
+                    'Jing Yuan',
+                    'Clara',
+                    'Pela',
+                    'Himeko',
+                    'Anby Demara',
+                    'Nicole Demara',
+                    'Von Lycaon',
+                    'Billy Kid',
+                    'Nekomata',
+                    'Ben Bigger',
+                    'Bangboo',
+                    'Belle',
+                    'Acheron',
+                    'Burnice',
+                    'Yae Miko',
+                    'Thoma',
+                    'Stelle',
+                    'Sparkle',
+                    'Ellen Joe',
+                    'Tingyun',
+                    'Kevin Kaslana',
+                    'Feixiao',
+                    'Numby',
+                    'Guoba',
+                    'Xiangling',
+                    'Herta',
+                    'Tighnari',
+                    'Furina',
+                    'Neuvalette',
+                    'Arlecchino',
+                    'John Genshin',
+                    'Frank Honkai',
+                ];    
+                messageOptions = [`How do you do, fellow Hoyo players? I too, play hoyo games! I love ${_.sample(genshinOptions)} so much!`];
+            }
+
+            message.channel.send(_.sample(messageOptions));
+        }
     }
 });
 

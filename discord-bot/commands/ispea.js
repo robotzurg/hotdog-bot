@@ -36,13 +36,12 @@ module.exports = {
             '<:peepoLurk:1064997406409764945>'
         ];
 
-        let pick;
         if (taggedMember != db.potd.get('current_potd')) {
-            pick = responses[Math.floor(Math.random() * responses.length)];
-            interaction.editReply(`<@${taggedMember.id}> is ${pick}`);
+            let pick = responses[Math.floor(Math.random() * responses.length)];
+            interaction.reply(`<@${taggedMember.id}> is ${pick}`);
         } else {
-            pick = `This user... <@${taggedMember.id}>... They've gone beyond simply being pea...\nThey've become pea of the day.`;
-            interaction.editReply(`${pick}`);
+            let pick = `This user... <@${taggedMember.id}>... They've gone beyond simply being pea...\nThey've become pea of the day.`;
+            interaction.reply(`${pick}`);
         }
     },
 };
