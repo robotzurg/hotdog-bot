@@ -125,17 +125,31 @@ client.on('messageCreate', async message => {
     // Set pea of the day
     if (message.author.id === '784993334330130463' && message.content.includes('here to tell you all')) {
         const previousUser = db.potd.get('current_potd');
-        const guild = await client.guilds.fetch(mainGuildId)
-        const members = await guild.members.fetch();
 
-        let memberIDList = members.map(v => v.user.id);
-        memberIDList = memberIDList.filter(v => v != '828651073136361472') // Waveform
-        memberIDList = memberIDList.filter(v => v != '537353774205894676') // Chuu
-        memberIDList = memberIDList.filter(v => v != '784993334330130463') // Hotdog Water Bot
-        activity_list = db.potd.get('activity_tracker');
-        for (let user in activity_list) {
-            if (activity_list[user] <= 0) memberIDList = memberIDList.filter(v => v != user);
-        }
+        let memberIDList = [
+            '506576587903336453',
+            '487747924361478155',
+            '229617545651552256',
+            '156110247004471296',
+            '289178868118716416',
+            '398369363784368128',
+            '103502445014949888',
+            '341299011971448835',
+            '1077358457184845864',
+            '269546196723302409',
+            '166644275793100801',
+            '221006870129803264',
+            '143091697096720384',
+            '331821722594443274',
+            '449314134387982347',
+            '331639497454256130',
+            '129721859783524352',
+            '734123244868862052',
+            '221087833534889994',
+            '229249397203009536',
+            '218378075413413889',
+            '122568101995872256'
+        ]
 
         const chosenUser = memberIDList[Math.floor(Math.random() * memberIDList.length)];
         const myRole = client.guilds.cache.find(guild => guild.id === mainGuildId).roles.cache.find(role => role.name === "Pea of the Day");
@@ -182,9 +196,6 @@ client.on('messageCreate', async message => {
             message.delete();
         }
     }
-
-    // activity tracker (for potd)
-    db.potd.set("activity_tracker", 14, message.author.id);
 
     // Don't do any of these in the vent channel
     if (message.channel.id != '1275932134116298802') {
