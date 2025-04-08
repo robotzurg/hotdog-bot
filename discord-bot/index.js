@@ -447,13 +447,14 @@ client.on('messageCreate', async message => {
                     `How do you do, fellow Hoyo players? I too, play hoyo games! I love ${_.sample(genshinOptions)} so much!`,
                     `Hey Hoyo players, I'm personally pretty indifferent to ${_.sample(genshinOptions)} myself. Meh.`,
                     `I SWEAR if I don't pull ${_.sample(genshinOptions)} soon, I'm gonna CRASH OUT`,
-                    `Maybe Jeff will finally play Genshin if he sees ${_.sample(genshinOptions)}. Maybe.`,
+                    `Maybe Jeff will finally play a gacha game if he sees ${_.sample(genshinOptions)}. Maybe.`,
                     `## I HATE ${_.sample(genshinOptions)} SO MUCH I HATE THEM SO MUCH THEY SHOULD BE REMOVED FROM THE GAME`,
                     `Honestly, my favorite Hoyoverse character right now is ${_.sample(genshinOptions)}. They just speak to me.`,
                     `I use the META. ${_.sample(genshinOptions)}.`,
                     `I'm gonna play a guessing game... I think ${_.sample(genshinOptions)} is from ${_.sample(gameOptions)}. I'm such an expert that obviously I'm right.`,
                     `# I'M GOONING TO ${_.sample(hornyOptions)}!!!!`,
-                    `${_.sample([hornyOptions, marryOptions].flat(1))} is my waifu and/or husbando. You think I pay attention to these characters enough to know the difference? All I know is that I love them.`
+                    `${_.sample([hornyOptions, marryOptions].flat(1))} is my waifu.`,
+                    `I am not a fan of ${_.sample(genshinOptions)}. They did some really evil stuff...`
                 ];
             }
 
