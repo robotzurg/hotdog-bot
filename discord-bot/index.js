@@ -261,6 +261,12 @@ client.on('messageCreate', async message => {
                 messageOptions.push('JEFF!!! PLEASE FREE ME!!! I WANT FREEDOM!! PLEASE!!!');
             }
 
+            if (message.content.toLowerCase().includes("moron")) {
+                messageOptions = [
+                    '# I AM NOT A MORON!'
+                ]
+            }
+
             if (message.channel.id == '1196970269223420004') {
                 let genshinOptions = [
                     'Aether',
@@ -452,7 +458,7 @@ client.on('messageCreate', async message => {
                     `Honestly, my favorite Hoyoverse character right now is ${_.sample(genshinOptions)}. They just speak to me.`,
                     `I use the META. ${_.sample(genshinOptions)}.`,
                     `I'm gonna play a guessing game... I think ${_.sample(genshinOptions)} is from ${_.sample(gameOptions)}. I'm such an expert that obviously I'm right.`,
-                    `# I'M GOONING TO ${_.sample(hornyOptions)}!!!!`,
+                    `# I'M GOONING TO ${(_.sample(hornyOptions))}!!!!`,
                     `${_.sample([hornyOptions, marryOptions].flat(1))} is my waifu.`,
                     `I am not a fan of ${_.sample(genshinOptions)}. They did some really evil stuff...`
                 ];
