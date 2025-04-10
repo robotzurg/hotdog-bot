@@ -148,7 +148,8 @@ client.on('messageCreate', async message => {
             '221087833534889994',
             '229249397203009536',
             '218378075413413889',
-            '122568101995872256'
+            '122568101995872256',
+            '453657637733531680'
         ]
 
         const chosenUser = memberIDList[Math.floor(Math.random() * memberIDList.length)];
