@@ -268,6 +268,18 @@ client.on('messageCreate', async message => {
                 ]
             }
 
+            if (message.content.toLowerCase().includes("blithering idiot") || message.content.toLowerCase().includes("infantile pillock") || message.content.toLowerCase().includes("maniac")) {
+                messageOptions = [
+                    "It's time for the smug face",
+                    "Sometimes my genius... It's almost frightening",
+                    "Oh crikey it's the Albanian rozzers!",
+                    "THAT'S MY LINE! THATS WHAT I WANTED TO SAY!",
+                    "# CLARKSOOOOOOOOOOOOOOOOON!",
+                    "Everybody is very fat, everybody is very stupid, and everybody is very rude.",
+                    "MAY! YOU'RE GONNA DIE! I'M GOING TO FEED YOU TO YOUR OWN MACHINE!"
+                ]
+            }
+
             if (message.channel.id == '1196970269223420004') {
                 let genshinOptions = [
                     'Aether',
