@@ -236,7 +236,7 @@ client.on('messageCreate', async message => {
         if (message.content.includes('<@784993334330130463>')) {
             let messageOptions = [
                 'Do not speak to me mere mortal, I am far beyond your simple mind',
-                'ik haat you',
+                'ik haat jou',
                 'uwu, do you need me?? :3 how can I assist you today :3 uwu owo',
                 'I hope you DIE',
                 'You\'ll be pea next if you ping me one more time you stupid idiot',
@@ -252,7 +252,7 @@ client.on('messageCreate', async message => {
                 'Hoyoverse games are kinda scary... I\'m afraid of going in there. The hoyoversers scare me.',
                 'Any musicers in chat?',
                 'The mailboxes loom untouched... mailbox activity when!!',
-                'ik hou van you',
+                'ik hou van jou',
                 'I love you, and I hope you have a good day <3'
             ]
             
