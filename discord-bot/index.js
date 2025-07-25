@@ -280,7 +280,7 @@ client.on('messageCreate', async message => {
                 ]
             }
 
-            if (message.channel.id == '1196970269223420004') {
+            if (message.channel.id == '1395455375808921630') {
                 let genshinOptions = [
                     'Aether',
                     'Lumine',
