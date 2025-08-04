@@ -281,7 +281,7 @@ client.on('messageCreate', async message => {
             }
 
             if (message.channel.id == '1395455375808921630') {
-                let genshinOptions = [
+               let genshinOptions = [
                     'Aether',
                     'Lumine',
                     'Varesa',
@@ -418,7 +418,44 @@ client.on('messageCreate', async message => {
                     'Youhu',
                     'Capitano',
                     'Jeht',
-                    'Siobhan'
+                    'Siobhan',
+                    'Cacucu',
+                    'Goose',
+                    'Ifa',
+                    'Escoffier',
+                    'Dahlia',
+                    'Columbina',
+                    'Alice',
+                    'Flins',
+                    'Jahoda',
+                    'Durin',
+                    'Sandrone',
+                    'Nicole',
+                    'Aino',
+                    'Archer',
+                    'Phainon',
+                    'Saber',
+                    'Anaxagoras',
+                    'Castorice',
+                    'Tribbie',
+                    'Cerydra',
+                    'Yuzuha',
+                    'Hugo',
+                    'Ju Fufu',
+                    'Yi Xuan',
+                    'Pan Yinhu',
+                    'Alice',
+                    'Orphie',
+                    'Magus',
+                    'Seed Sr.',
+                    'Seed Jr.',
+                    'Cartethyia',
+                    'Ciaccona',
+                    'Phrolova',
+                    'Chisa',
+                    'Qiuyuan',
+                    'Galbrena',
+                    'Augusta'
                 ];
 
                 let gameOptions = [
@@ -426,8 +463,8 @@ client.on('messageCreate', async message => {
                     'Wuthering Waves',
                     'Honkai Impact 3rd',
                     'Genshin Impact',
-                    'Honkai Star Rail'
-                ]
+                    'Honkai Star Rail',
+                ];
 
                 let hornyOptions = [
                     'Chiori',
@@ -451,16 +488,33 @@ client.on('messageCreate', async message => {
                     'Jane Doe',
                     'Yanagi',
                     'Changli',
-                    'Ajaw'
-                ]
-
+                    'Ajaw',
+                    'Cacucu',
+                    'Goose',
+                    'Skirk',
+                    'Lauma',
+                    'Nefer',
+                    'Varka',
+                    'Cipher',
+                    'Hysilens',
+                    'Vivian',
+                    'Cantarella',
+                    'Fleurdelys',
+                    'Zani',
+                    'Iuno'
+                ];
                 let marryOptions = [
                     'Furina',
                     'Yoimiya',
                     'Amber',
                     'Collei',
-                    'Layla'
-                ]
+                    'Layla',
+                    'Cacucu',
+                    'Goose',
+                    'Hyacine',
+                    'Lupa',
+                    'Zani'
+                ];
     
                 messageOptions = [
                     `How do you do, fellow Hoyo players? I too, play hoyo games! I love ${_.sample(genshinOptions)} so much!`,
@@ -473,7 +527,9 @@ client.on('messageCreate', async message => {
                     `I'm gonna play a guessing game... I think ${_.sample(genshinOptions)} is from ${_.sample(gameOptions)}. I'm such an expert that obviously I'm right.`,
                     `# I'M GOONING TO ${(_.sample(hornyOptions)).toUpperCase()}!!!!`,
                     `${_.sample([hornyOptions, marryOptions].flat(1))} is my waifu.`,
-                    `I am not a fan of ${_.sample(genshinOptions)}. They did some really evil stuff...`
+                    `I am not a fan of ${_.sample(genshinOptions)}. They did some really evil stuff...`,
+                    `They should add ${_.sample(genshinOptions)} into ${_.sample(gameOptions)}! They would be a fire addition!`,
+                    `Did you know? ${_.sample(genshinOptions)} is going to be a major part of the meta next update. Just watch.`
                 ];
             }
 
