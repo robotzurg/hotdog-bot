@@ -200,10 +200,10 @@ client.on('messageCreate', async message => {
 
             if (unit === "F") {
                 const celsius = ((value - 32) * 5) / 9;
-                message.reply(`${value}°F is about ${celsius.toFixed(1)}°C`);
+                message.reply({ content: `${value}°F is ${celsius.toFixed(1)}°C`, allowedMentions: { repliedUser: false } });
             } else if (unit === "C") {
                 const fahrenheit = (value * 9) / 5 + 32;
-                message.reply(`${value}°C is about ${fahrenheit.toFixed(1)}°F`);
+                message.reply({ content: `${value}°C is ${fahrenheit.toFixed(1)}°F`, allowedMentions: { repliedUser: false } });
             }
         }
     }
