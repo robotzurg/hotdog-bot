@@ -190,7 +190,7 @@ client.on('messageCreate', async message => {
     }
 
     // NON-COMMAND CHECKS
-    if (message.content) {
+    if (message.content && message.author.id != client.id) {
         const regex = /\b(-?\d+(?:\.\d+)?)\s*(?:°?\s*(F|C)|fahrenheit|celsius)\b/i;
         const match = message.content.match(regex);
 
