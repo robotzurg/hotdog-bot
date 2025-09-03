@@ -190,6 +190,25 @@ client.on('messageCreate', async message => {
     }
 
     // NON-COMMAND CHECKS
+    if (message.content) {
+        const regex = /\b(-?\d+(?:\.\d+)?)\s*(?:°?\s*(F|C)|fahrenheit|celsius)\b/i;
+        const match = message.content.match(regex);
+
+        if (match) {
+            const value = parseFloat(match[1]);
+            const unit = match[2]?.toUpperCase() || (match[0].toLowerCase().includes("fahrenheit") ? "F" : "C");
+
+            if (unit === "F") {
+                const celsius = ((value - 32) * 5) / 9;
+                message.reply(`${value}°F is about ${celsius.toFixed(1)}°C`);
+            } else if (unit === "C") {
+                const fahrenheit = (value * 9) / 5 + 32;
+                message.reply(`${value}°C is about ${fahrenheit.toFixed(1)}°F`);
+            }
+        }
+    }
+
+
     if (message.channel.id == '802077628756525086') {
         if (db.potd.get('potd_message') == false && message.author.id == db.potd.get('current_potd')) {
             db.potd.set('potd_message', true);
