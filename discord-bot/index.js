@@ -191,14 +191,14 @@ client.on('messageCreate', async message => {
 
     // NON-COMMAND CHECKS
     if (message.content && message.author.id != '784993334330130463') {
-        const regex = /\b(-?\d+(?:\.\d+)?)\s*(?:°?\s*(F|C)|fahrenheit|celsius)\b/i;
+        const regex = /(-?\d+(?:\.\d+)?)\s*(?:°?\s*(F|C)|fahrenheit|celsius)\b/i;
         const match = message.content.match(regex);
 
         if (match) {
             const value = parseFloat(match[1]);
             const unit = match[2]?.toUpperCase() || (match[0].toLowerCase().includes("fahrenheit") ? "F" : "C");
 
-            if (value < 1000) {
+            if (Math.abs(value) < 1000) {
                 if (unit === "F") {
                     const celsius = ((value - 32) * 5) / 9;
                     message.reply({ content: `${celsius.toFixed(1)}°C`, allowedMentions: { repliedUser: false } });
