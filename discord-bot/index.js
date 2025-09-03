@@ -198,12 +198,14 @@ client.on('messageCreate', async message => {
             const value = parseFloat(match[1]);
             const unit = match[2]?.toUpperCase() || (match[0].toLowerCase().includes("fahrenheit") ? "F" : "C");
 
-            if (unit === "F") {
-                const celsius = ((value - 32) * 5) / 9;
-                message.reply({ content: `${value}°F is ${celsius.toFixed(1)}°C`, allowedMentions: { repliedUser: false } });
-            } else if (unit === "C") {
-                const fahrenheit = (value * 9) / 5 + 32;
-                message.reply({ content: `${value}°C is ${fahrenheit.toFixed(1)}°F`, allowedMentions: { repliedUser: false } });
+            if (value < 1000) {
+                if (unit === "F") {
+                    const celsius = ((value - 32) * 5) / 9;
+                    message.reply({ content: `${celsius.toFixed(1)}°C`, allowedMentions: { repliedUser: false } });
+                } else if (unit === "C") {
+                    const fahrenheit = (value * 9) / 5 + 32;
+                    message.reply({ content: `${fahrenheit.toFixed(1)}°F`, allowedMentions: { repliedUser: false } });
+                }
             }
         }
     }
