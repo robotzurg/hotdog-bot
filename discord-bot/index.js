@@ -127,7 +127,7 @@ client.on('messageCreate', async message => {
         const previousUser = db.potd.get('current_potd');
 
         let memberIDList = [
-            '506576587903336453',
+            '401519380946616323',
             '487747924361478155',
             '229617545651552256',
             '156110247004471296',
