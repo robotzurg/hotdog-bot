@@ -265,7 +265,7 @@ client.on('messageCreate', async message => {
                 'Maybe! Who knows?  I am just a bot, what do you expect from me?'
             ];
 
-            message.reply(_.sample(messageOptions));
+            message.reply({ content: _.sample(messageOptions), allowedMentions: { repliedUser: false } });
         }
         
         // pinging the bot message
