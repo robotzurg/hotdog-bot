@@ -303,6 +303,21 @@ client.on('messageCreate', async message => {
                 ]
             }
 
+            if (message.content.startsWith('!ask')) {
+                const messageOptions = [
+                    'Survey says... no, probably not.',
+                    'Obviously yes, do you even need to ask?',
+                    'Very possible... very possible indeed... perhaps consult with yul...',
+                    'If you become pea tomorrow, your chances look good.',
+                    'Absolutely NOT. The world would explode before that.',
+                    'You should DIE for even asking that question, NO.',
+                    'Perchance.',
+                    'Maybe! Who knows?  I am just a bot, what do you expect from me?'
+                ];
+
+                message.reply(`${_.sample(messageOptions)}`);
+            }
+
             if (message.channel.id == '1395455375808921630') {
                let genshinOptions = [
                     'Aether',
