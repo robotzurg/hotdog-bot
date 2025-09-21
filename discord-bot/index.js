@@ -556,7 +556,7 @@ client.on('messageCreate', async message => {
                 ];
             }
 
-            if (message.content.startsWith('!ask')) {
+            if (message.content.includes('!ask')) {
                 messageOptions = [
                     'Survey says... no, probably not.',
                     'Obviously yes, do you even need to ask?',
