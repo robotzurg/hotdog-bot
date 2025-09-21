@@ -191,7 +191,7 @@ client.on('messageCreate', async message => {
 
     // NON-COMMAND CHECKS
     if (message.content && message.author.id != '784993334330130463') {
-        const regex = /(-?\d+(?:\.\d+)?)\s*(?:°?\s*(F|C)|fahrenheit|celsius)\b/i;
+        const regex = /(?<!https?:\/\/[^\s]*)(?<!\w\.)\b(-?\d+(?:\.\d+)?)\s*(?:°?\s*(F|C)|fahrenheit|celsius)\b/i;
         const match = message.content.match(regex);
 
         if (match) {
@@ -272,9 +272,11 @@ client.on('messageCreate', async message => {
                 'Did you need something? I\'m kinda busy...',
                 'Hoyoverse games are kinda scary... I\'m afraid of going in there. The hoyoversers scare me.',
                 'Any musicers in chat?',
-                'The mailboxes loom untouched... mailbox activity when!!',
                 'ik hou van jou',
-                'I love you, and I hope you have a good day <3'
+                'I love you, and I hope you have a good day <3',
+                `<@${message.author.id}>, I pronounce you... dead to me. Disappear.`,
+                `That really sounds like something Xy would say, ngl...`,
+                `<:peeposmile:1150595720416600074>`
             ]
             
             if (message.author.id == '122568101995872256') {
