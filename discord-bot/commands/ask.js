@@ -7,6 +7,10 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('ask')
         .setDescription('Ask hotdog bot a question...')
+        .addStringOption(option => 
+            option.setName('question')
+                .setDescription('The question you wish to ask...')
+                .setRequired(true))
         .setDMPermission(false),
 	async execute(interaction) {
         const messageOptions = [
@@ -20,6 +24,6 @@ module.exports = {
             'Maybe! Who knows?  I am just a bot, what do you expect from me?'
         ];
 
-        interaction.reply(_.sample(messageOptions));
+        interaction.reply(`Question: ${interaction.options.getString('question')}\n\nAnswer: ${_.sample(messageOptions)}`);
     },
 };
