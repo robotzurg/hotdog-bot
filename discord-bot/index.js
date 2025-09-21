@@ -252,6 +252,21 @@ client.on('messageCreate', async message => {
         if (message.content.toLowerCase().includes('i love you all')) {
             message.react('❤️');
         }
+
+        if (message.content.includes('!ask')) {
+            let messageOptions = [
+                'Survey says... no, probably not.',
+                'Obviously yes, do you even need to ask?',
+                'Very possible... very possible indeed... perhaps consult with yul...',
+                'If you become pea tomorrow, your chances look good.',
+                'Absolutely NOT. The world would explode before that.',
+                'You should DIE for even asking that question, NO.',
+                'Perchance.',
+                'Maybe! Who knows?  I am just a bot, what do you expect from me?'
+            ];
+
+            message.reply(_.sample(messageOptions));
+        }
         
         // pinging the bot message
         if (message.content.includes('<@784993334330130463>')) {
@@ -553,19 +568,6 @@ client.on('messageCreate', async message => {
                     `I am not a fan of ${_.sample(genshinOptions)}. They did some really evil stuff...`,
                     `They should add ${_.sample(genshinOptions)} into ${_.sample(gameOptions)}! They would be a fire addition!`,
                     `Did you know? ${_.sample(genshinOptions)} is going to be a major part of the meta next update. Just watch.`
-                ];
-            }
-
-            if (message.content.includes('!ask')) {
-                messageOptions = [
-                    'Survey says... no, probably not.',
-                    'Obviously yes, do you even need to ask?',
-                    'Very possible... very possible indeed... perhaps consult with yul...',
-                    'If you become pea tomorrow, your chances look good.',
-                    'Absolutely NOT. The world would explode before that.',
-                    'You should DIE for even asking that question, NO.',
-                    'Perchance.',
-                    'Maybe! Who knows?  I am just a bot, what do you expect from me?'
                 ];
             }
 
