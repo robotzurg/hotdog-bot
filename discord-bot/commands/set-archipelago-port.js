@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('set-archipelago-settings')
         .setDescription('Set the settings for archipelago')
-        .addStringOption(option => 
+        .addChannelOption(option => 
             option.setName('channel')
                 .setDescription('The archipelago channel to set.')
                 .setRequired(true))
@@ -19,11 +19,11 @@ module.exports = {
                 .setRequired(true))
         .setDMPermission(false),
 	async execute(interaction) {
-        const channel = interaction.options.getString('channel');
+        const channel = interaction.options.getChannel('channel');
         const port = interaction.options.getString('port');
         const slot = interaction.options.getString('slot');
         db.archipelago.set('server_port', port);
-        db.archipelago.set('server_channel', channel);
+        db.archipelago.set('server_channel', channel.id);
         db.archipelago.set('slot', slot);
         interaction.reply(`Archipelago port set to ${port}, server_channel set to ${channel}, slot set to ${slot}`);
     },

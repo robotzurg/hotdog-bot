@@ -7,6 +7,7 @@
     "lodash": "^4.17.21",
     "node-cron": "^3.0.2",
     "node.js": "*",
-    "trello-node-api": "^0.0.9"
+    "trello-node-api": "^0.0.9",
+    "ws": "^8.18.3"
   }
 }
