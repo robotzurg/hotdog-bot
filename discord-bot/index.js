@@ -62,6 +62,14 @@ client.once('ready', async () => {
     console.log('Ready!');
     const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
     console.log(date);
+
+    // Start Archipelago client and wire messages to Discord channel
+    try {
+        const { start } = require('./archipelago');
+        await start(client, db);
+    } catch (err) {
+        console.error('Failed to start Archipelago module:', err);
+    }
 });
 
 // Change avatar at 9:00am (MST) and set first pea of the day
@@ -579,20 +587,4 @@ client.on('messageCreate', async message => {
 
 // login to Discord
 client.login(token);
-
-// Archipelago Client Stuff
-
-const archipelagoClient = new ArchipelagoClient();
-const archipelagoChannel = await client.channels.fetch(db.archipelago.get('server_channel'));
-
-archipelagoClient.messages.on('message', async (content) => {
-    if (archipelagoChannel) {
-        await archipelagoChannel.send({ content: content });
-    }
-});
-
-// Login to the server. Replace `archipelago.gg:XXXXX`
-archipelagoClient.login(`archipelago.gg:${db.archipelago.get('server_port')}`)
-    .then(() => console.log('Connected to the Archipelago server!'))
-    .catch(console.error);
 
