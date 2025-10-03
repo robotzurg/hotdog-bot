@@ -6,6 +6,7 @@ const cron = require('node-cron');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const _ = require('lodash');
+const { Client: ArchipelagoClient } = require("archipelago.js");
 
 const ogreList = [
     "./Ogres/ogreGold.png", "./Ogres/ogreHappy.png", "./Ogres/ogreMad.png", "./Ogres/ogreSad.png", "./Ogres/ogreSmug.png", "./Ogres/ogreSnow.png",
@@ -576,6 +577,22 @@ client.on('messageCreate', async message => {
     }
 });
 
-
 // login to Discord
 client.login(token);
+
+// Archipelago Client Stuff
+
+const archipelagoClient = new ArchipelagoClient();
+const archipelagoChannel = await client.channels.fetch(db.archipelago.get('server_channel'));
+
+archipelagoClient.messages.on('message', async (content) => {
+    if (archipelagoChannel) {
+        await archipelagoChannel.send({ content: content });
+    }
+});
+
+// Login to the server. Replace `archipelago.gg:XXXXX`
+archipelagoClient.login(`archipelago.gg:${db.archipelago.get('server_port')}`)
+    .then(() => console.log('Connected to the Archipelago server!'))
+    .catch(console.error);
+
