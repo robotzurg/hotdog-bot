@@ -74,12 +74,14 @@ async function start(discordClient, db) {
                     return `${text} <:cuphead:1423881140275777578>`;
                 case 'Ethan-ROR2':
                     return `${text} <:riskofrain2:1423881039729790987>`;
+                case 'Yacob-KH2':
+                    return `${text} <:kingdomhearts2:1423886593399455784>`;
                 case 'Jeff-HK':
                 case 'NateHK':
                     return `${text} <:hollowknight:1423880850658955374>`;
                 case 'Jeff-STAR':
                     return `${text} <:stardew:1423880027707015199>`;
-                case 'Nate-MM':
+                case 'NateMM':
                     return `${text} <:majorasmask:1423881280931500125>`;
                 case 'VladSub':
                     return `${text} <:subnautica:1423881431792222278>`;
