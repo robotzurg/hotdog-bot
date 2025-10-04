@@ -59,12 +59,63 @@ async function start(discordClient, db) {
         }
     }
 
+    // Helper to format nodes into a message string safely
+    function formatNodes(nodes) {
+        if (!Array.isArray(nodes)) return String(nodes || '');
+
+        const mapEmoji = (text) => {
+            switch (text) {
+                case 'AvHat':
+                case 'Yacob-AHIT':
+                    return `<:hatintime:1423880268460326995> ${text}`;
+                case 'AvOri':
+                    return `<:oriforest:1423880585331478608> ${text}`;
+                case 'Ethan-CH':
+                    return `<:cuphead:1423881140275777578> ${text}`;
+                case 'Ethan-ROR2':
+                    return `<:riskofrain2:1423881039729790987> ${text}`;
+                case 'Jeff-HK':
+                case 'NateHK':
+                    return `<:hollowknight:1423880850658955374> ${text}`;
+                case 'Jeff-STAR':
+                    return `<:stardew:1423880027707015199> ${text}`;
+                case 'Nate-MM':
+                    return `<:majorasmask:1423881280931500125> ${text}`;
+                case 'VladSub':
+                    return `<:subnautica:1423881431792222278> ${text}`;
+                case 'VladTerraria':
+                    return `<:terraria:1423881567499190364> ${text}`;
+                default:
+                    return text;
+            }
+        };
+
+        return nodes.map((node, index) => {
+            const text = node && typeof node.text === 'string' ? node.text : '';
+
+            if (index === 0) {
+                return mapEmoji(text);
+            }
+
+            if (index === 2) {
+                return `**${text}**`;
+            }
+
+            if (index === 4 && !text.includes('(')) {
+                return mapEmoji(text);
+            }
+
+            return text;
+        }).join('');
+    }
+
     archClient.messages.on('itemSent', async (_text, _item, nodes) => {
         try {
+            const messageStr = formatNodes(nodes);
             if (discordChannel) {
-                await discordChannel.send({ content: `${nodes.map((node, index) => index === 2 ? `**${node.text}**` : node.text).join("")}` });
+                await discordChannel.send({ content: messageStr });
             } else {
-                console.log('[Archipelago]', content);
+                console.log('[Archipelago]', messageStr);
             }
         } catch (err) {
             console.error('Error forwarding Archipelago message to Discord:', err);
