@@ -67,24 +67,24 @@ async function start(discordClient, db) {
             switch (text) {
                 case 'AvHat':
                 case 'Yacob-AHIT':
-                    return `<:hatintime:1423880268460326995> ${text}`;
+                    return `${text} <:hatintime:1423880268460326995>`;
                 case 'AvOri':
-                    return `<:oriforest:1423880585331478608> ${text}`;
+                    return `${text} <:oriforest:1423880585331478608>`;
                 case 'Ethan-CH':
-                    return `<:cuphead:1423881140275777578> ${text}`;
+                    return `${text} <:cuphead:1423881140275777578>`;
                 case 'Ethan-ROR2':
-                    return `<:riskofrain2:1423881039729790987> ${text}`;
+                    return `${text} <:riskofrain2:1423881039729790987>`;
                 case 'Jeff-HK':
                 case 'NateHK':
-                    return `<:hollowknight:1423880850658955374> ${text}`;
+                    return `${text} <:hollowknight:1423880850658955374>`;
                 case 'Jeff-STAR':
-                    return `<:stardew:1423880027707015199> ${text}`;
+                    return `${text} <:stardew:1423880027707015199>`;
                 case 'Nate-MM':
-                    return `<:majorasmask:1423881280931500125> ${text}`;
+                    return `${text} <:majorasmask:1423881280931500125>`;
                 case 'VladSub':
-                    return `<:subnautica:1423881431792222278> ${text}`;
+                    return `${text} <:subnautica:1423881431792222278>`;
                 case 'VladTerraria':
-                    return `<:terraria:1423881567499190364> ${text}`;
+                    return `${text} <:terraria:1423881567499190364>`;
                 default:
                     return text;
             }
