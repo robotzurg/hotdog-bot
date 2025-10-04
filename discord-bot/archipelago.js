@@ -62,7 +62,7 @@ async function start(discordClient, db) {
     archClient.messages.on('itemSent', async (text, item, nodes) => {
         try {
             if (discordChannel) {
-                await discordChannel.send({ content: `New Item!\n${nodes.map((node) => node.text).join(" ")}` });
+                await discordChannel.send({ content: `New Item!\n${nodes.map((node) => node.text).join("")}` });
             } else {
                 console.log('[Archipelago]', content);
             }
