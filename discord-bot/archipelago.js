@@ -59,11 +59,10 @@ async function start(discordClient, db) {
         }
     }
 
-    archClient.messages.on('itemSent', async (text, item, nodes) => {
+    archClient.messages.on('itemSent', async (_text, _item, nodes) => {
         try {
             if (discordChannel) {
-                nodes[2].text = `**${nodes[2].text}**`
-                await discordChannel.send({ content: `${nodes.map((node) => node.text).join("")}` });
+                await discordChannel.send({ content: `${nodes.map((node, index) => index === 2 ? `**${node.text}**` : node.text).join("")}` });
             } else {
                 console.log('[Archipelago]', content);
             }
