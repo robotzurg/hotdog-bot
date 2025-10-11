@@ -124,6 +124,19 @@ async function start(discordClient, db) {
         }
     });
 
+    archClient.messages.on('itemHinted', async (_text, _item, _found, nodes) => {
+        try {
+            const messageStr = formatNodes(nodes);
+            if (discordChannel) {
+                await discordChannel.send({ content: messageStr });
+            } else {
+                console.log('[Archipelago]', messageStr);
+            }
+        } catch (err) {
+            console.error('Error forwarding Archipelago message to Discord:', err);
+        }
+    });
+
     const port = db.archipelago.get('server_port');
     const slot = db.archipelago.get('slot');
 

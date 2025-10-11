@@ -6,6 +6,7 @@ const cron = require('node-cron');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const _ = require('lodash');
+const { start } = require('./archipelago');
 
 const ogreList = [
     "./Ogres/ogreGold.png", "./Ogres/ogreHappy.png", "./Ogres/ogreMad.png", "./Ogres/ogreSad.png", "./Ogres/ogreSmug.png", "./Ogres/ogreSnow.png",
@@ -64,12 +65,15 @@ client.once('ready', async () => {
 
     // Start Archipelago client and wire messages to Discord channel
     try {
-        const { start } = require('./archipelago');
         await start(client, db);
     } catch (err) {
         console.error('Failed to start Archipelago module:', err);
     }
 });
+
+cron.schedule('* */6 * * *', async () => {
+    await start(client, db)
+})
 
 // Change avatar at 9:00am (MST) and set first pea of the day
 cron.schedule('00 16 * * *', async () => { 
@@ -99,6 +103,8 @@ cron.schedule('00 16 * * *', async () => {
         case './Ogres/ogreSmug.png': myUserRole.setColor('#7E3BFF'); client.user.setActivity('live pea viewings', { type: 'STREAMING' }); break;
         case './Ogres/ogreSnow.png': myUserRole.setColor('#FFFFFF'); client.user.setActivity('with colddogs!', { type: 'PLAYING' }); break;
     }
+
+    await start(client, db)
 }, {
     scheduled: true,
 });
@@ -261,8 +267,10 @@ client.on('messageCreate', async message => {
             message.react('❤️');
         }
 
+        let messageOptions = [];
+
         if (message.content.includes('!ask')) {
-            let messageOptions = [
+            messageOptions = [
                 'Survey says... no, probably not.',
                 'Obviously yes, do you even need to ask?',
                 'Very possible... very possible indeed... perhaps consult with yul...',
@@ -275,10 +283,14 @@ client.on('messageCreate', async message => {
 
             message.reply({ content: _.sample(messageOptions), allowedMentions: { repliedUser: false } });
         }
+
+        if (message.channel.id == '680871349715075088') {
+            messageOptions.push('Why are you here? This is a gaming discord, not a music discord.')
+        }
         
         // pinging the bot message
         if (message.content.includes('<@784993334330130463>')) {
-            let messageOptions = [
+            messageOptions = [
                 'Do not speak to me mere mortal, I am far beyond your simple mind',
                 'ik haat jou',
                 'uwu, do you need me?? :3 how can I assist you today :3 uwu owo',
@@ -299,7 +311,8 @@ client.on('messageCreate', async message => {
                 'I love you, and I hope you have a good day <3',
                 `<@${message.author.id}>, I pronounce you... dead to me. Disappear.`,
                 `That really sounds like something Xy would say, ngl...`,
-                `<:peeposmile:1150595720416600074>`
+                `<:peeposmile:1150595720416600074>`,
+                `Uninstall PoE2 yessir`
             ]
             
             if (message.author.id == '122568101995872256') {
@@ -501,7 +514,8 @@ client.on('messageCreate', async message => {
                     'Chisa',
                     'Qiuyuan',
                     'Galbrena',
-                    'Augusta'
+                    'Augusta',
+                    'Ineffa'
                 ];
 
                 let gameOptions = [
@@ -575,8 +589,17 @@ client.on('messageCreate', async message => {
                     `${_.sample([hornyOptions, marryOptions].flat(1))} is my waifu.`,
                     `I am not a fan of ${_.sample(genshinOptions)}. They did some really evil stuff...`,
                     `They should add ${_.sample(genshinOptions)} into ${_.sample(gameOptions)}! They would be a fire addition!`,
-                    `Did you know? ${_.sample(genshinOptions)} is going to be a major part of the meta next update. Just watch.`
+                    `Did you know? ${_.sample(genshinOptions)} is going to be a major part of the meta next update. Just watch.`,
+                    `Gacha players lmao`,
+                    `You all should play a REAL gacha game, like todays sponsor: Raid Shadow Legends!`
                 ];
+            }
+
+            if (Math.random() < 0.01) {
+                messageOptions = [
+                    `KILL YOURSELF <@${interaction.user.id}>`,
+                    `Pssst... I need to tell you something, <@${interaction.user.id}>. I don't know how to say it, but I've had feelings for you for a long time. I needed to get it off my chest, so... thank you for understanding.`
+                ]
             }
 
             message.channel.send(_.sample(messageOptions));
