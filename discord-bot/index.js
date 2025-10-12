@@ -71,10 +71,6 @@ client.once('ready', async () => {
     }
 });
 
-cron.schedule('* */6 * * *', async () => {
-    await start(client, db)
-})
-
 // Change avatar at 9:00am (MST) and set first pea of the day
 cron.schedule('00 16 * * *', async () => { 
 //cron.schedule('00 9 * * *', async () => { 
