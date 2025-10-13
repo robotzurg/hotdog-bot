@@ -129,8 +129,8 @@ async function start(discordClient, db) {
         return nodes.map((node, index) => {
             const text = node && typeof node.text === 'string' ? node.text : '';
             let idx1 = hint ? 1 : 0
-            let idx2 = 2
-            let idx3 = hint ? 6 : 4
+            let idx2 = hint ? 3 : 2
+            let idx3 = hint ? 7 : 4
 
             if (index === idx1) {
                 return mapEmoji(text);
