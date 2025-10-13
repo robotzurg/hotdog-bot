@@ -62,8 +62,10 @@ async function start(discordClient, db) {
     // Helper to format nodes into a message string safely
     function formatNodes(nodes) {
         if (!Array.isArray(nodes)) return String(nodes || '');
+        
 
         const mapEmoji = (text) => {
+            formatText = text.replace('\'s', '')
             switch (text) {
                 case 'Ethan-KD3':
                     return `${text} <:kirbydreamland:1426636560723607585>`;
@@ -161,6 +163,19 @@ async function start(discordClient, db) {
             const messageStr = formatNodes(nodes);
             if (discordChannel) {
                 await discordChannel.send({ content: messageStr });
+            } else {
+                console.log('[Archipelago]', messageStr);
+            }
+        } catch (err) {
+            console.error('Error forwarding Archipelago message to Discord:', err);
+        }
+    });
+
+    archClient.items.on('itemHinted', async (hint) => {
+        try {
+            // const messageStr = formatNodes(nodes);
+            if (discordChannel) {
+                await discordChannel.send({ content: hint });
             } else {
                 console.log('[Archipelago]', messageStr);
             }
