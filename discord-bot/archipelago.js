@@ -173,7 +173,8 @@ async function start(discordClient, db) {
 
     archClient.items.on('itemHinted', async (hint) => {
         try {
-            // const messageStr = formatNodes(nodes);
+            console.log(hint)
+            const messageStr = formatNodes(hint);
             if (discordChannel) {
                 await discordChannel.send({ content: hint });
             } else {
