@@ -60,7 +60,7 @@ async function start(discordClient, db) {
     }
 
     // Helper to format nodes into a message string safely
-    function formatNodes(nodes) {
+    function formatNodes(nodes, hint=false) {
         if (!Array.isArray(nodes)) return String(nodes || '');
         
 
@@ -128,16 +128,21 @@ async function start(discordClient, db) {
 
         return nodes.map((node, index) => {
             const text = node && typeof node.text === 'string' ? node.text : '';
+            let idx1 = hint ? 1 : 0
+            let idx2 = 2
+            let idx3 = hint ? 6 : 4
 
-            if (index === 0) {
+            if (index === idx1) {
                 return mapEmoji(text);
             }
 
-            if (index === 2) {
+            if (index === idx2) {
                 return `**${text}**`;
             }
 
-            if (index === 4 && !text.includes('(')) {
+            if (index === idx3 && !text.includes('(')) {
+                return mapEmoji(text);
+            } else if (index === idx3 && hint == true) {
                 return mapEmoji(text);
             }
 
@@ -160,7 +165,7 @@ async function start(discordClient, db) {
 
     archClient.messages.on('itemHinted', async (_text, _item, _found, nodes) => {
         try {
-            const messageStr = formatNodes(nodes);
+            const messageStr = formatNodes(nodes, true);
             if (discordChannel) {
                 await discordChannel.send({ content: messageStr });
             } else {
@@ -173,10 +178,9 @@ async function start(discordClient, db) {
 
     archClient.items.on('itemHinted', async (hint) => {
         try {
-            console.log(hint)
-            const messageStr = formatNodes(hint);
+            const messageStr = formatNodes(hint, true);
             if (discordChannel) {
-                await discordChannel.send({ content: hint });
+                await discordChannel.send({ content: messageStr });
             } else {
                 console.log('[Archipelago]', messageStr);
             }
