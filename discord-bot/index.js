@@ -71,6 +71,12 @@ client.once('ready', async () => {
     }
 });
 
+setInterval(async () => {
+    await client.destroy().then(async () => {
+        await client.login(token);
+    });
+}, 90 * 60 * 1000); // 90 minutes in milliseconds
+
 // Change avatar at 9:00am (MST) and set first pea of the day
 cron.schedule('00 16 * * *', async () => { 
 //cron.schedule('00 9 * * *', async () => { 
@@ -99,8 +105,6 @@ cron.schedule('00 16 * * *', async () => {
         case './Ogres/ogreSmug.png': myUserRole.setColor('#7E3BFF'); client.user.setActivity('live pea viewings', { type: 'STREAMING' }); break;
         case './Ogres/ogreSnow.png': myUserRole.setColor('#FFFFFF'); client.user.setActivity('with colddogs!', { type: 'PLAYING' }); break;
     }
-
-    await start(client, db)
 }, {
     scheduled: true,
 });
