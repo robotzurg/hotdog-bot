@@ -75,20 +75,20 @@ client.once('ready', async () => {
 
 // Reconnect to Archipelago server every 90 minutes
 setInterval(async () => {
-    console.log('Reconnecting to Archipelago server...');
+    // console.log('Reconnecting to Archipelago server...');
     try {
-        // Disconnect the old client if it exists
-        if (archipelagoClient) {
-            try {
-                await archipelagoClient.disconnect();
-            } catch (err) {
-                console.error('Error disconnecting old Archipelago client:', err);
-            }
-        }
+        // // Disconnect the old client if it exists
+        // if (archipelagoClient) {
+        //     try {
+        //         await archipelagoClient.discon();
+        //     } catch (err) {
+        //         console.error('Error disconnecting old Archipelago client:', err);
+        //     }
+        // }
 
         // Create a new connection
-        archipelagoClient = await start(client, db);
-        console.log('Successfully reconnected to Archipelago server');
+        // // archipelagoClient = await start(client, db);
+        // console.log('Successfully reconnected to Archipelago server');
     } catch (err) {
         console.error('Failed to reconnect to Archipelago server:', err);
     }
