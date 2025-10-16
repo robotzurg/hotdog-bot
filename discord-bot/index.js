@@ -8,6 +8,8 @@ const { Routes } = require('discord-api-types/v9');
 const _ = require('lodash');
 const { start } = require('./archipelago');
 
+let archipelagoClient = null; // Store the archipelago client for reconnection
+
 const ogreList = [
     "./Ogres/ogreGold.png", "./Ogres/ogreHappy.png", "./Ogres/ogreMad.png", "./Ogres/ogreSad.png", "./Ogres/ogreSmug.png", "./Ogres/ogreSnow.png",
     "./Ogres/girlGold.png", "./Ogres/girlHappy.jpg", "./Ogres/girlMad.jpg", "./Ogres/girlSad.jpg", "./Ogres/girlSmug.jpg"
@@ -65,16 +67,31 @@ client.once('ready', async () => {
 
     // Start Archipelago client and wire messages to Discord channel
     try {
-        await start(client, db);
+        archipelagoClient = await start(client, db);
     } catch (err) {
         console.error('Failed to start Archipelago module:', err);
     }
 });
 
+// Reconnect to Archipelago server every 90 minutes
 setInterval(async () => {
-    await client.destroy().then(async () => {
-        await client.login(token);
-    });
+    console.log('Reconnecting to Archipelago server...');
+    try {
+        // Disconnect the old client if it exists
+        if (archipelagoClient) {
+            try {
+                await archipelagoClient.disconnect();
+            } catch (err) {
+                console.error('Error disconnecting old Archipelago client:', err);
+            }
+        }
+
+        // Create a new connection
+        archipelagoClient = await start(client, db);
+        console.log('Successfully reconnected to Archipelago server');
+    } catch (err) {
+        console.error('Failed to reconnect to Archipelago server:', err);
+    }
 }, 90 * 60 * 1000); // 90 minutes in milliseconds
 
 // Change avatar at 9:00am (MST) and set first pea of the day

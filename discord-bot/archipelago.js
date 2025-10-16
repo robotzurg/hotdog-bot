@@ -198,6 +198,20 @@ async function start(discordClient, db) {
     }
 
     const address = `archipelago.gg:${port}`;
+
+    // Add event listeners for disconnection and errors
+    archClient.on('error', (err) => {
+        console.error('Archipelago client error:', err);
+    });
+
+    archClient.on('close', () => {
+        console.log('Archipelago connection closed');
+    });
+
+    archClient.on('disconnect', () => {
+        console.log('Archipelago client disconnected');
+    });
+
     try {
         if (slot) {
             await archClient.login(address, slot);
