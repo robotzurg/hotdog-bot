@@ -6,7 +6,7 @@ const cron = require('node-cron');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const _ = require('lodash');
-const { start, setupReconnection } = require('./archipelago');
+const { start } = require('./archipelago');
 
 let archipelagoClient = null; // Store the archipelago client for reconnection
 
@@ -73,55 +73,26 @@ client.once('ready', async () => {
     }
 });
 
-
-let reconnectCleanup = null;
-
-client.once('ready', async () => {
-    console.log('Ready!');
-    const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
-    console.log(date);
-
-    // Start Archipelago client and wire messages to Discord channel
+// Reconnect to Archipelago server every 90 minutes
+setInterval(async () => {
+    // console.log('Reconnecting to Archipelago server...');
     try {
-        archipelagoClient = await start(client, db);
-        
-        // Set up automatic reconnection
-        reconnectCleanup = setupReconnection(
-            client,
-            db,
-            () => archipelagoClient,
-            (newClient) => { archipelagoClient = newClient; }
-        );
-        
-        console.log('Archipelago reconnection system initialized');
-    } catch (err) {
-        console.error('Failed to start Archipelago module:', err);
-        // Retry after 30 seconds if initial connection fails
-        setTimeout(async () => {
-            try {
-                archipelagoClient = await start(client, db);
-                reconnectCleanup = setupReconnection(
-                    client,
-                    db,
-                    () => archipelagoClient,
-                    (newClient) => { archipelagoClient = newClient; }
-                );
-            } catch (retryErr) {
-                console.error('Retry failed:', retryErr);
-            }
-        }, 30000);
-    }
-});
+        // // Disconnect the old client if it exists
+        // if (archipelagoClient) {
+        //     try {
+        //         await archipelagoClient.discon();
+        //     } catch (err) {
+        //         console.error('Error disconnecting old Archipelago client:', err);
+        //     }
+        // }
 
-// Graceful shutdown
-process.on('SIGINT', () => {
-    console.log('Shutting down...');
-    if (reconnectCleanup) reconnectCleanup();
-    if (archipelagoClient && archipelagoClient.socket) {
-        archipelagoClient.socket.close();
+        // Create a new connection
+        // // archipelagoClient = await start(client, db);
+        // console.log('Successfully reconnected to Archipelago server');
+    } catch (err) {
+        console.error('Failed to reconnect to Archipelago server:', err);
     }
-    process.exit(0);
-});
+}, 90 * 60 * 1000); // 90 minutes in milliseconds
 
 // Change avatar at 9:00am (MST) and set first pea of the day
 cron.schedule('00 16 * * *', async () => { 
