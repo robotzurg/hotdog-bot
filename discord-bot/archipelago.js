@@ -189,12 +189,10 @@ function setupReconnection(discordClient, db, getArchClient, setArchClient) {
     let reconnectTimeout = null;
     let isReconnecting = false;
     let healthCheckInterval = null;
-    let isShuttingDown = false;
-    let closeHandlerAdded = false;
 
     async function attemptReconnect() {
-        if (isReconnecting || isShuttingDown) {
-            console.log('Reconnection already in progress or shutting down, skipping...');
+        if (isReconnecting) {
+            console.log('Reconnection already in progress, skipping...');
             return;
         }
 
@@ -214,11 +212,9 @@ function setupReconnection(discordClient, db, getArchClient, setArchClient) {
                     oldClient.items.removeAllListeners('itemHinted');
                 }
                 
-                // Close the socket if it exists and is open
-                if (oldClient.socket) {
-                    if (oldClient.socket.readyState === 0 || oldClient.socket.readyState === 1) {
-                        oldClient.socket.close();
-                    }
+                // Close the socket if it exists
+                if (oldClient.socket && oldClient.socket.readyState === 1) {
+                    oldClient.socket.close();
                 }
             } catch (err) {
                 console.error('Error cleaning up old Archipelago client:', err);
@@ -228,9 +224,6 @@ function setupReconnection(discordClient, db, getArchClient, setArchClient) {
         try {
             const newClient = await start(discordClient, db, true);
             setArchClient(newClient);
-            
-            // Reset flag before setting up new handler
-            closeHandlerAdded = false;
             
             // Set up disconnect handler for the new client
             setupDisconnectHandler(newClient);
@@ -246,31 +239,16 @@ function setupReconnection(discordClient, db, getArchClient, setArchClient) {
     }
 
     function setupDisconnectHandler(client) {
-        // Prevent adding multiple close handlers
-        if (closeHandlerAdded) {
-            return;
-        }
-
         // Listen for WebSocket close events
         if (client && client.socket) {
-            const handleClose = () => {
-                if (isShuttingDown || isReconnecting) return;
-                
-                console.log('Archipelago connection closed, attempting reconnect in 5 seconds...');
-                closeHandlerAdded = false;
-                
-                // Wait a bit before reconnecting to avoid rapid reconnection loops
-                reconnectTimeout = setTimeout(attemptReconnect, 5000);
-            };
+            client.socket.addEventListener('close', () => {
+                console.log('Archipelago connection closed, attempting reconnect...');
+                attemptReconnect();
+            });
 
-            const handleError = (err) => {
+            client.socket.addEventListener('error', (err) => {
                 console.error('Archipelago WebSocket error:', err);
-            };
-
-            client.socket.addEventListener('close', handleClose, { once: true });
-            client.socket.addEventListener('error', handleError);
-            
-            closeHandlerAdded = true;
+            });
         }
     }
 
@@ -280,37 +258,19 @@ function setupReconnection(discordClient, db, getArchClient, setArchClient) {
         setupDisconnectHandler(currentClient);
     }
 
-    // Optional: Periodic health check (every 10 minutes, less aggressive)
+    // Optional: Periodic health check (every 5 minutes)
     healthCheckInterval = setInterval(() => {
-        if (isReconnecting || isShuttingDown) return;
-        
         const client = getArchClient();
-        // Only reconnect if socket is CLOSED (3), not CONNECTING (0) or CLOSING (2)
-        if (client && client.socket && client.socket.readyState === 3) {
-            console.log('Archipelago connection dead, reconnecting...');
+        if (client && client.socket && client.socket.readyState !== 1) {
+            console.log('Archipelago connection not healthy, reconnecting...');
             attemptReconnect();
         }
-    }, 10 * 60 * 1000); // 10 minutes
+    }, 5 * 60 * 1000);
 
     // Return cleanup function
     return () => {
-        isShuttingDown = true;
         if (reconnectTimeout) clearTimeout(reconnectTimeout);
         if (healthCheckInterval) clearInterval(healthCheckInterval);
-        
-        const client = getArchClient();
-        if (client) {
-            if (client.messages) {
-                client.messages.removeAllListeners('itemSent');
-                client.messages.removeAllListeners('itemHinted');
-            }
-            if (client.items) {
-                client.items.removeAllListeners('itemHinted');
-            }
-            if (client.socket && client.socket.readyState === 1) {
-                client.socket.close();
-            }
-        }
     };
 }
 
