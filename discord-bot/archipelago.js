@@ -181,12 +181,14 @@ async function start(discordClient, db, isReconnect = false) {
  * Set up automatic reconnection for the Archipelago client
  * @param {import('discord.js').Client} discordClient
  * @param {object} db
- * @param {object} archClient - The current Archipelago client
+ * @param {Function} getArchClient - Function to get current client
+ * @param {Function} setArchClient - Function to set new client
  * @returns {Function} cleanup function to stop reconnection attempts
  */
 function setupReconnection(discordClient, db, getArchClient, setArchClient) {
     let reconnectTimeout = null;
     let isReconnecting = false;
+    let healthCheckInterval = null;
 
     async function attemptReconnect() {
         if (isReconnecting) {
@@ -196,6 +198,28 @@ function setupReconnection(discordClient, db, getArchClient, setArchClient) {
 
         isReconnecting = true;
         console.log('Attempting to reconnect to Archipelago server...');
+
+        // Clean up old client
+        const oldClient = getArchClient();
+        if (oldClient) {
+            try {
+                // Remove all event listeners to prevent duplicates
+                if (oldClient.messages) {
+                    oldClient.messages.removeAllListeners('itemSent');
+                    oldClient.messages.removeAllListeners('itemHinted');
+                }
+                if (oldClient.items) {
+                    oldClient.items.removeAllListeners('itemHinted');
+                }
+                
+                // Close the socket if it exists
+                if (oldClient.socket && oldClient.socket.readyState === 1) {
+                    oldClient.socket.close();
+                }
+            } catch (err) {
+                console.error('Error cleaning up old Archipelago client:', err);
+            }
+        }
 
         try {
             const newClient = await start(discordClient, db, true);
@@ -235,7 +259,7 @@ function setupReconnection(discordClient, db, getArchClient, setArchClient) {
     }
 
     // Optional: Periodic health check (every 5 minutes)
-    const healthCheckInterval = setInterval(() => {
+    healthCheckInterval = setInterval(() => {
         const client = getArchClient();
         if (client && client.socket && client.socket.readyState !== 1) {
             console.log('Archipelago connection not healthy, reconnecting...');
@@ -246,7 +270,7 @@ function setupReconnection(discordClient, db, getArchClient, setArchClient) {
     // Return cleanup function
     return () => {
         if (reconnectTimeout) clearTimeout(reconnectTimeout);
-        clearInterval(healthCheckInterval);
+        if (healthCheckInterval) clearInterval(healthCheckInterval);
     };
 }
 
