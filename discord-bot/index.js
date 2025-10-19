@@ -73,26 +73,13 @@ client.once('ready', async () => {
     }
 });
 
-// Reconnect to Archipelago server every 90 minutes
-setInterval(async () => {
-    // console.log('Reconnecting to Archipelago server...');
-    try {
-        // // Disconnect the old client if it exists
-        // if (archipelagoClient) {
-        //     try {
-        //         await archipelagoClient.discon();
-        //     } catch (err) {
-        //         console.error('Error disconnecting old Archipelago client:', err);
-        //     }
-        // }
-
-        // Create a new connection
-        // // archipelagoClient = await start(client, db);
-        // console.log('Successfully reconnected to Archipelago server');
-    } catch (err) {
-        console.error('Failed to reconnect to Archipelago server:', err);
+process.on('SIGINT', () => {
+    console.log('Shutting down...');
+    if (archipelagoClient && archipelagoClient.socket) {
+        archipelagoClient.socket.close();
     }
-}, 90 * 60 * 1000); // 90 minutes in milliseconds
+    process.exit(0);
+});
 
 // Change avatar at 9:00am (MST) and set first pea of the day
 cron.schedule('00 16 * * *', async () => { 
