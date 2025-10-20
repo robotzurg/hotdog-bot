@@ -75,8 +75,12 @@ client.once('ready', async () => {
 
 process.on('SIGINT', () => {
     console.log('Shutting down...');
-    if (archipelagoClient && archipelagoClient.socket) {
-        archipelagoClient.socket.close();
+    if (archipelagoClient) {
+        if (archipelagoClient.destroy) {
+            archipelagoClient.destroy();
+        } else if (archipelagoClient.socket) {
+            archipelagoClient.socket.close();
+        }
     }
     process.exit(0);
 });

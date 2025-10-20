@@ -47,6 +47,89 @@ async function start(discordClient, db) {
 
     const archClient = new ArchipelagoClient();
 
+    // Reconnection state
+    let reconnectAttempts = 0;
+    const maxReconnectAttempts = 50;
+    let reconnectTimer = null;
+    let isDestroyed = false;
+
+    // Helper: Calculate exponential backoff delay
+    function getReconnectDelay() {
+        // Exponential backoff: 5s, 10s, 20s, 40s, 80s, 160s (cap at 5 min)
+        return Math.min(5000 * Math.pow(2, reconnectAttempts), 300000);
+    }
+
+    // Helper: Send message to Discord channel
+    async function sendDiscordMessage(message) {
+        if (discordChannel) {
+            try {
+                await discordChannel.send({ content: `[Archipelago] ${message}` });
+            } catch (err) {
+                console.error('Failed to send Discord message:', err);
+            }
+        }
+        console.log(`[Archipelago] ${message}`);
+    }
+
+    // Reconnection logic
+    function attemptReconnect(reason) {
+        // Don't reconnect if already destroyed or if timer is active
+        if (isDestroyed || reconnectTimer) return;
+
+        reconnectAttempts++;
+
+        if (reconnectAttempts > maxReconnectAttempts) {
+            sendDiscordMessage(`Failed to reconnect after ${maxReconnectAttempts} attempts. Archipelago monitor stopped.`);
+            return;
+        }
+
+        const delay = getReconnectDelay();
+        const minutes = Math.floor(delay / 60000);
+        const seconds = Math.floor((delay % 60000) / 1000);
+        const timeStr = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+
+        sendDiscordMessage(`Disconnected (${reason}). Reconnecting in ${timeStr}... (Attempt ${reconnectAttempts}/${maxReconnectAttempts})`);
+
+        reconnectTimer = setTimeout(() => {
+            reconnectTimer = null;
+            reconnect();
+        }, delay);
+    }
+
+    // Reconnect function
+    async function reconnect() {
+        if (isDestroyed) return;
+
+        const port = db.archipelago.get('server_port');
+        const slot = db.archipelago.get('slot');
+
+        if (!port) {
+            console.error('Archipelago server_port is not configured in the database. Cannot reconnect.');
+            return;
+        }
+
+        const address = `archipelago.gg:${port}`;
+
+        try {
+            if (slot) {
+                await archClient.login(address, slot, 'The Binding of Isaac Repentance');
+            } else {
+                await archClient.login(address);
+            }
+
+            // Set up socket listeners after successful reconnection
+            setupSocketListeners();
+
+            // Reset attempts on successful connection
+            reconnectAttempts = 0;
+            sendDiscordMessage('Successfully reconnected to Archipelago server!');
+            console.log('Reconnected to the Archipelago server!');
+        } catch (err) {
+            console.error('Archipelago reconnection failed:', err);
+            // Will trigger another reconnect attempt via error listener
+        }
+    }
+
     const channelId = db.archipelago.get('server_channel');
     let discordChannel = null;
 
@@ -189,6 +272,38 @@ async function start(discordClient, db) {
         }
     });
 
+    // Helper to set up socket event listeners (called after each connection)
+    function setupSocketListeners() {
+        if (archClient.socket) {
+            // Remove existing listeners to prevent duplicates
+            archClient.socket.removeAllListeners?.('error');
+            archClient.socket.removeAllListeners?.('close');
+
+            archClient.socket.on('error', (error) => {
+                console.error('Archipelago WebSocket error:', error);
+                attemptReconnect('error');
+            });
+
+            archClient.socket.on('close', () => {
+                console.log('Archipelago WebSocket closed');
+                attemptReconnect('close');
+            });
+        }
+
+        // If the client has a different way to listen for disconnections, add them here
+        if (archClient.on) {
+            archClient.on('error', (error) => {
+                console.error('Archipelago client error:', error);
+                attemptReconnect('client error');
+            });
+
+            archClient.on('disconnect', () => {
+                console.log('Archipelago client disconnected');
+                attemptReconnect('disconnect');
+            });
+        }
+    }
+
     const port = db.archipelago.get('server_port');
     const slot = db.archipelago.get('slot');
 
@@ -205,10 +320,31 @@ async function start(discordClient, db) {
         } else {
             await archClient.login(address);
         }
+
+        // Set up socket listeners after successful initial connection
+        setupSocketListeners();
+
         console.log('Connected to the Archipelago server!');
+        sendDiscordMessage('Connected to Archipelago server!');
     } catch (err) {
         console.error('Archipelago login failed:', err);
+        sendDiscordMessage(`Failed to connect: ${err.message}`);
+        // Don't throw - let reconnection logic handle it
+        attemptReconnect('initial connection failed');
     }
+
+    // Add destroy method to client for cleanup
+    archClient.destroy = function() {
+        isDestroyed = true;
+        if (reconnectTimer) {
+            clearTimeout(reconnectTimer);
+            reconnectTimer = null;
+        }
+        if (archClient.socket) {
+            archClient.socket.close();
+        }
+        console.log('Archipelago client destroyed');
+    };
 
     return archClient;
 }
