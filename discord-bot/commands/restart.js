@@ -9,7 +9,8 @@ module.exports = {
 
     async execute(interaction) {
         if (interaction.channel.id != db.archipelago.get('server_channel')) {
-            interaction.reply({ content: `Bot cannot be restarted outside of Archipelago chat.` });
+            await interaction.reply({ content: `Bot cannot be restarted outside of Archipelago chat.` });
+            return;
         }
         await interaction.reply({ content: 'Restarting bot.' });
 
