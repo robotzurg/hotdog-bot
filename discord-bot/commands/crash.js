@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('crash')
+        .setName('restart')
         .setDescription('Crashes the bot to trigger a restart, for use with archipelago')
         .setDMPermission(false),
 
