@@ -201,7 +201,7 @@ async function start(discordClient, db) {
 
     try {
         if (slot) {
-            await archClient.login(address, slot, 'The Binding of Isaac Repentance');
+            await archClient.login(address, slot, 'AP');
         } else {
             await archClient.login(address);
         }
