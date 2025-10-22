@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const db = require('../db.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -7,6 +8,9 @@ module.exports = {
         .setDMPermission(false),
 
     async execute(interaction) {
+        if (interaction.channel.id != db.archipelago.get('server_channel')) {
+            interaction.reply({ content: `Bot cannot be restarted outside of Archipelago chat.` });
+        }
         await interaction.reply({ content: 'Restarting bot.' });
 
         // Give Discord time to send the reply before crashing
