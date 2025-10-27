@@ -79,7 +79,7 @@ async function start(discordClient, db) {
         reconnectAttempts++;
 
         if (reconnectAttempts > maxReconnectAttempts) {
-            sendDiscordMessage(`Failed to reconnect after ${maxReconnectAttempts} attempts. Archipelago monitor stopped.`);
+            // sendDiscordMessage(`Failed to reconnect after ${maxReconnectAttempts} attempts. Archipelago monitor stopped.`);
             return;
         }
 
@@ -88,7 +88,7 @@ async function start(discordClient, db) {
         const seconds = Math.floor((delay % 60000) / 1000);
         const timeStr = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
 
-        sendDiscordMessage(`Disconnected (${reason}). Reconnecting in ${timeStr}... (Attempt ${reconnectAttempts}/${maxReconnectAttempts})`);
+        // sendDiscordMessage(`Disconnected (${reason}). Reconnecting in ${timeStr}... (Attempt ${reconnectAttempts}/${maxReconnectAttempts})`);
 
         reconnectTimer = setTimeout(() => {
             reconnectTimer = null;
@@ -245,32 +245,7 @@ async function start(discordClient, db) {
             console.error('Error forwarding Archipelago message to Discord:', err);
         }
     });
-
-    archClient.messages.on('itemHinted', async (_text, _item, _found, nodes) => {
-        try {
-            const messageStr = formatNodes(nodes, true);
-            if (discordChannel) {
-                await discordChannel.send({ content: messageStr });
-            } else {
-                console.log('[Archipelago]', messageStr);
-            }
-        } catch (err) {
-            console.error('Error forwarding Archipelago message to Discord:', err);
-        }
-    });
-
-    archClient.items.on('itemHinted', async (hint) => {
-        try {
-            const messageStr = formatNodes(hint, true);
-            if (discordChannel) {
-                await discordChannel.send({ content: messageStr });
-            } else {
-                console.log('[Archipelago]', messageStr);
-            }
-        } catch (err) {
-            console.error('Error forwarding Archipelago message to Discord:', err);
-        }
-    });
+    
 
     // Helper to set up socket event listeners (called after each connection)
     function setupSocketListeners() {
@@ -339,9 +314,6 @@ async function start(discordClient, db) {
         if (reconnectTimer) {
             clearTimeout(reconnectTimer);
             reconnectTimer = null;
-        }
-        if (archClient.socket) {
-            archClient.socket.close();
         }
         console.log('Archipelago client destroyed');
     };
