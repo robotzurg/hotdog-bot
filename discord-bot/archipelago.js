@@ -112,7 +112,7 @@ async function start(discordClient, db) {
 
         try {
             if (slot) {
-                await archClient.login(address, slot, 'The Binding of Isaac Repentance');
+                await archClient.login(address, slot, 'Minecraft');
             } else {
                 await archClient.login(address);
             }
@@ -143,9 +143,9 @@ async function start(discordClient, db) {
     }
 
     // Helper to format nodes into a message string safely
-    function formatNodes(nodes, hint=false) {
+    function formatNodes(nodes, hint = false) {
         if (!Array.isArray(nodes)) return String(nodes || '');
-        
+
 
         const mapEmoji = (text) => {
             formatText = text.replace('\'s', '')
@@ -204,6 +204,14 @@ async function start(discordClient, db) {
                     return `${text} <:divamegamix:1426636473150734437>`;
                 case 'Yacob-TP':
                     return `${text} <:twilightprincess:1426636411980877985>`
+                case 'Player1':
+                    return `${text} <:dome:1439370852876419104>`
+                case 'Yacob-KH2':
+                    return `${text} <:kingdomhearts2:1423886593399455784>`
+                case 'Jeff-MC':
+                    return `${text} <:minecraft:1439370850728935434>`
+                case 'Ethan-SM64':
+                    return `${text} <:mario64:1439370849483489310>`
                 default:
                     return text;
             }
@@ -245,7 +253,7 @@ async function start(discordClient, db) {
             console.error('Error forwarding Archipelago message to Discord:', err);
         }
     });
-    
+
 
     // Helper to set up socket event listeners (called after each connection)
     function setupSocketListeners() {
@@ -309,7 +317,7 @@ async function start(discordClient, db) {
     }
 
     // Add destroy method to client for cleanup
-    archClient.destroy = function() {
+    archClient.destroy = function () {
         isDestroyed = true;
         if (reconnectTimer) {
             clearTimeout(reconnectTimer);
