@@ -205,6 +205,7 @@ async function start(discordClient, db) {
                 case 'Yacob-TP':
                     return `${text} <:twilightprincess:1426636411980877985>`
                 case 'Player1':
+                    text = text.replace('Player1', 'Vlad-DK');
                     return `${text} <:dome:1439370852876419104>`
                 case 'Yacob-KH2':
                     return `${text} <:kingdomhearts2:1423886593399455784>`
