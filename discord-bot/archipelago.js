@@ -300,7 +300,7 @@ async function start(discordClient, db) {
 
     try {
         if (slot) {
-            await archClient.login(address, slot, 'Garfield Kart: Furious Racing');
+            await archClient.login(address, slot, 'Garfield Kart - Furious Racing');
         } else {
             await archClient.login(address);
         }
