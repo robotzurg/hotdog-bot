@@ -112,7 +112,7 @@ async function start(discordClient, db) {
 
         try {
             if (slot) {
-                await archClient.login(address, slot, 'Minecraft');
+                await archClient.login(address, slot, 'Clique');
             } else {
                 await archClient.login(address);
             }
@@ -150,69 +150,91 @@ async function start(discordClient, db) {
         const mapEmoji = (text) => {
             formatText = text.replace('\'s', '')
             switch (text) {
-                case 'Ethan-KD3':
-                    return `${text} <:kirbydreamland:1426636560723607585>`;
-                case 'Ethan-H2':
-                    return `${text} <:hylics2:1426636541756964976>`;
-                case 'Ethan-SR':
-                    return `${text} <:sonicrush:1426636527131430973>`;
-                case 'Ethan-SMO':
-                    return `${text} <:smo:1426636511574622380>`;
-                case 'Jeff-TBOI':
-                    return `${text} <:isaac:1426637153483624518>`;
-                case 'Jeff-CLUB':
-                    return `${text} <:clubhouse:1426637140875411588>`;
-                case 'Jeff-PKMN':
-                    return `${text} <:pkmnwhite:1426636855809413160>`;
-                case 'YacobJeff-KTANE':
-                    return `${text} <:ktane:1426637126233100378>`;
-                case 'Jeff-WOTW':
-                    return `${text} <:oriwotw:1426636447817138397>`;
-                case 'Yacob-PKMN':
-                    return `${text} <:pkmnblack:1426636870363643995>`;
-                case 'Yacob-SLY':
-                    return `${text} <:slytwo:1426636387532406947>`;
-                case 'AllLethal':
-                    return `${text} <:lethal:1426636493543309502>`;
-                case 'AvHat':
-                    return `${text} <:hatintime:1423880268460326995>`;
-                case 'AvLego':
+                case 'Jeff-ND':
+                    return `${text} <:necrodancer:1443882720928206959>`;
+                case 'Jeff-LTTP':
+                    return `${text} <:lttp:1443882719749607506>`;
+                case 'Jeff-C':
+                case 'Nate-C':
+                case 'Iapg-C':
+                case 'Yacob-C':
+                    return `${text} <:celeste:1443882718591975444>`;
+                case 'Jeff-C64':
+                    return `${text} <:celeste64:1443882717623353354>`;
+                case 'Jeff-CHESS':
+                    return `${text} ♟️`
+                case 'AvTruck':
+                    return `${text} <:clustertruck:1443882716725645342>`;
+                case 'Av-GK':
+                case 'Aero-GK':
+                case 'Nate-GK':
+                    return `${text} <:garfieldkart:1443882713957404804>`;
+                case 'Av-Hitman':
+                    return `${text} <:hitman:1443882715698040832>`;
+                case 'Av-Scooby':
+                    return `${text} <:scoobydoo:1443882712988520539>`;
+                case 'Av-Simpsons':
+                    return `${text} <:simpsons:1443882712074289255>`;
+                case 'Av-Lego':
                     return `${text} <:legostarwars:1426636286294233199>`;
-                case 'AvNiko':
-                    return `${text} <:herecomesniko:1426636312479399947>`;
                 case 'AvTyTiger':
+                case 'NateTyTiger':
                     return `${text} <:tytiger:1426636336672018553>`;
-                case 'HDW-DRG':
-                    return `${text} <:drg:1426636430657982534>`;
-                case 'NateCuphead':
-                    return `${text} <:cuphead:1423881140275777578>`;
-                case 'NateHat':
-                    return `${text} <:hatintime:1423880268460326995>`;
-                case 'NateMario':
-                    return `${text} <:marioworld:1426636242816077967>`;
-                case 'NateEmerald':
-                    return `${text} <:pkmnemerald:1426636252232290315>`;
-                case 'NateOri':
-                    return `${text} <:oriforest:1423880585331478608>`;
-                case 'Vlad-Hades':
-                    return `${text} <:hades:1426636348135182462>`;
-                case 'Vlad-HK':
-                    return `${text} <:hollowknight:1423880850658955374>`;
+                case 'Av-Ori':
+                case 'Yacob-ORI':
+                case 'Nate-ORI':
+                    return `${text} <:oriwotw:1426636447817138397>`
+                case 'Ethan-K64':
+                    return `${text} <:kirby64:1443882711159930953>`;
+                case 'Ethan-Psychonauts':
+                    return `${text} <:psychonauts:1443882709809238107>`;
+                case 'Ethan-Paint':
+                    return `${text} 🎨`;
+                case 'Ethan-Gator':
+                    return `${text} <:lilgator:1443882708873904180>`;
+                case 'Ethan-PKMN':
+                case 'Snow-PKMN':
+                    return `${text} <:pkmnblack:1426636870363643995>`;
+                case 'NateWord':
+                    return `${text} <:wordle:1443882707942768693>`;
+                case 'NateClique':
+                case 'HDW-Clique':
+                    return `${text} <:clique:1443882706550390805>`;
+                case 'NateWitness':
+                    return `${text} <:witness:1443882705895952384>`;
+                case 'NateGenshin':
+                    return `${text} <:genshin:1443882704834658387>`;
+                case 'Vlad-SH':
+                    return `${text} <:shorthike:1443882704084140042>`;
+                case 'Vlad-Shapez':
+                    return `${text} <:shapez:1443882702741966848>`;
+                case 'Vlad-DD':
+                    return `${text} <:deathsdoor:1443882701726941274>`;
+                case 'Vlad-Calamity':
+                    return `${text} <:calamity:1443882700728438907>`;
+                case 'Vlad-Blas':
+                    return `${text} <:blasphemous:1443882699726131270>`;
                 case 'Vlad-Ultra':
+                case 'Yacob-ULTRA':
                     return `${text} <:ultrakill:1426636375863722075>`;
+                case 'Aero-INS':
+                    return `${text} <:inscryption:1443882698337816641>`;
+                case 'Aero-FNAF':
+                    return `${text} <:fnaf6:1443882697524121671>`;
+                case 'Aero-PKMN':
+                    return `${text} <:pkmnwhite:1426636855809413160>`;
+                case 'IAPG-HK':
+                    return `${text} <:hollowknight:1423880850658955374>`;
+                case 'IAPG-UT':
+                    return `${text} <:undertale:1443882696504770562>`;
+                case 'Yacob-KH2':
+                    return `${text} <:kingdomhearts2:1423886593399455784>`;
+                case 'Yacob-SOL':
+                    return `${text} <:ninesols:1443882695913504822>`;
+                case 'Yacob-DS3':
+                    return `${text} <:darksouls3:1443882694642499688>`;
                 case 'Yacob-MIKU':
                     return `${text} <:divamegamix:1426636473150734437>`;
-                case 'Yacob-TP':
-                    return `${text} <:twilightprincess:1426636411980877985>`
-                case 'Player1':
-                    text = text.replace('Player1', 'Vlad-DK');
-                    return `${text} <:dome:1439370852876419104>`
-                case 'Yacob-KH2':
-                    return `${text} <:kingdomhearts2:1423886593399455784>`
-                case 'Jeff-MC':
-                    return `${text} <:minecraft:1439370850728935434>`
-                case 'Ethan-SM64':
-                    return `${text} <:mario64:1439370849483489310>`
                 default:
                     return text;
             }
@@ -300,7 +322,7 @@ async function start(discordClient, db) {
 
     try {
         if (slot) {
-            await archClient.login(address, slot, 'Garfield Kart - Furious Racing');
+            await archClient.login(address, slot, 'Clique');
         } else {
             await archClient.login(address);
         }
@@ -312,7 +334,6 @@ async function start(discordClient, db) {
         sendDiscordMessage('Connected to Archipelago server!');
     } catch (err) {
         console.error('Archipelago login failed:', err);
-        sendDiscordMessage(`Failed to connect: ${err.message}`);
         // Don't throw - let reconnection logic handle it
         attemptReconnect('initial connection failed');
     }
