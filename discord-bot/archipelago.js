@@ -150,13 +150,13 @@ async function start(discordClient, db) {
         const mapEmoji = (text) => {
             formatText = text.replace('\'s', '')
             switch (text) {
-                case 'Jeff-ND':
+                case 'Jeff-CRYPT':
                     return `${text} <:necrodancer:1443882720928206959>`;
-                case 'Jeff-LTTP':
+                case 'Jeff-ALTTP':
                     return `${text} <:lttp:1443882719749607506>`;
                 case 'Jeff-C':
-                case 'Nate-C':
-                case 'Iapg-C':
+                case 'NateCeleste':
+                case 'iapg-celeste':
                 case 'Yacob-C':
                     return `${text} <:celeste:1443882718591975444>`;
                 case 'Jeff-C64':
@@ -165,67 +165,67 @@ async function start(discordClient, db) {
                     return `${text} ♟️`
                 case 'AvTruck':
                     return `${text} <:clustertruck:1443882716725645342>`;
-                case 'Av-GK':
-                case 'Aero-GK':
-                case 'Nate-GK':
+                case 'Avresa':
+                case 'RaveelGK':
+                case 'NateGK':
                     return `${text} <:garfieldkart:1443882713957404804>`;
-                case 'Av-Hitman':
+                case 'AvHitman':
                     return `${text} <:hitman:1443882715698040832>`;
-                case 'Av-Scooby':
+                case 'AvScoob':
                     return `${text} <:scoobydoo:1443882712988520539>`;
-                case 'Av-Simpsons':
+                case 'AvSimp':
                     return `${text} <:simpsons:1443882712074289255>`;
-                case 'Av-Lego':
+                case 'Av-SWCS':
                     return `${text} <:legostarwars:1426636286294233199>`;
-                case 'AvTyTiger':
-                case 'NateTyTiger':
+                case 'AvTyger':
+                case 'NateTy':
                     return `${text} <:tytiger:1426636336672018553>`;
-                case 'Av-Ori':
+                case 'AvOri':
                 case 'Yacob-ORI':
-                case 'Nate-ORI':
+                case 'NateOri':
                     return `${text} <:oriwotw:1426636447817138397>`
                 case 'Ethan-K64':
                     return `${text} <:kirby64:1443882711159930953>`;
-                case 'Ethan-Psychonauts':
+                case 'Ethan-PSY':
                     return `${text} <:psychonauts:1443882709809238107>`;
                 case 'Ethan-Paint':
                     return `${text} 🎨`;
-                case 'Ethan-Gator':
+                case 'Ethan-LGG':
                     return `${text} <:lilgator:1443882708873904180>`;
-                case 'Ethan-PKMN':
-                case 'Snow-PKMN':
+                case 'Ethan-BW':
+                case 'AriaPokemon':
                     return `${text} <:pkmnblack:1426636870363643995>`;
                 case 'NateWord':
                     return `${text} <:wordle:1443882707942768693>`;
                 case 'NateClique':
-                case 'HDW-Clique':
+                case 'HDWClique':
                     return `${text} <:clique:1443882706550390805>`;
                 case 'NateWitness':
                     return `${text} <:witness:1443882705895952384>`;
                 case 'NateGenshin':
                     return `${text} <:genshin:1443882704834658387>`;
-                case 'Vlad-SH':
+                case 'vlad-ash':
                     return `${text} <:shorthike:1443882704084140042>`;
-                case 'Vlad-Shapez':
+                case 'vlad-sha':
                     return `${text} <:shapez:1443882702741966848>`;
-                case 'Vlad-DD':
+                case 'vlad-dd':
                     return `${text} <:deathsdoor:1443882701726941274>`;
-                case 'Vlad-Calamity':
+                case 'vlad-ter':
                     return `${text} <:calamity:1443882700728438907>`;
-                case 'Vlad-Blas':
+                case 'vlad-blas':
                     return `${text} <:blasphemous:1443882699726131270>`;
-                case 'Vlad-Ultra':
+                case 'vlad-ultra':
                 case 'Yacob-ULTRA':
                     return `${text} <:ultrakill:1426636375863722075>`;
-                case 'Aero-INS':
+                case 'RavelInscryptio':
                     return `${text} <:inscryption:1443882698337816641>`;
-                case 'Aero-FNAF':
+                case 'RaveelFFPS':
                     return `${text} <:fnaf6:1443882697524121671>`;
                 case 'Aero-PKMN':
                     return `${text} <:pkmnwhite:1426636855809413160>`;
-                case 'IAPG-HK':
+                case 'iapg-HK':
                     return `${text} <:hollowknight:1423880850658955374>`;
-                case 'IAPG-UT':
+                case 'iapg-UT':
                     return `${text} <:undertale:1443882696504770562>`;
                 case 'Yacob-KH2':
                     return `${text} <:kingdomhearts2:1423886593399455784>`;
