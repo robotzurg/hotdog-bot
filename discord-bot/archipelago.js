@@ -221,7 +221,7 @@ async function start(discordClient, db) {
                     return `${text} <:inscryption:1443882698337816641>`;
                 case 'RaveelFFPS':
                     return `${text} <:fnaf6:1443882697524121671>`;
-                case 'Aero-PKMN':
+                case 'RaveelBW':
                     return `${text} <:pkmnwhite:1426636855809413160>`;
                 case 'iapg-HK':
                     return `${text} <:hollowknight:1423880850658955374>`;
