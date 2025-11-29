@@ -162,7 +162,9 @@ async function start(discordClient, db) {
                 case 'Jeff-C64':
                     return `${text} <:celeste64:1443882717623353354>`;
                 case 'Jeff-CHESS':
-                    return `${text} ♟️`
+                    return `${text} ♟️`;
+                case 'Jeff-YD':
+                    return `${text} 🎲`;
                 case 'AvTruck':
                     return `${text} <:clustertruck:1443882716725645342>`;
                 case 'Avresa':
