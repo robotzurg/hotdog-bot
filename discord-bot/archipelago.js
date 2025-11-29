@@ -175,7 +175,7 @@ async function start(discordClient, db) {
                     return `${text} <:scoobydoo:1443882712988520539>`;
                 case 'AvSimp':
                     return `${text} <:simpsons:1443882712074289255>`;
-                case 'Av-SWCS':
+                case 'AvSWCS':
                     return `${text} <:legostarwars:1426636286294233199>`;
                 case 'AvTyger':
                 case 'NateTy':
