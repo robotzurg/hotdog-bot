@@ -165,6 +165,8 @@ async function start(discordClient, db) {
                     return `${text} ♟️`;
                 case 'Jeff-YD':
                     return `${text} 🎲`;
+                case 'Jeff-ORI':
+                    return `${text} <:oriforest:1423880585331478608>`
                 case 'AvTruck':
                     return `${text} <:clustertruck:1443882716725645342>`;
                 case 'Avresa':
@@ -219,7 +221,7 @@ async function start(discordClient, db) {
                 case 'vlad-ultra':
                 case 'Yacob-ULTRA':
                     return `${text} <:ultrakill:1426636375863722075>`;
-                case 'RavelInscryptio':
+                case 'RaveelInscryptio':
                     return `${text} <:inscryption:1443882698337816641>`;
                 case 'RaveelFFPS':
                     return `${text} <:fnaf6:1443882697524121671>`;
