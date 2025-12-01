@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const db = require('../db.js');
 const { spawn } = require('child_process');
 const path = require('path');
@@ -83,18 +83,105 @@ module.exports = {
             message = message.map(v => `- ${v}`)
             message[0] = message[0].replace(`- `, '');
 
-            // Trim message array to a maximum of 100 elements to avoid overly long replies
-            if (message.length > 100) {
-                const removedCount = message.length - 100;
-                // keep first 100 entries
-                message = message.slice(0, 100);
-                // add a short footer noting the number of omitted items
-                message.push(`... (omitted ${removedCount} additional items)`);
-            }
+            const itemsPerPage = 10;
+            const totalPages = Math.ceil((message.length - 1) / itemsPerPage);
+            let currentPage = 0;
 
-            // Add a short summary line with the final count of displayed items
-            message.push(`-# (**${checks}** In Logic)`);
-            await finishReply(message);
+            const generatePage = (page) => {
+                const start = page * itemsPerPage + 1; // +1 to skip the header
+                const end = Math.min(start + itemsPerPage, message.length);
+                const pageItems = message.slice(start, end);
+
+                const pageContent = [
+                    message[0], // Header
+                    ...pageItems,
+                    `\n-# Page ${page + 1}/${totalPages} | **${checks}** In Logic`
+                ];
+
+                return pageContent.join('\n');
+            };
+
+            const generateButtons = (page) => {
+                const row = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('first')
+                            .setLabel('⏮️ First')
+                            .setStyle(ButtonStyle.Primary)
+                            .setDisabled(page === 0),
+                        new ButtonBuilder()
+                            .setCustomId('prev')
+                            .setLabel('◀️ Previous')
+                            .setStyle(ButtonStyle.Primary)
+                            .setDisabled(page === 0),
+                        new ButtonBuilder()
+                            .setCustomId('next')
+                            .setLabel('Next ▶️')
+                            .setStyle(ButtonStyle.Primary)
+                            .setDisabled(page === totalPages - 1),
+                        new ButtonBuilder()
+                            .setCustomId('last')
+                            .setLabel('Last ⏭️')
+                            .setStyle(ButtonStyle.Primary)
+                            .setDisabled(page === totalPages - 1)
+                    );
+                return row;
+            };
+
+            if (totalPages <= 1) {
+                // No pagination needed
+                message.push(`-# (**${checks}** In Logic)`);
+                await finishReply(message);
+            } else {
+                // Send initial page with buttons
+                const response = await interaction.editReply({
+                    content: generatePage(currentPage),
+                    components: [generateButtons(currentPage)]
+                });
+                replied = true;
+
+                // Create collector for button interactions
+                const collector = response.createMessageComponentCollector({
+                    time: 600000 // 10 minutes
+                });
+
+                collector.on('collect', async i => {
+                    if (i.user.id !== interaction.user.id) {
+                        await i.reply({ content: 'These buttons are not for you!', ephemeral: true });
+                        return;
+                    }
+
+                    switch (i.customId) {
+                        case 'first':
+                            currentPage = 0;
+                            break;
+                        case 'prev':
+                            currentPage = Math.max(0, currentPage - 1);
+                            break;
+                        case 'next':
+                            currentPage = Math.min(totalPages - 1, currentPage + 1);
+                            break;
+                        case 'last':
+                            currentPage = totalPages - 1;
+                            break;
+                    }
+
+                    await i.update({
+                        content: generatePage(currentPage),
+                        components: [generateButtons(currentPage)]
+                    });
+                });
+
+                collector.on('end', async () => {
+                    try {
+                        await interaction.editReply({
+                            components: []
+                        });
+                    } catch (err) {
+                        console.error('Failed to remove buttons:', err);
+                    }
+                });
+            }
         });
 
         // In case the process errors during spawn
