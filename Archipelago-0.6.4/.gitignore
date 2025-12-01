@@ -63,7 +63,6 @@ Output Logs/
 /installdelete.iss
 /data/user.kv
 /datapackage
-/custom_worlds
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
