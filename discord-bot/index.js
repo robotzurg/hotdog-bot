@@ -67,7 +67,7 @@ client.once('ready', async () => {
 
     // Start Archipelago client and wire messages to Discord channel
     try {
-        archipelagoClient = await start(client, db);
+        //archipelagoClient = await start(client, db);
     } catch (err) {
         console.error('Failed to start Archipelago module:', err);
     }
@@ -617,4 +617,3 @@ client.on('messageCreate', async message => {
 
 // login to Discord
 client.login(token);
-
