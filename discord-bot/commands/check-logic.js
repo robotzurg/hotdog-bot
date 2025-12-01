@@ -7,10 +7,62 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('check-logic')
         .setDescription('Check your in logic checks')
-        .addStringOption(option => 
+        .addStringOption(option =>
             option.setName('slot-name')
                 .setDescription('The archipelago slot name to check')
-                .setRequired(true))
+                .setRequired(true)
+                .addChoices(
+                    { name: 'Jeff-CRYPT', value: 'Jeff-CRYPT' },
+                    { name: 'Jeff-ALTTP', value: 'Jeff-ALTTP' },
+                    { name: 'Jeff-C', value: 'Jeff-C' },
+                    { name: 'NateCeleste', value: 'NateCeleste' },
+                    { name: 'iapg-celeste', value: 'iapg-celeste' },
+                    { name: 'Yacob-C', value: 'Yacob-C' },
+                    { name: 'Jeff-C64', value: 'Jeff-C64' },
+                    { name: 'Jeff-CHESS', value: 'Jeff-CHESS' },
+                    { name: 'Jeff-YD', value: 'Jeff-YD' },
+                    { name: 'Jeff-ORI', value: 'Jeff-ORI' },
+                    { name: 'AvTruck', value: 'AvTruck' },
+                    { name: 'Avresa', value: 'Avresa' },
+                    { name: 'RaveelGK', value: 'RaveelGK' },
+                    { name: 'NateGK', value: 'NateGK' },
+                    { name: 'AvHitman', value: 'AvHitman' },
+                    { name: 'AvScoob', value: 'AvScoob' },
+                    { name: 'AvSimp', value: 'AvSimp' },
+                    { name: 'AvSWCS', value: 'AvSWCS' },
+                    { name: 'AvTyger', value: 'AvTyger' },
+                    { name: 'NateTy', value: 'NateTy' },
+                    { name: 'AvOri', value: 'AvOri' },
+                    { name: 'Yacob-ORI', value: 'Yacob-ORI' },
+                    { name: 'NateOri', value: 'NateOri' },
+                    { name: 'Ethan-K64', value: 'Ethan-K64' },
+                    { name: 'Ethan-PSY', value: 'Ethan-PSY' },
+                    { name: 'Ethan-Paint', value: 'Ethan-Paint' },
+                    { name: 'Ethan-LGG', value: 'Ethan-LGG' },
+                    { name: 'Ethan-BW', value: 'Ethan-BW' },
+                    { name: 'AriaPokemon', value: 'AriaPokemon' },
+                    { name: 'NateWord', value: 'NateWord' },
+                    { name: 'NateClique', value: 'NateClique' },
+                    { name: 'HDWClique', value: 'HDWClique' },
+                    { name: 'NateWitness', value: 'NateWitness' },
+                    { name: 'NateGenshin', value: 'NateGenshin' },
+                    { name: 'vlad-ash', value: 'vlad-ash' },
+                    { name: 'vlad-sha', value: 'vlad-sha' },
+                    { name: 'vlad-dd', value: 'vlad-dd' },
+                    { name: 'vlad-ter', value: 'vlad-ter' },
+                    { name: 'vlad-blas', value: 'vlad-blas' },
+                    { name: 'vlad-ultra', value: 'vlad-ultra' },
+                    { name: 'Yacob-ULTRA', value: 'Yacob-ULTRA' },
+                    { name: 'RaveelInscryptio', value: 'RaveelInscryptio' },
+                    { name: 'RaveelFFPS', value: 'RaveelFFPS' },
+                    { name: 'RaveelBW', value: 'RaveelBW' },
+                    { name: 'iapg-HK', value: 'iapg-HK' },
+                    { name: 'iapg-UT', value: 'iapg-UT' },
+                    { name: 'Yacob-KH2', value: 'Yacob-KH2' },
+                    { name: 'Yacob-SOL', value: 'Yacob-SOL' },
+                    { name: 'Yacob-DS3', value: 'Yacob-DS3' },
+                    { name: 'Yacob-MIKU', value: 'Yacob-MIKU' },
+                ))
         .setDMPermission(false),
     async execute(interaction) {
         await interaction.deferReply();
