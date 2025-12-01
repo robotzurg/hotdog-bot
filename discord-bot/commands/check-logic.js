@@ -146,11 +146,6 @@ module.exports = {
                 });
 
                 collector.on('collect', async i => {
-                    if (i.user.id !== interaction.user.id) {
-                        await i.reply({ content: 'These buttons are not for you!', ephemeral: true });
-                        return;
-                    }
-
                     switch (i.customId) {
                         case 'first':
                             currentPage = 0;
