@@ -1,0 +1,521 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Here Comes Niko! Template
+
+game: Here Comes Niko!
+requires:
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+
+Here Comes Niko!:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  death_link:
+    # When somebody dies the level will be reloaded
+    'false': 50
+    'true': 0
+
+  trap_link:
+    # Traps with other TrapLink players are shared.
+    'false': 50
+    'true': 0
+
+  ################
+  # Goal Options #
+  ################
+  goal_completion:
+    # Set your Completion Goal.
+    # Hired: Reach Pepper's Interview and get hired!
+    # Employee: Get 76 Coins and be the Employee Of The Month!
+    hired: 50
+    employee: 0
+
+  min_kiosk_cost:
+    # Determines the lowest possible cost for a Kiosk.
+    # Disabled if 'Shuffle Kiosk Reward' is false
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 55
+    1: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  max_kiosk_cost:
+    # Determines the highest possible cost for a Kiosk.
+    # Disabled if 'Shuffle Kiosk Reward' is false
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 20
+    # Maximum value is 70
+    38: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  min_elevator_cost:
+    # Determines the lowest possible cost for the elevator
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 79
+    46: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  max_elevator_cost:
+    # Determines the highest possible cost for the elevator
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 79
+    46: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  ###################
+  # General Options #
+  ###################
+  shuffle_kiosk_reward:
+    # Choose whether to shuffle the Kiosk to NOT give the next Ticket but instead something else.
+    # Compatible with 'Start with Ticket'.
+    # Check the in-game Tracker for Kiosk Cost and if you bought it.
+    'false': 0
+    'true': 50
+
+  start_with_ticket:
+    # You'll start with a random Ticket. Highly recommended as there are only 3 checks at Home!
+    'false': 0
+    'true': 50
+
+  cassette_logic:
+    # This changes how Mitch & Mai work
+    # 
+    # LevelBased: Cassettes have been split up into level specific variants.
+    # So you need 'Hairball City Cassette' 5x/10x to trade with Mitch/Mai in Hairball City.
+    # -----------------------------------------------------------
+    # Progressive: Mitch and Mai require increasing numbers of cassettes to unlock their locations.
+    # Unlock order is fixed: The number of cassettes needed progresses incrementally -> 5 -> 10 -> 15 -> 20 -> 25.
+    # The in-game Cassette Tracker shows from left to right your progress.
+    # When you buy the first progressive unlock, the first Mitch/Mai icon will be marked as purchased.
+    # If Gary's Garden is shuffled -> The tracker starts at Gary's Garden. If not shuffled -> The tracker starts at Hairball City.
+    # -----------------------------------------------------------
+    # Scattered: Prices are randomly shuffled between all Mitch & Mai Locations.
+    level_based: 0
+    progressive: 0
+    scattered: 50
+
+  enable_achievements:
+    # Enables if Achievements should be a location.
+    # Frog Fan only needs 10 bumps & Volley Dreams only needs a highscore of 5 in every level.
+    all_achievements: 0
+    except_snail_fashion_show: 0
+    disabled: 50
+
+  shuffle_handsome_frog:
+    # Enables if talking to Handsome Frog should be a location.
+    'false': 50
+    'true': 0
+
+  shuffle_garys_garden:
+    # Choose whether Gary's Garden should have locations.
+    'false': 0
+    'true': 50
+
+  access_garys_garden:
+    # Changes when Gary's Garden is accessible.
+    # Tadpole HQ: Gary's Garden will be accessible when Tadpole HQ is accessible.
+    # -----------------------------------------------------------
+    # Tadpole HQ & Gary's Garden: Gary's Garden won't be accessible until Tadpole HQ Ticket & Gary's Garden Ticket are obtained.
+    # -----------------------------------------------------------
+    # Gary's Garden: Gary's Garden will be accessible in 'Home' when Gary's Garden Ticket has been obtained.
+    tadpole_hq: 0
+    tadpole_and_garden: 50
+    garden: 0
+
+  snail_shop:
+    # When enabled the clothes shop from the Tamagotchi Snail will contain AP Items.
+    'false': 50
+    'true': 0
+
+  ########################
+  # Item & Logic Options #
+  ########################
+  level_based_keys:
+    # If this option is enabled, Keys will be specific to the level.
+    # Hairball City Keys only open Hairball City Locks, Turbine Town Keys only open Turbine Town Locks etc.
+    'false': 50
+    'true': 0
+
+  progressive_contact_list:
+    # If this option is enabled, the Contact Lists will not be separate, so you cannot get Contact List 2 before Contact List 1.
+    'false': 0
+    'true': 50
+
+  bonk_permit:
+    # When enabled, a 'Safety Helmet' is required to break breakable blocks.
+    'false': 50
+    'true': 0
+
+  bug_catching:
+    # When enabled, a 'Bug Net' is required to catch bugs.
+    'false': 50
+    'true': 0
+
+  soda_cans:
+    # When enabled, soda cannons are broken, the item 'Soda Repair' will make the frog engineers repair them.
+    # DOESN'T INCLUDE THE ELEVATOR!
+    'false': 50
+    'true': 0
+
+  parasols:
+    # When enabled, Parasols are broken, the item 'Parasol Repair' will make the frog engineers repair them.
+    'false': 50
+    'true': 0
+
+  swimming:
+    # When enabled, a 'Swim Course' is required to swim in water.
+    'false': 50
+    'true': 0
+
+  precisejumps:
+    # Only available when Swimming is enabled.
+    # When this option is enabled, the logic will expect you to reach locations that require precise jumps
+    'false': 50
+    'true': 0
+
+  textbox:
+    # When enabled, the item 'Textbox' is required to talk to NPCs.
+    'false': 50
+    'true': 0
+
+  ac_repair:
+    # When enabled, ACs are broken, the item 'AC Repair' will make the frog engineers repair them.
+    'false': 50
+    'true': 0
+
+  applebasket:
+    # When enabled, Apples cannot be picked up until you have the item 'Apple Basket' to store them in.
+    'false': 50
+    'true': 0
+
+  ####################
+  # Location Options #
+  ####################
+  fishsanity:
+    # Need more checks or are you just insane?
+    # Vanilla: Normal Here Comes Niko! behaviour
+    # -----------------------------------------------------------
+    # Location: Every single fish you can fish with Fischer is a unique location
+    # -----------------------------------------------------------
+    # Insanity: Same as location with the change that Fischer won't give you the 'Fish with Fischer' item until you have all 5 fish for that level obtained.
+    # So you need the item 'Hairball City Fish' 5x before being able to obtain Fischer's reward in Hairball City.
+    # Check the in-game menu, to see if you have enough fish and obtained the reward from Fischer.
+    vanilla: 50
+    location: 0
+    insanity: 0
+
+  seedsanity:
+    # Need more checks or are you just insane?
+    # Vanilla: Normal Here Comes Niko! behaviour
+    # -----------------------------------------------------------
+    # Location: Every single seed you can collect with the hamster ball is a unique location
+    # -----------------------------------------------------------
+    # Insanity: Same as location with the change that Moomy won't give you the reward for collecting all seeds until you have been sent all 10 seeds for that level.
+    # So you need the item 'Hairball City Seed' 10x before being able to obtain Moomy's reward in Hairball City.
+    # Check the in-game menu, to see if you have enough seeds and obtained the reward from Moomy.
+    vanilla: 50
+    location: 0
+    insanity: 0
+
+  flowersanity:
+    # Need more checks or are you just insane?
+    # Vanilla: Normal Here Comes Niko! behaviour
+    # -----------------------------------------------------------
+    # Location: Every single flower bed is a unique location
+    # -----------------------------------------------------------
+    # Insanity: Same as location with the change that Little Gabi won't give you the reward for completing all flower beds until you have been sent all flowers for that level.
+    # So you need the item 'Hairball City Flower' 3x before being able to obtain Little Gabi's reward in Hairball City.
+    # Check the in-game menu, to see if you have enough flowers and obtained the reward from Little Gabi.
+    vanilla: 50
+    location: 0
+    insanity: 0
+
+  bonesanity:
+    # Need more checks or are you just insane?
+    # Vanilla: Normal Here Comes Niko! behaviour
+    # -----------------------------------------------------------
+    # Location: Every single bone is a unique location
+    # -----------------------------------------------------------
+    # Insanity: Same as location with the change that Bone Dog won't give you the reward for collecting all bones until you have been sent all bones for that level.
+    # So you need the item 'Hairball City Bone' 5x before being able to obtain Bone Dog's reward in Hairball City.
+    # Check the in-game menu, to see if you have enough bones and obtained the reward from Bone Dog.
+    vanilla: 50
+    location: 0
+    insanity: 0
+
+  applesanity:
+    # Need more checks or are you just insane?
+    # When enabled, freestanding apples will be randomized.
+    # This adds ~290 locations.
+    'false': 50
+    'true': 0
+
+  bugsanity:
+    # Need more checks or are you just insane?
+    # When enabled, bugs will be randomized.
+    # This adds 349 locations.
+    'false': 50
+    'true': 0
+
+  chatsanity:
+    # Need more checks or are you just insane?
+    # Vanilla: Normal Here Comes Niko! behaviour
+    # -----------------------------------------------------------
+    # Level Based: Every single NPC you can talk to is a unique location in every level
+    # -----------------------------------------------------------
+    # Global: Every single NPC you can talk to is a unique location, but only once, regardless of level
+    vanilla: 50
+    level_based: 0
+    global: 0
+
+  thoughtsanity:
+    # Chatsanity Part 2
+    # When enabled, Niko's thoughts will send a unique location similar to Chatsanity
+    # Niko's thought are found at places with a magnifying glass
+    'false': 50
+    'true': 0
+
+  ################
+  # Trap Options #
+  ################
+  trapchance:
+    # The chance for any junk item in the pool to be replaced by a trap.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    25: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  freeze_trapweight:
+    # The weight of Freeze Traps in the trap pool.
+    # Freeze Traps will temporarily make Niko unable to move.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    40: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  ironboots_trapweight:
+    # The weight of Iron Boots Traps in the trap pool.
+    # Iron Boots Traps will make Niko slow & heavy.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    40: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  whoops_trapweight:
+    # The weight of Whoops! Traps in the trap pool.
+    # Whoops! Traps will send Niko way up in the sky.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    40: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  myturn_trapweight:
+    # The weight of My Turn! Traps in the trap pool.
+    # My Turn! Traps will make Niko jump, dive and move in random directions.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    30: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  gravity_trapweight:
+    # The weight of Gravity Traps in the trap pool.
+    # Gravity Traps will temporarily remove gravity.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    10: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  home_trapweight:
+    # The weight of Home Traps in the trap pool.
+    # Home Traps will send Niko back to Home.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    10: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  wide_trapweight:
+    # The weight of W I D E Traps in the trap pool.
+    # W I D E Traps will make Niko very wide.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    40: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  phone_trapweight:
+    # The weight of Phone Traps in the trap pool.
+    # Phone Traps will force Niko to receive an unskippable phone call.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    25: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  tiny_trapweight:
+    # The weight of Tiny Traps in the trap pool.
+    # Tiny Traps will make Niko very tiny.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    40: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  jumpingjacks_trapweight:
+    # The weight of Jumping Jacks Traps in the trap pool.
+    # Jumping Jacks Traps will make Niko jump continuously.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    25: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_inventory_from_pool:
+    # Start with the specified amount of these items and don't place them in the world. Example: "Bomb: 1"
+    # 
+    # The game decides what the replacement items will be.
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

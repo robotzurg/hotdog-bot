@@ -1,0 +1,441 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Sonic Heroes Template
+
+game: Sonic Heroes
+requires:
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+
+Sonic Heroes:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  ################
+  # Goal Options #
+  ################
+  goal:
+    # Determines the goal of the seed
+    # 
+    # Metal Overlord: Beat Metal Overlord
+    metal_overlord: 50
+
+  goal_unlock_condition:
+    # Determines how the Goal level is unlocked
+    # 
+    # Both: Requires all 7 Chaos Emeralds plus the number of Emblems chosen
+    # 
+    # Emblems Only: Only requires the chosen number of Emblems
+    # 
+    # Emeralds Only: Only requires the 7 Chaos Emeralds with no Emblem requirements. Level Gates will still require Emblems to proceed
+    both: 50
+    emblems_only: 0
+    emeralds_only: 0
+
+  emerald_stage_location_type:
+    # Which Location type should the Emeralds be?
+    # Priority is recommended as it gives a reason to do them
+    # Excluded requires enough space in the itempool to generate
+    priority: 50
+    normal: 0
+    excluded: 0
+
+  skip_metal_madness:
+    # Skips Metal Madness when selecting it from level select and goes directly to Metal Overlord (final boss)
+    'false': 0
+    'true': 50
+
+  emblem_pool_size:
+    # How many Emblems should be added to the itempool?
+    # This is per Mission Act enabled (A and B) and Story
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 14
+    12: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  required_emblems_percent:
+    # What percent of the Emblem pool size emblems should be required to unlock the Final Goal? (rounded down)
+    # This also affects level gates (if enabled)
+    # This can be 0 which makes all level gates and the final boss have no emblem cost
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    70: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  required_rank:
+    # Determines what minimum Rank is required to send a check for a mission
+    e: 50
+    d: 0
+    c: 0
+    b: 0
+    a: 0
+
+  dont_lose_bonus_key:
+    # Keep the Bonus Key for the rest of the level once you collect it
+    'false': 50
+    'true': 0
+
+  ###############
+  # Level Gates #
+  ###############
+  number_level_gates:
+    # The number emblem-locked gates which lock sets of levels.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 7
+    3: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  #################
+  # Story Options #
+  #################
+  sonic_story:
+    # Should Sonic Story Missions be enabled?
+    disabled: 50
+    mission_a_only: 0
+    mission_b_only: 0
+    both_missions_enabled: 0
+
+  dark_story:
+    # Should Dark Story Missions be enabled?
+    # Mission B will allow for Dark Enemy Sanity
+    disabled: 50
+    mission_a_only: 0
+    mission_b_only: 0
+    both_missions_enabled: 0
+
+  rose_story:
+    # Should Rose Story Missions be enabled?
+    # Mission B will allow for Rose Ring Sanity
+    disabled: 0
+    mission_a_only: 50
+    mission_b_only: 0
+    both_missions_enabled: 0
+
+  chaotix_story:
+    # Should Chaotix Story Missions be enabled?
+    # Either Mission Act, or both, will allow for Chaotix Sanity
+    disabled: 50
+    mission_a_only: 0
+    mission_b_only: 0
+    both_missions_enabled: 0
+
+  super_hard_mode_sonic_act_2:
+    # Should Sonic Act B Missions be replaced with the Super Hard Mode version?
+    # The location names will remain the same
+    # You will always go to the bonus stage at the end of the level
+    'false': 50
+    'true': 0
+
+  ##########
+  # Sanity #
+  ##########
+  sonic_key_sanity:
+    # Getting a bonus key sends a check.
+    # This is separate per team enabled
+    # Only 1 Set makes it only 1 set of keys to collect (for the team)
+    # Set For Each Act has one set of keys for each Act enabled (requires both Acts enabled to have both sets)
+    disabled: 50
+    only1set: 0
+    setforeachact: 0
+
+  sonic_checkpoint_sanity:
+    # 
+    disabled: 50
+    only1setnormal: 0
+    onlysuperhard: 0
+    setforeachact: 0
+
+  dark_sanity:
+    # How many enemies are needed for a sanity check?
+    # Requires Mission B to be enabled
+    # 1 results in 1400 checks
+    # 20 results in 70 checks
+    disabled: 50
+    '1': 0
+    '5': 0
+    '10': 0
+    '20': 0
+
+  dark_key_sanity:
+    # Getting a bonus key sends a check.
+    # This is separate per team enabled
+    # Only 1 Set makes it only 1 set of keys to collect (for the team)
+    # Set For Each Act has one set of keys for each Act enabled (requires both Acts enabled to have both sets)
+    disabled: 50
+    only1set: 0
+    setforeachact: 0
+
+  dark_checkpoint_sanity:
+    # 
+    disabled: 50
+    only1set: 0
+    setforeachact: 0
+
+  rose_sanity:
+    # How many rings are needed for a sanity check?
+    # Requires Mission B to be enabled
+    # Each
+    # 1 results in 2800 checks
+    # 20 results in 140 checks
+    disabled: 50
+    '1': 0
+    '5': 0
+    '10': 0
+    '20': 0
+
+  rose_key_sanity:
+    # Getting a bonus key sends a check.
+    # This is separate per team enabled
+    # Only 1 Set makes it only 1 set of keys to collect (for the team)
+    # Set For Each Act has one set of keys for each Act enabled (requires both Acts enabled to have both sets)
+    disabled: 50
+    only1set: 0
+    setforeachact: 0
+
+  rose_checkpoint_sanity:
+    # 
+    disabled: 50
+    only1set: 0
+    setforeachact: 0
+
+  chaotix_sanity:
+    # Should Chaotix Sanity be enabled, and if so, how many rings are needed for a check on Casino Park?
+    # Mission A only Check Count: 223 + 200 / value (if enabled)
+    # Mission B only Check Count: 266 + 500 / value (if enabled)
+    # Both Missions Check Count: 489 + 700 / value (if enabled)
+    disabled: 50
+    '1': 0
+    '5': 0
+    '10': 0
+    '20': 0
+
+  chaotix_key_sanity:
+    # Getting a bonus key sends a check.
+    # This is separate per team enabled
+    # Only 1 Set makes it only 1 set of keys to collect (for the team)
+    # Set For Each Act has one set of keys for each Act enabled (requires both Acts enabled to have both sets)
+    disabled: 50
+    only1set: 0
+    setforeachact: 0
+
+  chaotix_checkpoint_sanity:
+    # 
+    disabled: 50
+    only1set: 0
+    setforeachact: 0
+
+  sanity_excluded_percent:
+    # How much percent of sanity checks should be excluded (only have filler/trap items)?
+    # This currently does not affect Key Sanity.
+    # This helps with large amounts of sanity checks having all of the progressive items in a sync.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    80: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  ################
+  # Ring Options #
+  ################
+  ring_link:
+    # Ring Link
+    'false': 50
+    'true': 0
+
+  ring_link_overlord:
+    # Should Ring Link be enabled on Metal Overlord?
+    # This requires Ring Link to be enabled to have any effect
+    'false': 50
+    'true': 0
+
+  modern_ring_loss:
+    # Only lose up to 20 Rings when hit instead of all
+    'false': 50
+    'true': 0
+
+  #########
+  # Traps #
+  #########
+  trap_fill:
+    # Determines the percentage of the junk fill which is filled with traps.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    0: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  stealth_trap_weight:
+    # Determines the weight (not percent) for Stealth Trap.
+    # Traps must be enabled for this to have any effect.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    50: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  freeze_trap_weight:
+    # Determines the weight (not percent) for Freeze Trap.
+    # Traps must be enabled for this to have any effect.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    50: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  no_swap_trap_weight:
+    # Determines the weight (not percent) for No Swap Trap.
+    # Traps must be enabled for this to have any effect.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    50: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  ring_trap_weight:
+    # Determines the weight (not percent) for Ring Trap.
+    # Traps must be enabled for this to have any effect.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    50: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  charmy_trap_weight:
+    # Determines the weight (not percent) for Charmy Trap.
+    # Traps must be enabled for this to have any effect.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    50: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  #############
+  # DeathLink #
+  #############
+  death_link:
+    # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+    'false': 50
+    'true': 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

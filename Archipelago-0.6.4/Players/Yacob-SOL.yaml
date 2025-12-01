@@ -1,0 +1,234 @@
+﻿name: Yacob-SOL
+description: Nine Sols Example
+game: Nine Sols
+requires:
+  version: 0.5.0 # Version of Archipelago required for this yaml to work as expected.
+
+Nine Sols:
+  # Generic Archipelago options. These are documented at
+  # https://archipelago.gg/tutorial/Archipelago/advanced_settings/en#universal-game-options
+
+  # Many of these generic options accept "item name groups" and "location name groups".
+  # For example: start_hints: ["Sol Seals"] or exclude_locations: ["Prison", "FMR"]
+  # or priority_locations: ["Sol Fight Rewards"]
+
+  # See the bottom of this file for complete lists of Nine Sols' item/location name groups.
+  progression_balancing: 0
+  accessibility: minimal
+  local_items: []
+  non_local_items: []
+  start_inventory: {}
+  start_inventory_from_pool: {}
+  start_hints: []
+  start_location_hints: []
+  exclude_locations: []
+  priority_locations: []
+  item_links: []
+
+  # Options specific to Nine Sols
+
+  shuffle_sol_seals:
+    # Allows the Sol Seal items to be placed on any location in the multiworld, instead of their vanilla locations.
+    'false': 0
+    'true': 50
+
+  seals_for_eigong:
+    # The number of Sol Seals needed to open the door in Central Hall to New Kunlun Control Hub, fight Eigong,
+    # and complete the goal.
+    # Unlike the vanilla game, you don't need to visit Tiandao Research Center or trigger the "point of no return".
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 8
+    8: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  seals_for_prison:
+    # The number of Sol Seals needed for Jiequan to appear in Factory (Great Hall), allowing you to "fight" him,
+    # do the whole Prison escape sequence, and check most of the locations in Factory (Machine Room).
+    # Note that you also need Mystic Nymph: Scout Mode before Jiequan will appear,
+    # since you can't do the Prison escape sequence without it.
+    # Unlike the vanilla game, the real Jiequan fight may be done before or after Prison, and it does not matter
+    # which Sol Seals you've collected, only the total number.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 8
+    3: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  seals_for_ethereal:
+    # The number of Sol Seals needed for the entrance to Lady Ethereal's soulscape to appear in Cortex Center.
+    # See also the skip_soulscape_platforming option.
+    # Unlike the vanilla game, it does not matter which Sol Seals you've collected, only the total number.
+    # The maximum is 7 instead of 8 because 8 would be incompatible with shuffle_sol_seals: false.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 7
+    4: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  skip_soulscape_platforming:
+    # After you collect enough Sol Seals to unlock Lady Ethereal's soulscape (see seals_for_ethereal),
+    # if this option is enabled, Cortex Center will skip ahead to the state where you can enter her boss fight,
+    # instead of the long platforming sequence you normally do first.
+    # 
+    # This is a .yaml/generation option because it has a small effect on logic: The platforming sequence logically
+    # requires Tai-Chi Kick, so skipping it allows the Lady Ethereal fight to be in-logic with only Air Dash.
+    'false': 50
+    'true': 0
+
+  randomize_jade_costs:
+    # Edit the cost of every jade in this slot to a randomly chosen number between jade_cost_min and jade_cost_max.
+    # 
+    # This includes jades which are not Archipelago items.
+    # 
+    # As a reminder: you start the game with 2 units of computing power, and there are 8 Computing Unit items to find,
+    # for a maximum power of 10.
+    'false': 50
+    'true': 0
+
+  jade_cost_min:
+    # The minimum possible jade cost. Has no effect if randomize_jade_costs is false.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 10
+    1: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  jade_cost_max:
+    # The maximum possible jade cost. Has no effect if randomize_jade_costs is false.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 10
+    3: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  jade_cost_plando:
+    # Manually specify the cost of certain jades. For example: { "Stasis Jade": 0, "Steely Jade": 10 }
+    # 
+    # The costs may be any integer from 0 to 10, even if jade_cost_min and jade_cost_max are set to a narrower range.
+    {}
+
+  first_root_node:
+    # The first root node you can teleport to from Four Seasons Pavilion after starting a randomized game.
+    # This is often referred to as your "spawn", although you technically always spawn in FSP.
+    # 
+    # Many root nodes are intentionally excluded from this list, usually because if you started there
+    # no locations would be checkable at the start of the game when you have no items yet.
+    # 
+    # Some first_root_nodes will force items to be placed early, since the randomizer would be unbeatable otherwise:
+    # - galactic_dock early-places one of Nymph or Tai-Chi Kick
+    # - central_transport_hub early-places Tai-Chi Kick
+    # - factory_underground early-places one of Air Dash or Cloud Leap
+    # - inner_warehouse early-places Wall Climb and one of Cloud Leap, Air Dash or Ledge Grab
+    # - power_reservoir_west early-places one of Cloud Leap, Air Dash or Tai-Chi Kick
+    # See the descriptions of shuffle_grapple, shuffle_wall_climb and shuffle_ledge_grab for additional cases.
+    agrarian_hall: 0
+    apeman_facility_depths: 0
+    apeman_facility_monitoring: 50
+    central_transport_hub: 0
+    factory_great_hall: 0
+    factory_underground: 0
+    galactic_dock: 0
+    outer_warehouse: 0
+    grotto_of_scriptures_entry: 0
+    grotto_of_scriptures_east: 0
+    grotto_of_scriptures_west: 0
+    inner_warehouse: 0
+    lake_yaochi_ruins: 0
+    power_reservoir_east: 0
+    power_reservoir_west: 0
+    radiant_pagoda: 0
+    yinglong_canal: 0
+
+  shuffle_grapple:
+    # Takes away Yi's grapple hook and zipline sliding abilities until you collect the 'Grapple' item.
+    # 
+    # If your first_root_node is yinglong_canal, then Grapple will be placed early.
+    'false': 50
+    'true': 0
+
+  shuffle_wall_climb:
+    # Takes away Yi's ability to climb glowing green walls until you collect the 'Wall Climb' item.
+    # 
+    # If your first_root_node is apeman_facility_monitoring, then Wall Climb will be placed early.
+    'false': 50
+    'true': 0
+
+  shuffle_ledge_grab:
+    # Takes away Yi's ability to grab onto ledges and pull himself up until you collect the 'Ledge Grab' item.
+    # 
+    # If your first_root_node is yinglong_canal, then Ledge Grab will be placed early.
+    # 
+    # This is more impactful than it might sound because of 'ledge storage' glitches.
+    # See logic_level (whenever I implement that).
+    'false': 50
+    'true': 0
+
+  # Item Name Groups provided by Nine Sols
+
+  # "progression"
+  # "useful"
+  # "filler"
+  # "Sol Seals"
+  # "Jades"
+  # "Map Chips"
+  # "Artifacts"
+  # "Recyclables"
+  # "Poisons"
+  # "Database Entries"
+
+  # Miscellaneous Location Name Groups provided by Nine Sols
+
+  # "Sol Seal Locations" (8 locations)
+  # "Sol Fight Rewards" (24 locations, including all "Sol Seal Locations" except Fuxi's, but excluding FSP locations blocked by Sols)
+
+  # Map Region Location Name Groups provided by Nine Sols
+
+  # "Apeman Facility (Monitoring)" or "AF (Monitoring)" or "AFM"
+  # "Apeman Facility (Elevator)" or "AF (Elevator)" or "AFE"
+  # "Apeman Facility (Depths)" or "AF (Depths)" or "AFD"
+  # "Central Hall" or "CH"
+  # "Four Seasons Pavilion" or "FSP"
+  # "Cortex Center" or "CC"
+  # "Central Transport Hub" or "CTH"
+  # "Power Reservoir (East)" or "PR (East)" or "PRE"
+  # "Power Reservoir (Central)" or "PR (Central)" or "PRC"
+  # "Power Reservoir (West)" or "PR (West)" or "PRW"
+  # "Lake Yaochi Ruins" or "LYR"
+  # "Greenhouse" or "GH"
+  # "Water & Oxygen Synthesis" or "W&OS"
+  # "Yinglong Canal" or "YC"
+  # "Factory (Great Hall)" or "Factory (GH)" or "FGH"
+  # "Factory (Underground)" or "Factory (U)" or "FU"
+  # "Prison" or "P"
+  # "Factory (Machine Room)" or "Factory (MR)" or "FMR"
+  # "Factory (Production Area)" or "Factory (PA)" or "FPA"
+  # "Abandoned Mines" or "AM"
+  # "Underground Cave" or "UC"
+  # "Galactic Dock" or "GD"
+  # "Outer Warehouse" or "OW"
+  # "Inner Warehouse" or "IW"
+  # "Boundless Repository" or "BR"
+  # "Grotto of Scriptures (Entry)" or "GoS (Entry)" or "GoSY"
+  # "Grotto of Scriptures (East)" or "GoS (East)" or "GoSE"
+  # "Grotto of Scriptures (West)" or "GoS (West)" or "GoSW"
+  # "Sky Tower" or "ST"
+  # "Empyrean District (Passages)" or "ED (Passages)" or "EDP"
+  # "Empyrean District (Living Area)" or "ED (Living Area)" or "EDLA"
+  # "Empyrean District (Sanctum)" or "ED (Sanctum)" or "EDS"
+  # "Tiandao Research Center" or "TRC"

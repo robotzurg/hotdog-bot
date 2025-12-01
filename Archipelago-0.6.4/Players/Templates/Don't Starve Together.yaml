@@ -1,0 +1,480 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Don't Starve Together Template
+
+game: Don't Starve Together
+requires:
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+
+Don't Starve Together:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  goal:
+    # What must you accomplish to win the game?
+    # 
+    # Survival: Survive a number of days to win. Chose the amount in "Days to Survive" option.
+    # 
+    # Bosses (Any): Defeat any boss selected in "Boss Defeat Requirement" to win.
+    # 
+    # Bosses (All): Defeat all bosses selected in "Boss Defeat Requirement" to win.
+    survival: 50
+    bosses_any: 0
+    bosses_all: 0
+
+  days_to_survive:
+    # Only applies for the survival goal. The number of days your character must survive for the survival goal.
+    # 
+    # Each day would last 8 real life minutes on default settings. Being a ghost pauses your timer. Regenerating the world or dying in Wilderness mode resets your timer.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 1000
+    random: 0
+    random-low: 0
+    random-high: 0
+    through autumn: 0 # equivalent to 20
+    through winter: 0 # equivalent to 35
+    one year: 50 # equivalent to 70
+    two years: 0 # equivalent to 140
+
+  required_bosses:
+    # Only applies for boss goal types. Which boss(es) are required to be defeated to beat the game?
+    # 
+    # Make sure correct regions, seasons, and day phases are enabled for your goal boss to be in logic.
+    # 
+    # "Random" chooses a random boss. If bosses are chosen along with it, it'll choose a random boss within your selection.
+    # 
+    # Valid Bosses:
+    # Deerclops - Winter
+    # Moose/Goose - Spring
+    # Bearger - Autumn
+    # Ancient Guardian - Cave (Full)
+    # Antlion - Summer
+    # Dragonfly
+    # Bee Queen
+    # Klaus - Winter
+    # Toadstool - Cave
+    # Malbatross - Ocean
+    # Crab King - Ocean
+    # Frostjaw - Ocean
+    # Eye Of Terror - Night
+    # Retinazor - Night
+    # Spazmatism - Night
+    # Nightmare Werepig - Cave (Full)
+    # Scrappy Werepig - Cave (Full)
+    # Ancient Fuelweaver - Cave (Full), Night
+    # Celestial Champion - Ocean (Full)
+    # 
+    # Example: ['Deerclops', 'Moose/Goose', 'Bearger']
+    ['Ancient Guardian']
+
+  crafting_mode:
+    # Change the crafting behavior?
+    # 
+    # Vanilla: Crafting behavior is vanilla.
+    # 
+    # Journey: Once you craft an item once, you can craft it again freely.
+    # 
+    # Free Samples: Once you unlock a recipe, you can craft one for free.
+    # 
+    # Free-Build: Once you unlock a recipe, you can always craft it.
+    # 
+    # Locked Ingredients: You cannot craft items that use one of your missing items as an ingredient.
+    vanilla: 0
+    journey: 0
+    free_samples: 50
+    free_build: 0
+    locked_ingredients: 0
+
+  death_link:
+    # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+    'false': 50
+    'true': 0
+
+  boss_fill_items:
+    # Choose what type of items a boss location can grant. Requires Boss Locations to be enabled.
+    normal: 50
+    filler: 0
+    priority: 0
+    extra_damage_against_bosses: 0
+    damage_bonus: 0
+
+  ################################
+  # Season and Day Phase Options #
+  ################################
+  seasons:
+    # Which seasons will be enabled in your world?
+    # 
+    # This is not automatic. If changed from default, seasons will need to be set manually in your world settings!
+    ['Autumn', 'Winter', 'Spring', 'Summer']
+
+  starting_season:
+    # Which season do you start with in your world?
+    # 
+    # This is not automatic. If not autumn, starting season will need to be set manually in your world settings!
+    autumn: 50
+    winter: 0
+    spring: 0
+    summer: 0
+
+  season_flow:
+    # How do seasons progress in your world?
+    # 
+    # Normal: Seasons progress as default. Logic attempts to prepare you for seasons in time, but not guaranteed. Seasonal checks may not have progression items.
+    # 
+    # Unlockable: Season-changing items are progression. Seasonal checks may have progression items. Can optionally play with long seasons.
+    # 
+    # Unlockable Shuffled: Same as unlockable, except seasons are logically shuffled within the spheres. Can optionally play with long seasons.
+    normal: 0
+    unlockable: 50
+    unlockable_shuffled: 0
+
+  day_phases:
+    # Which day phases will be enabled in your world?
+    # 
+    # This is not automatic. If changed from default, day phases will need to be set manually in your world settings!
+    # 
+    # Set to Night only if you plan to play on a Lights Out world.
+    ['Night', 'Dusk', 'Day']
+
+  ####################
+  # Location Options #
+  ####################
+  cave_regions:
+    # How far into the cave will your items and locations be shuffled?
+    # 
+    # None: No cave. Choose this if you're making a no-cave world!
+    # 
+    # Auto: Choose minimum regions based on your goal. (Survival goal will default to None. For boss goals, check the tooltip for "Boss Defeat Requirement".)
+    # 
+    # Light: Shuffle caves without ruins and archive.
+    # 
+    # Full: Shuffle caves, ruins, and archive.
+    none: 0
+    auto: 50
+    light: 0
+    full: 0
+
+  ocean_regions:
+    # How far into the ocean will your items and locations be shuffled?
+    # 
+    # None: No ocean checks.
+    # 
+    # Auto: Choose minimum regions based on your goal. (Survival goal will default to None. For boss goals, check the tooltip for "Boss Defeat Requirement".)
+    # 
+    # Light: Shuffle ocean without moonstorm.
+    # 
+    # Full: Shuffle ocean and moonstorm. Requires either Boss Locations to be "all" or Celestial Champion as your goal.
+    none: 0
+    auto: 50
+    light: 0
+    full: 0
+
+  creature_locations:
+    # Are non-boss creatures item locations, by killing or non-violent interactions?
+    # 
+    # None: Creatures are not checks. (Disabling will remove a lot of locations. Excess items will be moved into your start inventory.)
+    # 
+    # All: All creatures are checks.
+    # 
+    # Peaceful: Only creatures that have a peaceful interaction are checks. Killing still also grants the check.
+    none: 0
+    all: 50
+    peaceful: 0
+
+  boss_locations:
+    # Are boss defeats item locations, other than ones listed in your goal condition?
+    # 
+    # None: No boss checks other than ones on your goal path.
+    # 
+    # Easy: Only easier bosses. These can be defeated even if playing solo with default difficulty.
+    # 
+    # All: Includes raid bosses. These are intended for multiplayer sessions, but can still be soloed with enough damage bonuses or creative strategies.
+    none: 0
+    easy: 50
+    all: 0
+
+  cooking_locations:
+    # Find items when cooking different foods in the crock pot? There's a good chance you'll need the wiki to get all of these: https://dontstarve.wiki.gg/wiki/Dishes
+    # 
+    # None: No items from cooking. (This will remove a lot of locations. Excess items will be moved into your start inventory.)
+    # 
+    # Regular: Get items for cooking in the crock pot, excluding Warly's exclusives.
+    # 
+    # Include Warly Exclusives: All crock pot recipes are item locations. Logic will expect you to have the ability to use the Portable Crock Pot.
+    # 
+    # Veggie Only: All recipes except meat and Warly exclusives.
+    # 
+    # Meat Only: All recipes except veggie and Warly exclusives.
+    none: 0
+    regular: 50
+    warly_enabled: 0
+    veggie_only: 0
+    meat_only: 0
+
+  farming_locations:
+    # Find items when you harvest giant crops?
+    'false': 50
+    'true': 0
+
+  ################
+  # Item Options #
+  ################
+  shuffle_starting_recipes:
+    # Turn your basic starting recipes into Archipelago items?
+    # 
+    # This may leave you vulnerable to darkness on your first night! If you're not okay with this, you may want to add {Torch: 1} to your start inventory.
+    # 
+    # Sphere 1 will also be small, making generation more restrictive when generating alone, and is prone to fail if "Creature Locations" are off!
+    'false': 50
+    'true': 0
+
+  shuffle_no_unlock_recipes:
+    # Turn crafting recipes from the Ancient Pseudoscience Station and Celestial Altars into Archipelago items?
+    'false': 50
+    'true': 0
+
+  chesspiece_sketch_items:
+    # Include Knight, Bishop, and Rook Figure Sketches as items?
+    # 
+    # This bypasses the need to assemble the marble sculptures for Shadow Pieces, while preventing specific progression-locking scenarios.
+    'false': 0
+    'true': 50
+
+  seed_items:
+    # Turn farm plant seeds into Archipelago items? When enabled, generic seeds can only grow weeds.
+    'false': 0
+    'true': 50
+
+  junk_item_amount:
+    # Number of junk (stat change) and trap items to add to the item pool
+    # 
+    # If set too high, junk will leave no space for regular items, and overflow them into your starting inventory.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    20: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  trap_items:
+    # Chance percentage junk items can be regular traps. These do not change the season. If combined with Season Traps Items, the percentage is split.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    random: 0
+    random-low: 0
+    random-high: 0
+    none: 0 # equivalent to 0
+    low: 50 # equivalent to 20
+    medium: 0 # equivalent to 50
+    high: 0 # equivalent to 80
+    always: 0 # equivalent to 100
+
+  season_trap_items:
+    # Chance percentage junk items can be season-changing traps. These can only be seasons that are enabled. If combined with Traps Items, the percentage is split.
+    # 
+    # Can present a challenge when playing with normal season flow, otherwise can act as an annoyance or out-of-logic opportunity for unlockable season flow.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    random: 0
+    random-low: 0
+    random-high: 0
+    none: 50 # equivalent to 0
+    low: 0 # equivalent to 20
+    medium: 0 # equivalent to 50
+    high: 0 # equivalent to 80
+    always: 0 # equivalent to 100
+
+  ################
+  # Buff Options #
+  ################
+  extra_damage_against_bosses:
+    # This adds "Extra Damage Against Bosses" buffs as Archipelago items. Recommended if playing solo.
+    # 
+    # Each stack of this buff gives the player a permanent +10% damage against easier bosses and +25% damage against tougher ones.
+    # 
+    # This is exponential. With 10 stacks, this turns into x2.6 and x9.3 damage multipiers respectively. Multipliers can be configured in the mod configuration in the game's menu.
+    # 
+    # This amount is separate from any prefilled through "Boss Fill Items" setting.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 20
+    random: 0
+    random-low: 0
+    random-high: 0
+    none: 0 # equivalent to 0
+    low: 0 # equivalent to 3
+    medium: 50 # equivalent to 6
+    high: 0 # equivalent to 10
+    overkill: 0 # equivalent to 20
+
+  damage_bonuses:
+    # This adds "Damage Bonus" buffs as Archipelago items.
+    # 
+    # Each stack of this buff gives the player a permanent +10% damage against all mobs.
+    # 
+    # This is exponential. With 10 stacks, this turns into a x2.6 multipier. Multiplier can be configured in the mod configuration in the game's menu.
+    # 
+    # This amount is separate from any prefilled through "Boss Fill Items" setting.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 20
+    random: 0
+    random-low: 0
+    random-high: 0
+    none: 0 # equivalent to 0
+    low: 0 # equivalent to 3
+    medium: 50 # equivalent to 6
+    high: 0 # equivalent to 10
+    overkill: 0 # equivalent to 20
+
+  #################
+  # Logic Options #
+  #################
+  skill_level:
+    # What skill level should be considered for randomizer logic?
+    # 
+    # Easy: Adds useful items in logic and avoids harder solutions.
+    # 
+    # Advanced: Expects the player to be familiar with game mechanics.
+    # 
+    # Expert: Expects the player survive in riskier conditions, have minimal items, and know advanced tricks.
+    easy: 50
+    advanced: 0
+    expert: 0
+
+  lighting_logic:
+    # Make portable light sources progression and include in logic?
+    none: 0
+    auto: 50
+    enabled: 0
+
+  weapon_logic:
+    # Make weapons and armor progression and include in logic?
+    none: 0
+    auto: 50
+    enabled: 0
+
+  season_gear_logic:
+    # Make protective seasonal gear progression and include in logic?
+    none: 0
+    auto: 50
+    enabled: 0
+
+  base_making_logic:
+    # Make quality-of-life structures such as Chest, Ice Box, and flooring progression and include in logic?
+    none: 0
+    auto: 50
+    enabled: 0
+
+  backpack_logic:
+    # Make backpacks progression and include in logic?
+    none: 0
+    auto: 50
+    enabled: 0
+
+  healing_logic:
+    # Make healing items progression and include in logic?
+    none: 0
+    auto: 50
+    enabled: 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

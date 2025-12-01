@@ -1,0 +1,174 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Super Mario Sunshine Template
+
+game: Super Mario Sunshine
+requires:
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+
+Super Mario Sunshine:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  level_access:
+    # If on "vanilla", the main levels are accessed in the way they are in the base game (e.g. Ricco Harbor is accessible after collecting 3 Shine Sprites).
+    # If on "tickets", each level has a ticket item that must be acquired to access the level.
+    # To reduce generation failures in testing, you'll automatically receive one free ticket at the start.
+    vanilla: 50
+    tickets: 0
+
+  enable_coin_shines:
+    # Turn off to ignore the 100 coin Shine Sprites, which removes 8 Shine Sprites from the pool.
+    # You can still collect them, but they don't do anything.
+    'false': 50
+    'true': 0
+
+  corona_mountain_shines:
+    # How many Shine Sprites are required to access Corona Mountain and the Delfino Airstrip revisit.
+    # If less than this number of Shines exist in the pool, it will be adjusted to the total Shine count.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 360
+    50: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  blue_coin_sanity:
+    # Full shuffle: adds Blue Coins to the pool and makes Blue Coins locations.
+    no_blue_coins: 50
+    full_shuffle: 0
+    trade_shines_only: 0
+
+  blue_coin_maximum:
+    # How many Blue Coins to include in the pool if Blue Coinsanity is on. Does nothing if Blue Coinsanity is off.
+    # Corresponding trade shines will be removed from locations.
+    # Removed Blue Coins will be replaced by extra Shine Sprites.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 240
+    240: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  trade_shine_maximum:
+    # The number of Shines from the boathouse trades that will be shuffled. If the Blue Coin Maximum is not enough
+    # to obtain this amount, it will decrease automatically.
+    # Keep in mind that if this value is too high, there is a chance you will have to nearly 100% the game.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 24
+    12: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  starting_nozzle:
+    # If on, you will start with no Spray Nozzle, and in fact, no FLUDD at all. (Still in non-enforce mode)
+    # You will skip directly to Delfino Plaza, and the first Airstrip mission will be removed from locations.
+    # In this early version of this setting, you are expected to spray unusual things with Hover.
+    spray: 50
+    hover: 0
+    fluddless: 0
+
+  yoshi_mode:
+    # Due to an issue with Yoshi, by default Pinna Park 4 has to be skipped in order for the egg to appear
+    # in every level when receiving the item.
+    # Alternatively, you can opt to have the item only apply to Delfino Plaza (may have logic errors).
+    plaza_only: 50
+    skip_pinna: 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

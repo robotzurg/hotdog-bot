@@ -1,0 +1,456 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: AvHitman
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default HITMAN World of Assasination Template
+
+game: HITMAN World of Assasination
+requires:
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    HITMAN World of Assasination: 0.6.2 # Version of the world required for this yaml to work as expected.
+
+HITMAN World of Assasination:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+    0: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 0
+    minimal: 50
+
+  ###################
+  # Ingame Settings #
+  ###################
+  game_difficulty:
+    # Set the ingame difficulty for all missions:
+    # - Casual: Unlimited saves, All Mission Story guides available, No surveillance cameras, Less enforcers, Forgiving combat, More items are legal to carry, NPCs are less attentive to sounds.
+    # - Professional: Unlimited saves, All Mission Story guides available, Surveillance cameras active, Cameras alert guards if illegal activity is spotted, Combat is challenging but fair.
+    # - Master: One save per mission, No Mission Story guides available, Extra surveillance cameras, Extra enforcers, Ruthless and demanding combat, Bloody eliminations ruin disguises, NPCs are more attentive to sounds.
+    casual: 0
+    professional: 50
+    master: 0
+
+  random_targets:
+    # Should random Targets be assigend to each Level. For each level, a random number of targets between min_number_of_targets and max_number_of_targets is choosen. If off, the vanilla targets will be chosen (Note: Carpathian Mountains will always remain vanilla.)
+    'false': 50
+    'true': 0
+
+  min_number_of_targets:
+    # The minimum number of Targets to be assigned to a Level if Random Targets is active
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 5
+    2: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  max_number_of_targets:
+    # The maximum number of Targets to be assigned to a Level if Random Targets is active
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 5
+    2: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  random_complications:
+    # Should random Complications be assigend to each Level. For each level, a random number of complications between min_number_of_complications and max_number_of_complications is choosen (Note: Carpathian Mountains will always remain vanilla.)
+    'false': 50
+    'true': 0
+
+  min_number_of_complications:
+    # The minimum number of Complications to be assigned to a Level if Random Complications is active
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 5
+    1: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  max_number_of_complications:
+    # The maximum number of Complications to be assigned to a Level if Random Complications is active
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 5
+    2: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  complications_weights:
+    # When Random Complications is active, these weights determine the odds for each complication to be selected.
+    # If you don't want a specific complication, set its weight to 0.
+    3 min Timer: 0
+    5 min Timer: 0
+    Accident Kills Only: 0
+    All Bodies Hidden: 1
+    Defuse Combat Situations: 0
+    Do Not get Spotted: 1
+    Headshots Only: 1
+    Hide all Bodies within 90 sec: 0
+    If Recorded by Camera, finish in 2 min: 0
+    No Agility: 1
+    No Balistic Kills: 0
+    No Bodies Found: 1
+    No Civilian Casualties: 0
+    No Disguises: 1
+    No Lethal Poison Kills: 1
+    No Non-Target Civilian Kills or Pacifications: 1
+    No Pacifications: 1
+    No Surveillance Recordings: 1
+    One Disguise Change: 1
+    One Pacification: 1
+    Perfect Shooter: 0
+    Target Only: 1
+
+  ##################
+  # Level Settings #
+  ##################
+  included_s1_locations:
+    # Include Locations from the following Hitman 1 Levels in the Location Pool
+    # valid options: ica_facility, paris, sapienza, marrakesh, bangkok, colorado, hokkaido
+    ['ica_facility', 'paris', 'sapienza', 'marrakesh', 'bangkok', 'colorado', 'hokkaido']
+
+  included_s2_locations:
+    # Include Locations from the following Hitman 2 Levels in the Location Pool
+    # valid options: hawkes_bay, miami, santa_fortuna, mumbai, whittleton_creek, isle_of_sgail
+    ['hawkes_bay', 'miami', 'santa_fortuna', 'mumbai', 'whittleton_creek', 'isle_of_sgail']
+
+  included_s2_dlc_locations:
+    # Include Locations from the following Hitman 2 Expansion Levels in the Location Pool
+    # valid options: new_york, haven_island
+    []
+
+  included_s3_locations:
+    # Include Locations from the following Hitman 3 Levels in the Location Pool
+    # valid options: dubai, dartmoor, berlin, chongqing, mendoza, carpathian_mountains, ambrose_island
+    ['dubai', 'dartmoor', 'berlin', 'chongqing', 'mendoza', 'carpathian_mountains', 'ambrose_island']
+
+  starting_location:
+    # Which level is unlocked from the start. If the selected level is not included in the "included_x_locations"options, it will be added to it.
+    ica_facility: 50
+    paris: 0
+    sapienza: 0
+    marrakesh: 0
+    bangkok: 0
+    colorado: 0
+    hokkaido: 0
+    hawkes_bay: 0
+    miami: 0
+    santa_fortuna: 0
+    mumbai: 0
+    whittleton_creek: 0
+    isle_of_sgail: 0
+    new_york: 0
+    haven_island: 0
+    dubai: 0
+    dartmoor: 0
+    berlin: 0
+    chongqing: 0
+    mendoza: 0
+    carpathian_mountains: 0
+    ambrose_island: 0
+
+  ##################
+  # Enabled Checks #
+  ##################
+  enable_target_checks:
+    # Add a check for each Target to be eliminated
+    'false': 0
+    'true': 50
+
+  enable_itemsanity:
+    # Add a check for each unique item that can be picked up
+    'false': 50
+    'true': 0
+
+  split_itemsanity:
+    # Split the checks from itemsanity by map ("Itempickup - Crowbar" becomes "Itempickup - ICA Facility - Crowbar", "Itempickup - Paris - Crowbar", "Itempickup - Sapienza - Crowbar" etc.)
+    'false': 50
+    'true': 0
+
+  enable_disguisesanity:
+    # Add a check for each unique disguise that can be found in each level
+    'false': 50
+    'true': 0
+
+  levels_with_check_for_completion:
+    # Add a check for beating each of the listed levels, regardless of Rating
+    # valid options: all, ica_facility, paris, sapienza, marrakesh, bangkok, colorado, hokkaido, hawkes_bay, miami, santa_fortuna, mumbai, whittleton_creek, isle_of_sgail, new_york, haven_island, dubai, dartmoor, berlin, chongqing, mendoza, carpathian_mountains, ambrose_island
+    ['all']
+
+  levels_with_check_for_sa:
+    # Add a check for beating each of the listed levels with a Silent Assasin Rating
+    # valid options: all, ica_facility, paris, sapienza, marrakesh, bangkok, colorado, hokkaido, hawkes_bay, miami, santa_fortuna, mumbai, whittleton_creek, isle_of_sgail, new_york, haven_island, dubai, dartmoor, berlin, chongqing, mendoza, carpathian_mountains, ambrose_island
+    []
+
+  levels_with_check_for_so:
+    # Add a check for beating each of the listed levels without using disguises
+    # valid options: all, ica_facility, paris, sapienza, marrakesh, bangkok, colorado, hokkaido, hawkes_bay, miami, santa_fortuna, mumbai, whittleton_creek, isle_of_sgail, new_york, haven_island, dubai, dartmoor, berlin, chongqing, mendoza, carpathian_mountains, ambrose_island
+    []
+
+  levels_with_check_for_saso:
+    # Add a check for beating each of the listed levels with Silent Assassin Rating without using disguises
+    # valid options: all, ica_facility, paris, sapienza, marrakesh, bangkok, colorado, hokkaido, hawkes_bay, miami, santa_fortuna, mumbai, whittleton_creek, isle_of_sgail, new_york, haven_island, dubai, dartmoor, berlin, chongqing, mendoza, carpathian_mountains, ambrose_island
+    []
+
+  #################
+  # Goal Settings #
+  #################
+  goal_mode:
+    # The goal condition for your Archipelago run.
+    # -level_completion: requires beating a specific level with a specific rating 
+    # -contract_collection: requires collection a certain number of Contract Pieces to instantly goal
+    # -contract_collection_level_completion: requires beating a specific level with a specific rating, after collecting a certain number of Contract Pieces to unlock that level
+    level_completion: 50
+    contract_collection: 0
+    contract_collection_level_completion: 0
+
+  goal_level:
+    # When goal is set to level_completion or contract_collection_level_completion, which level is the goal. If the selected level is not included in the "included_x_locations" options, it will be added to it.
+    ica_facility: 0
+    paris: 0
+    sapienza: 0
+    marrakesh: 0
+    bangkok: 0
+    colorado: 0
+    hokkaido: 0
+    hawkes_bay: 0
+    miami: 0
+    santa_fortuna: 0
+    mumbai: 0
+    whittleton_creek: 0
+    isle_of_sgail: 0
+    new_york: 0
+    haven_island: 0
+    dubai: 0
+    dartmoor: 0
+    berlin: 0
+    chongqing: 0
+    mendoza: 0
+    carpathian_mountains: 0
+    ambrose_island: 50
+
+  goal_rating:
+    # When goal is set to level_completion or contract_collection_level_completion, which rating the goal level needs to be completed with to win.
+    any: 50
+    silent_assassin: 0
+    suit_only: 0
+    silent_assassin_suit_only: 0
+
+  goal_required_contract_pieces:
+    # When the goal is set to contract_colleciton, how many contract pieces are required to award the goal.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 100
+    5: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  goal_additional_contract_pieces:
+    # When the goal is set to contract_colleciton, number of additional contract pieces in the item pool.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    5: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  #################
+  # Item Settings #
+  #################
+  enable_flamingo_photo:
+    # Adds the "Photo of a Flamingo" to your inventory. When starting a mission with it equipped, all unlocked and concealable items will be added to 47's pocket.
+    'false': 50
+    'true': 0
+
+  excluded_items:
+    # List of Items to not be shuffled the multiworld. 
+    # Selected Items cannot be obtained ingame. 
+    # Also accepts Itemgroups (ex.: "Agency Pickup - Any", "Starting Location - Any")
+    []
+
+  excluded_starting_items:
+    # List of Items to not be shuffled into the multiworld. 
+    # Selected Items will always be unlocked ingame. 
+    # Also accepts Itemgroups (ex.: "Agency Pickup - Any", "Starting Location - Any")
+    []
+
+  ###########################
+  # Inlcuded Items from DLC #
+  ###########################
+  include_deluxe_items:
+    # Include Items from the HITMAN 3 Deluxe Pack
+    'false': 50
+    'true': 0
+
+  include_h2_expansion_items:
+    # Include Items from the HITMAN 2 Expansion Pack
+    'false': 50
+    'true': 0
+
+  include_sins_items:
+    # Include Items from the HITMAN 3 Seven Deadly Sins Collection
+    'false': 0
+    'true': 50
+
+  include_splitter_items:
+    # Include Items from the Splitter Pack
+    'false': 50
+    'true': 0
+
+  include_disruptor_items:
+    # Include Items from the Disruptor Pack
+    'false': 50
+    'true': 0
+
+  include_undying_items:
+    # Include Items from the Undying Pack
+    'false': 50
+    'true': 0
+
+  include_drop_items:
+    # Include Items from the Drop Pack
+    'false': 50
+    'true': 0
+
+  include_banker_items:
+    # Include Items from the Banker Pack
+    'false': 50
+    'true': 0
+
+  include_bruce_lee_items:
+    # Include Items from the Bruce Lee Pack
+    'false': 50
+    'true': 0
+
+  include_trinity_items:
+    # Include Items from the Trinity Pack
+    'false': 50
+    'true': 0
+
+  include_street_art_items:
+    # Include Items from the Street Art Pack
+    'false': 50
+    'true': 0
+
+  include_makeshift_items:
+    # Include Items from the Makeshift Pack
+    'false': 50
+    'true': 0
+
+  include_executive_items:
+    # Include Items from the HITMAN 2 Executive Pack (Included in "HITMAN 3 Access Pass: HITMAN 2 Expansion")
+    'false': 50
+    'true': 0
+
+  include_collectors_items:
+    # Include Items from the HITMAN 2 Collectors Pack (Included in "HITMAN 3 Access Pass: HITMAN 2 Expansion")
+    'false': 50
+    'true': 0
+
+  include_smart_casual_items:
+    # Include Items from the HITMAN 2 Smart Casual Pack (Included in "HITMAN 3 Access Pass: HITMAN 2 Expansion")
+    'false': 50
+    'true': 0
+
+  include_winter_sports_items:
+    # Include Items from the Winter Sports Pack (Included in "HITMAN 3 Access Pass: HITMAN 2 Expansion")
+    'false': 50
+    'true': 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

@@ -1,0 +1,418 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default ChecksMate Template
+
+game: ChecksMate
+requires:
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+
+ChecksMate:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  goal:
+    # How victory is defined.
+    # 
+    # Single: Your opponent starts with an army of 7 pieces and 8 pawns. You have a king. Finding checkmate is your goal.
+    # To get there, find checks, mate!
+    # 
+    # Ordered Progressive: When you deliver checkmate, you instead graduate to a Super-Sized board. Your goal is to
+    # checkmate again, on that board!
+    # 
+    # Progressive: As Ordered Progressive, but the board grows larger when someone sends you your Super-Sized board.
+    # 
+    # Super: You skip the 8x8 board immediately. Nearly equivalent to adding Super-Size Me to your Start Inventory.
+    single: 0
+    ordered_progressive: 50
+    progressive: 0
+    super: 0
+
+  difficulty:
+    # Which kinds of checks to expect of the player. In general, this mostly affects later checks (like Checkmate Maxima,
+    # the victory condition).
+    # 
+    # Grandmaster: All checks are baseline. You will generally hope for equal material, and may find yourself struggling.
+    # You will have about the same material as the AI for Checkmate Maxima to be considered in logic.
+    # 
+    # Daily: The player may expect some difficulty with early checks, but complex game states will be relaxed. You will
+    # have about an extra Bishop and an extra Pawn for Checkmate Maxima to be considered in logic.
+    # 
+    # Bullet: All checks are relaxed. Material expectations are raised, so the player will have more material earlier. You
+    # will have about an extra Rook and an extra Bishop for Checkmate Maxima to be considered in logic.
+    # 
+    # Relaxed: Most checks require almost twice as much material, so the player will have overwhelming forces. You will
+    # have about an extra Queen and an extra Rook and an extra Pawn for Checkmate Maxima to be considered in logic.
+    grandmaster: 0
+    daily: 50
+    bullet: 0
+    relaxed: 0
+
+  enable_tactics:
+    # All: Adds the "Fork" and "Play Turns" locations to the pool. (This adds 10 locations and items.)
+    # 
+    # Turns: Adds the "Play Turns" locations to the pool. (This adds 4 locations and items.)
+    # 
+    # None: Neither "Fork" nor "Play Turns" locations will be in the pool.
+    all: 0
+    turns: 50
+    none: 0
+
+  piece_locations:
+    # When you start a new match, chooses how to distribute player pieces.
+    # 
+    # Chaos: Puts pieces on the first rank until it's full, and pawns on second rank until it's full.
+    # Changes every match - your games won't preserve starting position. Plays more like Chess960.
+    # 
+    # Stable: As Chaos, but doesn't change between matches.
+    chaos: 50
+    stable: 0
+
+  piece_types:
+    # When you start a new match, chooses the player's piece types (such as whether a minor piece is a Knight or Bishop).
+    # 
+    # Chaos: Chooses random valid options.
+    # 
+    # Stable: As Chaos, but doesn't change between matches. You'll only ever add or upgrade pieces.
+    chaos: 0
+    stable: 50
+
+  early_material:
+    # Guarantees that a King move directly onto the second rank within the first few moves will provide a piece or pawn
+    # (chessman). When this option is set, this location (Move King E2/E7 Early) overrides any exclusion.
+    # 
+    # Four other Bongcloud moves also involve the King, but are not altered by this option. (A File: Move to the leftmost
+    # File; Capture: Any capturing move; Center: Move to any of the center 4 squares; Promotion: Move to enemy back rank)
+    # 
+    # Pawn, Minor, Major: You will get an early chessman of the specified type (i.e. a pawn, minor piece, or major piece).
+    # 
+    # Piece: You will get an early minor or major piece.
+    # 
+    # Jack: You will get an early advanced piece, worth about 7 material.
+    # 
+    # Any: You will get an early chessman.
+    'off': 50
+    pawn: 0
+    minor: 0
+    major: 0
+    jack: 0
+    piece: 0
+    any: 0
+
+  max_engine_penalties:
+    # The number of times the engine will receive a reduction to their skill level. These reductions are currently named
+    # "Progressive ELO Engine Lobotomy," and each level reduces the AI's access to both analysis and information.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 5
+    5: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  max_pocket:
+    # The number of Progressive Pocket Pieces the game is allowed to add to the multiworld.
+    # 
+    # Each Progressive Pocket Piece will improve your 1st, 2nd, or 3rd pocket slot up to 4 times, from Nothing to Pawn, to
+    # Minor Piece (like a pocket Knight), to Major Piece (like a pocket Rook), to Queen.
+    # 
+    # This option does not alter filler item distribution. (Even if you have 0 Progressive Pockets, the item pool may
+    # contain Progressive Pocket Gems and Progressive Pocket Range.)
+    # 
+    # Pocket Pieces are inspired by the Dutch game of paard in de zak (pocket knight).
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 12
+    12: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  max_kings:
+    # How many Royal pieces (Kings) to place, which must all be captured before one experiences defeat.
+    # 
+    # The player always starts with 1 King, but may find Progressive Consuls if this is set higher than 1. Progressive
+    # Consuls add additional Kings to the player's starting board.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 3
+    1: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  fairy_kings:
+    # Whether to use fairy king upgrades, such as the Knight's moves. Adding multiple upgrades to the pool will allow your
+    # King to become a hyper-powerful invented piece if all upgrades are collected.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 2
+    0: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  fairy_chess_pieces:
+    # Which collection of fairy pieces to allow, if any. Choose FIDE to disable fairy chess pieces. Choose Configure to
+    # disable this option in favor of the more precise "Fairy Chess Pieces Configure" option.
+    # 
+    # FIDE: The default, which only allows the standard pieces defined by FIDE (Queen, Rook, Knight, Bishop).
+    # 
+    # Betza: Adds the pieces from Ralph Betza's "Chess With Different Armies", being the Remarkable Rookies, Colorbound
+    # Clobberers, and Nutty Knights.
+    # 
+    # Full: Adds every implemented army, including Eurasian and custom pieces. The Cannon and Vao capture by jumping over
+    # an intervening chessman.
+    # 
+    # Configure: Allows you to specify your own pieces using the "Fairy Chess Pieces Configure" option.
+    fide: 50
+    betza: 0
+    full: 0
+    configure: 0
+
+  fairy_chess_pieces_configure:
+    # THIS OPTION IS INCOMPATIBLE WITH "Fairy Chess Pieces". Set that option to "Configure" to use this option.
+    # 
+    # Whether to use fairy chess pieces. Most pieces below are from Ralph Betza's Chess with Different Armies. If omitted,
+    # the default allows for all following fairy chess pieces, as well as the standard pieces defined by FIDE.
+    # 
+    # FIDE: Contains the standard chess pieces, consisting of the Bishop, Knight, Rook, and Queen.
+    # 
+    # Rookies: Adds the CwDA army inspired by Rooks, the Remarkable Rookies. The Half-Duck castles rather than the Short
+    # Rook.
+    # 
+    # Clobberers: Adds the CwDA army inspired by Bishops, the Colorbound Clobberers. Fad and Bede may both castle.
+    # 
+    # Nutty: Adds the CwDA army inspired by Knights, the Nutty Knights.
+    # 
+    # Cannon: Adds the Rook-like Cannon, which captures a distal chessman by leaping over an intervening chessman, and the
+    # Vao, a Bishop-like Cannon, in that it moves and captures diagonally. Also adds the Queennon, which moves as a King,
+    # a Cannon, and a Vao.
+    # 
+    # Camel: Adds a custom army themed after 3,x leapers like the Camel (3,1) and Tribbabah (3,0). (The Knight is a 2,1
+    # leaper.)
+    # 
+    # Petal: Adds a custom army themed after pieces that move down angled paths. The Gardener is a 2,2 leaper with
+    # additional pacifist moves. The Ribbon moves 1 space as a Bishop before rotating to move 2 more spaces. The Petal
+    # moves 3 spaces as a Rook before rotating 3 more spaces. The Miracle moves as a Ribbon and as a Petal.
+    ['Petal', 'Camel', 'Nutty', 'FIDE', 'Cannon', 'Rookies', 'Clobberers']
+
+  fairy_chess_army:
+    # Whether to mix pieces between the Different Armies. Does not affect pawns. Note that the Cannon pieces, which
+    # replace the Bishop and Knight with a Vao and Cannon, constitute a very powerful yet flawed Different Army.
+    # 
+    # Chaos: Chooses random enabled options. (You can disable armies by setting "Fairy Chess Pieces Configure".)
+    # 
+    # Stable: Chooses within one army. (If you want at most 2 Bishops, 2 Knights, 2 Rooks, and 1 Queen, add Piece Type
+    # Limits below: 2 Minor, 2 Major, and 1 Queen.)
+    chaos: 50
+    stable: 0
+
+  fairy_chess_pawns:
+    # Whether to use fairy chess pawns.
+    # 
+    # Vanilla: Only use the standard pawn.
+    # 
+    # Mixed: Adds all implemented fairy chess pawns to the pool. You may receive a mix of different types of pawns.
+    # 
+    # Berolina: Only use the Berolina pawn (may appear to be a Ferz), which moves diagonally and captures forward.
+    # 
+    # Checkers: Only borrow Checkers, which move diagonally and capture by skipping over the intervening piece. Can capture many times.
+    # 
+    # Reserved: Crashes your game. (Not implemented.)
+    # 
+    # Any Pawn: A mix of Vanilla and Berolina - anything referred to as a Pawn by the source text.
+    # 
+    # Any Fairy: A mix of Berolina and Checkers - anything except ordinary Pawns.
+    # 
+    # Any Classical: A mix of Vanilla and Checkers - anything a player would recognise from their childhood.
+    vanilla: 50
+    mixed: 0
+    berolina: 0
+    checkers: 0
+    reserved: 0
+    any_pawn: 0
+    any_fairy: 0
+    any_classical: 0
+
+  minor_piece_limit_by_type:
+    # How many of any given type of minor piece you might play with. If set to 1, you will never start with more than 1
+    # Knight, nor 1 Bishop, but you may have both 1 Knight and 1 Bishop. If set to 0, this setting is disabled.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 15
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 50 # equivalent to 0
+
+  major_piece_limit_by_type:
+    # How many of any given type of major piece you might play with. If set to 1, you will never start with more than 1
+    # Rook. If set to 0, this setting is disabled.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 11
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 50 # equivalent to 0
+
+  queen_piece_limit_by_type:
+    # How many of any given type of Queen-equivalent piece you might play with. If set to 1, you will never start with
+    # more than 1 Queen. You may have both 1 Queen and 1 Amazon. If set to 0, this setting is disabled.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 9
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 50 # equivalent to 0
+
+  queen_piece_limit:
+    # How many Queen-equivalent pieces you might play with. If set to 1, you will never have more than 1 piece upgraded to
+    # a Queen. (This does nothing when greater than 'Queen Piece Limit by Type'.) You may still promote pawns during a
+    # game. If set to 0, this setting is disabled.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 9
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 50 # equivalent to 0
+
+  pocket_limit_by_pocket:
+    # How many Progressive Pocket items might be allocated to any given pocket. If this is set to 1, any given Pocket will
+    # never hold anything more substantial than a Pawn. If this is set to 3, any given Pocket will never hold a Queen.
+    # 
+    # The default of 4 allows each of the 3 spaces to hold between 0-4 progressive items.
+    # 
+    # Disabling this option will remove Pocket items from the item pool.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 4
+    4: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+
+  locked_items:
+    # Guarantees that these progression and filler items will be unlockable.
+    # 
+    # Implementation note: Currently forces this many items into the item pool before distribution begins. This behaviour
+    # is not guaranteed - a future version may simply validate the pool contains these items.
+    {}
+
+  death_link:
+    # Whenever you are checkmated or resign (close the game window), everyone who is also on Death Link dies. Whenever
+    # you receive a Death Link event, your game window closes. (You cannot undo or review.)
+    'false': 50
+    'true': 0
+
+  asymmetric_trades:
+    # Whether to add custom pieces to the pool of an unusual material type, enabling trades of asymmetric material values.
+    # 
+    # Disabled: Use the standard set of Pawn (1), Minor (3), Major (5), and Queen (9) pieces.
+    # 
+    # Jacks: As Disabled, but also add the custom Jack family of pieces, which are worth 7 material each. They may castle.
+    disabled: 50
+    jacks: 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

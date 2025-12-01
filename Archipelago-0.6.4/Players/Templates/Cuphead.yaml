@@ -1,0 +1,496 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Cuphead Template
+
+game: Cuphead
+requires:
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+
+Cuphead:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  ########
+  # Main #
+  ########
+  use_dlc:
+    # Set whether or not to use Delicious Last Course content (Requires owning the DLC).
+    'false': 50
+    'true': 0
+
+  mode:
+    # Set the mode of the randomizer which includes goal.
+    # NOTE: If DLC is not enabled, picking DLC modes will pick a random mode from the base game instead.
+    beat_devil: 50
+    collect_contracts: 0
+    buy_out_shop: 0
+    dlc_beat_saltbaker: 0
+    dlc_beat_both: 0
+    dlc_collect_ingredients: 0
+    dlc_collect_both: 0
+
+  expert_mode:
+    # Set the boss difficulty to expert.
+    'false': 50
+    'true': 0
+
+  start_weapon:
+    # Choose weapon to start with.
+    # NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead.
+    peashooter: 0
+    spread: 0
+    chaser: 0
+    lobber: 0
+    charge: 0
+    roundabout: 0
+    dlc_crackshot: 0
+    dlc_converge: 0
+    dlc_twistup: 0
+    random: 50
+
+  weapon_mode:
+    # Set how the weapons are shuffled in the pool.
+    # Options:
+    # - Normal: EX is part of the weapon you receive (vanilla behavior).
+    # - Progressive: turns the weapons in the pool into progressive weapons (plane has a separate EX item).
+    # - EX Separate makes each weapon's EX ability a separate item.
+    # - ... Except Start: makes the start weapon have normal behavior.
+    # Notes:
+    # - "Progressive" means that weapon EX is unlocked from having two of the same weapon.
+    # - A weapon EX item without the base weapon will give you a weapon that only can do EX shots.
+    normal: 50
+    progressive: 0
+    progressive_except_start: 0
+    ex_separate: 0
+    ex_separate_except_start: 0
+
+  contract_requirements:
+    # Set the amount of contracts needed to confront Kingdice and, ultimately, the devil.
+    # The required contracts for the die houses are evenly distributed.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 3
+    # Maximum value is 17
+    17: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  contract_goal_requirements:
+    # Set the amount of contracts needed for goal.
+    # Note: Cannot be lower than Contract Requirements
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 3
+    # Maximum value is 17
+    17: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  start_maxhealth:
+    # Set starting max health.
+    # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 4
+    3: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  start_maxhealth_p2:
+    # Set starting max health for Player 2. Set to 0 to use Player 1's max health.
+    # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 4
+    0: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  level_shuffle:
+    # --EXPERIMENTAL--
+    # Shuffle the Boss and Run n' Gun levels.
+    # Bosses and Run n' Guns are shuffled within their own group.
+    # Note: Be careful with this option! This can easily break generation if used with plando.
+    disabled: 50
+    enabled: 0
+    plane_separate: 0
+
+  level_placements:
+    # Define which levels will be placed in which spots when shuffling the levels.
+    # Note: Some levels cannot be shuffled, and some levels cannot be placed in specific spots.
+    # Key: original, Value: new
+    {}
+
+  freemove_isles:
+    # Allow all the levels on each island to be freely accessible without completing a previous level first.
+    'false': 50
+    'true': 0
+
+  randomize_abilities:
+    # Randomize essential abilities like Duck, Parry, Dash, etc.
+    'false': 0
+    'true': 50
+
+  deathlink:
+    # Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
+    # In Cuphead, this only applies while you are in a level.
+    'false': 50
+    'true': 0
+
+  deathlink_grace_count:
+    # -REQUIRES DEATHLINK-
+    # Set DeathLink Grace Count. Each "Grace" grants you a free Death without triggering DeathLink.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 9
+    0: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  ############
+  # DLC Main #
+  ############
+  dlc_ingredient_requirements:
+    # -DLC ONLY-
+    # Set the amount of ingredients needed to confront Saltbaker.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 5
+    5: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  dlc_ingredient_goal_requirements:
+    # -DLC ONLY-
+    # Set the amount of ingredients needed for goal.
+    # Note: Cannot be lower than Ingredient Requirements
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 5
+    5: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  dlc_chalice:
+    # -DLC ONLY-
+    # Enable Ms. Chalice and the Astral Cookie.
+    # Options:
+    # - Disabled: The cookie is disabled and cannot be obtained (Ms. Chalice is disabled).
+    # - Start: The cookie is available at the start of the game.
+    # - Vanilla: The cookie is obtained at the start of the DLC (Vanilla Behavior).
+    # - Randomized: The cookie is in the item pool. Starting the DLC is a check.
+    disabled: 0
+    start: 0
+    vanilla: 0
+    randomized: 50
+
+  dlc_curse_mode:
+    # -DLC ONLY-
+    # Set how the cursed and devine relic is handled.
+    # 
+    # Modes:
+    # - Off: Broken Relic is removed from the game
+    # - Vanilla: Broken Relic is in pool. The graveyard and getting the devine relic is excluded from logic.
+    'off': 50
+    vanilla: 0
+
+  ##########
+  # Checks #
+  ##########
+  boss_secret_checks:
+    # Also include beating the secret phases of the three bosses as checks.
+    # The three boss levels include: Botanic Panic, Pyramid Peril, and Dramatic Fanatic.
+    # The secret phases are more difficult than the normal fight.
+    'false': 50
+    'true': 0
+
+  boss_grade_checks:
+    # Enable grade checks for Boss Levels.
+    # NOTE: S Grade option will be treated as A+ Grade if Expert Mode is disabled.
+    disabled: 0
+    a_minus_grade: 50
+    a_grade: 0
+    a_plus_grade: 0
+    s_grade: 0
+
+  rungun_grade_checks:
+    # Enable grade checks for Run n' Gun levels.
+    # Pacifist: Beat the level without killing any monsters (not easy).
+    disabled: 0
+    a_minus_grade: 50
+    a_grade: 0
+    a_plus_grade: 0
+    p_grade: 0
+
+  silverworth_quest:
+    # Enable the Silverworth Quest check.
+    # This means that you will have to beat 15 levels with at least an A- Grade in order to get this check.
+    'false': 0
+    'true': 50
+
+  pacifist_quest:
+    # Enable the Pacifist Quest check.
+    # This means that you will have to beat all 6 Run n' Gun levels without beating any enemies (not easy).
+    'false': 50
+    'true': 0
+
+  kingdice_bosssanity:
+    # ---NOT YET IMPLEMENTED---
+    # Enable checks for beating the Kingdice mini-bosses.
+    # There is an indicator for which mini-bosses you defeated.
+    'false': 50
+    'true': 0
+
+  ##############
+  # DLC Checks #
+  ##############
+  dlc_kingsleap:
+    # -DLC ONLY-
+    # Choose how to handle the locations of The King's Leap.
+    # Gauntlet is the run where you have to defeat all the King's Leap bosses in succession.
+    exclude: 0
+    exclude_gauntlet: 50
+    include_all: 0
+
+  dlc_boss_chalice_checks:
+    # -DLC ONLY-
+    # -REQUIRES CHALICE-
+    # Enable checks for defeating each boss as Ms. Chalice.
+    # Separate makes Chalice checks separate from level completion checks.
+    # Grade Required has the set grade check requirement for bosses.
+    disabled: 50
+    enabled: 0
+    separate: 0
+    grade_required: 0
+    separate_grade_required: 0
+
+  dlc_rungun_chalice_checks:
+    # -DLC ONLY-
+    # -REQUIRES CHALICE-
+    # Enable checks for completing each run n' gun as Ms. Chalice.
+    # Separate makes Chalice checks separate from level completion checks.
+    # Grade Required has the set grade check requirement for run n' guns.
+    disabled: 50
+    enabled: 0
+    separate: 0
+    grade_required: 0
+    separate_grade_required: 0
+
+  dlc_kingdice_chalice_checks:
+    # --NOT YET IMPLEMENTED--
+    # -DLC ONLY-
+    # -REQUIRES CHALICE-
+    # -REQUIRES KINGDICE BOSSSANITY-
+    # Enable checks for completing Kingdice Bossanity checks as Ms. Chalice.
+    disabled: 50
+    enabled: 0
+    separate: 0
+
+  dlc_chess_chalice_checks:
+    # --NOT YET IMPLEMENTED--
+    # -DLC ONLY-
+    # -REQUIRES CHALICE-
+    # -REQUIRES THE KING'S LEAP-
+    # Enable checks for completing The King's Leap checks as Ms. Chalice.
+    disabled: 50
+    enabled: 0
+    separate: 0
+
+  dlc_cactusgirl_quest:
+    # -DLC ONLY-
+    # -REQUIRES CHALICE-
+    # Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
+    # This means that you will have to beat EVERY boss as Ms. Chalice (tedious) for a single check.
+    # You can talk to the Cactus Girl to know which bosses you need to defeat still.
+    'false': 50
+    'true': 0
+
+  #########
+  # Items #
+  #########
+  extra_coins:
+    # Set extra coins in the item pool.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 10
+    0: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  maxhealth_upgrades:
+    # Set number of max health upgrades in the pool.
+    # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 3
+    0: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  minimum_filler:
+    # Set the minimum amount of filler items that should exist in this world.
+    # NOTE: If there are not enough locations, some coins will be compressed into packs of 2 or 3 to make space.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 10
+    0: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  traps:
+    # ---NOT YET IMPLEMENTED ON CLIENT---
+    # Set Trap percentage for filler items.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    0: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  ########
+  # Misc #
+  ########
+  ducklock_platdrop:
+    # Allow the dropping-down-platforms-without-duck-by-using-aim-lock exploit.
+    # This option re-enables that bug that the mod had before alpha02.
+    # This "feature" is purely client-side and does not affect logic.
+    'false': 50
+    'true': 0
+
+  ################
+  # Item Weights #
+  ################
+  filler_weight_extrahealth:
+    # Set Extra Health weight. Higher weight means it will more likely appear compared to other filler items.
+    # Set to 0 to disable this item.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 10
+    3: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  filler_weight_supercharge:
+    # Set Super Recharge weight. Higher weight means it will more likely appear compared to other filler items.
+    # Set to 0 to disable this item.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 10
+    3: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

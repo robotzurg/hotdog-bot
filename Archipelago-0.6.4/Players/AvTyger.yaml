@@ -1,0 +1,343 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: AvTyger
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: AvTyger
+
+game: Ty the Tasmanian Tiger
+requires:
+  version: 0.6.3 # Version of Archipelago required for this yaml to work as expected.
+
+Ty the Tasmanian Tiger:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+    0: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 0
+    minimal: 50
+
+  ################
+  # Goal Options #
+  ################
+  goal:
+    # Determines the goal of the seed
+    # 
+    # Final Battle: Beat Boss Cass in Final Battle and rescue your parents from The Dreaming
+    final_battle: 50
+
+  req_bosses:
+    # Determines if beating all bosses is a requirement to go to Final Battle
+    'false': 0
+    'true': 50
+
+  #################
+  # Logic Options #
+  #################
+  logic_difficulty:
+    # What set of logic to use
+    # 
+    # Standard: The logic assumes elemental rangs are required to enter hubs
+    # 
+    # Advanced: Assumes hubs may be entered early and elemental rangs are optional
+    # 
+    # Doom: Assumes checks can be completed with the bare-minimum of items. WARNING: MAY CAUSE SUFFERING!
+    standard: 50
+    advanced: 0
+    doom: 0
+
+  progressive_elementals:
+    # Determines if elemental rangs are a progressive check
+    'false': 0
+    'true': 50
+
+  thegg_gating:
+    # If bosses are unlocked via hub Thunder Egg counts, required count per hub can be set here
+    # This also sets the required Thunder Egg count to receive the elemental attribute check after completing bosses
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 24
+    17: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  extra_theggs:
+    # Sets number of additional thunder eggs of each type to add to the pool
+    # WARNING - Setting this value high without sanity is likely to lead to generation failures
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 24
+    7: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  cog_gating:
+    # Cog requirement count for each attribute check in Julius' lab
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 15
+    10: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  extra_cogs:
+    # Sets number of additional golden cogs to add to the pool
+    # WARNING - Setting this value high without sanity is likely to lead to generation failures
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 90
+    30: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  level_unlock_style:
+    # Determines how levels are unlocked
+    # 
+    # Vanilla: All levels are unlocked from the start of the world
+    # 
+    # Checks: The first level is unlocked from the start but all other levels are unlocked via checks
+    # 
+    # Checks - No Bosses: The first level will be unlocked from the start. Bosses can be unlocked via hub Thunder Egg counts. All other levels must be unlocked via checks
+    vanilla: 0
+    checks: 0
+    checks_no_bosses: 50
+
+  progressive_level:
+    # Determines if level unlocks are progressive (only if levels are check based)
+    'false': 0
+    'true': 50
+
+  level_shuffle:
+    # Determines whether the levels that portals lead to will be shuffled
+    'false': 0
+    'true': 50
+
+  ##################
+  # Sanity Options #
+  ##################
+  gate_time_attacks:
+    # If true, adds Stopwatch items to the pool which unlock the time attacks for each level
+    # If false, time attacks are unlocked by completing the main objective thunder egg check for the level (vanilla)
+    # Also adds checks for beating specific times in the time attacks
+    'false': 0
+    'true': 50
+
+  framesanity:
+    # Determines how collecting Picture Frames grants checks
+    # 
+    # All: Every frame grants a check (127 Locations - Bonus Worlds not included)
+    # 
+    # Per Level: Collecting all frames in a level grants a check (9 Locations - Bonus Worlds not included)
+    # 
+    # None: Frames do not grant any checks
+    all: 50
+    per_level: 0
+    none: 0
+
+  frames_require_infra:
+    # Determines whether the generator considers picture frames checks to be logically locked behind the infrarang
+    'false': 50
+    'true': 0
+
+  scalesanity:
+    # Determines whether each rainbow scale grants a check as well as the attribute check for finding all 25. Also adds extra health to the pool.
+    'false': 50
+    'true': 0
+
+  signsanity:
+    # Determines whether hitting each Maurie signpost with a boomerang grants a check.
+    'false': 50
+    'true': 0
+
+  lifesanity:
+    # Determines whether each unique extra life grants a check (not including basket lives)
+    'false': 50
+    'true': 0
+
+  opalsanity:
+    # Determines whether each opal grants a check
+    'false': 0
+    'true': 50
+
+  #########
+  # Traps #
+  #########
+  trap_fill_percentage:
+    # Determines the percentage of the junk fill which is filled with traps.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    0: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  acid_trap_weight:
+    # The weight of Acid Traps in the trap pool.
+    # Acid Traps cause the screen to shift colors.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    20: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  exit_trap_weight:
+    # The weight of Exit Traps in the trap pool.
+    # Exit Traps immediately force you out of the current level, putting you back in Rainbow Cliffs.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    20: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  gravity_trap_weight:
+    # The weight of Gravity Traps in the trap pool.
+    # Gravity Traps cause Ty to fall much faster, and limit his jump height.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    20: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  knocked_down_trap_weight:
+    # The weight of Knocked Down Traps in the trap pool.
+    # Knocked Down Traps knock you over and set your health to 1
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    20: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  slow_trap_weight:
+    # The weight of Slow Traps in the trap pool.
+    # Slow Traps cause Ty to move slower.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    20: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  ##############
+  # Death Link #
+  ##############
+  death_link:
+    # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+    'false': 50
+    'true': 0
+
+  ###############
+  # Mul-Ty Link #
+  ###############
+  mul_ty_link:
+    # Whether other players connecting to the same slot should see each other.
+    # This is soft limited to 8 players per slot. Use with caution.
+    'false': 50
+    'true': 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with these items.
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

@@ -41,7 +41,6 @@ dist
 README.html
 .vs/
 EnemizerCLI/
-/Players/
 /SNI/
 /sni-*/
 /appimagetool*

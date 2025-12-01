@@ -1,0 +1,260 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Mario Kart Double Dash Template
+
+game: Mario Kart Double Dash
+requires:
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+
+Mario Kart Double Dash:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  goal:
+    # Victory condition for the game.
+    # All Cup Tour: Collect set amount of gold trophies to unlock All Cup Tour. Get gold in All Cup Tour to win.
+    # Trophies: Collect set amount of gold trophies to win.
+    all_cup_tour: 50
+    trophies: 0
+
+  trophy_requirement:
+    # How many gold trophies are needed for goal completion.
+    # Recommended: 9-12 if you aim to complete the game on 150cc. 13-16 if you aim to complete the game on Mirror.
+    # Value will be limited to the number of trophies in the pool.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 32
+    10: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  grand_prix_trophies:
+    # Does getting gold in cups earn you trophies.
+    'false': 0
+    'true': 50
+
+  shuffle_extra_trophies:
+    # How many trophies are added in the pool in addition to predetermined trophy locations.
+    # These trophies can appear in other players' worlds.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 16
+    0: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  logic_difficulty:
+    # Balances the difficulty modeling, how many upgrades you are presumed to have to win races.
+    # Use normal (0) if you can comfortably win 100cc races.
+    # Unrestricted places locations in logic as soon as they are technically possible.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is -50
+    # Maximum value is 100
+    random: 0
+    random-low: 0
+    random-high: 0
+    baby: 0 # equivalent to -50
+    easy: 0 # equivalent to -25
+    normal: 50 # equivalent to 0
+    hard: 0 # equivalent to 50
+    unrestricted: 0 # equivalent to 100
+
+  tracker_unrestricted_logic:
+    # If enabled, the Universal Tracker will show all locations that are techically accessible (as if Logic Difficulty was set to unrestricted).
+    # DEPRECATED - Using latest version of UT on Archipelago 0.6.2 installation shows out of logic locations as glitched logic.
+    'false': 50
+    'true': 0
+
+  time_trials:
+    # Are time trials in logic? If enabled, item pool has course unlocks for time trials.
+    # Basic adds locations for beating certain times.
+    # Include Staff Ghosts enables staff ghosts into logic. For experts only!
+    disable: 0
+    basic: 50
+    include_staff_ghosts: 0
+
+  course_shuffle:
+    # How the courses are shuffled in cups.
+    vanilla: 0
+    shuffle_once: 50
+
+  all_cup_tour_length:
+    # How many races are in the All Cup Tour? 16 = vanilla. Default 8.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 2
+    # Maximum value is 16
+    8: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  mirror_200cc:
+    # Mirror mode is 200cc if enabled.
+    'false': 50
+    'true': 0
+
+  shorter_courses:
+    # Makes most courses 2 laps long. Might make the flow of the game better.
+    'false': 50
+    'true': 0
+
+  custom_lap_counts:
+    # Set custom amount of laps on each course.
+    # Write each course on its own line, followed by : and number of laps.
+    Wario Colosseum: 2
+
+  items_for_everybody:
+    # How many global item unlocks there are.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 19
+    4: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  items_per_character:
+    # How many item unlocks there are per character.
+    # Note: this setting raises the amount of items in item pool considerably, and might cause the generation to fail.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 4
+    3: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  start_items_per_character:
+    # Unlocks some items for the characters straight away.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 5
+    1: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  kart_upgrades:
+    # How many random kart stat upgrades there are total.
+    # Unlike progressive engine upgrades, these upgrades are tied to certain vehicles.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 40
+    10: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  speed_upgrades:
+    # Adds 3 Progressive Speed Upgrades to the pool.
+    # You start at a slight disadvantage (90 % speed) and collecting all the speed upgrades gets you to 110 % speed.
+    # Disabling this sets logic difficulty on hard if it's lower.
+    'false': 0
+    'true': 50
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_inventory_from_pool:
+    # Start with the specified amount of these items and don't place them in the world. Example: "Bomb: 1"
+    # 
+    # The game decides what the replacement items will be.
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []
