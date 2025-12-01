@@ -20,7 +20,21 @@ module.exports = {
         const launcherScript = path.join(__dirname, '../../Archipelago-0.6.4/Launcher.py');
         // Use the venv's Python interpreter instead of system python3
         const pythonPath = path.join(__dirname, '../../Archipelago-0.6.4/venv/bin/python3');
-        const pythonProcess = spawn(pythonPath, [launcherScript, 'Universal Tracker', '--', '--nogui', '--list', `archipelago://${slotName}:None@archipelago.gg:52913`]);
+        const pythonProcess = spawn(pythonPath, [
+            launcherScript, 
+            'Universal Tracker', 
+            '--', 
+            '--no_gui', 
+            '--list', 
+            `archipelago://${slotName}:None@archipelago.gg:52913`
+        ], {
+            env: {
+                ...process.env,
+                SDL_AUDIODRIVER: 'dummy',
+                DISPLAY: ':0',
+                QT_QPA_PLATFORM: 'offscreen'
+            }
+        });
 
         // Track whether we've already replied to avoid duplicate replies
         let replied = false;
