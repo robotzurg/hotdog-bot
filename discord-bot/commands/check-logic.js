@@ -24,15 +24,17 @@ module.exports = {
             launcherScript, 
             'Universal Tracker', 
             '--', 
-            '--no_gui', 
+            '--nogui', 
             '--list', 
             `archipelago://${slotName}:None@archipelago.gg:52913`
         ], {
             env: {
                 ...process.env,
                 SDL_AUDIODRIVER: 'dummy',
-                DISPLAY: ':0',
-                QT_QPA_PLATFORM: 'offscreen'
+                SDL_VIDEODRIVER: 'dummy',
+                QT_QPA_PLATFORM: 'offscreen',
+                DISPLAY: '',  // Empty string to prevent X connection attempts
+                MPLBACKEND: 'Agg'  // Non-interactive matplotlib backend
             }
         });
 
