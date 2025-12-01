@@ -18,7 +18,9 @@ module.exports = {
 
         const slotName = interaction.options.getString('slot-name');
         const launcherScript = path.join(__dirname, '../../Archipelago-0.6.4/Launcher.py');
-        const pythonProcess = spawn('python3', [launcherScript, 'Universal Tracker', '--', '--nogui', '--list', `archipelago://${slotName}:None@archipelago.gg:52913`]);
+        // Use the venv's Python interpreter instead of system python3
+        const pythonPath = path.join(__dirname, '../../Archipelago-0.6.4/venv/bin/python3');
+        const pythonProcess = spawn(pythonPath, [launcherScript, 'Universal Tracker', '--', '--nogui', '--list', `archipelago://${slotName}:None@archipelago.gg:52913`]);
 
         // Track whether we've already replied to avoid duplicate replies
         let replied = false;
