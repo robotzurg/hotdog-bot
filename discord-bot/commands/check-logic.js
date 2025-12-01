@@ -24,6 +24,7 @@ module.exports = {
             launcherScript, 
             'Universal Tracker', 
             '--', 
+            '--loglevel', 'warning',
             '--nogui', 
             '--list', 
             `archipelago://${slotName}:None@archipelago.gg:52913`
