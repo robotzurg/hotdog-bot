@@ -131,7 +131,18 @@ cron.schedule('00 15 1 * *', () => {
 
 // Listen for interactions (INTERACTION COMMAND HANDLER)
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
+	if (interaction.isAutocomplete()) {
+        const command = client.commands.get(interaction.commandName);
+        if (!command || !command.autocomplete) return;
+        try {
+            await command.autocomplete(interaction);
+        } catch (error) {
+            console.error(error);
+        }
+        return;
+    }
+
+    if (!interaction.isCommand()) return;
     const command = client.commands.get(interaction.commandName);
     try {
         await command.execute(interaction, client);
