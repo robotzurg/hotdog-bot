@@ -17,7 +17,7 @@ module.exports = {
         await interaction.editReply(`Gathering Universal Tracker data, this may take a moment...`);
 
         const slotName = interaction.options.getString('slot-name');
-        const launcherScript = path.join(__dirname, '..\\..\\Archipelago-0.6.4\\Launcher.py');
+        const launcherScript = path.join(__dirname, '../../Archipelago-0.6.4/Launcher.py');
         const pythonProcess = spawn('python3', [launcherScript, 'Universal Tracker', '--', '--nogui', '--list', `archipelago://${slotName}:None@archipelago.gg:52913`]);
 
         // Track whether we've already replied to avoid duplicate replies
