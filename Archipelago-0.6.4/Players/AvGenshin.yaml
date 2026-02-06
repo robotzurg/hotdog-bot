@@ -1,0 +1,177 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: AvGenshin
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Manual_GenshinImpact_ArcaniaCQ Template
+
+game: Manual_GenshinImpact_ArcaniaCQ
+requires:
+  version: 0.6.5 # Version of Archipelago required for this yaml to work as expected.
+
+Manual_GenshinImpact_ArcaniaCQ:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
+    disabled: 50 # equivalent to 0
+    normal: 0 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 0
+    minimal: 50
+
+  prog_statues:
+    # If enabled, the Statues of the Seven that unlock areas will be progressive.
+    # In order, they lead from Liyue, to Inazuma, to Fontaine, to Sumeru, and to Natlan.
+    # If disabled, the Statues of the Seven work on an individual basis.
+    'false': 50
+    'true': 0
+
+  character_shuffle:
+    # If enabled, shuffles character packs into the item pool.
+    # These character packs are themed around major characters in the game.
+    'false': 0
+    'true': 50
+
+  element_shuffle:
+    # If enabled, shuffles elements into the item pool.
+    # This affects both characters locked to that Vision as well as the Traveler (who must have the starting Element).
+    'false': 0
+    'true': 50
+
+  weapon_shuffle:
+    # If enabled, shuffles weapons into the item pool.
+    # Only the appropriate weaponry can be used.
+    'false': 0
+    'true': 50
+
+  split_chambers:
+    # If enabled, each Chamber of the Spiral Abyss will be a check.
+    # If disabled, only the floor completions will be checks.
+    # Floor completions are not enabled independently if Split Chambers is enabled.
+    'false': 0
+    'true': 50
+
+  late_floors:
+    # Allow the lower floors of the Spiral Abyss to have items.
+    'false': 50
+    'true': 0
+
+  fishing:
+    # Enable Fishing Points as locations. You must have the Serenitea Pot item to get these locations.
+    'false': 0
+    'true': 50
+
+  fishsanity:
+    # Adds bait to the item pool, as well as locations for catching each fish. Requires Fishing to be enabled.
+    'false': 0
+    'true': 50
+
+  death_link:
+    # If your party wipes, or for every four deaths, send a Death Link.
+    # If you recieve a Death Link, you must teleport and restart the current battle.
+    'false': 50
+    'true': 0
+
+  goal:
+    # Choose your victory condition.
+    defeat the lord of eroded primal fire: 0
+    spiral abyss floor 8 clear: 0
+    spiral abyss floor 12 clear: 50
+    imaginarium theater easy: 0
+    imaginarium theater normal: 0
+    imaginarium theater hard: 0
+    all weekly bosses: 0
+
+  rhythm_game:
+    # Should items/locations linked to this option be enabled?
+    'false': 0
+    'true': 50
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_inventory_from_pool:
+    # Start with the specified amount of these items and don't place them in the world. Example: "Bomb: 1"
+    # 
+    # The game decides what the replacement items will be.
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

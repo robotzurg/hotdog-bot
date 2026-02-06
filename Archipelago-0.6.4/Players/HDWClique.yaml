@@ -32,12 +32,10 @@ description: Default Clique Template
 
 game: Clique
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.2 # Version of Archipelago required for this yaml to work as expected.
 
 Clique:
-  ################
-  # Game Options #
-  ################
+  # Game Options
   progression_balancing:
     # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
     # 
@@ -49,8 +47,8 @@ Clique:
     random: 0
     random-low: 0
     random-high: 0
-    disabled: 0 # equivalent to 0
-    0: 50 # equivalent to 50
+    disabled: 50 # equivalent to 0
+    normal: 0 # equivalent to 50
     extreme: 0 # equivalent to 99
 
   accessibility:
@@ -62,16 +60,20 @@ Clique:
     full: 0
     minimal: 50
 
+  plando_items:
+    # Generic items plando.
+    []
+
   color:
-    # Customize your button! Now available in 12 unique colors.
-    red: 0
+    # Customize **The Button**! Now available in 12 unique colors.
+    red: 50
     orange: 0
     yellow: 0
     green: 0
     cyan: 0
     blue: 0
     magenta: 0
-    purple: 50
+    purple: 0
     pink: 0
     brown: 0
     white: 0
@@ -79,12 +81,15 @@ Clique:
 
   hard_mode:
     # Only for the most masochistically inclined... Requires button activation!
-    'false': 50
-    'true': 0
+    'false': 0
+    'true': 50
 
-  ###########################
-  # Item & Location Options #
-  ###########################
+  force_progression:
+    # Forces **The Button** to have a progression item. Overrides Excluded Locations.
+    'false': 0
+    'true': 50
+
+  # Item & Location Options
   local_items:
     # Forces these items to be in their native world.
     []
@@ -94,11 +99,11 @@ Clique:
     []
 
   start_inventory:
-    # Start with the specified amount of these items. Example: "Bomb: 1"
+    # Start with these items.
     {}
 
   start_inventory_from_pool:
-    # Start with the specified amount of these items and don't place them in the world. Example: "Bomb: 1"
+    # Start with these items and don't place them in the world.
     # 
     # The game decides what the replacement items will be.
     {}
@@ -121,8 +126,4 @@ Clique:
 
   item_links:
     # Share part of your item pool with other players.
-    []
-
-  plando_items:
-    # Generic items plando.
     []

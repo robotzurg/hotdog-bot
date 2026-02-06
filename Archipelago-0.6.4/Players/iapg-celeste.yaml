@@ -15,7 +15,7 @@ Celeste (Open World):
   binosanity: 'true'
   keysanity: 'true'
   gemsanity: 'true'
-  carsanity: 'false'
+  carsanity: 'true'
   roomsanity: 'false'
   include_goldens: 'false'
   include_core: 'true'
@@ -23,7 +23,7 @@ Celeste (Open World):
   include_b_sides: 'true'
   include_c_sides: 'true'
   junk_fill_percentage: '50'
-  trap_fill_percentage: '50'
+  trap_fill_percentage: '0'
   trap_expiration_action: new_screens
   trap_expiration_amount: '1'
   bald_trap_weight: medium

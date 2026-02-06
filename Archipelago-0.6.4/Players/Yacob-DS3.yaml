@@ -6,13 +6,13 @@ Dark Souls III:
   accessibility: minimal
   early_banner: early_global
   late_basin_of_vows: 'off'
-  late_dlc: after_small_doll
-  death_link: 'true'
+  late_dlc: after_basin
+  death_link: 'false'
   enable_dlc: 'true'
   enable_ngp: 'false'
   random_starting_loadout: 'true'
   require_one_handed_starting_weapons: 'true'
-  auto_equip: 'false'
+  auto_equip: 'true'
   lock_equip: 'false'
   no_equip_load: 'true'
   no_weapon_requirements: 'false'

@@ -4,15 +4,58 @@ const { spawn } = require('child_process');
 const path = require('path');
 
 const SLOT_NAMES = [
-    'Jeff-CRYPT', 'Jeff-ALTTP', 'Jeff-C', 'NateCeleste', 'iapg-celeste', 'Yacob-C',
-    'Jeff-C64', 'Jeff-CHESS', 'Jeff-YD', 'Jeff-ORI', 'AvTruck', 'Avresa',
-    'RaveelGK', 'NateGK', 'AvHitman', 'AvScoob', 'AvSimp', 'AvSWCS',
-    'AvTyger', 'NateTy', 'AvOri', 'Yacob-ORI', 'NateOri', 'Ethan-K64',
-    'Ethan-PSY', 'Ethan-Paint', 'Ethan-LGG', 'Ethan-BW', 'AriaPokemon', 'NateWord',
-    'NateClique', 'HDWClique', 'NateWitness', 'NateGenshin', 'vlad-ash', 'vlad-sha',
-    'vlad-dd', 'vlad-ter', 'vlad-blas', 'vlad-ultra', 'Yacob-ULTRA', 'RaveelInscryptio',
-    'RaveelFFPS', 'RaveelBW', 'iapg-HK', 'iapg-UT', 'Yacob-KH2', 'Yacob-SOL',
-    'Yacob-DS3', 'Yacob-MIKU'
+    'AeroBloons',
+    'AeroBreach',
+    'AeroMuse',
+    'AeroWorld',
+    'AllMinecraft',
+    'AllPeak',
+    'AllRepo',
+    'AllTerraria',
+    'AriaChess',
+    'AriaMuse',
+    'AriaOri',
+    'AriaSouls',
+    'AvBloons',
+    'AvFlip',
+    'AvGK',
+    'AvGenshin',
+    'AvHat',
+    'Ethan-AHIT',
+    'Ethan-Corn',
+    'Ethan-EarthB',
+    'Ethan-Loonyland',
+    'Ethan-PVZ',
+    'Ethan-Stardew',
+    'Ethan-WOTW',
+    'HDWClique',
+    'Jeff-C',
+    'Jeff-KSS',
+    'Jeff-LL',
+    'Jeff-MUSE',
+    'Jeff-NONO',
+    'Jeff-PVZ',
+    'Jeff-RIFT',
+    'Jeff-TUNIC',
+    'Jeff-UF',
+    'NateDuck',
+    'NateGK',
+    'NateOriBF',
+    'NateOriK',
+    'NateOriU',
+    'NateRabi',
+    'NateTruck',
+    'Yacob-BBS',
+    'Yacob-COM',
+    'Yacob-DS3',
+    'Yacob-EL',
+    'Yacob-KH',
+    'Yacob-KH2',
+    'Yacob-WIT',
+    'iapg-HK',
+    'iapg-celeste',
+    'iapg-word',
+    'iapg-yacht',
 ];
 
 module.exports = {
@@ -76,7 +119,7 @@ module.exports = {
 
         pythonProcess.stdout.on('data', (data) => {
             const s = data instanceof Buffer ? data.toString('utf8') : String(data);
-            if (!s.includes('Archipelago (0.6.4)') && !s.includes('enter to exit')) {
+            if (!s.includes('Archipelago (0.6.4)') && !s.includes('enter to exit') && !s.includes('found cached multiworld')) {
                 const parts = s.split(/[\r\n,]+/).map(p => p.trim()).filter(Boolean);
                 if (parts.length) message.push(...parts);
             }

@@ -5,13 +5,13 @@ Kingdom Hearts 2:
   progression_balancing: '0'
   accessibility: minimal
   LevelDepth: level_50_sanity
-  Sora_Level_EXP: '8'
+  Sora_Level_EXP: '10'
   Valor_Form_EXP: '10'
   Wisdom_Form_EXP: '10'
   Limit_Form_EXP: '10'
   Master_Form_EXP: '10'
   Final_Form_EXP: '10'
-  Summon_EXP: '5'
+  Summon_EXP: '10'
   Schmovement: level_1
   RandomGrowth: '0'
   AntiForm: 'false'
@@ -22,17 +22,17 @@ Kingdom Hearts 2:
   LuckyEmblemsRequired: '35'
   BountyAmount: '15'
   BountyRequired: '10'
-  BountyStartingHintToggle: 'false'
-  Keyblade_Minimum: '3'
-  Keyblade_Maximum: '7'
+  BountyStartingHintToggle: 'true'
+  Keyblade_Minimum: '4'
+  Keyblade_Maximum: '12'
   WeaponSlotStartHint: 'false'
   FightLogic: normal
   FinalFormLogic: light_and_darkness
   AutoFormLogic: 'false'
   DonaldGoofyStatsanity: 'true'
-  FillerItemsLocal: 'true'
+  FillerItemsLocal: 'false'
   Visitlocking: first_and_second_visit_locking
-  RandomVisitLockingItem: '0'
+  RandomVisitLockingItem: '1'
   SuperBosses: 'true'
   Cups: no_cups
   SummonLevelLocationToggle: 'false'
