@@ -81,9 +81,9 @@ module.exports = {
 
         const slotName = interaction.options.getString('slot-name');
         const port = db.archipelago.get('server_port');
-        const launcherScript = path.join(__dirname, '../../Archipelago-0.6.6/Launcher.py');
+        const launcherScript = path.join(__dirname, '../../Archipelago-0.6.4/Launcher.py');
         // Use the venv's Python interpreter instead of system python3
-        const pythonPath = path.join(__dirname, '../../Archipelago-0.6.6/venv/bin/python3');
+        const pythonPath = path.join(__dirname, '../../Archipelago-0.6.4/venv/bin/python3');
         const pythonProcess = spawn(pythonPath, [
             launcherScript, 
             'Universal Tracker', 
