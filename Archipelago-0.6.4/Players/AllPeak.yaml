@@ -32,7 +32,7 @@ description: Default PEAK Template
 
 game: PEAK
 requires:
-  version: 0.6.5 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
 
 PEAK:
   ################

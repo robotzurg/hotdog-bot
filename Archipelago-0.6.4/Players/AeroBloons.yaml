@@ -32,7 +32,7 @@ description: Default Bloons TD6 Template
 
 game: Bloons TD6
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
 
 Bloons TD6:
   ################

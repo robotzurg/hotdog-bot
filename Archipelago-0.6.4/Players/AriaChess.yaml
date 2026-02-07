@@ -1,4 +1,4 @@
-﻿# Q. What is this file?
+# Q. What is this file?
 # A. This file contains options which allow you to configure your multiworld experience while allowing
 #    others to play how they want as well.
 #
@@ -32,7 +32,7 @@ description: Default ChecksMate Template
 
 game: ChecksMate
 requires:
-  version: 0.6.5 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
 
 ChecksMate:
   ################

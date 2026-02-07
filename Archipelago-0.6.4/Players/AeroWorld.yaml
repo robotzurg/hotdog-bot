@@ -32,7 +32,7 @@ description: Default FNaFW Template
 
 game: FNaFW
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
 
 FNaFW:
   ################
@@ -40,7 +40,7 @@ FNaFW:
   ################
   progression_balancing:
     # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
-    # 
+    #
     # A lower setting means more getting stuck. A higher setting means less getting stuck.
     #
     # You can define additional values between the minimum and maximum values.
@@ -56,9 +56,9 @@ FNaFW:
 
   accessibility:
     # Set rules for reachability of your items/locations.
-    # 
+    #
     # **Full:** ensure everything can be reached and acquired.
-    # 
+    #
     # **Minimal:** ensure what is needed to reach your goal can be acquired.
     full: 0
     minimal: 50
@@ -80,48 +80,48 @@ FNaFW:
 
   vanilla_halloween:
     # Makes the Halloween Town minigames give the vanilla stuff
-    'false': 0
-    'true': 50
+    "false": 0
+    "true": 50
 
   vanilla_lasers:
     # Makes the laser switches always be found in their vanilla locations
-    'false': 50
-    'true': 0
+    "false": 50
+    "true": 0
 
   vanilla_pearl:
     # Makes the pearl always be found in its vanilla location
-    'false': 50
-    'true': 0
+    "false": 50
+    "true": 0
 
   hard_logic:
     # Makes it possible to require grinding tokens or top layer at the start of the game
-    'false': 50
-    'true': 0
+    "false": 50
+    "true": 0
 
   cheap_endo:
     # Halves the price of the items in the Endo shop
-    'false': 0
-    'true': 50
+    "false": 0
+    "true": 50
 
   require_find_char:
     # Makes every character location require the Find Characters chip
-    'false': 0
-    'true': 50
+    "false": 0
+    "true": 50
 
   progressive_anims:
     # Makes you get animatronics in a randomized set order, but with stronger animatronics later in the order
-    'false': 50
-    'true': 0
+    "false": 50
+    "true": 0
 
   progressive_bytes:
     # Makes you get bytes in a randomized set order, but with stronger bytes later in the order
-    'false': 0
-    'true': 50
+    "false": 0
+    "true": 50
 
   progressive_chips:
     # Makes you get chips in a randomized set order, but with stronger chips later in the order (Some chips may be excluded)
-    'false': 0
-    'true': 50
+    "false": 0
+    "true": 50
 
   area_warping:
     # How do the warp buttons function?

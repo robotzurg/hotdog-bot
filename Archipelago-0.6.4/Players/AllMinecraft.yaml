@@ -32,7 +32,7 @@ description: Default Minecraft Fabric Template
 
 game: Minecraft Fabric
 requires:
-  version: 0.6.5 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
   game:
     Minecraft Fabric: 1.0.6 # Version of the world required for this yaml to work as expected.
 

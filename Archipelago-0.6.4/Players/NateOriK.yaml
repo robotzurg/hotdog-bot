@@ -1,10 +1,10 @@
-﻿name: NateOriK
+name: NateOriK
 
 description: Ori and the Will of the Wisps Template for Kii difficulty
 
 game: Ori and the Will of the Wisps
 requires:
-  version: 0.6.3 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
 
 Ori and the Will of the Wisps:
   ################
