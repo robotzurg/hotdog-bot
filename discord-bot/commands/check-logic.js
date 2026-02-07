@@ -119,7 +119,7 @@ module.exports = {
 
         pythonProcess.stdout.on('data', (data) => {
             const s = data instanceof Buffer ? data.toString('utf8') : String(data);
-            if (!s.includes('Archipelago (0.6.6)') && !s.includes('enter to exit') && !s.includes('found cached multiworld')) {
+            if (!s.includes('Archipelago (0.6.4)') && !s.includes('enter to exit') && !s.includes('found cached multiworld')) {
                 const parts = s.split(/[\r\n,]+/).map(p => p.trim()).filter(Boolean);
                 if (parts.length) message.push(...parts);
             }
