@@ -1,0 +1,178 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Manual_KatamariDamacy_Zachamari Template
+
+game: Manual_KatamariDamacy_Zachamari
+requires:
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+
+Manual_KatamariDamacy_Zachamari:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  goal:
+    # Make the Moon: Clear a chosen number of any Make a Star and Constellation stages, then clear Make the Moon.
+    # Make the Moon and Major Stars: Same as Make the Moon, but MAS4 and MAS8 are also required to be cleared.
+    make the moon: 0
+    make the moon and major stars: 50
+
+  #################
+  # Goal Settings #
+  #################
+  required_stars:
+    # The total number of Make a Star stages required to be cleared in order to clear Make the Moon and win.
+    # If your goal is Make the Moon and Major Stars, MAS4 and MAS8 will count towards this number.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 9
+    5: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  required_constellations:
+    # The total number of Constellation stages required to be cleared in order to clear Make the Moon and win.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 9
+    4: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  ##############################
+  # Location and Item Settings #
+  ##############################
+  include_presents:
+    # Royal Presents don't respawn after being collected on a save file, so you would normally need to set up a save file beforehand
+    # with every level unlocked and no presents collected.
+    # When set to False, Royal Presents are not included in the item or location pool, making it possible to play using a 100% file.
+    # Removes 15 locations and filler items when False.
+    'false': 0
+    'true': 50
+
+  include_eternals:
+    # When this option is set to False, removes all Eternal stage checks from the pool, removing 3 locations.
+    # When True, you should Super Clear MAS4, MAS8, and MtM when setting up your save file in order to have the Eternals unlocked.
+    'false': 0
+    'true': 50
+
+  super_clears:
+    # When set to True, adds a check for getting a Super Clear on each stage.
+    # Adds 18 locations.
+    # Conditions for getting Super Clears can be found on the Katamari wiki here: https://katamaripedia.miraheze.org/wiki/Super_Clear
+    # (Note: Has not been thoroughly tested with Move Rando, could lead to very difficult seeds if both are enabled.)
+    'false': 50
+    'true': 0
+
+  gate_cousins:
+    # In the vanilla game, cousins don't spawn in levels until the game is beaten.
+    # When set to True, this setting attempts to mimic that by adding a Cousins item to the pool that is required in order for the cousin
+    # locations to be checked. When False, all cousins may be collected upon unlocking their stage.
+    'false': 0
+    'true': 50
+
+  move_rando:
+    # When set to True, adds some of the Prince's moves/abilities to the item pool, and you are not allowed to use those ablities until you receive them.
+    # Includes the abilities Quick Turn, Charge'n'Roll (aka Prince Dash), Look (aka Prince Look), and Jump (aka Royal Look).
+    'false': 50
+    'true': 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_inventory_from_pool:
+    # Start with the specified amount of these items and don't place them in the world. Example: "Bomb: 1"
+    # 
+    # The game decides what the replacement items will be.
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

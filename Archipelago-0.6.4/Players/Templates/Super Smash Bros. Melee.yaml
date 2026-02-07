@@ -1,0 +1,292 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Super Smash Bros. Melee Template
+
+game: Super Smash Bros. Melee
+requires:
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+
+Super Smash Bros. Melee:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  lottery_pool_mode:
+    # Changes how the Lottery Trophy pool works.
+    # Vanilla: The lottery pool expands when meeting the vanilla requirement. The 200 VS trophies are unlocked with 5 matches instead.
+    # Progressive: The lottery pool will increase every time you get a Progressive Lottery Pool item.
+    # Non-progressive: The lottery pool has specific upgrade items
+    vanilla: 0
+    progressive: 50
+    non_progressive: 0
+
+  ####################
+  # Starting Options #
+  ####################
+  starting_character:
+    # This is the character you will start with.
+    dr_mario: 0
+    mario: 0
+    luigi: 0
+    bowser: 0
+    peach: 0
+    yoshi: 0
+    donkey_kong: 0
+    captain_falcon: 0
+    ganondorf: 0
+    falco: 0
+    fox: 0
+    ness: 0
+    ice_climbers: 0
+    kirby: 0
+    samus: 0
+    zelda: 0
+    link: 0
+    young_link: 0
+    pichu: 0
+    pikachu: 0
+    jigglypuff: 0
+    mewtwo: 0
+    mr_game_and_watch: 0
+    marth: 0
+    roy: 0
+    random: 50
+
+  ###################
+  # Trophy Settings #
+  ###################
+  trophies_required:
+    # How many Trophies need to be found to complete the seed.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 293
+    100: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  extra_trophies:
+    # How many extra Trophies will be in the item pool. Total trophies cannot exceed 293.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 293
+    50: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  ##################
+  # Check Settings #
+  ##################
+  bonus_checks:
+    # Enables Bonuses as checks. Which bonuses are enabled can be tweaked.
+    'false': 50
+    'true': 0
+
+  event_checks:
+    # Enables all Event match clears as checks. If this is disabled, events
+    # with major unlocks will still give checks.
+    'false': 50
+    'true': 0
+
+  target_checks:
+    # Enables a check for every individual character's Target Test being cleared.
+    'false': 50
+    'true': 0
+
+  ten_man_checks:
+    # Enables a check for every individual character clearing 10-Man Melee
+    'false': 50
+    'true': 0
+
+  ###################
+  # Annoying Checks #
+  ###################
+  enable_hard_bonuses:
+    # Enables a few specific difficult Bonus checks. Does nothing with Bonus-sanity off, such as All Variations or bonuses which are easier with 2 human players.
+    'false': 50
+    'true': 0
+
+  enable_rare_pokemon_checks:
+    # Enables 2 checks for seeing Mew and Celebi as well as 2 related Bonus checks.
+    'false': 50
+    'true': 0
+
+  enable_extreme_bonuses:
+    # Enables a few very difficult Bonus checks, such as Hammer Throw or No-Damage Clear. Does nothing with Bonus-sanity off.
+    'false': 50
+    'true': 0
+
+  enable_annoying_multiman_checks:
+    # Enables checks on 15-Minute and Cruel Melee
+    'false': 50
+    'true': 0
+
+  vs_count_checks:
+    # Enables checks on VS match counts. WARNING. These are really high and will likely take a long time.
+    'false': 50
+    'true': 0
+
+  diskun_trophy_check:
+    # Enables a check on the Diskun trophy, which requires getting all 249 Bonuses.
+    'false': 50
+    'true': 0
+
+  mewtwo_unlock_check:
+    # Enables a check on unlocking Mewtwo, which requires 1 total hour of VS play.
+    'false': 50
+    'true': 0
+
+  long_targettest_checks:
+    # Enables Target Test checks locked behind most or all characters.
+    'false': 50
+    'true': 0
+
+  hard_modes_clear:
+    # Enables checks for completing the main 1-P Modes on Hard or higher.
+    'false': 50
+    'true': 0
+
+  #################
+  # Goal Settings #
+  #################
+  goal_giga_bowser:
+    # If enabled, you will need to defeat Giga Bowser in Adventure Mode and collect your required trophies to win.
+    # This option can stack with other Goals.
+    'false': 0
+    'true': 50
+
+  goal_crazy_hand:
+    # If enabled, you will need to defeat Crazy Hand in Classic Mode and collect your required trophies to win.
+    # This option can stack with other Goals.
+    'false': 50
+    'true': 0
+
+  goal_event_51:
+    # If enabled, you will need to complete Event 51 and collect your required trophies to win.
+    # This option can stack with other Goals.
+    'false': 50
+    'true': 0
+
+  goal_all_events:
+    # If enabled, you will need to complete every event besides 51 and collect your required trophies to win.
+    # This option can stack with other Goals.
+    'false': 50
+    'true': 0
+
+  goal_all_targets:
+    # If enabled, you will need to complete Target Test with every character and collect your required trophies to win.
+    # This option can stack with other Goals.
+    'false': 50
+    'true': 0
+
+  ################
+  # QOL Settings #
+  ################
+  solo_cstick_smash:
+    # Enables the use of Smash Attacks with the C-Stick during 1-Player modes.
+    'false': 0
+    'true': 50
+
+  disable_tap_jump:
+    # Removes the ability to jump by tapping Up on the control stick.
+    'false': 50
+    'true': 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_inventory_from_pool:
+    # Start with the specified amount of these items and don't place them in the world. Example: "Bomb: 1"
+    # 
+    # The game decides what the replacement items will be.
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

@@ -1,0 +1,382 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: AllMinecraft
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Minecraft Fabric Template
+
+game: Minecraft Fabric
+requires:
+  version: 0.6.5 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Minecraft Fabric: 1.0.6 # Version of the world required for this yaml to work as expected.
+
+Minecraft Fabric:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
+    disabled: 50 # equivalent to 0
+    normal: 0 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 0
+    minimal: 50
+
+  goal_condition:
+    # Your Goal Condition for your game
+    # 
+    # ender_dragon - Goal when the Ender Dragon is defeated
+    # wither - Goal when the Wither is defeated
+    # both_bosses - Goal when the Ender Dragon and Wither is defeated
+    # advancements_only - Goal when you collect a certain amount of Advancements
+    # ruby_hunt - Goal when a certain amount of rubies are collected (McGuffin hunt)
+    ender_dragon: 50
+    wither: 0
+    both_bosses: 0
+    advancements_only: 0
+    ruby_hunt: 0
+
+  advancements_required_for_goal:
+    # Determines the number of advancements needed in order to beat the game! These Advancements are required for goaling
+    # in addition to your regular goal. If this is set to zero, no advancements will be required to goal.
+    # 
+    # If fewer available advancements exist than this number, the number of available advancements will be used instead.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 1000
+    100: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1000: 0 # random value between 0 and 1000
+
+  excluded_locations:
+    # Determines Blacklisted Locations in the Randomizer
+    # If a Location Category is given here, Checks won't appear in locations categorized under it
+    # 
+    # This Wiki Page details all locations that're blacklisted via these settings:
+    # https://modded.wiki/w/Fabric_Archipelago_Mod:Optional_Locations
+    # 
+    # Options:
+    #     "Hard" - Disables Locations that're Hard
+    #     "Exploration" - Disables Locations that might require Exploration
+    #     "Unreasonable" - Disables Location's that're EXTREMELY Hard
+    []
+
+  speedrunner_mode:
+    # Makes it so Beds are a required item for defeating the Ender Dragon
+    'false': 50
+    'true': 0
+
+  percentage_of_rubies_needed:
+    # The Percentage of Rubies that need to be collected to Goal for Ruby Hunt.
+    # (Only Takes Effect when going for the Ruby Hunt Goal)
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 100
+    100: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
+
+  total_rubies:
+    # Maximum possible number of Rubies that will be in the item pool
+    # 
+    # If fewer available locations exist in the pool than this number, the number of available locations will be used instead.
+    # 
+    # Required Percentage of Rubies will be calculated based off of that number.
+    # 
+    # (Only Takes Effect when going for the Ruby Hunt Goal)
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 500
+    16: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-500: 0 # random value between 1 and 500
+
+  itemsanity:
+    # Enables "Itemsanity" which causes items obtainable in Survival to be checks
+    'false': 0
+    'true': 50
+
+  itemsanity_local_fill:
+    # The Percentage of Itemsanity Checks that should only contain items from your world
+    # (Highly recommend setting this to a high value to prevent everyone's items from being in your game)
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 98
+    75: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-98: 0 # random value between 0 and 98
+
+  excluded_from_itemsanity:
+    # Determines certain Items that shouldn't appear in Itemsanity
+    # Primarily used to blacklist Items that are Tedious or VERY RNG heavy
+    # 
+    # Options:
+    #     Discs - Music Discs
+    #     Rare Ores - Ores that are extremely rare (such as Deepslate Emerald)
+    #     Mob Heads - Mob Heads that're only dropped from Charged Creeper Explosions
+    #     Netherite Gear - Netherite Tools, Armor, and Netherite Smithing Template
+    #     Trims - Smithing Templates that're used for Trims (Doesn't include Upgrade Templates)
+    #     Sherds - Pottery Sherds
+    []
+
+  empty_fill_percentage:
+    # Replaces a certain amount of Non-Trap Junk Items with Items that do nothing.
+    # This option is primarily for preventing massive amounts of inventory clutter when Itemsanity is Enabled
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  required_before_nether:
+    # Makes it so certain Items are required in Logic before Nether Access
+    # 
+    # Used to help make the Randomizer Easier or Harder
+    # 
+    # Available Items
+    #     "Iron Weapons"
+    #     "Iron Armor"
+    #     "Bow"
+    #     "Jump"
+    #     "Sprint"
+    #     "Beds"
+    {}
+
+  required_before_bosses:
+    # Makes it so certain Items are required in Logic before you need
+    # to fight the Ender Dragon or Wither
+    # 
+    # Used to help make the Randomizer Easier or Harder
+    # 
+    # Available Items
+    #     "Iron Weapons"
+    #     "Iron Armor"
+    #     "Bow"
+    #     "Jump"
+    #     "Sprint"
+    #     "Beds"
+    ['Bow', 'Iron Armor', 'Sprint', 'Iron Weapons']
+
+  required_before_raids:
+    # Makes it so certain Items are required in Logic before you need
+    # to fight a Raid
+    # 
+    # Used to help make the Randomizer Easier or Harder
+    # 
+    # Available Items
+    #     "Iron Weapons"
+    #     "Iron Armor"
+    #     "Bow"
+    #     "Jump"
+    #     "Sprint"
+    #     "Beds"
+    []
+
+  keep_inventory:
+    # Prevents you from dropping your items when you die!
+    'false': 0
+    'true': 50
+
+  randomized_abilities:
+    # Determines which abilities and items will be added as items in the item pool
+    # If an ability is not present in the list they will be treated as unlocked from the start
+    # 
+    # Lockable Abilities:
+    #     "Chests" - Removes the ability to craft and use chests (and similar storage containers), and adds Chests to the Item pool.
+    #     "Jump" - Removes the ability to jump, and adds Jumping to the Item pool.
+    #     "Sprint" - Removes the ability to run, and adds Sprint to the Item pool.
+    #     "Swim" - Removes the ability to enter water, and adds Swim to the Item pool.
+    {'Jump', 'Sprint', 'Swim'}
+
+  time_saving_options:
+    # Decrease Wait times or Increase likelihood for various events that can occur in the game
+    # 
+    # Options:
+    #     "Wither Skulls" - Increases the 2.5% Chance for Wither Skulls to drop to 25%
+    #     "Rabbits Foot" - Increases the 10% Chance for Rabbit's Foot to drop to 50%
+    #     "Drowned Items" - Increases the Chance for a Drowned to drop the items they're holding to 100%
+    #     "Copper Oxidation" - Increases the Chance for Copper Blocks to attempt to Oxidize from 5% to 55%
+    ['Rabbits Foot', 'Copper Oxidation', 'Wither Skulls', 'Drowned Items']
+
+  trap_fill_percentage:
+    # Replace a percentage of junk items in the item pool with random traps
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    10: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  reverse_controls_trap_weight:
+    # Likelihood of a receiving a trap which causes WASD, Shift, Jump, Break, and Place to Swap for a short duration
+    none: 0
+    low: 0
+    medium: 50
+    high: 0
+
+  inverted_mouse_trap_weight:
+    # Likelihood of a receiving a trap which causes the Mouse to Invert for a short duration
+    none: 0
+    low: 0
+    medium: 50
+    high: 0
+
+  ice_trap_weight:
+    # Likelihood of a receiving a trap which causes all blocks to become slippery for a short duration
+    none: 0
+    low: 0
+    medium: 50
+    high: 0
+
+  random_effect_trap_weight:
+    # Likelihood of a receiving a trap which applies a random Negative Status Effect
+    none: 0
+    low: 0
+    medium: 50
+    high: 0
+
+  stun_trap_weight:
+    # Likelihood of a receiving a trap that temporarily stops movement of the player
+    none: 0
+    low: 0
+    medium: 50
+    high: 0
+
+  tnt_trap_weight:
+    # Likelihood of a receiving a trap that spawns a block of lit TNT on the player's position
+    none: 0
+    low: 0
+    medium: 50
+    high: 0
+
+  teleport_trap_weight:
+    # Likelihood of a receiving a trap that Teleports the player similar to Chorus Fruit
+    none: 0
+    low: 0
+    medium: 50
+    high: 0
+
+  bee_trap_weight:
+    # Likelihood of a receiving a trap that Spawns 6 angry bees near the player
+    none: 0
+    low: 0
+    medium: 50
+    high: 0
+
+  literature_trap_weight:
+    # Likelihood of a receiving a trap that Opens Literature Pop-Ups
+    none: 0
+    low: 0
+    medium: 50
+    high: 0
+
+  deathlink_enabled:
+    # Enable DeathLink
+    'false': 50
+    'true': 0
+
+  traplink_enabled:
+    # Enable TrapLink
+    'false': 50
+    'true': 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

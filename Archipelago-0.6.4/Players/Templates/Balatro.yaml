@@ -1,0 +1,425 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Balatro Template
+
+game: Balatro
+requires:
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+
+Balatro:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0
+    random-high: 0
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  goal:
+    # Goal for this playthrough
+    # Beat Decks: Win with the specified amount of Decks 
+    # Unlock Jokers: Unlock the specified amount of Jokers
+    # Beat Ante: Beat the specified Ante (can be higher than 8)
+    # Beat Decks on Stake: Win with the specified amount of Decks on the specified Stake (or harder)
+    # Win with Jokers on Stake: Win with the specified amount of Jokers on the specified Stake (or harder)
+    # Unique Wins: Win with the specified amount of unique combinations of Decks and Stakes
+    beat_decks: 50
+    unlock_jokers: 0
+    beat_ante: 0
+    beat_decks_on_stake: 0
+    win_with_jokers_on_stake: 0
+    beat_unique_decks: 0
+
+  ante_win_goal:
+    # If your goal is 'beat ante,' specify the ante you need to beat.
+    # If your goal isn't 'beat ante', you can ignore this setting.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 38
+    12: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  decks_win_goal:
+    # If your goal is 'beat Decks' or 'beat decks on stake', specify the number of wins you need to beat.
+    # If your goal isn't "beat decks" or "beat decks on stake", you can ignore this setting
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 15
+    4: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  unique_deck_win_goal:
+    # If your goal is 'beat unique decks', specify the number of unique decks you need to beat
+    # This setting can be ignored if your goal isn't "beat unique decks
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 120
+    4: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  jokers_unlock_goal:
+    # Number of jokers you need to collect to win.
+    # If your goal isn't 'unlock jokers' or 'Win with jokers on stake', this setting can be ignored.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 150
+    75: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  required_stake_for_goal:
+    # The required stake for your goal.
+    # If no stake is specified or the stake specified is not in the playable stakes it will default to the highest playable one.
+    # If your goal isn't 'Win with jokers on stake' or 'beat decks on stake', this setting can be ignored.
+    ['White Stake']
+
+  include_decksMode:
+    # Choose how the playable decks are determined:
+    # all: All decks will be playable. 
+    # choose: Select specific decks to be playable from the options below.
+    # number: Specify how many randomly selected decks will be playable.
+    all: 50
+    choose: 0
+    number: 0
+
+  include_deckChoice:
+    # Select which decks will be playable in the game. 
+    # This option is only considered if Playable Decks is set to choose.
+    ['Red Deck', 'Blue Deck', 'Yellow Deck', 'Green Deck', 'Black Deck', 'Magic Deck', 'Nebula Deck', 'Ghost Deck', 'Abandoned Deck', 'Checkered Deck', 'Zodiac Deck', 'Painted Deck', 'Anaglyph Deck', 'Plasma Deck', 'Erratic Deck']
+
+  include_deckNumber:
+    # Specify how many randomly selected decks will be playable.
+    # This option is only considered if playable Decks is set to number.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 15
+    8: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  stake_unlock_mode:
+    # Decide how stakes are handled by the Randomizer.
+    # unlocked: all stakes are unlocked from the start
+    # vanilla: stakes are progressively unlocked (by beating the previous stake) and in the same order as in the base game
+    # linear: stakes are progressively unlocked (by beating the previous stake) but in a random order
+    # stake_as_item: stakes can be found as items and unlock the stake for every deck
+    # stake_as_item_per_deck: stakes can be found as items but only unlock it for a specific deck
+    unlocked: 0
+    vanilla: 50
+    linear: 0
+    stake_as_item: 0
+    stake_as_item_per_deck: 0
+
+  include_stakesMode:
+    # Choose how the playable stakes are determined.
+    # all: All stakes will be playable. 
+    # choose: Select specific stakes to be playable from the options below.
+    # number: Specify how many randomly selected stakes will be playable.
+    all: 0
+    choose: 50
+    number: 0
+
+  include_stakesList:
+    # Select specific stakes to be playable. 
+    # Example: ['White Stake','Red Stake','Gold Stake']
+    # This will make those stakes playable and remove the other ones from the game.
+    # (Also make sure to capitalize the first letters, it's case sensitive.)
+    # This option is only considered if playable Stakes is set to choose.
+    ['White Stake', 'Red Stake']
+
+  include_stakesNumber:
+    # Specify how many randomly selected stakes will be playable.
+    # This option is only considered if playable Stakes is set to number.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 8
+    2: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  joker_bundles:
+    # Rather than handling each joker as an individual item, you can group them into bundles for quicker progress 
+    # and fewer items to manage in the world. When enabled, all 150 jokers will be placed into randomly generated bundles. 
+    # You can also specify the size of these joker bundles
+    'false': 50
+    'true': 0
+
+  joker_bundle_size:
+    # Specify the size of Joker Bundles.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 5
+    # Maximum value is 30
+    10: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  remove_or_debuff_jokers:
+    # Choose whether locked jokers should be completely removed or appear in a debuffed state. 
+    # Set this to true to remove them entirely, or set it to false to have them appear debuffed.
+    'false': 50
+    'true': 0
+
+  tarot_bundle:
+    # Instead of making every tarot card an individual item, you have the option to put them all in one bundle, 
+    # that gets placed in the world.
+    # There is also the possibility to make custom bundles (not recommended).
+    individual: 50
+    one_bundle: 0
+    custom_bundles: 0
+
+  custom_tarot_bundles:
+    # Only fuck with this if you really want to. You can define up to 5 custom bundles. You have to 
+    # include every tarot, otherwise it won't work (there is no proper check for this so PLEASE double or triple check yourself). 
+    # If you have Number of AP consumable items set to greater than 1 you also
+    # must include the "Archipelago Tarot". Here is a list of all Tarot cards https://balatrogame.fandom.com/wiki/Tarot_Cards.
+    # The Syntax of this is the following: ['The Fool;The Magician;The High Priestess;The Empress;The Emperor', ...] where the bundles are separated by the commas.
+    # Make sure to use the right symbols.
+    ['The Fool;The Magician;The High Priestess;The Empress;The Emperor', 'The Hierophant;The Lovers', 'The Chariot;Justice;The Hermit;The Wheel of Fortune;Strength;Death', 'The Hanged Man;Temperance;The Devil;The Tower;The Star', 'The Moon;The Sun;Judgement;The World']
+
+  planet_bundle:
+    # Instead of making every planet card an individual item, you have the option to put them all in one bundle, 
+    # that gets placed in the world.
+    # There is also the possibility to make custom bundles (not recommended).
+    individual: 50
+    one_bundle: 0
+    custom_bundles: 0
+
+  custom_planet_bundles:
+    # Only fuck with this if you really want to. You can define up to 5 custom bundles. You have to 
+    # include every planet, otherwise it won't work. If you have Number of AP consumable items set to greater than 1 you also
+    # must include the "Archipelago Belt". Here is a list of all Planet cards https://balatrogame.fandom.com/wiki/Planet_Cards.
+    # For the Syntax refer to Custom Tarot Bundles, it's the same here.
+    []
+
+  spectral_bundle:
+    # Instead of making every spectral card an individual item, you have the option to put them all in one bundle, 
+    # that gets placed in the world.
+    # There is also the possibility to make custom bundles (not recommended).
+    individual: 50
+    one_bundle: 0
+    custom_bundles: 0
+
+  custom_spectral_bundles:
+    # Only fuck with this if you really want to. You can define up to 5 custom bundles. You have to 
+    # include every spectral, otherwise it won't work. If you have Number of AP consumable items set to greater than 1 you also
+    # must include the "Archipelago Spectral". Here is a list of all Planet cards https://balatrogame.fandom.com/wiki/Spectral_Cards.
+    # For the Syntax refer to Custom Tarot Bundles, it's the same here.
+    []
+
+  remove_or_debuff_consumables:
+    # Choose whether locked consumables should be completely removed or appear in a debuffed state. 
+    # Set this to true to remove them entirely, or set it to false to have them appear debuffed.
+    'false': 50
+    'true': 0
+
+  decks_unlocked_from_start:
+    # Number of random decks you want to start with.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 15
+    1: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  filler_jokers:
+    # Which Jokers are supposed to be filler (every Joker not in this list will be considered a progressive item)
+    # Be careful with this option if your goal is "Unlock Jokers" 
+    # 
+    # Valid Jokers:
+    #     "Abstract Joker"
+    #     "Acrobat"
+    #     "Ancient Joker" 
+    #     "....."
+    # 
+    #     for a full list go to https://balatrogame.fandom.com/wiki/Category:Jokers
+    # 
+    # Example: ['Abstract Joker', 'Acrobat', 'Ancient Joker']
+    []
+
+  ap_consumable_items:
+    # Number of items that can be received by redeeming 
+    # an AP planet, tarot or spectral card
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 300
+    100: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  permanent_filler:
+    # The amount of permanent filler items (like "+1 Hand Size") that is going to be generated.
+    # If you set this option to 3 for example it's going to fill the world with 3 "+1 Hand Size", 3 "+1 Joker Slot", etc.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 20
+    4: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  shop_items:
+    # Number of AP Items that will be buyable as vouchers in the shop at each included Stake.
+    # So for example if you include 3 Stakes and set this option to 11, then there 
+    # will be 33 findable Shop Items in your game.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 150
+    15: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  minimum_price:
+    # The minimum price for an AP Item Voucher in the shop
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 50
+    1: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  maximum_price:
+    # The maximum price for an AP Item in the shop
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 100
+    10: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  trap_amount:
+    # How often traps will appear as filler items
+    # No traps: No traps will appear
+    # Low traps: 1 in 15 filler items will be traps
+    # Medium traps: 1 in 7 filler items will be traps
+    # High traps: 1 in 2 filler items will be traps
+    # Mayhem: Every filler item will be a trap
+    no_traps: 0
+    low_amount: 0
+    medium_amount: 50
+    high_amount: 0
+    mayhem: 0
+
+  deathlink:
+    # When your run ends, everybody will die. When somebody else dies, your run will end.
+    'false': 50
+    'true': 0
+
+  forceyaml:
+    # Some settings (like death link or remove_or_debuff_jokers etc) can be changed in-game after the fact. 
+    # If you want to disallow this (for a race for example) set this option to true.
+    'false': 50
+    'true': 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []
