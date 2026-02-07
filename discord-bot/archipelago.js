@@ -183,7 +183,7 @@ async function start(discordClient, db) {
                 case 'Jeff-LL':
                     return `${text} <:loonyland:1469417929035743427>`;
                 case 'Jeff-PVZ':
-                case 'Ethan-PVZ':
+                case 'Ethan-PvZ':
                     return `${text} <:pvz:1469420270849757327>`;
                 case 'Ethan-Stardew':
                     return `${text} <:stardew:1423880027707015199>`;
