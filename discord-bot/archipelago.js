@@ -197,6 +197,7 @@ async function start(discordClient, db) {
                     return `${text} <:clustertruck:1443882716725645342>`;
                 case 'AvGK':
                 case 'NateGK':
+                case 'iapg-GK':
                     return `${text} <:garfieldkart:1443882713957404804>`;
                 case 'Jeff-KSS':
                     return `${text} <:kirbyss:1469419868649558222>`;
