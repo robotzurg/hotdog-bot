@@ -144,19 +144,20 @@ async function start(discordClient, db) {
     // Helper to format nodes into a message string safely
     function formatNodes(nodes, hint = false) {
         if (!Array.isArray(nodes)) return String(nodes || '');
-        let firstDone = false;
-        let finishedGames = [
+        // Games which are considered "finished"; if any appear in the nodes
+        // we will prefix the entire message with "-#" to match the format used
+        // elsewhere (see check-logic.js)
+        const finishedGames = [
             "AriaSouls",
             "AllRepo",
             "Yacob-KH"
-        ]
+        ];
+
+        // determine presence of any finished game node
+        const anyFinished = nodes.some(n => n && typeof n.text === 'string' && finishedGames.includes(n.text.replace('\'s', '')));
 
         const mapEmoji = (text) => {
             formatText = text.replace('\'s', '')
-            if (!firstDone && finishedGames.includes(text)) {
-                firstDone = true;
-                text = `-# ${text}`
-            }
             switch (text) {
                 case 'Jeff-C':
                 case 'iapg-celeste':
@@ -258,7 +259,8 @@ async function start(discordClient, db) {
             }
         };
 
-        return nodes.map((node, index) => {
+        // build the formatted string from individual nodes
+        const formatted = nodes.map((node, index) => {
             const text = node && typeof node.text === 'string' ? node.text : '';
             let idx1 = hint ? 1 : 0
             let idx2 = hint ? 3 : 2
@@ -280,6 +282,10 @@ async function start(discordClient, db) {
 
             return text;
         }).join('');
+
+        // if any of the nodes correspond to a finished game, prefix the
+        // final string with '-#'
+        return anyFinished ? `-# ${formatted}` : formatted;
     }
 
     archClient.messages.on('itemSent', async (_text, _item, nodes) => {
