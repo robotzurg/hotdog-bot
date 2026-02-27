@@ -222,7 +222,7 @@ client.on('messageCreate', async message => {
 
     // NON-COMMAND CHECKS
     if (message.content && message.author.id != '784993334330130463') {
-        const regex = /(?:^|[^\w./-])(-?\d+(?:\.\d+)?)\s*(?:°?\s*(F|C)|fahrenheit|celsius)\b/i;
+        const regex = /^(?:(?!https?:\/\/).)*?\b(-?\d+(?:\.\d+)?)\s*(?:°\s*)?(F|C|fahrenheit|celsius)\b/i;
         const match = message.content.match(regex);
 
         if (match) {
