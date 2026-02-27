@@ -144,9 +144,19 @@ async function start(discordClient, db) {
     // Helper to format nodes into a message string safely
     function formatNodes(nodes, hint = false) {
         if (!Array.isArray(nodes)) return String(nodes || '');
+        let firstDone = false;
+        let finishedGames = [
+            "AriaSouls",
+            "AllRepo",
+            "Yacob-KH"
+        ]
 
         const mapEmoji = (text) => {
             formatText = text.replace('\'s', '')
+            if (!firstDone && finishedGames.includes(text)) {
+                firstDone = true;
+                text = `-# ${text}`
+            }
             switch (text) {
                 case 'Jeff-C':
                 case 'iapg-celeste':
