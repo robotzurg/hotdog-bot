@@ -150,7 +150,9 @@ async function start(discordClient, db) {
         const finishedGames = [
             "AriaSouls",
             "AllRepo",
-            "Yacob-KH"
+            "Yacob-KH",
+            "NateTruck",
+            "AriaChess"
         ];
 
         // determine presence of any finished game node
