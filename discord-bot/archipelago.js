@@ -152,7 +152,8 @@ async function start(discordClient, db) {
             "AllRepo",
             "Yacob-KH",
             "NateTruck",
-            "AriaChess"
+            "AriaChess",
+            "NateOriK"
         ];
 
         // determine presence of any finished game node
