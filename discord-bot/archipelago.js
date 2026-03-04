@@ -147,7 +147,7 @@ async function start(discordClient, db) {
         // Games which are considered "finished"; if any appear in the nodes
         // we will prefix the entire message with "-#" to match the format used
         // elsewhere (see check-logic.js)
-        const finishedGames = [
+        let finishedGames = db.archipelago.get('finished_games') || [
             "AriaSouls",
             "AllRepo",
             "Yacob-KH",
