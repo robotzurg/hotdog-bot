@@ -162,101 +162,125 @@ async function start(discordClient, db) {
         const mapEmoji = (text) => {
             formatText = text.replace('\'s', '')
             switch (text) {
-                case 'Jeff-C':
-                case 'iapg-celeste':
+                case 'AriaCeleste':
+                case 'Ethan-Celeste':
+                case 'RaveelCeleste':
                     return `${text} <:celeste:1443882718591975444>`;
+                case 'AllFactory':
+                    return `${text} <:satisfactory:1487560192899153940>`;
                 case 'AllMinecraft':
                     return `${text} <:minecraft:1439370850728935434>`;
-                case 'AllPeak':
-                    return `${text} <:peak:1469449614724956292>`;
                 case 'AllRepo':
                     return `${text} <:repo:1469451338936090848>`;
-                case 'AllTerraria':
-                    return `${text} <:calamity:1443882700728438907>`;
-                case 'AriaMuse':
-                case 'AeroMuse':
-                case 'Jeff-MUSE':
-                    return `${text} <:musedash:1469420269838795066>`;
-                case 'AeroBreach':
-                    return `${text} <:breach:1469419864157327604>`;
-                case 'AeroBloons':
-                case 'AvBloons':
-                    return `${text} <:bloons:1469452497251860491>`;
-                case 'AeroWorld':
-                    return `${text} <:fnafworld:1469420268551147732>`;
-                case 'AvFlip':
-                    return `${text} <:flipwitch:1469420881787752687>`;
-                case 'Ethan-AHIT':
+                case 'AvNiko':
+                    return `${text} <:herecomesniko:1426636312479399947>`; 
                 case 'AvHat':
                     return `${text} <:hatintime:1423880268460326995>`;
-                case 'Ethan-Corn':
-                    return `${text} <:cornkidz:1469419865990238438>`;
-                case 'Ethan-EarthB':
-                    return `${text} <:earthbound:1469420827857518723>`;
-                case 'Ethan-Loonyland':
-                case 'Jeff-LL':
-                    return `${text} <:loonyland:1469417929035743427>`;
-                case 'Jeff-PVZ':
-                case 'Ethan-PvZ':
+                case 'Ethan-DKC':
+                    return `${text} <:dkc1:1487560041895690475>`; 
+                case 'NatePvZ':
                     return `${text} <:pvz:1469420270849757327>`;
-                case 'Ethan-Stardew':
+                case 'Jeff-Stardew':
                     return `${text} <:stardew:1423880027707015199>`;
                 case 'AriaChess':
-                    return `${text} ♟️`;
-                case 'iapg-yacht':
-                    return `${text} <:yachtdice:1469421299972702463>`;
-                case 'NateOriBF':
-                    return `${text} <:oriforest:1423880585331478608>`
-                case 'NateTruck':
+                    return `${text} <:checksmate:1487620249506545855>`;
+                case 'AriaLilies':
+                    return `${text} <:enderlilies:1469420829698691260>`; 
+                case 'AriaPizza':
+                case 'RaveelPizza':
+                    return `${text} <:pizzatower:1487620161526698084>`; 
+                case 'AriaTruck':
+                case 'Jeff-Truck':
                     return `${text} <:clustertruck:1443882716725645342>`;
+                case 'Ethan-Peggle':
+                    return `${text} <:peggle:1487561333808435210>`;
+                case 'Ethan-Taxi':
+                    return `${text} <:yellowtaxi:1487560196187488317>`;
+                case 'Ethan-TOEM':
+                    return `${text} <:toem:1487560818341056623>`;
+                case 'Ethan-Hylics':
+                    return `${text} <:hylics2:1426636541756964976>`; 
+                case 'Ethan-Yoku':
+                    return `${text} <:yoku:1487560197445652601>`;
+                case 'NateGo':
+                    return `${text} <:archipela_go:1487560042973761708>`; 
+                case 'NateHunie':
+                    return `${text} <:huniepop:1487560044324065561>`; 
+                case 'NateMK':
+                    return `${text} <:mariokartwii:1487560187421393057>`; 
+                case 'NateTy':
+                case 'AvTy':
+                    return `${text} <:tytiger:1426636336672018553>`; 
+                case 'NateWitch':
+                case 'AvWitch':
+                    return `${text} <:flipwitch:1469420881787752687>`; 
+                case 'NateXeno':
+                    return `${text} <:xenobladex:1487560193926496417>`;
                 case 'AvGK':
                 case 'NateGK':
-                case 'iapg-GK':
                     return `${text} <:garfieldkart:1443882713957404804>`;
-                case 'Jeff-KSS':
+                case 'KirbyKSS':
                     return `${text} <:kirbyss:1469419868649558222>`;
-                case 'Jeff-NONO':
-                    return `${text} <:picross:1469419869886746828>`;
-                case 'Jeff-RIFT':
-                    return `${text} <:rift:1469453792909984058>`;
-                case 'Jeff-TUNIC':
-                    return `${text} <:tunic:1469420324570402867>`;
-                case 'Jeff-UF':
-                    return `${text} <:unfairflips:1469420331709239469>`;
-                case 'NateDuck':
+                case 'Jeff-C64':
+                    return `${text} <:celeste64:1443882717623353354>`; 
+                case 'Jeff-COTM':
+                    return `${text} <:cotm:1487619791869972533>`; 
+                case 'Jeff-SP':
+                    return `${text} <:savingprincess:1487560528850059466>`;
+                case 'Jeff-TS':
+                    return `${text} <:timespinner:1487560529915547868>`;
+                case 'Jeff-UT':
+                    return `${text} <:undertale:1443882696504770562>`; 
+                case 'Ethan-Duck':
+                case 'Jeff-DUCK':
                     return `${text} <:duck:1469419866946666749>`;
                 case 'NateRabi':
                     return `${text} <:rabiribi:1469419871103221933>`;
-                case 'Yacob-BBS':
-                    return `${text} <:bbs:1469419862593110047>`;
-                case 'Yacob-COM':
-                    return `${text} <:recom:1469419872755912764>`;
-                case 'Yacob-EL':
-                    return `${text} <:enderlilies:1469420829698691260>`;
                 case 'Yacob-KH':
                     return `${text} <:kh1:1469419867705835642>`;
-                case 'Yacob-WIT':
-                    return `${text} <:witness:1443882705895952384>`;
                 case 'AriaOri':
-                case 'NateOriK':
-                case 'NateOriU':
-                case 'Ethan-WOTW':
+                case 'Ethan-Ori':
+                case 'NateOri':
+                case 'RaveelOri':
                     return `${text} <:oriwotw:1426636447817138397>`
-                case 'iapg-word':
-                    return `${text} <:wordle:1443882707942768693>`;
                 case 'HDWClique':
                     return `${text} <:clique:1443882706550390805>`;
-                case 'Yacob-WIT':
-                    return `${text} <:witness:1443882705895952384>`;
                 case 'AvGenshin':
                     return `${text} <:genshin:1443882704834658387>`;
-                case 'iapg-HK':
+                case 'AriaHollow':
+                case 'vlad-hk':
+                case 'Yacob-HK':
                     return `${text} <:hollowknight:1423880850658955374>`;
+                case 'RaveelConquest':
+                    return `${text} <:startrek:1487560781783634083>`; 
+                case 'RaveelXY':
+                    return `${text} <:pkmny:1487560190881698003>`; 
+                case 'RaveelZA':
+                    return `${text} <:legendsza:1487560304870166589>`;
+                case 'vlad-dd':
+                    return `${text} <:deathsdoor:1443882701726941274>`;
+                case 'vlad-fm':
+                    return `${text} <:frogmonster:1487562749067395212>`;
+                case 'vlad-mini':
+                    return `${text} <:minishoot:1487617839031521460>`; 
+                case 'vlad-ref':
+                    return `${text} <:refunct:1487617840096874566>`;
                 case 'Yacob-KH2':
+                case 'Jeff-KH2':
                     return `${text} <:kingdomhearts2:1423886593399455784>`;
-                case 'Yacob-DS3':
-                case 'AriaSouls':
-                    return `${text} <:darksouls3:1443882694642499688>`;
+                case 'Yacob-Lies':
+                    return `${text} <:liesofp:1487560880269951057>`;
+                case 'Yacob-MIKU':
+                    return `${text} <:divamegamix:1426636473150734437>`; 
+                case 'Yacob-OOT':
+                    return `${text} <:oot:1487560377578553426>`;
+                case 'Yacob-SOLS':
+                case 'Jeff-SOL':
+                    return `${text} <:ninesols:1443882695913504822>`; 
+                case 'Yacob-SUNSHINE':
+                    return `${text} <:mariosunshine:1487560188738404492>`; 
+                case 'Yacob-TP':
+                    return `${text} <:twilightprincess:1426636411980877985>`; 
                 default:
                     return text;
             }
