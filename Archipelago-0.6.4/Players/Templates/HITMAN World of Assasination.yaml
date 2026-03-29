@@ -32,7 +32,7 @@ description: Default HITMAN World of Assasination Template
 
 game: HITMAN World of Assasination
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     HITMAN World of Assasination: 0.6.2 # Version of the world required for this yaml to work as expected.
 
@@ -49,8 +49,9 @@ HITMAN World of Assasination:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -89,8 +90,9 @@ HITMAN World of Assasination:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   max_number_of_targets:
     # The maximum number of Targets to be assigned to a Level if Random Targets is active
@@ -100,8 +102,9 @@ HITMAN World of Assasination:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   random_complications:
     # Should random Complications be assigend to each Level. For each level, a random number of complications between min_number_of_complications and max_number_of_complications is choosen (Note: Carpathian Mountains will always remain vanilla.)
@@ -116,8 +119,9 @@ HITMAN World of Assasination:
     # Maximum value is 5
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   max_number_of_complications:
     # The maximum number of Complications to be assigned to a Level if Random Complications is active
@@ -127,8 +131,9 @@ HITMAN World of Assasination:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   complications_weights:
     # When Random Complications is active, these weights determine the odds for each complication to be selected.
@@ -299,8 +304,9 @@ HITMAN World of Assasination:
     # Maximum value is 100
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   goal_additional_contract_pieces:
     # When the goal is set to contract_colleciton, number of additional contract pieces in the item pool.
@@ -310,8 +316,9 @@ HITMAN World of Assasination:
     # Maximum value is 100
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   #################
   # Item Settings #

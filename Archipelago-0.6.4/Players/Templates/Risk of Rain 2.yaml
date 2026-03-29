@@ -32,7 +32,9 @@ description: Default Risk of Rain 2 Template
 
 game: Risk of Rain 2
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Risk of Rain 2: 1.5.0 # Version of the world required for this yaml to work as expected.
 
 Risk of Rain 2:
   ################
@@ -47,8 +49,9 @@ Risk of Rain 2:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -72,13 +75,15 @@ Risk of Rain 2:
 
   victory:
     # Mithrix: Defeat Mithrix in Commencement
-    # Voidling: Defeat the Voidling in The Planetarium (DLC required! Will select any if not enabled.)
+    # Voidling: Defeat the Voidling in The Planetarium (SOTV DLC required! Will select any if not enabled.)
     # Limbo: Defeat the Scavenger in Hidden Realm: A Moment, Whole
+    # Falseson: Defeat False son and gift an item to the altar in Prime Meridian (SOTS DLC required! Will select any if not enabled.)
     # Any: Any victory in the game will count. See Final Stage Death for additional ways.
     any: 50
     mithrix: 0
     voidling: 0
     limbo: 0
+    falseson: 0
 
   total_revivals:
     # Total Percentage of `Dio's Best Friend` item put in the item pool.
@@ -88,8 +93,9 @@ Risk of Rain 2:
     # Maximum value is 10
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   start_with_revive:
     # Start the game with a `Dio's Best Friend` item.
@@ -105,13 +111,20 @@ Risk of Rain 2:
     # Victory: mithrix - only dying in Commencement will count.
     # Victory: voidling - only dying in The Planetarium will count.
     # Victory: limbo - Obliterating yourself will count.
+    # Victory: falseson - only dying in Prime Meridian will count.
     'false': 50
     'true': 0
 
   dlc_sotv:
-    # Enable if you are using SOTV DLC.
+    # Enable if you are using Survivors of the Void DLC.
     # Affects environment availability for Explore Mode.
     # Adds Void Items into the item pool
+    'false': 50
+    'true': 0
+
+  dlc_sots:
+    # Enable if you are using Seekers of the Storm DLC.
+    # Affects environment availability for Explore Mode.
     'false': 50
     'true': 0
 
@@ -130,8 +143,9 @@ Risk of Rain 2:
     # Maximum value is 5
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   shrine_use_step:
     # Explore Mode:
@@ -144,8 +158,9 @@ Risk of Rain 2:
     # Maximum value is 3
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-3: 0 # random value between 0 and 3
 
   enable_trap:
     # Allows Trap items in the item pool.
@@ -168,8 +183,9 @@ Risk of Rain 2:
     # Maximum value is 20
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-2-20: 0 # random value between 2 and 20
 
   shrines_per_stage:
     # Explore Mode: The number of shrine locations per environment.
@@ -179,8 +195,9 @@ Risk of Rain 2:
     # Maximum value is 20
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-2-20: 0 # random value between 2 and 20
 
   scavengers_per_stage:
     # Explore Mode: The number of scavenger locations per environment.
@@ -190,8 +207,9 @@ Risk of Rain 2:
     # Maximum value is 1
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1: 0 # random value between 0 and 1
 
   scanner_per_stage:
     # Explore Mode: The number of scanners locations per environment.
@@ -201,8 +219,9 @@ Risk of Rain 2:
     # Maximum value is 1
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1: 0 # random value between 0 and 1
 
   altars_per_stage:
     # Explore Mode: The number of altars locations per environment.
@@ -212,8 +231,9 @@ Risk of Rain 2:
     # Maximum value is 2
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2: 0 # random value between 0 and 2
 
   require_stages:
     # Add Stage items to the pool to block access to the next set of environments.
@@ -223,6 +243,23 @@ Risk of Rain 2:
   progressive_stages:
     # This will convert Stage items to be a progressive item. For example instead of "Stage 2" it would be
     # "Progressive Stage"
+    'false': 0
+    'true': 50
+
+  stage_variants:
+    # Enable if you want to include stage variants in the environment pool.
+    # Stages included are:
+    # - Distant Roost (2)
+    # - Titanic Plains (2)
+    # SOTS DLC Enabled:
+    # - Vicious Falls
+    # - Shattered Abodes
+    # - Golden Dieback
+    'false': 50
+    'true': 0
+
+  show_seer_portals:
+    # Shows Seer Portals at the teleporter to allow choosing the next environment.
     'false': 0
     'true': 50
 
@@ -237,8 +274,9 @@ Risk of Rain 2:
     # Maximum value is 250
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-40-250: 0 # random value between 40 and 250
 
   ####################
   # Weighted Choices #
@@ -282,8 +320,9 @@ Risk of Rain 2:
     # Maximum value is 100
     32: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   green_scrap:
     # Weight of Green Scraps in the item pool.
@@ -295,8 +334,9 @@ Risk of Rain 2:
     # Maximum value is 100
     16: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   yellow_scrap:
     # Weight of yellow scraps in the item pool.
@@ -308,8 +348,9 @@ Risk of Rain 2:
     # Maximum value is 100
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   red_scrap:
     # Weight of Red Scraps in the item pool.
@@ -321,8 +362,9 @@ Risk of Rain 2:
     # Maximum value is 100
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   common_item:
     # Weight of common items in the item pool.
@@ -334,8 +376,9 @@ Risk of Rain 2:
     # Maximum value is 100
     64: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   uncommon_item:
     # Weight of uncommon items in the item pool.
@@ -347,8 +390,9 @@ Risk of Rain 2:
     # Maximum value is 100
     32: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   legendary_item:
     # Weight of legendary items in the item pool.
@@ -360,8 +404,9 @@ Risk of Rain 2:
     # Maximum value is 100
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   boss_item:
     # Weight of boss items in the item pool.
@@ -373,8 +418,9 @@ Risk of Rain 2:
     # Maximum value is 100
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   lunar_item:
     # Weight of lunar items in the item pool.
@@ -386,8 +432,9 @@ Risk of Rain 2:
     # Maximum value is 100
     16: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   void_item:
     # Weight of void items in the item pool.
@@ -401,8 +448,9 @@ Risk of Rain 2:
     # Maximum value is 100
     16: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   equipment:
     # Weight of equipment items in the item pool.
@@ -414,8 +462,9 @@ Risk of Rain 2:
     # Maximum value is 100
     32: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   money:
     # Weight of money items in the item pool.
@@ -427,8 +476,9 @@ Risk of Rain 2:
     # Maximum value is 100
     64: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   lunar_coin:
     # Weight of lunar coin items in the item pool.
@@ -440,8 +490,9 @@ Risk of Rain 2:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   experience:
     # Weight of 1000 exp items in the item pool.
@@ -453,8 +504,9 @@ Risk of Rain 2:
     # Maximum value is 100
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   mountain_trap:
     # Weight of mountain trap items in the item pool.
@@ -466,8 +518,9 @@ Risk of Rain 2:
     # Maximum value is 100
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   time_warp_trap:
     # Weight of time warp trap items in the item pool.
@@ -479,8 +532,9 @@ Risk of Rain 2:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   combat_trap:
     # Weight of combat trap items in the item pool.
@@ -492,8 +546,9 @@ Risk of Rain 2:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   teleport_trap:
     # Weight of teleport trap items in the item pool.
@@ -505,8 +560,9 @@ Risk of Rain 2:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ###########################
   # Item & Location Options #

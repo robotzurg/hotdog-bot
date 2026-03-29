@@ -32,7 +32,7 @@ description: Default ANIMAL WELL Template
 
 game: ANIMAL WELL
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 ANIMAL WELL:
   ################
@@ -47,8 +47,9 @@ ANIMAL WELL:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -79,8 +80,9 @@ ANIMAL WELL:
     # Maximum value is 64
     64: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-64-64: 0 # random value between 64 and 64
 
   key_ring:
     # Have one keyring which unlocks all normal key doors instead of individual key items.

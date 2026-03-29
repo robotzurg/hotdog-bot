@@ -32,7 +32,7 @@ description: Default Castlevania 64 Template
 
 game: Castlevania 64
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Castlevania 64:
   ################
@@ -47,8 +47,9 @@ Castlevania 64:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -124,8 +125,9 @@ Castlevania 64:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   total_special1s:
     # Sets how many Speical1 jewels are in the pool in total.
@@ -135,8 +137,9 @@ Castlevania 64:
     # Maximum value is 70
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-7-70: 0 # random value between 7 and 70
 
   draculas_condition:
     # Sets the requirement for unlocking and opening the door to Dracula's chamber.
@@ -157,8 +160,9 @@ Castlevania 64:
     # Maximum value is 100
     80: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   total_special2s:
     # How many Speical2 jewels are in the pool in total when Dracula's Condition is Special2s.
@@ -168,8 +172,9 @@ Castlevania 64:
     # Maximum value is 70
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-70: 0 # random value between 1 and 70
 
   bosses_required:
     # How many bosses need to be defeated to enter Dracula's chamber when Dracula's Condition is set to Bosses.
@@ -180,8 +185,9 @@ Castlevania 64:
     # Maximum value is 16
     12: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-16: 0 # random value between 1 and 16
 
   carrie_logic:
     # Adds the 2 checks inside Underground Waterway's crawlspace to the pool.
@@ -242,8 +248,9 @@ Castlevania 64:
     # Maximum value is 50
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-50: 0 # random value between 1 and 50
 
   maximum_gold_price:
     # The highest amount of gold an item can cost in Renon's shop, divided by 100.
@@ -253,8 +260,9 @@ Castlevania 64:
     # Maximum value is 50
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-50: 0 # random value between 1 and 50
 
   post_behemoth_boss:
     # Sets which boss is fought in the vampire triplets' room in Castle Center by which characters after defeating Behemoth.
@@ -332,8 +340,9 @@ Castlevania 64:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ice_trap_appearance:
     # What items Ice Traps can possibly be disguised as.
@@ -412,8 +421,9 @@ Castlevania 64:
     # Maximum value is 15
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
 
   window_color_g:
     # The green value for the background color of the text windows during gameplay.
@@ -423,8 +433,9 @@ Castlevania 64:
     # Maximum value is 15
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
 
   window_color_b:
     # The blue value for the background color of the text windows during gameplay.
@@ -434,8 +445,9 @@ Castlevania 64:
     # Maximum value is 15
     15: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
 
   window_color_a:
     # The alpha value for the background color of the text windows during gameplay.
@@ -445,8 +457,9 @@ Castlevania 64:
     # Maximum value is 15
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
 
   background_music:
     # Randomizes or disables the music heard throughout the game.

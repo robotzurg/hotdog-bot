@@ -32,7 +32,7 @@ description: Default SMZ3 Template
 
 game: SMZ3
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 SMZ3:
   ################
@@ -47,8 +47,9 @@ SMZ3:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -134,8 +135,9 @@ SMZ3:
     # Maximum value is 7
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-7: 0 # random value between 0 and 7
 
   ganon_vulnerable:
     # The amount of crystals required to be able to harm Ganon. The amount can be found 
@@ -146,8 +148,9 @@ SMZ3:
     # Maximum value is 7
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-7: 0 # random value between 0 and 7
 
   open_tourian:
     # The amount of boss tokens required to enter Tourian. The amount can be found in-game 
@@ -158,8 +161,9 @@ SMZ3:
     # Maximum value is 4
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-4: 0 # random value between 0 and 4
 
   spin_jumps_animation:
     # Enable separate space/screw jump animations

@@ -32,7 +32,9 @@ description: Default Satisfactory Template
 
 game: Satisfactory
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Satisfactory: 2.3.1 # Version of the world required for this yaml to work as expected.
 
 Satisfactory:
   ################
@@ -52,8 +54,9 @@ Satisfactory:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -81,12 +84,13 @@ Satisfactory:
     # Maximum value is 500
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-500: 0 # random value between 1 and 500
 
   energy_link:
     # Allow transferring energy to and from other worlds using the Power Storage building.
-    # No energy is lost in the transfer on Satisfactory's side, but other worlds may have other settings.
+    # Some energy is lost when depositing it in the multiworld network.
     'false': 0
     'true': 50
 
@@ -97,22 +101,23 @@ Satisfactory:
     # Put the milestones accessible BEFORE this Space Elevator Phase in logic.
     # Milestones after the selected Phase are empty and contain nothing.
     # If your goal selection contains *Space Elevator Phase* then submitting this Phase's elevator package completes that goal.
-    # If the goal is not enabled, this setting simply limits the HUB's content.
+    # If the goal is not enabled, this setting simply limits the included HUB and MAM content.
     # 
     # Estimated in-game completion times:
     # 
     # - **Phase 1 (Tiers 1-2)**: ~3 Hours
     # - **Phase 2 (Tiers 1-4)**: ~8 Hours
-    # - **Phase 3 (Tiers 1-6)**: ~2 Days
-    # - **Phase 4 (Tiers 1-8)**: ~1 Week
-    # - **Phase 5 (Tiers 1-9)**: ~1.5 Weeks
+    # - **Phase 3 (Tiers 1-6)**: ~50 Hours
+    # - **Phase 4 (Tiers 1-8)**: ~100 Hours
+    # - **Phase 5 (Tiers 1-9)**: ~140 Hours
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 1
     # Maximum value is 5
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
     phase 1 (tiers 1-2): 0 # equivalent to 1
     phase 2 (tiers 1-4): 50 # equivalent to 2
     phase 3 (tiers 1-6): 0 # equivalent to 3
@@ -130,8 +135,9 @@ Satisfactory:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ##################
   # Goal Selection #
@@ -141,10 +147,12 @@ Satisfactory:
     # Configure them further with other options.
     # 
     # Possible values are:
+    # 
     # - **Space Elevator Tier**
     # - **AWESOME Sink Points (total)**
     # - **AWESOME Sink Points (per minute)**
     # - **Exploration Collectables**
+    # - **Erect a FICSMAS Tree**
     ['Space Elevator Phase']
 
   goal_requirement:
@@ -168,8 +176,9 @@ Satisfactory:
     # Minimum value is 2166000
     # Maximum value is 18436379500
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-2166000-18436379500: 0 # random value between 2166000 and 18436379500
     50 coupons (~2m points): 50 # equivalent to 2166000
     100 coupons (~18m points): 0 # equivalent to 17804500
     150 coupons (~61m points): 0 # equivalent to 60787500
@@ -204,8 +213,9 @@ Satisfactory:
     # Minimum value is 1000
     # Maximum value is 10000000
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1000-10000000: 0 # random value between 1000 and 10000000
     ~500 screw/min: 0 # equivalent to 1000
     ~100 reinforced iron plate/min: 0 # equivalent to 12000
     ~100 stator/min: 0 # equivalent to 24000
@@ -214,7 +224,7 @@ Satisfactory:
     ~20 crystal oscillator/min: 0 # equivalent to 60000
     ~50 motor/min: 0 # equivalent to 76000
     ~10 heavy modular frame/min: 0 # equivalent to 100000
-    ~10 radio control unit: 0 # equivalent to 300000
+    ~10 radio control unit/min: 0 # equivalent to 300000
     ~10 fused modular frame/min: 0 # equivalent to 625000
     ~10 supercomputer/min: 0 # equivalent to 1000000
     ~10 pressure conversion cube/min: 0 # equivalent to 2500000
@@ -227,19 +237,20 @@ Satisfactory:
     # Collect this amount of Mercer Spheres, Somersloops, Hard Drives, Paleberries, Beryl Nuts, and Bacon Agarics each to finish.
     # 
     # - The amount of **Mercer Spheres** is **2x** the selected amount
-    # - The amount of **Somersloops** is **the** selected amount
+    # - The amount of **Somersloops** is **1x** the selected amount
     # - The amount of **Hard Drives** is **1/5th** the selected amount
     # - The amount of **Paleberries** is **10x** the selected amount
     # - The amount of **Beryl Nuts** is **20x** the selected amount
-    # - The amount of **Bacon Agarics** is **the** selected amount
+    # - The amount of **Bacon Agarics** is **1x** the selected amount
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 5
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-100: 0 # random value between 5 and 100
 
   ###################
   # Placement logic #
@@ -265,8 +276,8 @@ Satisfactory:
     # Randomizes what recipes you use to craft the default unlocked parts:
     # Iron Ingot, Iron Plate, Iron Rod, Copper Ingot, Wire, Concrete, Screw, Reinforced Iron Plate
     # 
-    # * Could require usage of Foundries or Assemblers (which get unlocked by default if needed, at reduced build costs)
-    # * Could require other ores to be mixed in via alt recipes (which will become hand-craftable if needed)
+    # - Could require usage of Foundries or Assemblers (which get unlocked by default if needed, at reduced build costs)
+    # - Could require other ores to be mixed in via alt recipes (which will become hand-craftable if needed)
     'false': 0
     'true': 50
 
@@ -311,8 +322,9 @@ Satisfactory:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   free_sample_buildings:
     # How many copies of a Building's construction cost are given as a free sample when they are unlocked.
@@ -325,8 +337,9 @@ Satisfactory:
     # Maximum value is 10
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   free_sample_parts:
     # How many general crafting component free samples are given when their recipe is unlocked.
@@ -340,8 +353,9 @@ Satisfactory:
     # Minimum value is -5
     # Maximum value is 500
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range--5-500: 0 # random value between -5 and 500
     disabled: 0 # equivalent to 0
     half_stack: 50 # equivalent to -2
     one_stack: 0 # equivalent to -1
@@ -372,8 +386,9 @@ Satisfactory:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_selection_preset:
     # Themed presets of trap types to enable.

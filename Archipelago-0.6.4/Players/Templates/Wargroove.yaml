@@ -32,7 +32,9 @@ description: Default Wargroove Template
 
 game: Wargroove
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Wargroove: 1.0.0 # Version of the world required for this yaml to work as expected.
 
 Wargroove:
   ################
@@ -47,8 +49,9 @@ Wargroove:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -78,8 +81,9 @@ Wargroove:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   commander_defense_boost:
     # How much extra defense the player's commander gets per boost received.
@@ -89,8 +93,9 @@ Wargroove:
     # Maximum value is 8
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   commander_choice:
     # How the player's commander is selected for missions.
@@ -115,8 +120,9 @@ Wargroove:
     # Maximum value is 5
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   player_summon_limit:
     # How many times the player can summon a unit at the Stronghold per level attempt.
@@ -127,8 +133,9 @@ Wargroove:
     # Maximum value is 5
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   ai_sacrifice_limit:
     # How many times the AI can sacrifice a unit at the Stronghold per level attempt.
@@ -139,8 +146,9 @@ Wargroove:
     # Maximum value is 5
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   ai_summon_limit:
     # How many times the AI can summon a unit at the Stronghold per level attempt.
@@ -152,8 +160,9 @@ Wargroove:
     # Maximum value is 5
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   ###########################
   # Item & Location Options #

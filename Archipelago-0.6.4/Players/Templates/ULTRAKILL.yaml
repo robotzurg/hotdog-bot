@@ -32,7 +32,7 @@ description: Default ULTRAKILL Template
 
 game: ULTRAKILL
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 ULTRAKILL:
   ################
@@ -47,8 +47,9 @@ ULTRAKILL:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -123,8 +124,9 @@ ULTRAKILL:
     # Maximum value is 38
     15: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-38: 0 # random value between 5 and 38
 
   perfect_goal:
     # Choose if the goal must be cleared with a perfect rank. Has no effect if the goal level is a secret mission.
@@ -133,7 +135,7 @@ ULTRAKILL:
 
   skipped_levels:
     # List as many levels as you would like to skip completing for the goal.
-    ['P-2', 'P-1', '0-E', '1-E']
+    ['0-E', 'P-2', '1-E', 'P-1']
 
   auto_exclude_skipped_locations:
     # Choose if skipped levels should automatically have all of their locations excluded.
@@ -153,8 +155,9 @@ ULTRAKILL:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   filler_weights:
     # Choose the odds of each filler item being created when filling the item pool with junk.
@@ -284,8 +287,9 @@ ULTRAKILL:
     # Maximum value is 3
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-3: 0 # random value between 0 and 3
 
   starting_walljumps:
     # Choose how many wall jumps to start with.
@@ -295,8 +299,9 @@ ULTRAKILL:
     # Maximum value is 3
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-3: 0 # random value between 0 and 3
 
   start_with_slide:
     # Choose whether or not to start the game with the ability to slide.
@@ -352,8 +357,9 @@ ULTRAKILL:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   ui_color_randomizer:
     # Randomizes UI colors, either once at the beginning of a run, or every time a level is loaded.

@@ -32,7 +32,7 @@ description: Default DOOM 1993 Template
 
 game: DOOM 1993
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 DOOM 1993:
   ################
@@ -47,8 +47,9 @@ DOOM 1993:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -188,8 +189,9 @@ DOOM 1993:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   max_ammo_bullets:
     # Set the starting ammo capacity for bullets.
@@ -199,8 +201,9 @@ DOOM 1993:
     # Maximum value is 999
     200: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-200-999: 0 # random value between 200 and 999
 
   max_ammo_shells:
     # Set the starting ammo capacity for shotgun shells.
@@ -210,8 +213,9 @@ DOOM 1993:
     # Maximum value is 999
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-50-999: 0 # random value between 50 and 999
 
   max_ammo_rockets:
     # Set the starting ammo capacity for rockets.
@@ -221,8 +225,9 @@ DOOM 1993:
     # Maximum value is 999
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-50-999: 0 # random value between 50 and 999
 
   max_ammo_energy_cells:
     # Set the starting ammo capacity for energy cells.
@@ -232,8 +237,9 @@ DOOM 1993:
     # Maximum value is 999
     300: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-300-999: 0 # random value between 300 and 999
 
   added_ammo_bullets:
     # Set the amount of bullet capacity added when collecting a backpack or capacity upgrade.
@@ -243,8 +249,9 @@ DOOM 1993:
     # Maximum value is 999
     200: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-20-999: 0 # random value between 20 and 999
 
   added_ammo_shells:
     # Set the amount of shotgun shell capacity added when collecting a backpack or capacity upgrade.
@@ -254,8 +261,9 @@ DOOM 1993:
     # Maximum value is 999
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-999: 0 # random value between 5 and 999
 
   added_ammo_rockets:
     # Set the amount of rocket capacity added when collecting a backpack or capacity upgrade.
@@ -265,8 +273,9 @@ DOOM 1993:
     # Maximum value is 999
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-999: 0 # random value between 5 and 999
 
   added_ammo_energy_cells:
     # Set the amount of energy cell capacity added when collecting a backpack or capacity upgrade.
@@ -276,8 +285,9 @@ DOOM 1993:
     # Maximum value is 999
     300: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-30-999: 0 # random value between 30 and 999
 
   ###########################
   # Item & Location Options #

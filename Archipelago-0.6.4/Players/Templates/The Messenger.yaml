@@ -32,7 +32,7 @@ description: Default The Messenger Template
 
 game: The Messenger
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 The Messenger:
   ################
@@ -47,8 +47,9 @@ The Messenger:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -89,8 +90,9 @@ The Messenger:
     # Maximum value is 400
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-25-400: 0 # random value between 25 and 400
 
   shop_price_plan:
     # Plan specific prices on shop slots. Supports weighting
@@ -142,8 +144,9 @@ The Messenger:
     # Maximum value is 6
     6: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-6: 0 # random value between 1 and 6
 
   total_seals:
     # Number of power seals that exist in the item pool when power seal hunt is the goal.
@@ -153,8 +156,9 @@ The Messenger:
     # Maximum value is 85
     45: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-85: 0 # random value between 1 and 85
 
   percent_seals_required:
     # Percentage of total seals required to open the shop chest.
@@ -164,8 +168,9 @@ The Messenger:
     # Maximum value is 100
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-100: 0 # random value between 10 and 100
 
   #############
   # Entrances #
@@ -179,8 +184,9 @@ The Messenger:
     # Maximum value is 6
     6: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-3-6: 0 # random value between 3 and 6
 
   shuffle_portals:
     # Whether the portals lead to random places.

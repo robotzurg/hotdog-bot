@@ -32,7 +32,7 @@ description: 'Default Lego Star Wars: The Complete Saga Template'
 
 game: 'Lego Star Wars: The Complete Saga'
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 'Lego Star Wars: The Complete Saga':
   ################
@@ -47,8 +47,9 @@ requires:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -83,8 +84,9 @@ requires:
     # Minimum value is 0
     # Maximum value is 360
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-360: 0 # random value between 0 and 360
     use_percentage_option: 50 # equivalent to -1
 
   minikit_goal_amount_percentage:
@@ -102,8 +104,9 @@ requires:
     # Maximum value is 100
     75: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   #######################
   # Bosses Goal Options #
@@ -120,8 +123,9 @@ requires:
     # Maximum value is 16
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-16: 0 # random value between 0 and 16
 
   enabled_bosses_count:
     # Choose the number of bosses that will be present in the world.
@@ -134,8 +138,9 @@ requires:
     # Maximum value is 16
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-16: 0 # random value between 0 and 16
 
   allowed_bosses:
     # Choose bosses that count towards the Defeat Bosses Goal.
@@ -185,8 +190,9 @@ requires:
     # Maximum value is 36
     18: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-36: 0 # random value between 1 and 36
 
   allowed_chapters:
     # Choose the chapter levels that are allowed to be picked when randomly choosing which chapters will be enabled.
@@ -490,8 +496,9 @@ requires:
     # Minimum value is 6
     # Maximum value is 20000
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-6-20000: 0 # random value between 6 and 20000
     minimum_(6000_studs): 0 # equivalent to 6
     10000_studs: 0 # equivalent to 10
     25000_studs: 0 # equivalent to 25
@@ -558,7 +565,7 @@ requires:
     # `/items` command.
     # 
     # If no vehicle Chapters are enabled, no vehicle characters will be included in the item pool.
-    ['Droideka', 'Yoda (Ghost)', 'General Grievous']
+    ['Yoda (Ghost)', 'General Grievous', 'Droideka']
 
   preferred_extras:
     # Specify Extras that the generator should try to always include in the item pool.
@@ -575,7 +582,7 @@ requires:
     # When Progressive Score Multiplier items are enabled (always enabled currently), preferring "Score x{number}" to be
     # included in the item pool will try to ensure there are enough Progressive Score Multiplier items to unlock that
     # score multiplier.
-    ['Score x2', 'Disarm Troopers', 'Score x6', 'Invincibility', 'Super Ewok Catapult', 'Deflect Bolts', 'Self Destruct', 'Fast Build', 'Infinite Torpedos', 'Dark Side', 'Force Grapple Leap', 'Fast Force', 'Score x10', 'Exploding Blaster Bolts', 'Stud Magnet', 'Score x4', 'Score x8']
+    ['Infinite Torpedos', 'Score x4', 'Dark Side', 'Exploding Blaster Bolts', 'Score x6', 'Super Ewok Catapult', 'Disarm Troopers', 'Score x8', 'Invincibility', 'Self Destruct', 'Fast Build', 'Deflect Bolts', 'Stud Magnet', 'Fast Force', 'Score x10', 'Score x2', 'Force Grapple Leap']
 
   filler_reserve_characters:
     # When enabled, reserve space in the item pool for at least as many Characters as enabled locations that would
@@ -611,8 +618,9 @@ requires:
     # Maximum value is 100
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   filler_weight_extras:
     # This option controls the weight of Extras when choosing which items to fill out the rest of the space in the
@@ -630,8 +638,9 @@ requires:
     # Maximum value is 100
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   filler_weight_junk:
     # This option controls the weight of Studs, Power Ups and other junk filler Archipelago items when choosing which
@@ -653,8 +662,9 @@ requires:
     # Maximum value is 100
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ##################
   # Client Options #

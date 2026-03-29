@@ -32,7 +32,7 @@ description: Default Yoshi's Island Template
 
 game: Yoshi's Island
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Yoshi's Island:
   ################
@@ -47,8 +47,9 @@ Yoshi's Island:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -79,8 +80,9 @@ Yoshi's Island:
     # Maximum value is 999
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-999: 0 # random value between 1 and 999
 
   goal:
     # This sets the goal. Bowser goal requires defeating Bowser at the end of 6-8, while Luigi Hunt requires collecting all required Luigi Pieces.
@@ -95,8 +97,9 @@ Yoshi's Island:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   luigi_pieces_in_pool:
     # This will set how many Luigi Pieces are in the item pool.
@@ -108,8 +111,9 @@ Yoshi's Island:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   extras_enabled:
     # If enabled, the more difficult Extra stages will be added into logic. Otherwise, they will be inaccessible.
@@ -191,8 +195,9 @@ Yoshi's Island:
     # Maximum value is 11
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-11: 0 # random value between 0 and 11
 
   castle_clear_condition:
     # This sets how many bosses need to be defeated to access the boss of 6-8.
@@ -203,8 +208,9 @@ Yoshi's Island:
     # Maximum value is 11
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-11: 0 # random value between 0 and 11
 
   bowser_door_mode:
     # This will set which route you take through 6-8.
@@ -274,8 +280,9 @@ Yoshi's Island:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   death_link:
     # When you die, everyone who enabled death link dies. Of course, the reverse is true too.

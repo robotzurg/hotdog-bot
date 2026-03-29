@@ -32,7 +32,9 @@ description: Default Here Comes Niko! Template
 
 game: Here Comes Niko!
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Here Comes Niko!: 0.8.1 # Version of the world required for this yaml to work as expected.
 
 Here Comes Niko!:
   ################
@@ -47,8 +49,9 @@ Here Comes Niko!:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -63,12 +66,26 @@ Here Comes Niko!:
     minimal: 0
 
   death_link:
-    # When somebody dies the level will be reloaded
+    # When somebody dies the level will be reloaded.
+    # Can be toggled with '/deathlink' in-game
     'false': 50
     'true': 0
 
+  death_link_amnesty:
+    # How many water/scissor touches it takes to send a DeathLink
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 30
+    10: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-30: 0 # random value between 1 and 30
+
   trap_link:
     # Traps with other TrapLink players are shared.
+    # Can be toggled with '/traplink' in-game
     'false': 50
     'true': 0
 
@@ -79,8 +96,14 @@ Here Comes Niko!:
     # Set your Completion Goal.
     # Hired: Reach Pepper's Interview and get hired!
     # Employee: Get 76 Coins and be the Employee Of The Month!
+    # Custom: Get a custom amount of coins to complete the game!
+    # Garden: Restore Gary's Garden to its former glory!
+    # Friend: Be everyone's best friend by helping Mitch, Mai, Little Gabi, Fischer, Moomy and co. (This will enable Fishsanity, Seedsanity, Flowersanity and Bonesanity)
     hired: 50
     employee: 0
+    custom: 0
+    garden: 0
+    friend: 0
 
   min_kiosk_cost:
     # Determines the lowest possible cost for a Kiosk.
@@ -91,8 +114,9 @@ Here Comes Niko!:
     # Maximum value is 55
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-55: 0 # random value between 0 and 55
 
   max_kiosk_cost:
     # Determines the highest possible cost for a Kiosk.
@@ -103,8 +127,9 @@ Here Comes Niko!:
     # Maximum value is 70
     38: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-20-70: 0 # random value between 20 and 70
 
   min_elevator_cost:
     # Determines the lowest possible cost for the elevator
@@ -114,8 +139,9 @@ Here Comes Niko!:
     # Maximum value is 79
     46: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-79: 0 # random value between 0 and 79
 
   max_elevator_cost:
     # Determines the highest possible cost for the elevator
@@ -125,8 +151,33 @@ Here Comes Niko!:
     # Maximum value is 79
     46: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-79: 0 # random value between 0 and 79
+
+  min_custom_goal_cost:
+    # Determines the lowest possible cost the custom goal.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 10
+    # Maximum value is 79
+    20: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-79: 0 # random value between 10 and 79
+
+  max_custom_goal_cost:
+    # Determines the highest possible cost the custom goal.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 20
+    # Maximum value is 79
+    50: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-20-79: 0 # random value between 20 and 79
 
   ###################
   # General Options #
@@ -160,6 +211,19 @@ Here Comes Niko!:
     progressive: 0
     scattered: 50
 
+  extra_cassettes:
+    # This option will try to add extra 'Cassettes' to the Item Pool.
+    # If there are not enough locations, it will add as many as it can!
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 50
+    10: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
+
   enable_achievements:
     # Enables if Achievements should be a location.
     # Frog Fan only needs 10 bumps & Volley Dreams only needs a highscore of 5 in every level.
@@ -192,6 +256,18 @@ Here Comes Niko!:
     # When enabled the clothes shop from the Tamagotchi Snail will contain AP Items.
     'false': 50
     'true': 0
+
+  speed_boost_amount:
+    # Determines how many 'Speed Boost' are in the pool.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 8
+    4: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   ########################
   # Item & Logic Options #
@@ -240,9 +316,15 @@ Here Comes Niko!:
     'true': 0
 
   textbox:
-    # When enabled, the item 'Textbox' is required to talk to NPCs.
-    'false': 50
-    'true': 0
+    # Want to have a break talking with NPCs?
+    # Vanilla: Normal Here Comes Niko! behaviour
+    # -----------------------------------------------------------
+    # Global: The item 'Textbox' is required to interact with anything that uses the textbox
+    # -----------------------------------------------------------
+    # Level: Every level requires its own textbox item to interact with anything that uses the textbox, so Hairball City needs 'Hairball City Textbox'
+    vanilla: 50
+    global: 0
+    level: 0
 
   ac_repair:
     # When enabled, ACs are broken, the item 'AC Repair' will make the frog engineers repair them.
@@ -352,8 +434,9 @@ Here Comes Niko!:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   freeze_trapweight:
     # The weight of Freeze Traps in the trap pool.
@@ -364,8 +447,9 @@ Here Comes Niko!:
     # Maximum value is 100
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ironboots_trapweight:
     # The weight of Iron Boots Traps in the trap pool.
@@ -376,8 +460,9 @@ Here Comes Niko!:
     # Maximum value is 100
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   whoops_trapweight:
     # The weight of Whoops! Traps in the trap pool.
@@ -388,8 +473,9 @@ Here Comes Niko!:
     # Maximum value is 100
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   myturn_trapweight:
     # The weight of My Turn! Traps in the trap pool.
@@ -400,8 +486,9 @@ Here Comes Niko!:
     # Maximum value is 100
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   gravity_trapweight:
     # The weight of Gravity Traps in the trap pool.
@@ -412,8 +499,9 @@ Here Comes Niko!:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   home_trapweight:
     # The weight of Home Traps in the trap pool.
@@ -424,8 +512,9 @@ Here Comes Niko!:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   wide_trapweight:
     # The weight of W I D E Traps in the trap pool.
@@ -436,8 +525,9 @@ Here Comes Niko!:
     # Maximum value is 100
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   phone_trapweight:
     # The weight of Phone Traps in the trap pool.
@@ -448,8 +538,9 @@ Here Comes Niko!:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   tiny_trapweight:
     # The weight of Tiny Traps in the trap pool.
@@ -460,8 +551,9 @@ Here Comes Niko!:
     # Maximum value is 100
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   jumpingjacks_trapweight:
     # The weight of Jumping Jacks Traps in the trap pool.
@@ -472,8 +564,48 @@ Here Comes Niko!:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  camerastuck_trapweight:
+    # The weight of Camera Stuck Traps in the trap pool.
+    # Camera Stuck Traps will stop the camera from turning.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    15: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  invertedcamera_trapweight:
+    # The weight of Inverted Camera Traps in the trap pool.
+    # Inverted Camera Traps will invert the cameras X and Y controls.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    25: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  theregoesniko_trapweight:
+    # The weight of There Goes Niko Traps in the trap pool.
+    # There Goes Niko Traps will make the camera stop in place.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    10: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ###########################
   # Item & Location Options #

@@ -32,7 +32,7 @@ description: Default shapez Template
 
 game: shapez
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 shapez:
   ################
@@ -47,8 +47,9 @@ shapez:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -85,8 +86,9 @@ shapez:
     # Minimum value is 9
     # Maximum value is 500
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-9-500: 0 # random value between 9 and 500
     minimum_mam: 50 # equivalent to 27
     recommended_mam: 0 # equivalent to 50
     long_game_mam: 0 # equivalent to 120
@@ -106,8 +108,9 @@ shapez:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   allow_floating_layers:
     # Toggle whether shape requirements are allowed to have floating layers (like the logo or the rocket shape).
@@ -186,8 +189,9 @@ shapez:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     vanilla: 0 # equivalent to -1
     only_total: 50 # equivalent to 0
     half_half: 0 # equivalent to 50
@@ -204,8 +208,9 @@ shapez:
     # Maximum value is 10.0
     0.5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0.0-10.0: 0 # random value between 0.0 and 10.0
 
   same_late_upgrade_requirements:
     # If upgrade requirements are randomized, should the last 3 shapes for each category be the same,
@@ -260,8 +265,9 @@ shapez:
     # Maximum value is 1000
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-4-1000: 0 # random value between 4 and 1000
 
   traps_percentage:
     # The probability of any filler item (in percent) being replaced by a trap.
@@ -270,8 +276,9 @@ shapez:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     none: 50 # equivalent to 0
     rare: 0 # equivalent to 4
     occasionally: 0 # equivalent to 10

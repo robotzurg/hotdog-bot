@@ -32,7 +32,7 @@ description: Default A Link to the Past Template
 
 game: A Link to the Past
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 A Link to the Past:
   ################
@@ -47,8 +47,9 @@ A Link to the Past:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -150,8 +151,9 @@ A Link to the Past:
     # Maximum value is 7
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-7: 0 # random value between 0 and 7
 
   crystals_needed_for_ganon:
     # Number of crystals needed to damage Ganon
@@ -161,8 +163,9 @@ A Link to the Past:
     # Maximum value is 7
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-7: 0 # random value between 0 and 7
 
   triforce_pieces_mode:
     # Determine how to calculate the extra available triforce pieces.
@@ -181,8 +184,9 @@ A Link to the Past:
     # Maximum value is 1000
     150: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-100-1000: 0 # random value between 100 and 1000
 
   triforce_pieces_required:
     # Set to how many out of X triforce pieces you need to win the game in a triforce hunt.
@@ -193,8 +197,9 @@ A Link to the Past:
     # Maximum value is 90
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-90: 0 # random value between 1 and 90
 
   triforce_pieces_available:
     # Set to how many triforces pieces are available to collect in the world. Default is 30. Max is 90, Min is 1
@@ -204,8 +209,9 @@ A Link to the Past:
     # Maximum value is 90
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-90: 0 # random value between 1 and 90
 
   triforce_pieces_extra:
     # Set to how many extra triforces pieces are available to collect in the world.
@@ -215,8 +221,9 @@ A Link to the Past:
     # Maximum value is 89
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-89: 0 # random value between 0 and 89
 
   entrance_shuffle:
     # Dungeons Simple: Shuffle just dungeons amongst each other, swapping dungeons entirely, so Hyrule Castle is always 1 dungeon.
@@ -416,8 +423,9 @@ A Link to the Past:
     # Maximum value is 30
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-30: 0 # random value between 0 and 30
 
   randomize_shop_inventories:
     # Generate new default inventories for overworld/underworld shops, and unique shops; or each shop independently
@@ -453,8 +461,9 @@ A Link to the Past:
     # Maximum value is 400
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-400: 0 # random value between 0 and 400
 
   shuffle_capacity_upgrades:
     # Shuffle capacity upgrades into the item pool (and allow them to traverse the multiworld).
@@ -508,8 +517,9 @@ A Link to the Past:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   beemizer_trap_chance:
     # Percentage chance for each replaced junk-fill item to be a bee swarm
@@ -520,8 +530,9 @@ A Link to the Past:
     # Maximum value is 100
     60: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   timer:
     # None: No timer will be displayed. OHKO: Timer always at zero. Permanent OHKO.
@@ -544,8 +555,9 @@ A Link to the Past:
     # Maximum value is 480
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-480: 0 # random value between 0 and 480
 
   red_clock_time:
     # For all timer modes, the amount of time in minutes to gain or lose when picking up a red clock.
@@ -555,8 +567,9 @@ A Link to the Past:
     # Maximum value is 60
     -2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range--60-60: 0 # random value between -60 and 60
 
   blue_clock_time:
     # For all timer modes, the amount of time in minutes to gain or lose when picking up a blue clock.
@@ -566,8 +579,9 @@ A Link to the Past:
     # Maximum value is 60
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range--60-60: 0 # random value between -60 and 60
 
   green_clock_time:
     # For all timer modes, the amount of time in minutes to gain or lose when picking up a green clock.
@@ -577,8 +591,9 @@ A Link to the Past:
     # Maximum value is 60
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range--60-60: 0 # random value between -60 and 60
 
   death_link:
     # When you die, everyone who enabled death link dies. Of course, the reverse is true too.

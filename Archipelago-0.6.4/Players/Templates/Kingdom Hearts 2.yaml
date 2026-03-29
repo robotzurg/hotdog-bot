@@ -32,7 +32,7 @@ description: Default Kingdom Hearts 2 Template
 
 game: Kingdom Hearts 2
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     Kingdom Hearts 2: 2.0.0 # Version of the world required for this yaml to work as expected.
 
@@ -49,8 +49,9 @@ Kingdom Hearts 2:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -88,8 +89,9 @@ Kingdom Hearts 2:
     # Maximum value is 10
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   Valor_Form_EXP:
     # Valor Form Exp Multiplier
@@ -99,8 +101,9 @@ Kingdom Hearts 2:
     # Maximum value is 10
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   Wisdom_Form_EXP:
     # Wisdom Form Exp Multiplier
@@ -110,8 +113,9 @@ Kingdom Hearts 2:
     # Maximum value is 10
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   Limit_Form_EXP:
     # Limit Form Exp Multiplier
@@ -121,8 +125,9 @@ Kingdom Hearts 2:
     # Maximum value is 10
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   Master_Form_EXP:
     # Master Form Exp Multiplier
@@ -132,8 +137,9 @@ Kingdom Hearts 2:
     # Maximum value is 10
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   Final_Form_EXP:
     # Final Form Exp Multiplier
@@ -143,8 +149,9 @@ Kingdom Hearts 2:
     # Maximum value is 10
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   Summon_EXP:
     # Summon Exp Multiplier
@@ -154,8 +161,9 @@ Kingdom Hearts 2:
     # Maximum value is 10
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   Schmovement:
     # Level of Progressive Movement Abilities You Start With
@@ -173,8 +181,9 @@ Kingdom Hearts 2:
     # Maximum value is 20
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
 
   AntiForm:
     # Add Anti Form to the pool
@@ -219,8 +228,9 @@ Kingdom Hearts 2:
     # Maximum value is 60
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-60: 0 # random value between 1 and 60
 
   LuckyEmblemsRequired:
     # Number of Lucky Emblems to collect to Win/Unlock Final Xemnas' Door.
@@ -232,8 +242,9 @@ Kingdom Hearts 2:
     # Maximum value is 60
     35: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-60: 0 # random value between 1 and 60
 
   BountyAmount:
     # Number of Bounties that are in the pool.
@@ -245,8 +256,9 @@ Kingdom Hearts 2:
     # Maximum value is 26
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-26: 0 # random value between 1 and 26
 
   BountyRequired:
     # Number of Bounties to collect to Win/Unlock Final Xemnas Door.
@@ -258,8 +270,9 @@ Kingdom Hearts 2:
     # Maximum value is 26
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-26: 0 # random value between 1 and 26
 
   BountyStartingHintToggle:
     # Start with Bounties Hinted
@@ -274,8 +287,9 @@ Kingdom Hearts 2:
     # Maximum value is 20
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
 
   Keyblade_Maximum:
     # Maximum Stats for Keyblades
@@ -285,8 +299,9 @@ Kingdom Hearts 2:
     # Maximum value is 20
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
 
   WeaponSlotStartHint:
     # Start with Weapon Slots' Hinted
@@ -352,8 +367,9 @@ Kingdom Hearts 2:
     # Maximum value is 25
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-25: 0 # random value between 0 and 25
 
   SuperBosses:
     # Terra Sephiroth and Data Fights Toggle.

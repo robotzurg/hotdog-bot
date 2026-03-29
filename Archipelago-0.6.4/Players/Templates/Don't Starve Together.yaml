@@ -32,7 +32,7 @@ description: Default Don't Starve Together Template
 
 game: Don't Starve Together
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Don't Starve Together:
   ################
@@ -47,8 +47,9 @@ Don't Starve Together:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -83,8 +84,9 @@ Don't Starve Together:
     # Minimum value is 0
     # Maximum value is 1000
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1000: 0 # random value between 0 and 1000
     through autumn: 0 # equivalent to 20
     through winter: 0 # equivalent to 35
     one year: 50 # equivalent to 70
@@ -159,7 +161,7 @@ Don't Starve Together:
     # Which seasons will be enabled in your world?
     # 
     # This is not automatic. If changed from default, seasons will need to be set manually in your world settings!
-    ['Autumn', 'Winter', 'Spring', 'Summer']
+    ['Winter', 'Spring', 'Summer', 'Autumn']
 
   starting_season:
     # Which season do you start with in your world?
@@ -188,7 +190,7 @@ Don't Starve Together:
     # This is not automatic. If changed from default, day phases will need to be set manually in your world settings!
     # 
     # Set to Night only if you plan to play on a Lights Out world.
-    ['Night', 'Dusk', 'Day']
+    ['Day', 'Night', 'Dusk']
 
   ####################
   # Location Options #
@@ -309,8 +311,9 @@ Don't Starve Together:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_items:
     # Chance percentage junk items can be regular traps. These do not change the season. If combined with Season Traps Items, the percentage is split.
@@ -319,8 +322,9 @@ Don't Starve Together:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     none: 0 # equivalent to 0
     low: 50 # equivalent to 20
     medium: 0 # equivalent to 50
@@ -336,8 +340,9 @@ Don't Starve Together:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     none: 50 # equivalent to 0
     low: 0 # equivalent to 20
     medium: 0 # equivalent to 50
@@ -360,8 +365,9 @@ Don't Starve Together:
     # Minimum value is 0
     # Maximum value is 20
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
     none: 0 # equivalent to 0
     low: 0 # equivalent to 3
     medium: 50 # equivalent to 6
@@ -381,8 +387,9 @@ Don't Starve Together:
     # Minimum value is 0
     # Maximum value is 20
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
     none: 0 # equivalent to 0
     low: 0 # equivalent to 3
     medium: 50 # equivalent to 6

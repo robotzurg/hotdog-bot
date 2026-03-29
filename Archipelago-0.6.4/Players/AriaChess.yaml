@@ -1,4 +1,4 @@
-# Q. What is this file?
+﻿# Q. What is this file?
 # A. This file contains options which allow you to configure your multiworld experience while allowing
 #    others to play how they want as well.
 #
@@ -32,7 +32,7 @@ description: Default ChecksMate Template
 
 game: ChecksMate
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 ChecksMate:
   ################
@@ -75,8 +75,8 @@ ChecksMate:
     # Progressive: As Ordered Progressive, but the board grows larger when someone sends you your Super-Sized board.
     # 
     # Super: You skip the 8x8 board immediately. Nearly equivalent to adding Super-Size Me to your Start Inventory.
-    single: 50
-    ordered_progressive: 0
+    single: 0
+    ordered_progressive: 50
     progressive: 0
     super: 0
 
@@ -255,7 +255,7 @@ ChecksMate:
     # Petal: Adds a custom army themed after pieces that move down angled paths. The Gardener is a 2,2 leaper with
     # additional pacifist moves. The Ribbon moves 1 space as a Bishop before rotating to move 2 more spaces. The Petal
     # moves 3 spaces as a Rook before rotating 3 more spaces. The Miracle moves as a Ribbon and as a Petal.
-    ['Clobberers', 'Camel', 'Rookies', 'Petal', 'FIDE', 'Nutty', 'Cannon']
+    ['Nutty', 'Petal', 'Camel', 'Rookies', 'Clobberers', 'Cannon', 'FIDE']
 
   fairy_chess_army:
     # Whether to mix pieces between the Different Armies. Does not affect pawns. Note that the Cannon pieces, which

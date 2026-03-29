@@ -32,9 +32,9 @@ description: Default Muse Dash Template
 
 game: Muse Dash
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
-    Muse Dash: 1.5.25 # Version of the world required for this yaml to work as expected.
+    Muse Dash: 1.5.26 # Version of the world required for this yaml to work as expected.
 
 Muse Dash:
   ################
@@ -49,8 +49,9 @@ Muse Dash:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -72,8 +73,9 @@ Muse Dash:
     # Maximum value is 10
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-3-10: 0 # random value between 3 and 10
 
   additional_song_count:
     # The total number of songs that will be placed in the randomization pool.
@@ -85,8 +87,9 @@ Muse Dash:
     # Maximum value is 600
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-15-600: 0 # random value between 15 and 600
 
   music_sheet_count_percentage:
     # Controls how many music sheets are added to the pool based on the number of songs, including starting songs.
@@ -98,8 +101,9 @@ Muse Dash:
     # Maximum value is 40
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-40: 0 # random value between 10 and 40
 
   music_sheet_win_count_percentage:
     # The percentage of Music Sheets in the item pool that are needed to unlock the winning song.
@@ -109,8 +113,9 @@ Muse Dash:
     # Maximum value is 100
     80: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-50-100: 0 # random value between 50 and 100
 
   ###############
   # Song Choice #
@@ -192,8 +197,9 @@ Muse Dash:
     # Maximum value is 11
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-11: 0 # random value between 1 and 11
 
   song_difficulty_max:
     # Ensures that 1 difficulty has at least 1 this value or lower per song.
@@ -205,8 +211,9 @@ Muse Dash:
     # Maximum value is 11
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-11: 0 # random value between 1 and 11
 
   death_link:
     # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
@@ -233,8 +240,9 @@ Muse Dash:
     # Maximum value is 35
     15: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-35: 0 # random value between 0 and 35
 
   ###########################
   # Item & Location Options #

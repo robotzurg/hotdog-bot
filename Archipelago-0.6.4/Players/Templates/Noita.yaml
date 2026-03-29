@@ -32,7 +32,7 @@ description: Default Noita Template
 
 game: Noita
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     Noita: 1.4.0 # Version of the world required for this yaml to work as expected.
 
@@ -49,8 +49,9 @@ Noita:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -106,8 +107,9 @@ Noita:
     # Maximum value is 20
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
 
   pedestal_checks:
     # Number of checks that will spawn on pedestals in the applicable biomes.
@@ -119,8 +121,9 @@ Noita:
     # Maximum value is 20
     6: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
 
   orbs_as_checks:
     # Decides whether finding the orbs that naturally spawn in the world count as checks.
@@ -152,8 +155,9 @@ Noita:
     # Maximum value is 10
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   shop_price:
     # Reduce the costs of Archipelago items in shops.

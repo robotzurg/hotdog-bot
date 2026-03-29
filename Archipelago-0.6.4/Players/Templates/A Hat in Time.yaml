@@ -32,7 +32,7 @@ description: Default A Hat in Time Template
 
 game: A Hat in Time
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 A Hat in Time:
   ################
@@ -47,8 +47,9 @@ A Hat in Time:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -76,8 +77,9 @@ A Hat in Time:
     # Maximum value is 20
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
 
   dw_death_link_amnesty:
     # Amount of forgiven deaths before sending a Death Link during Death Wish levels.
@@ -87,8 +89,9 @@ A Hat in Time:
     # Maximum value is 30
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-30: 0 # random value between 0 and 30
 
   ###################
   # General Options #
@@ -137,8 +140,9 @@ A Hat in Time:
     # Maximum value is 800
     75: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-800: 0 # random value between 10 and 800
 
   MaxPonCost:
     # The maximum number of Pons that any item in the Badge Seller's shop can cost.
@@ -148,8 +152,9 @@ A Hat in Time:
     # Maximum value is 800
     300: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-800: 0 # random value between 10 and 800
 
   BadgeSellerMinItems:
     # The smallest number of items that the Badge Seller can have for sale.
@@ -159,8 +164,9 @@ A Hat in Time:
     # Maximum value is 10
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   BadgeSellerMaxItems:
     # The largest number of items that the Badge Seller can have for sale.
@@ -170,8 +176,9 @@ A Hat in Time:
     # Maximum value is 10
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   LogicDifficulty:
     # Choose the difficulty setting for logic.
@@ -221,8 +228,9 @@ A Hat in Time:
     # Maximum value is 10
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   HighestChapterCost:
     # Value determining the highest possible cost for a chapter.
@@ -233,8 +241,9 @@ A Hat in Time:
     # Maximum value is 45
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-15-45: 0 # random value between 15 and 45
 
   ChapterCostIncrement:
     # Lower values mean chapter costs increase slower. Higher values make the cost differences more steep.
@@ -244,8 +253,9 @@ A Hat in Time:
     # Maximum value is 8
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-8: 0 # random value between 1 and 8
 
   ChapterCostMinDifference:
     # The minimum difference between chapter costs.
@@ -255,8 +265,9 @@ A Hat in Time:
     # Maximum value is 8
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-8: 0 # random value between 1 and 8
 
   FinalChapterMinCost:
     # Minimum Time Pieces required to enter the final chapter. This is part of your goal.
@@ -266,8 +277,9 @@ A Hat in Time:
     # Maximum value is 50
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
 
   FinalChapterMaxCost:
     # Maximum Time Pieces required to enter the final chapter. This is part of your goal.
@@ -277,8 +289,9 @@ A Hat in Time:
     # Maximum value is 50
     35: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
 
   FinaleShuffle:
     # If enabled, chapter finales will only be shuffled amongst each other in act shuffle.
@@ -328,8 +341,9 @@ A Hat in Time:
     # Maximum value is 80
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-30-80: 0 # random value between 30 and 80
 
   YarnCostMin:
     # The minimum possible yarn needed to stitch a hat.
@@ -339,8 +353,9 @@ A Hat in Time:
     # Maximum value is 12
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-12: 0 # random value between 1 and 12
 
   YarnCostMax:
     # The maximum possible yarn needed to stitch a hat.
@@ -350,8 +365,9 @@ A Hat in Time:
     # Maximum value is 12
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-12: 0 # random value between 1 and 12
 
   MinExtraYarn:
     # The minimum number of extra yarn in the item pool.
@@ -364,8 +380,9 @@ A Hat in Time:
     # Maximum value is 15
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-15: 0 # random value between 5 and 15
 
   HatItems:
     # Removes all yarn from the pool and turns the hats into individual items instead.
@@ -386,8 +403,9 @@ A Hat in Time:
     # Maximum value is 16
     16: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-16: 0 # random value between 0 and 16
 
   YarnBalancePercent:
     # How much (in percentage) of the yarn in the pool that will be progression balanced.
@@ -397,8 +415,9 @@ A Hat in Time:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   TimePieceBalancePercent:
     # How much (in percentage) of time pieces in the pool that will be progression balanced.
@@ -408,8 +427,9 @@ A Hat in Time:
     # Maximum value is 100
     35: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   #########################
   # Arctic Cruise Options #
@@ -433,8 +453,9 @@ A Hat in Time:
     # Maximum value is 3
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-3: 0 # random value between 1 and 3
 
   TasksanityCheckCount:
     # How many Tasksanity checks there will be in total.
@@ -444,8 +465,9 @@ A Hat in Time:
     # Maximum value is 30
     18: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-30: 0 # random value between 1 and 30
 
   ShipShapeCustomTaskGoal:
     # Change the number of tasks required to complete Ship Shape. If this option's value is 0, the number of tasks
@@ -458,8 +480,9 @@ A Hat in Time:
     # Maximum value is 90
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-90: 0 # random value between 0 and 90
 
   ExcludeTour:
     # Removes the Tour time rift from the game. This option is recommended if you don't want to deal with
@@ -485,8 +508,9 @@ A Hat in Time:
     # Maximum value is 800
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-800: 0 # random value between 10 and 800
 
   MetroMaxPonCost:
     # The most expensive an item can be in any Nyakuza Metro shop. Includes ticket booths.
@@ -496,8 +520,9 @@ A Hat in Time:
     # Maximum value is 800
     200: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-800: 0 # random value between 10 and 800
 
   NyakuzaThugMinShopItems:
     # The smallest number of items that the thugs in Nyakuza Metro can have for sale.
@@ -507,8 +532,9 @@ A Hat in Time:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   NyakuzaThugMaxShopItems:
     # The largest number of items that the thugs in Nyakuza Metro can have for sale.
@@ -518,8 +544,9 @@ A Hat in Time:
     # Maximum value is 5
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   BaseballBat:
     # Replace the Umbrella with the baseball bat from Nyakuza Metro.
@@ -551,8 +578,9 @@ A Hat in Time:
     # Maximum value is 35
     15: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-35: 0 # random value between 0 and 35
 
   DWShuffle:
     # An alternative mode for Death Wish where each contract is unlocked one by one, in a random order.
@@ -571,8 +599,9 @@ A Hat in Time:
     # Maximum value is 38
     18: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-38: 0 # random value between 5 and 38
 
   DWShuffleCountMax:
     # The maximum number of Death Wishes that can be in the Death Wish shuffle sequence.
@@ -583,8 +612,9 @@ A Hat in Time:
     # Maximum value is 38
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-38: 0 # random value between 5 and 38
 
   DWEnableBonus:
     # In Death Wish, add a location for completing all of a DW contract's bonuses,
@@ -666,8 +696,9 @@ A Hat in Time:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   BabyTrapWeight:
     # The weight of Baby Traps in the trap pool.
@@ -678,8 +709,9 @@ A Hat in Time:
     # Maximum value is 100
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   LaserTrapWeight:
     # The weight of Laser Traps in the trap pool.
@@ -690,8 +722,9 @@ A Hat in Time:
     # Maximum value is 100
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ParadeTrapWeight:
     # The weight of Parade Traps in the trap pool.
@@ -702,8 +735,9 @@ A Hat in Time:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ###########################
   # Item & Location Options #

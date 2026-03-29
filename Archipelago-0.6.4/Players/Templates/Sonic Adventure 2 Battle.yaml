@@ -32,7 +32,7 @@ description: Default Sonic Adventure 2 Battle Template
 
 game: Sonic Adventure 2 Battle
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     Sonic Adventure 2 Battle: 2.4.2 # Version of the world required for this yaml to work as expected.
 
@@ -49,8 +49,9 @@ Sonic Adventure 2 Battle:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -162,8 +163,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 10
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   minigame_madness_minimum:
     # Determines the minimum number of each Minigame Trap that are created (for Minigame Madness goal)
@@ -175,8 +177,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 10
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   logic_difficulty:
     # What set of Upgrade Requirement logic to use
@@ -210,8 +213,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 1000
     180: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-50-1000: 0 # random value between 50 and 1000
 
   ring_loss:
     # How taking damage is handled
@@ -241,8 +245,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 75
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-75: 0 # random value between 0 and 75
 
   required_cannons_core_missions:
     # Determines how many Cannon's Core missions must be completed (for Biolizard or Cannon's Core goals)
@@ -261,8 +266,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 5
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   level_gate_costs:
     # Determines how many emblems are required to unlock level gates
@@ -364,8 +370,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 64
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-64: 0 # random value between 0 and 64
 
   black_market_unlock_costs:
     # Determines how many Chao Coins are required to unlock sets of Black Market items
@@ -383,8 +390,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 40
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-40: 0 # random value between 0 and 40
 
   chao_race_difficulty:
     # Determines the number of Chao Race difficulty levels included. Easier difficulty settings means fewer Chao Race checks
@@ -433,8 +441,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 99
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
 
   chao_stats_frequency:
     # Determines how many levels in each Chao Stat grant checks (up to the maximum set in the `chao_stats` option)
@@ -446,8 +455,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 20
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-20: 0 # random value between 1 and 20
 
   chao_stats_stamina:
     # Determines whether Stamina is included in the `chao_stats` option
@@ -493,8 +503,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_fill_percentage:
     # Replace a percentage of junk items in the item pool with random traps
@@ -504,8 +515,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   omochao_trap_weight:
     # Likelihood of receiving a trap which spawns several Omochao around the player
@@ -719,8 +731,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   sonic_mission_2:
     # Determines if the Sonic 100 rings missions should be included
@@ -753,8 +766,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   shadow_mission_2:
     # Determines if the Shadow 100 rings missions should be included
@@ -787,8 +801,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   tails_mission_2:
     # Determines if the Tails 100 rings missions should be included
@@ -821,8 +836,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   eggman_mission_2:
     # Determines if the Eggman 100 rings missions should be included
@@ -855,8 +871,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   knuckles_mission_2:
     # Determines if the Knuckles 100 rings missions should be included
@@ -889,8 +906,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   rouge_mission_2:
     # Determines if the Rouge 100 rings missions should be included
@@ -923,8 +941,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   kart_mission_2:
     # Determines if the Route 101 and 280 100 rings missions should be included
@@ -957,8 +976,9 @@ Sonic Adventure 2 Battle:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   cannons_core_mission_2:
     # Determines if the Cannon's Core 100 rings mission should be included

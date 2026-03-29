@@ -32,7 +32,7 @@ description: Default ChecksMate Template
 
 game: ChecksMate
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 ChecksMate:
   ################
@@ -47,8 +47,9 @@ ChecksMate:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -159,8 +160,9 @@ ChecksMate:
     # Maximum value is 5
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   max_pocket:
     # The number of Progressive Pocket Pieces the game is allowed to add to the multiworld.
@@ -178,8 +180,9 @@ ChecksMate:
     # Maximum value is 12
     12: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-12: 0 # random value between 0 and 12
 
   max_kings:
     # How many Royal pieces (Kings) to place, which must all be captured before one experiences defeat.
@@ -192,8 +195,9 @@ ChecksMate:
     # Maximum value is 3
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-3: 0 # random value between 1 and 3
 
   fairy_kings:
     # Whether to use fairy king upgrades, such as the Knight's moves. Adding multiple upgrades to the pool will allow your
@@ -204,8 +208,9 @@ ChecksMate:
     # Maximum value is 2
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2: 0 # random value between 0 and 2
 
   fairy_chess_pieces:
     # Which collection of fairy pieces to allow, if any. Choose FIDE to disable fairy chess pieces. Choose Configure to
@@ -250,7 +255,7 @@ ChecksMate:
     # Petal: Adds a custom army themed after pieces that move down angled paths. The Gardener is a 2,2 leaper with
     # additional pacifist moves. The Ribbon moves 1 space as a Bishop before rotating to move 2 more spaces. The Petal
     # moves 3 spaces as a Rook before rotating 3 more spaces. The Miracle moves as a Ribbon and as a Petal.
-    ['Petal', 'Camel', 'Nutty', 'FIDE', 'Cannon', 'Rookies', 'Clobberers']
+    ['Cannon', 'FIDE', 'Petal', 'Clobberers', 'Nutty', 'Rookies', 'Camel']
 
   fairy_chess_army:
     # Whether to mix pieces between the Different Armies. Does not affect pawns. Note that the Cannon pieces, which
@@ -298,8 +303,9 @@ ChecksMate:
     # Minimum value is 1
     # Maximum value is 15
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-15: 0 # random value between 1 and 15
     disabled: 50 # equivalent to 0
 
   major_piece_limit_by_type:
@@ -310,8 +316,9 @@ ChecksMate:
     # Minimum value is 1
     # Maximum value is 11
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-11: 0 # random value between 1 and 11
     disabled: 50 # equivalent to 0
 
   queen_piece_limit_by_type:
@@ -322,8 +329,9 @@ ChecksMate:
     # Minimum value is 1
     # Maximum value is 9
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-9: 0 # random value between 1 and 9
     disabled: 50 # equivalent to 0
 
   queen_piece_limit:
@@ -335,8 +343,9 @@ ChecksMate:
     # Minimum value is 1
     # Maximum value is 9
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-9: 0 # random value between 1 and 9
     disabled: 50 # equivalent to 0
 
   pocket_limit_by_pocket:
@@ -352,8 +361,9 @@ ChecksMate:
     # Maximum value is 4
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-4: 0 # random value between 1 and 4
     disabled: 0 # equivalent to 0
 
   locked_items:

@@ -32,7 +32,7 @@ description: Default Majora's Mask Recompiled Template
 
 game: Majora's Mask Recompiled
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Majora's Mask Recompiled:
   ################
@@ -47,8 +47,9 @@ Majora's Mask Recompiled:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -75,8 +76,9 @@ Majora's Mask Recompiled:
     # Maximum value is 4
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-4: 0 # random value between 0 and 4
 
   moon_remains_required:
     # Set the amount of boss remains required to reach the Moon after playing Oath to Order.
@@ -86,8 +88,9 @@ Majora's Mask Recompiled:
     # Maximum value is 4
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-4: 0 # random value between 0 and 4
 
   camc:
     # Set whether chest appearance matches contents.
@@ -118,8 +121,9 @@ Majora's Mask Recompiled:
     # Maximum value is 12
     12: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-4-12: 0 # random value between 4 and 12
 
   starting_hearts_are_containers_or_pieces:
     # Choose whether Link's starting hearts are shuffled into the pool as Heart Containers (plus the remainder as Heart Pieces) or as all Heart Pieces.
@@ -153,12 +157,26 @@ Majora's Mask Recompiled:
     'false': 50
     'true': 0
 
+  required_skull_tokens:
+    # The number of Gold Skulltula Tokens needed to get the reward from their respective Spider House.
+    # All 30 Tokens from each Spider House are still shuffled into the item pool regardless of the selection.
+    # Valid amounts are within the range 0-30.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 30
+    30: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-30: 0 # random value between 0 and 30
+
   skullsanity:
     # Choose what items gold skulltulas can give.
     # 
-    # vanilla: Keep the swamphouse in generation, but only place Skulltula tokens there.
+    # vanilla: Keep the Spider Houses in generation, but only place Skulltula tokens there.
     # anything: Any item can be given by any Skulltula, and tokens can be found anywhere in any world.
-    # ignore: Remove the swamphouse from generation entirely, lowering the hint percentage.
+    # ignore: Remove the Spider Houses from generation entirely, lowering the hint percentage and removing them from the spoiler log.
     vanilla: 50
     anything: 0
     ignore: 0
@@ -205,13 +223,44 @@ Majora's Mask Recompiled:
     'false': 50
     'true': 0
 
-  keysanity:
-    # Choose whether Small Keys are shuffled into the pool.
-    'false': 50
-    'true': 0
+  required_stray_fairies:
+    # The number of Stray Fairies needed to get the reward from their respective Great Fairy (excluding North Clock Town's Great Fairy of Magic).
+    # All 15 Stray Fairies from each dungeon are still shuffled into the item pool regardless of the selection.
+    # Valid amounts are within the range 0-15.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 15
+    15: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
 
   fairysanity:
     # Choose whether Stray Fairies are shuffled into the pool.
+    'false': 50
+    'true': 0
+
+  keysanity:
+    # Choose whether Small Keys are shuffled into the pool or placed in their vanilla locations.
+    'false': 50
+    'true': 0
+
+  bosskeysanity:
+    # Choose whether Boss Keys are shuffled into the pool or placed in their vanilla locations.
+    'false': 50
+    'true': 0
+
+  curiostity_shop_trades:
+    # Choose whether to shuffle the rupees given for trading bottled items at the Curiostity Shop.
+    'false': 50
+    'true': 0
+
+  intro_checks:
+    # Choose whether to shuffle the checks normally found before entering the Clock Tower.
+    # 
+    # A way backwards through these areas has been added through the stone door at the bottom of the Clock Tower Interior.
     'false': 50
     'true': 0
 

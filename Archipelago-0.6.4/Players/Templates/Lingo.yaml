@@ -32,7 +32,7 @@ description: Default Lingo Template
 
 game: Lingo
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Lingo:
   ################
@@ -47,8 +47,9 @@ Lingo:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -242,8 +243,9 @@ Lingo:
     # Maximum value is 24
     21: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-24: 0 # random value between 1 and 24
 
   level_2_requirement:
     # The number of panel solves required to unlock LEVEL 2.
@@ -257,8 +259,9 @@ Lingo:
     # Maximum value is 800
     223: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-800: 0 # random value between 1 and 800
 
   trap_percentage:
     # Replaces junk items with traps, at the specified rate.
@@ -268,8 +271,9 @@ Lingo:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_weights:
     # Specify the distribution of traps that should be placed into the pool.
@@ -293,8 +297,9 @@ Lingo:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ###########################
   # Item & Location Options #

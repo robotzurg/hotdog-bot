@@ -32,7 +32,9 @@ description: Default Hatsune Miku Project Diva Mega Mix+ Template
 
 game: Hatsune Miku Project Diva Mega Mix+
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Hatsune Miku Project Diva Mega Mix+: 1.4.2 # Version of the world required for this yaml to work as expected.
 
 Hatsune Miku Project Diva Mega Mix+:
   ################
@@ -47,8 +49,9 @@ Hatsune Miku Project Diva Mega Mix+:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -69,18 +72,9 @@ Hatsune Miku Project Diva Mega Mix+:
     'false': 50
     'true': 0
 
-  duplicate_song_percentage:
-    # Percentage of duplicate songs to place in remaining filler slots.
-    # Duplicate songs are considered Useful and thus out of logic.
-    #
-    # You can define additional values between the minimum and maximum values.
-    # Minimum value is 0
-    # Maximum value is 100
-    100: 50
-    random: 0
-    random-low: 0
-    random-high: 0
-
+  ###############
+  # Game Length #
+  ###############
   starting_song_count:
     # The number of songs that will be automatically unlocked at the start of a run.
     #
@@ -89,12 +83,13 @@ Hatsune Miku Project Diva Mega Mix+:
     # Maximum value is 10
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-3-10: 0 # random value between 3 and 10
 
   additional_song_count:
-    # The total number of songs that will be placed in the randomization pool.
-    # - This does not count any starting songs or the goal song.
+    # The total number of songs that will be placed in the randomisation pool.
+    # - This does not count any Starting Songs or the Goal Song.
     # - The final song count may be lower due to other settings.
     #
     # You can define additional values between the minimum and maximum values.
@@ -102,8 +97,22 @@ Hatsune Miku Project Diva Mega Mix+:
     # Maximum value is 3900
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-15-3900: 0 # random value between 15 and 3900
+
+  duplicate_song_percentage:
+    # After placing required items, the percentage of remaining filler slots to become duplicate song items.
+    # Duplicate songs are considered Useful thus out of logic and may speed up completion time.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    100: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   leek_count_percentage:
     # Controls how many Leeks are added to the pool based on the number of songs, including starting songs.
@@ -115,42 +124,21 @@ Hatsune Miku Project Diva Mega Mix+:
     # Maximum value is 40
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-40: 0 # random value between 10 and 40
 
   leek_win_count_percentage:
-    # The percentage of Leeks in the item pool that are needed to unlock the winning song.
+    # The percentage of Leeks in the item pool that are needed to unlock the Goal Song.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 50
     # Maximum value is 100
     80: 50
     random: 0
-    random-low: 0
-    random-high: 0
-
-  death_link:
-    # When you die on your own or fail to reach Grade Needed (not both), everyone who enabled Death Link dies.
-    # 
-    # Received Death Links subtract a percentage of total HP. Adjustable in the game mod's config file.
-    # WARNING: Non-lethal Death Link makes it harder to get Life Bonuses and may affect score by up to 2%.
-    # 
-    # This can be toggled later in the Client with "/deathlink".
-    'false': 50
-    'true': 0
-
-  death_link_amnesty:
-    # Amount of additional own deaths needed before sending one Death Link. 0 would be every death, 1 every other, etc.
-    # 
-    # This can be adjusted later in the Client with "/deathlink #" and no upper limit.
-    #
-    # You can define additional values between the minimum and maximum values.
-    # Minimum value is 0
-    # Maximum value is 5
-    0: 50
-    random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-50-100: 0 # random value between 50 and 100
 
   ###############
   # Song Choice #
@@ -159,6 +147,13 @@ Hatsune Miku Project Diva Mega Mix+:
     # Whether Extra Song Pack DLC Songs can be chosen as randomised songs.
     'false': 50
     'true': 0
+
+  goal_song:
+    # Guarantee one song listed here as the final Goal Song.
+    # - Difficulty options are ignored.
+    # 
+    # Use /item_groups in the Client for a list of available song groups.
+    []
 
   include_songs_percentage:
     # The percentage of the seed reserved for Include Songs.
@@ -172,31 +167,31 @@ Hatsune Miku Project Diva Mega Mix+:
     # Maximum value is 100
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   include_songs:
-    # Any song listed here will be guaranteed to be included as part of the seed.
-    # - Difficulty options will be skipped for these songs.
-    # - If there being too many included songs, songs will be randomly chosen without regard for difficulty.
+    # Songs listed here will be guaranteed to be included as part of the seed.
+    # - Difficulty options are ignored for these songs.
     # - If you want these songs immediately, use start_inventory instead.
     # 
     # Use /item_groups in the Client for a list of available song groups.
     []
 
   exclude_songs:
-    # Any song listed here will be excluded from being a part of the seed.
+    # Songs listed here and not previously chosen as a Goal or Include will be excluded from being a part of the seed.
     # 
     # Use /item_groups in the Client for a list of available song groups.
     []
 
   megamix_mod_data:
-    # If you are using modded songs, delete the option below entirely and paste the string from the DivaJSON Tool here
+    # To play with mod songs, set the output of the Mega Mix JSON Generator here.
     '': 50
 
-  ##############
-  # Difficulty #
-  ##############
+  ###################
+  # Song Difficulty #
+  ###################
   grade_needed:
     # Completing a song will require a grade of this value or higher in order to unlock items.
     # Accuracy required is based on the song's difficulty (Easy, Normal, Hard, etc.)
@@ -209,7 +204,7 @@ Hatsune Miku Project Diva Mega Mix+:
     perfect: 0
 
   song_difficulty_min:
-    # Minimum difficulty that a song can be selected from
+    # Minimum difficulty that a song can be selected from.
     easy: 50
     normal: 0
     hard: 0
@@ -217,7 +212,7 @@ Hatsune Miku Project Diva Mega Mix+:
     exextreme: 0
 
   song_difficulty_max:
-    # Maximum difficulty that a song can be selected from
+    # Maximum difficulty that a song can be selected from.
     easy: 0
     normal: 0
     hard: 0
@@ -264,11 +259,56 @@ Hatsune Miku Project Diva Mega Mix+:
     6x5: 0
     seven: 0
     7x5: 0
-    eight: 0
+    eight: 50
     8x5: 0
     nine: 0
     9x5: 0
-    ten: 50
+    ten: 0
+
+  ##################
+  # Game Modifiers #
+  ##################
+  death_link:
+    # When you die on your own or fail to reach Grade Needed (not both), everyone who enabled Death Link dies.
+    # 
+    # Received Death Links subtract a percentage of total HP. Adjustable in the game mod's config file.
+    # WARNING: Non-lethal Death Link makes it harder to get Life Bonuses and may affect score by up to 2%.
+    # 
+    # This can be toggled later in the Client with "/deathlink".
+    'false': 50
+    'true': 0
+
+  death_link_amnesty:
+    # Amount of additional own deaths needed before sending one Death Link. 0 would be every death, 1 every other, etc.
+    # 
+    # This can be adjusted later in the Client with "/deathlink #" and no upper limit.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 5
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
+
+  trap_percentage:
+    # After placing required items and duplicate songs, the percentage of remaining filler slots to become traps.
+    # If Duplicate Song Percentage is at 100, this option has no effect.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  traps_enabled:
+    # Control which Traps can be placed in the item pool.
+    # It is highly recommended to add these Traps to non_local_items.
+    ['Icon Trap', 'Sudden Trap', 'Hidden Trap']
 
   ###########################
   # Item & Location Options #

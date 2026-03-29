@@ -32,7 +32,7 @@ description: Default Super Mario World Template
 
 game: Super Mario World
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     Super Mario World: 2.1.1 # Version of the world required for this yaml to work as expected.
 
@@ -49,8 +49,9 @@ Super Mario World:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -106,8 +107,9 @@ Super Mario World:
     # Maximum value is 11
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-11: 0 # random value between 0 and 11
 
   max_yoshi_egg_cap:
     # Maximum possible number of Yoshi Eggs that will be in the item pool
@@ -121,8 +123,9 @@ Super Mario World:
     # Maximum value is 255
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-255: 0 # random value between 1 and 255
 
   percentage_of_yoshi_eggs:
     # What Percentage of Yoshi Eggs are required to finish Yoshi Egg Hunt
@@ -132,8 +135,9 @@ Super Mario World:
     # Maximum value is 100
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   ##################
   # Sanity Options #
@@ -257,8 +261,9 @@ Super Mario World:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_fill_percentage:
     # Replace a percentage of junk items in the item pool with random traps
@@ -268,8 +273,9 @@ Super Mario World:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ice_trap_weight:
     # Likelihood of a receiving a trap which causes the level to become slippery
@@ -406,8 +412,9 @@ Super Mario World:
     # Maximum value is 99
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-99: 0 # random value between 1 and 99
 
   ###########################
   # Item & Location Options #

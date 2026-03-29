@@ -32,7 +32,7 @@ description: Default Celeste 64 Template
 
 game: Celeste 64
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     Celeste 64: 1.3.1 # Version of the world required for this yaml to work as expected.
 
@@ -49,8 +49,9 @@ Celeste 64:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -77,8 +78,9 @@ Celeste 64:
     # Maximum value is 30
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-30: 0 # random value between 1 and 30
 
   logic_difficulty:
     # Whether the logic expects you to play the intended way, or to be able to use advanced tricks and skips
@@ -109,8 +111,9 @@ Celeste 64:
     # Maximum value is 55
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-55: 0 # random value between 0 and 55
 
   strawberries_required_percentage:
     # Percentage of existing Strawberries you must receive to finish
@@ -120,8 +123,9 @@ Celeste 64:
     # Maximum value is 100
     80: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ##################
   # Sanity Options #
@@ -279,8 +283,9 @@ Celeste 64:
     # Maximum value is 10
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   badeline_chaser_speed:
     # How many seconds behind you each Badeline Chaser will be
@@ -290,8 +295,9 @@ Celeste 64:
     # Maximum value is 10
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-2-10: 0 # random value between 2 and 10
 
   ###########################
   # Item & Location Options #

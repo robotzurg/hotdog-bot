@@ -7,7 +7,7 @@ Dark Souls III:
   early_banner: 'off'
   late_basin_of_vows: after_small_doll
   late_dlc: after_small_doll
-  death_link: 'false'
+  death_link: 'true'
   enable_dlc: 'true'
   enable_ngp: 'false'
   random_starting_loadout: 'true'
@@ -25,8 +25,8 @@ Dark Souls III:
   max_levels_in_5: '5'
   min_levels_in_10: '1'
   max_levels_in_10: '10'
-  smooth_soul_items: 'true'
-  smooth_upgrade_items: 'true'
+  smooth_soul_items: 'false'
+  smooth_upgrade_items: 'false'
   smooth_upgraded_weapons: 'true'
   randomize_enemies: 'true'
   simple_early_bosses: 'true'

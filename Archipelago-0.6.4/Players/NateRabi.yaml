@@ -1,4 +1,4 @@
-# Q. What is this file?
+ï»¿# Q. What is this file?
 # A. This file contains options which allow you to configure your multiworld experience while allowing
 #    others to play how they want as well.
 #
@@ -32,9 +32,9 @@ description: Default Rabi-Ribi Template
 
 game: Rabi-Ribi
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
-    Rabi-Ribi: 1.4.4 # Version of the world required for this yaml to work as expected.
+    Rabi-Ribi: 1.4.2 # Version of the world required for this yaml to work as expected.
 
 Rabi-Ribi:
   ################
@@ -49,8 +49,9 @@ Rabi-Ribi:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 50 # equivalent to 0
     normal: 0 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -74,10 +75,11 @@ Rabi-Ribi:
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 1
     # Maximum value is 80
-    15: 50
+    26: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-80: 0 # random value between 1 and 80
 
   percentage_of_easter_eggs:
     # What percentage of Easter Eggs are required to beat the game. Note that you will receive
@@ -88,20 +90,15 @@ Rabi-Ribi:
     # Maximum value is 100
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   encourage_eggs_in_late_spheres:
     # If set to true, the randomizer logic will attempt to place eggs in later spheres
     # resulting in harder to get to eggs.
     'false': 50
     'true': 0
-
-  open_mode:
-    # Gain access to Chapter 1 areas without needing to complete the prologue.
-    # It is highly recommended to leave this enabled.
-    'false': 0
-    'true': 50
 
   apply_beginner_mod:
     # If set to true, applies an accessibility mod for new players.
@@ -117,8 +114,8 @@ Rabi-Ribi:
     # 
     # This gives you a lot more damage, which is especially useful because you often don't get
     # the hammer early in randomizer games. (Ribbon does about 20 damage per shot in super attack mode)
-    normal: 0
-    super: 50
+    normal: 50
+    super: 0
     hyper: 0
 
   knowledge:
@@ -190,13 +187,13 @@ Rabi-Ribi:
 
   darkness_without_light_orb:
     # If this flag is true, the game might expect you to go into dark areas,
-    # even if you don’t have the Light Orb.
+    # even if you donâ€™t have the Light Orb.
     'false': 50
     'true': 0
 
   underwater_without_water_orb:
     # If this flag is true, the game might expect you to go into underwater areas,
-    # even if you don’t have the Water Orb.
+    # even if you donâ€™t have the Water Orb.
     'false': 50
     'true': 0
 
@@ -219,16 +216,6 @@ Rabi-Ribi:
     'false': 50
     'true': 0
 
-  randomize_hammer:
-    # If set to false, Piko Hammer is at the default location
-    'false': 50
-    'true': 0
-
-  randomize_gift_items:
-    # If set to false, items given by NPCs (Speed Boost, Bunny Strike, P Hairpin) are at their default locations
-    'false': 50
-    'true': 0
-
   include_plurkwood:
     # If this flag is true, the game might expect you to go into Plurkwood.
     'false': 50
@@ -246,7 +233,7 @@ Rabi-Ribi:
     'true': 0
 
   include_post_irisu:
-    # If this flag is true, locations after beating Irisu are included in the pool.
+    # If this flag is true, locations only reachable after beating Irisu are included in the pool.
     'false': 50
     'true': 0
 
@@ -258,14 +245,21 @@ Rabi-Ribi:
 
   number_of_constraint_changes:
     # Sets the total number of map constraint changes to be added.
+    # 
+    # A map constraint is an predefined edit to the map to restrict access to parts of Rabi Rabi Island with various obstacles.
+    # By restricting access to certain areas of the map, the amount of checks opened per sphere is kept more uniform, allowing for better game flow.
+    # 
+    # These constraints are enabled by default, as not only can the main game of Rabi-Ribi be completed without any items,
+    # but over half of the item locations can be reached without items as well.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 0
     # Maximum value is 70
-    0: 50
+    35: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-70: 0 # random value between 0 and 70
 
   shuffle_map_transitions:
     # If this flag is true, the randomizer will shuffle the entrances between maps.

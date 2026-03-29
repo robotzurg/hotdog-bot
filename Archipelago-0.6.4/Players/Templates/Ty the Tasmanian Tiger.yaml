@@ -32,7 +32,7 @@ description: Default Ty the Tasmanian Tiger Template
 
 game: Ty the Tasmanian Tiger
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Ty the Tasmanian Tiger:
   ################
@@ -47,8 +47,9 @@ Ty the Tasmanian Tiger:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -105,8 +106,9 @@ Ty the Tasmanian Tiger:
     # Maximum value is 24
     17: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-24: 0 # random value between 0 and 24
 
   extra_theggs:
     # Sets number of additional thunder eggs of each type to add to the pool
@@ -117,8 +119,9 @@ Ty the Tasmanian Tiger:
     # Maximum value is 24
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-24: 0 # random value between 0 and 24
 
   cog_gating:
     # Cog requirement count for each attribute check in Julius' lab
@@ -128,20 +131,22 @@ Ty the Tasmanian Tiger:
     # Maximum value is 15
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
 
   extra_cogs:
-    # Sets number of additional golden cogs to add to the pool
+    # Sets number of additional golden cogs to add to the pool per attribute check
     # WARNING - Setting this value high without sanity is likely to lead to generation failures
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 0
-    # Maximum value is 90
-    30: 50
+    # Maximum value is 15
+    5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
 
   level_unlock_style:
     # Determines how levels are unlocked
@@ -223,8 +228,9 @@ Ty the Tasmanian Tiger:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   acid_trap_weight:
     # The weight of Acid Traps in the trap pool.
@@ -235,8 +241,9 @@ Ty the Tasmanian Tiger:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   exit_trap_weight:
     # The weight of Exit Traps in the trap pool.
@@ -247,8 +254,9 @@ Ty the Tasmanian Tiger:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   gravity_trap_weight:
     # The weight of Gravity Traps in the trap pool.
@@ -259,8 +267,9 @@ Ty the Tasmanian Tiger:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   knocked_down_trap_weight:
     # The weight of Knocked Down Traps in the trap pool.
@@ -271,8 +280,9 @@ Ty the Tasmanian Tiger:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   slow_trap_weight:
     # The weight of Slow Traps in the trap pool.
@@ -283,8 +293,9 @@ Ty the Tasmanian Tiger:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ##############
   # Death Link #

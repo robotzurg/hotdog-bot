@@ -32,38 +32,11 @@ description: Default Garfield Kart - Furious Racing Template
 
 game: Garfield Kart - Furious Racing
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
-    Garfield Kart - Furious Racing: 0.3.0 # Version of the world required for this yaml to work as expected.
+    Garfield Kart - Furious Racing: 0.4.2 # Version of the world required for this yaml to work as expected.
 
 Garfield Kart - Furious Racing:
-  ################
-  # Game Options #
-  ################
-  progression_balancing:
-    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
-    # 
-    # A lower setting means more getting stuck. A higher setting means less getting stuck.
-    #
-    # You can define additional values between the minimum and maximum values.
-    # Minimum value is 0
-    # Maximum value is 99
-    random: 0
-    random-low: 0
-    random-high: 0
-    disabled: 0 # equivalent to 0
-    normal: 50 # equivalent to 50
-    extreme: 0 # equivalent to 99
-
-  accessibility:
-    # Set rules for reachability of your items/locations.
-    # 
-    # **Full:** ensure everything can be reached and acquired.
-    # 
-    # **Minimal:** ensure what is needed to reach your goal can be acquired.
-    full: 50
-    minimal: 0
-
   ################
   # Goal Options #
   ################
@@ -95,9 +68,9 @@ Garfield Kart - Furious Racing:
 
   time_trial_goal_grade:
     # Sets the minimum medal grade required for the Time Trials goal
-    # !!!IMPORTANT!!! Platinum medals require certain car combinations to be 
+    # !!!IMPORTANT!!! Platinum medals require certain kart combinations to be 
     # reasonably achievable. These aren't implemented in logic yet, so randomizing
-    # cart loadouts may lead to impossible games.
+    # kart loadouts may lead to impossible games.
     # 
     # If the goal is not Time Trials, this option does nothing.
     bronze: 0
@@ -148,12 +121,23 @@ Garfield Kart - Furious Racing:
     # Maximum value is 48
     48: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-48: 0 # random value between 1 and 48
 
   #####################
   # Character Options #
   #####################
+  randomize_characters:
+    # Adds characters to the item pool, and adds a location for winning a race as each character.
+    'false': 50
+    'true': 0
+
+  randomize_karts:
+    # Adds karts to the item pool, and adds a location for winning a race with each kart.
+    'false': 50
+    'true': 0
+
   randomize_hats:
     # Adds hats to the item pool
     # 
@@ -174,13 +158,41 @@ Garfield Kart - Furious Racing:
     progressive: 0
     combine_tiers: 0
 
-  #################
-  # Other Options #
-  #################
+  ################
+  # Game Options #
+  ################
+  lap_count:
+    # Modifies the amount of laps in a race
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 10
+    3: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
+
+  disable_cpu_items:
+    # Prevents CPUs from using items for a less chaotic experience.
+    'false': 50
+    'true': 0
+
+  springs_only:
+    # Item boxes can only give springs. This makes puzzle piece hunting a lot easier.
+    # 
+    # If Randomize Items is enabled, you start without springs unlocked and item boxes
+    # do nothing.
+    'false': 50
+    'true': 0
+
+  ############################
+  # Other Randomizer Options #
+  ############################
   randomize_items:
     # Randomizes the items that can be received from item boxes and adds locations for
     # acquiring each item from an item box for the first time. 
-    # Always starts with one item unlocked.
+    # Always starts with one item unlocked, unless Springs Only is enabled.
     'false': 50
     'true': 0
 

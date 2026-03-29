@@ -32,7 +32,7 @@ description: Default The Simpsons Hit And Run Template
 
 game: The Simpsons Hit And Run
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 The Simpsons Hit And Run:
   ################
@@ -47,8 +47,9 @@ The Simpsons Hit And Run:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -105,8 +106,9 @@ The Simpsons Hit And Run:
     # Maximum value is 2
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2: 0 # random value between 0 and 2
 
   shufflegagfinder:
     # If enabled, add a Gagfinder to the pool for each Character that will be
@@ -145,8 +147,9 @@ The Simpsons Hit And Run:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-100: 0 # random value between 10 and 100
 
   EnableCardPercent:
     # Whether to include Cards in goal requirements.
@@ -163,8 +166,9 @@ The Simpsons Hit And Run:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-100: 0 # random value between 10 and 100
 
   shufflecards:
     # Randomize card locations. This option adds several possible locations for
@@ -203,8 +207,9 @@ The Simpsons Hit And Run:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   minprice:
     # The minimum cost of any item in Gil's Shop. If this is greater than the max shop price, then the max will be used instead.
@@ -214,8 +219,9 @@ The Simpsons Hit And Run:
     # Maximum value is 500
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-500: 0 # random value between 0 and 500
 
   maxprice:
     # The maximum cost of any item in Gil's Shop.
@@ -225,8 +231,9 @@ The Simpsons Hit And Run:
     # Maximum value is 500
     300: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-500: 0 # random value between 0 and 500
 
   shopscalemod:
     # The multiplier for shop costs per levels
@@ -237,8 +244,9 @@ The Simpsons Hit And Run:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   shophintpolicy:
     # Choose the level of hints sent when speaking to Gil for the first time on a level
@@ -260,8 +268,9 @@ The Simpsons Hit And Run:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   eject:
     # Whether to include Eject traps in the item pool.

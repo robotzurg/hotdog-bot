@@ -32,7 +32,7 @@ description: 'Default Jak and Daxter: The Precursor Legacy Template'
 
 game: 'Jak and Daxter: The Precursor Legacy'
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     'Jak and Daxter: The Precursor Legacy': 1.0.0 # Version of the world required for this yaml to work as expected.
 
@@ -49,8 +49,9 @@ requires:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -154,8 +155,9 @@ requires:
     # Maximum value is 30
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-30: 0 # random value between 0 and 30
 
   mountain_pass_cell_count:
     # The number of power cells you need to reach Klaww and cross Mountain Pass. This value is restricted to a safe
@@ -167,8 +169,9 @@ requires:
     # Maximum value is 60
     45: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-60: 0 # random value between 0 and 60
 
   lava_tube_cell_count:
     # The number of power cells you need to cross Lava Tube. This value is restricted to a safe maximum value to
@@ -180,8 +183,9 @@ requires:
     # Maximum value is 90
     72: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-90: 0 # random value between 0 and 90
 
   ####################
   # Orb Trade Counts #
@@ -200,8 +204,9 @@ requires:
     # Maximum value is 120
     90: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-120: 0 # random value between 0 and 120
 
   oracle_orb_trade_amount:
     # The number of orbs you need to trade to the Oracles for a power cell.
@@ -217,8 +222,9 @@ requires:
     # Maximum value is 150
     120: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-150: 0 # random value between 0 and 150
 
   #########
   # Traps #
@@ -234,8 +240,9 @@ requires:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   filler_orb_bundles_replaced_with_traps:
     # The number of filler orb bundles that will be replaced with traps. This does not affect the number of progression
@@ -248,8 +255,9 @@ requires:
     # Maximum value is 2000
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2000: 0 # random value between 0 and 2000
 
   trap_effect_duration:
     # The length of time, in seconds, that a trap effect lasts.
@@ -259,8 +267,9 @@ requires:
     # Maximum value is 60
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-60: 0 # random value between 5 and 60
 
   trap_weights:
     # The list of traps and corresponding weights that will be randomly added to the item pool. A trap with weight 10 is

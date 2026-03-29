@@ -32,7 +32,7 @@ description: Default Donkey Kong Country 3 Template
 
 game: Donkey Kong Country 3
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     Donkey Kong Country 3: 1.1.0 # Version of the world required for this yaml to work as expected.
 
@@ -49,8 +49,9 @@ Donkey Kong Country 3:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -76,8 +77,9 @@ Donkey Kong Country 3:
     # Maximum value is 41
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-41: 0 # random value between 10 and 41
 
   kongsanity:
     # Whether collecting all four KONG letters in each level grants a check
@@ -119,8 +121,9 @@ Donkey Kong Country 3:
     # Maximum value is 17
     15: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-17: 0 # random value between 1 and 17
 
   percentage_of_extra_bonus_coins:
     # What Percentage of unneeded Bonus Coins are included in the item pool
@@ -130,8 +133,9 @@ Donkey Kong Country 3:
     # Maximum value is 100
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   number_of_banana_birds:
     # How many Banana Birds are put into the item pool
@@ -141,8 +145,9 @@ Donkey Kong Country 3:
     # Maximum value is 15
     15: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-15: 0 # random value between 5 and 15
 
   percentage_of_banana_birds:
     # What Percentage of Banana Birds in the item pool are required for Banana Bird Hunt
@@ -152,8 +157,9 @@ Donkey Kong Country 3:
     # Maximum value is 100
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-20-100: 0 # random value between 20 and 100
 
   ##############
   # Aesthetics #
@@ -193,8 +199,9 @@ Donkey Kong Country 3:
     # Maximum value is 99
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-99: 0 # random value between 1 and 99
 
   ###########################
   # Item & Location Options #

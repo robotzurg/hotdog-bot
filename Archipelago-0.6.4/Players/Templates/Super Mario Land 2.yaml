@@ -32,7 +32,7 @@ description: Default Super Mario Land 2 Template
 
 game: Super Mario Land 2
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Super Mario Land 2:
   ################
@@ -47,8 +47,9 @@ Super Mario Land 2:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -83,8 +84,9 @@ Super Mario Land 2:
     # Maximum value is 6
     6: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-6: 0 # random value between 0 and 6
 
   mario_coin_fragment_percentage:
     # Percentage of filler items to be replaced with Mario Coin Fragments. Note that the Coinsanity and Coinsanity
@@ -95,8 +97,9 @@ Super Mario Land 2:
     # Maximum value is 50
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-50: 0 # random value between 1 and 50
 
   mario_coin_fragments_required_percentage:
     # Percentage of the Mario Coins in the item pool that are required to put the Mario Coin together.
@@ -106,8 +109,9 @@ Super Mario Land 2:
     # Maximum value is 100
     75: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   coinsanity:
     # Shuffles the singular coins found freestanding and in question mark blocks into the item pool, and adds location
@@ -126,8 +130,9 @@ Super Mario Land 2:
     # Maximum value is 2597
     150: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-31-2597: 0 # random value between 31 and 2597
 
   shuffle_midway_bells:
     # Shuffle Midway Bells into the item pool. You can always start at the beginning of a level after obtaining the
@@ -175,8 +180,9 @@ Super Mario Land 2:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     vanilla: 50 # equivalent to -1
     none: 0 # equivalent to 0
     all: 0 # equivalent to 100

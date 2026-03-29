@@ -32,7 +32,7 @@ description: Default plateup Template
 
 game: plateup
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 plateup:
   ################
@@ -47,8 +47,9 @@ plateup:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -75,8 +76,9 @@ plateup:
     # Maximum value is 50
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-50: 0 # random value between 1 and 50
 
   day_count:
     # Select how many days are required for completion. (Only used if Goal=complete_x_days)
@@ -86,8 +88,9 @@ plateup:
     # Maximum value is 1000
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-1000: 0 # random value between 10 and 1000
 
   dish:
     # How many dishes the player starts with (1-15) or 0 for disabled.
@@ -97,8 +100,9 @@ plateup:
     # Maximum value is 15
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
 
   appliances_kept:
     # How many appliances the player keeps each run.
@@ -108,8 +112,9 @@ plateup:
     # Maximum value is 5
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   death_link:
     # Enable death link mode, affecting all linked players.

@@ -32,7 +32,7 @@ description: Default Sonic Rush Template
 
 game: Sonic Rush
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Sonic Rush:
   ################
@@ -47,8 +47,9 @@ Sonic Rush:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -89,8 +90,9 @@ Sonic Rush:
     # Maximum value is 8
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-8: 0 # random value between 1 and 8
 
   include_s_rank_checks:
     # Adds reaching S rank on acts and/or bosses (excluding F-Zone and Extra zone) as additional checks.
@@ -119,8 +121,9 @@ Sonic Rush:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     none: 50 # equivalent to 0
     rare: 0 # equivalent to 4
     occasionally: 0 # equivalent to 10

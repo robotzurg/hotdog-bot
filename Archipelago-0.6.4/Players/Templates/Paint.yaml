@@ -32,7 +32,7 @@ description: Default Paint Template
 
 game: Paint
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Paint:
   ################
@@ -47,8 +47,9 @@ Paint:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -71,8 +72,9 @@ Paint:
     # Maximum value is 95
     80: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-50-95: 0 # random value between 50 and 95
 
   goal_percent:
     # Sets the percent similarity required to achieve your goal.
@@ -84,8 +86,9 @@ Paint:
     # Maximum value is 95
     80: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-50-95: 0 # random value between 50 and 95
 
   half_percent_checks:
     # Sets the lowest percent at which locations will be created for each 0.5% of similarity.
@@ -97,8 +100,9 @@ Paint:
     # Maximum value is 95
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-95: 0 # random value between 0 and 95
 
   quarter_percent_checks:
     # Sets the lowest percent at which locations will be created for each 0.25% of similarity.
@@ -109,8 +113,9 @@ Paint:
     # Maximum value is 95
     70: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-95: 0 # random value between 0 and 95
 
   canvas_size_increment:
     # Sets the number of pixels the canvas will expand for each width/height item received.
@@ -138,8 +143,9 @@ Paint:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   death_link:
     # If on, using the Undo or Clear Image functions will send a death to all other players with death link on.

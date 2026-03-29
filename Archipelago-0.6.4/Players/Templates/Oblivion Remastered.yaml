@@ -32,7 +32,7 @@ description: Default Oblivion Remastered Template
 
 game: Oblivion Remastered
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Oblivion Remastered:
   ################
@@ -47,8 +47,9 @@ Oblivion Remastered:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -87,8 +88,9 @@ Oblivion Remastered:
     # Maximum value is 10
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   shrine_goal:
     # For Shrine Seeker goal: How many Daedric Shrine quests you need to complete for victory.
@@ -101,8 +103,9 @@ Oblivion Remastered:
     # Maximum value is 15
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-15: 0 # random value between 1 and 15
 
   shrine_count:
     # Number of Daedric Shrine quests available as location checks. Shrines require Shrine Unlock Tokens to access.
@@ -118,8 +121,9 @@ Oblivion Remastered:
     # Maximum value is 15
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
 
   arena_matches:
     # Number of Arena matches available as location checks. Arena matches require Arena Rank items to access.
@@ -135,8 +139,9 @@ Oblivion Remastered:
     # Maximum value is 21
     12: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-21: 0 # random value between 0 and 21
 
   region_unlocks:
     # Number of regions that will appear as unlock items.
@@ -149,8 +154,9 @@ Oblivion Remastered:
     # Maximum value is 10
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   dungeons_per_region:
     # Maximum number of dungeons selected from each unlocked region.
@@ -163,8 +169,9 @@ Oblivion Remastered:
     # Maximum value is 24
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-24: 0 # random value between 1 and 24
 
   class_selection:
     # Choose your character class:
@@ -214,8 +221,9 @@ Oblivion Remastered:
     # Maximum value is 5
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   start_with_class:
     # When true: Start with your above selected class unlocked immediately.
@@ -240,8 +248,9 @@ Oblivion Remastered:
     # Maximum value is 5
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   gate_vision:
     # Determines how Oblivion Gate map markers are visible:

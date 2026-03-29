@@ -32,7 +32,7 @@ description: Default ClusterTruck Template
 
 game: ClusterTruck
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 ClusterTruck:
   ################
@@ -47,8 +47,9 @@ ClusterTruck:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -290,8 +291,9 @@ ClusterTruck:
     # Maximum value is 103
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-103: 0 # random value between 5 and 103
 
   skipped_levels:
     # List as many levels as you would like to skip completing
@@ -306,8 +308,9 @@ ClusterTruck:
     # Maximum value is 20
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-20: 0 # random value between 1 and 20
 
   deathlink_amnesty:
     # The number of deaths needed to send out a deathlink event
@@ -318,8 +321,9 @@ ClusterTruck:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   trap_percentage:
     # Choose the percentage of trap items that will appear when filling the pool with filler
@@ -329,8 +333,9 @@ ClusterTruck:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ###########################
   # Item & Location Options #

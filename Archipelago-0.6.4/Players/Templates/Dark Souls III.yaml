@@ -32,7 +32,7 @@ description: Default Dark Souls III Template
 
 game: Dark Souls III
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Dark Souls III:
   ################
@@ -47,8 +47,9 @@ Dark Souls III:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -165,8 +166,9 @@ Dark Souls III:
     # Maximum value is 100
     33: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     similar to base game: 0 # equivalent to 2
 
   randomize_weapon_level:
@@ -189,8 +191,9 @@ Dark Souls III:
     # Maximum value is 100
     33: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   min_levels_in_5:
     # The minimum upgraded value of a weapon in the pool of weapons that can only reach +5.
@@ -200,8 +203,9 @@ Dark Souls III:
     # Maximum value is 5
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   max_levels_in_5:
     # The maximum upgraded value of a weapon in the pool of weapons that can only reach +5.
@@ -211,8 +215,9 @@ Dark Souls III:
     # Maximum value is 5
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   min_levels_in_10:
     # The minimum upgraded value of a weapon in the pool of weapons that can reach +10.
@@ -222,8 +227,9 @@ Dark Souls III:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   max_levels_in_10:
     # The maximum upgraded value of a weapon in the pool of weapons that can reach +10.
@@ -233,8 +239,9 @@ Dark Souls III:
     # Maximum value is 10
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   ##################
   # Item Smoothing #
@@ -360,7 +367,7 @@ Dark Souls III:
   ###########################
   exclude_locations:
     # Prevent these locations from having an important item.
-    ['Hidden', 'Small Crystal Lizards', 'Miscellaneous', 'Upgrade', 'Small Souls']
+    ['Miscellaneous', 'Small Crystal Lizards', 'Small Souls', 'Hidden', 'Upgrade']
 
   excluded_location_behavior:
     # How to choose items for excluded locations in DS3.

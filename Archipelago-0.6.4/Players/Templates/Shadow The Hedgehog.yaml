@@ -32,7 +32,7 @@ description: Default Shadow The Hedgehog Template
 
 game: Shadow The Hedgehog
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Shadow The Hedgehog:
   ################
@@ -47,8 +47,9 @@ Shadow The Hedgehog:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -70,8 +71,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   objective_sanity_system:
     # Option to determine what triggers objective sanity checks.
@@ -109,8 +111,9 @@ Shadow The Hedgehog:
     # Maximum value is 5
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   weapon_sanity_max_available:
     # Maximum value for weapon weapons to be in the item pool.
@@ -120,8 +123,9 @@ Shadow The Hedgehog:
     # Maximum value is 5
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   enable_ring_items:
     # Determines if ring filler is included.
@@ -165,8 +169,9 @@ Shadow The Hedgehog:
     # Maximum value is 5
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   shadow_mod:
     # Shadow Mod intended to be used. In order to use a mod you accept that the game may not yet
@@ -251,8 +256,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   exceeding_items_filler_random:
     # Determines chance of marking exceeding filler items as useful rather than progression
@@ -262,8 +268,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   start_inventory_excess_items:
     # Add items to start inventory if not enough locations found.
@@ -294,8 +301,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     75: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   goal_final_missions:
     # Determines what percentage of final missions are required for completion, rounded up.
@@ -305,8 +313,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   goal_hero_missions:
     # Determines what percentage of hero missions are required for completion, rounded up.
@@ -316,8 +325,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   goal_dark_missions:
     # Determines what percentage of dark missions are required for completion, rounded up.
@@ -327,8 +337,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   goal_objective_missions:
     # Determines what percentage of objective missions are required for completion, rounded up.
@@ -338,8 +349,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   goal_bosses:
     # Determines what percentage of bosses are required for completion, rounded up.
@@ -349,8 +361,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ############
   # Sanities #
@@ -455,8 +468,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   objective_enemy_percentage:
     # When playing Objective Sanity, determine the percentage of items required to finish stages for enemy objectives.
@@ -466,8 +480,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     90: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   objective_completion_percentage:
     # When playing Objective Sanity, determine the percentage of items required to finish stages.
@@ -478,8 +493,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   objective_completion_enemy_percentage:
     # When playing Enemy Objective Sanity, determine the percentage of items required to finish stages.
@@ -491,8 +507,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     90: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   objective_item_percentage_available:
     # When playing Objective Sanity, determine the percentage of items required to finish stages added alongside
@@ -503,8 +520,9 @@ Shadow The Hedgehog:
     # Maximum value is 900
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-900: 0 # random value between 0 and 900
 
   objective_item_enemy_percentage_available:
     # When playing Objective Enemy Sanity, determine the percentage of items required to finish stages added alongside
@@ -515,8 +533,9 @@ Shadow The Hedgehog:
     # Maximum value is 900
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-900: 0 # random value between 0 and 900
 
   enemy_sanity_percentage:
     # Determines the percentage of enemysanity checks in a stage to be included.
@@ -526,8 +545,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   percent_overrides:
     # Advanced YAML setting to provide keys to dictate percentage based overrides.
@@ -550,8 +570,9 @@ Shadow The Hedgehog:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   enemy_objective_frequency:
     # Frequency of checks for enemy objective checks as percentage.
@@ -561,8 +582,9 @@ Shadow The Hedgehog:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   objective_frequency:
     # Frequency of checks for objective checks, i.e. if set to 4, each 4 progress is 1 check.
@@ -573,8 +595,9 @@ Shadow The Hedgehog:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   boss_logic_level:
     # Determines the boss logic level for playthrough.
@@ -623,8 +646,9 @@ Shadow The Hedgehog:
     # Maximum value is 3
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-3: 0 # random value between 0 and 3
 
   starting_level_method:
     # Ensures clearable neutral stages are picked first for starting stages.
@@ -661,8 +685,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   ########
   # Junk #
@@ -691,8 +716,9 @@ Shadow The Hedgehog:
     # Maximum value is 22
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-22: 0 # random value between 0 and 22
 
   force_objective_sanity_chance:
     # Determines the probability of a objective-sanity stage being force-added to Priority Locations
@@ -702,8 +728,9 @@ Shadow The Hedgehog:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   force_objective_sanity_max:
     # Determines the upper limit of total objectsanity items in priority locations.
@@ -713,8 +740,9 @@ Shadow The Hedgehog:
     # Maximum value is 60
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-60: 0 # random value between 0 and 60
 
   force_objective_sanity_max_counter:
     # Determines the upper limit of stages to be forced into priority locations.
@@ -724,8 +752,9 @@ Shadow The Hedgehog:
     # Maximum value is 1000
     1000: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1000: 0 # random value between 0 and 1000
 
   excluded_stages:
     # Stage names to exclude checks from.

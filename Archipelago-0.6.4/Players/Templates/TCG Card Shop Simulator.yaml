@@ -32,7 +32,7 @@ description: Default TCG Card Shop Simulator Template
 
 game: TCG Card Shop Simulator
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 TCG Card Shop Simulator:
   ################
@@ -47,8 +47,9 @@ TCG Card Shop Simulator:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -73,8 +74,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-100: 0 # random value between 10 and 100
 
   licenses_per_region:
     # Every 5 levels, across all 4 shop pages, how many licenses will be available?
@@ -85,8 +87,9 @@ TCG Card Shop Simulator:
     # Maximum value is 14
     6: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-6-14: 0 # random value between 6 and 14
 
   required_licenses:
     # Every 5 levels, you will stop leveling up until you have a certain number of licenses unlocked for items that you can sell.
@@ -99,8 +102,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-50-100: 0 # random value between 50 and 100
 
   goal:
     # The victory condition for your run.
@@ -118,8 +122,9 @@ TCG Card Shop Simulator:
     # Maximum value is 80
     40: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-80: 0 # random value between 1 and 80
 
   start_with_worker:
     # Choose a worker to start with.
@@ -153,8 +158,9 @@ TCG Card Shop Simulator:
     # Maximum value is 8
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-4-8: 0 # random value between 4 and 8
 
   sell_check_amount:
     # How many sell checks will each item have?
@@ -166,8 +172,9 @@ TCG Card Shop Simulator:
     # Maximum value is 16
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-2-16: 0 # random value between 2 and 16
 
   checks_per_pack:
     # How many checks are in each of the 8 packs:
@@ -181,8 +188,9 @@ TCG Card Shop Simulator:
     # Maximum value is 30
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-30: 0 # random value between 0 and 30
 
   card_collect_percent:
     # How much of a pack do you need to collect to get all card checks
@@ -197,8 +205,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     33: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-100: 0 # random value between 10 and 100
 
   play_table_checks:
     # How many checks are there for play tables
@@ -208,8 +217,9 @@ TCG Card Shop Simulator:
     # Maximum value is 50
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
 
   games_per_check:
     # How many play table games are needed per game check.
@@ -220,8 +230,9 @@ TCG Card Shop Simulator:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   sell_card_check_count:
     # This adds checks to selling Tetramon and Destiny cards.
@@ -232,8 +243,9 @@ TCG Card Shop Simulator:
     # Maximum value is 50
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
 
   sell_cards_per_check:
     # How many cards do you need to sell per check
@@ -243,8 +255,9 @@ TCG Card Shop Simulator:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   all_level_checks:
     # Adds all levels to the location pool, rather than the default of only every 5 levels
@@ -293,8 +306,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   xp_boosts:
     # Determines the percentage of Filler contain Shop Xp
@@ -305,8 +319,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   random_card:
     # Determines the percentage of Filler are random cards. Watch out for repeats!
@@ -316,8 +331,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   random_new_card:
     # Determines the percentage of Filler are random cards that will always be new
@@ -328,8 +344,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   customer_wealth:
     # Determines the percentage of Filler
@@ -340,8 +357,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   card_luck:
     # Determines the percentage of Filler
@@ -352,8 +370,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_fill:
     # Determines the percentage of the junk fill which is filled with traps.
@@ -363,8 +382,9 @@ TCG Card Shop Simulator:
     # Maximum value is 80
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-80: 0 # random value between 0 and 80
 
   stink_trap:
     # You know what this does. Stinky.
@@ -376,8 +396,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   poltergeist_trap:
     # Something is messing with the lights
@@ -389,8 +410,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   credit_card_failure_trap:
     # Credit cards fail to work for a little while
@@ -402,8 +424,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   market_change_trap:
     # Causes prices to randomize
@@ -415,8 +438,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   currency_trap:
     # Causes Currency to Randomize
@@ -428,8 +452,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   decrease_card_luck_trap:
     # Lowers your card luck
@@ -441,8 +466,9 @@ TCG Card Shop Simulator:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ###########################
   # Item & Location Options #

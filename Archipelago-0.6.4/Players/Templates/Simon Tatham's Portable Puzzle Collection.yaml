@@ -32,9 +32,9 @@ description: Default Simon Tatham's Portable Puzzle Collection Template
 
 game: Simon Tatham's Portable Puzzle Collection
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
-    Simon Tatham's Portable Puzzle Collection: 0.1.11 # Version of the world required for this yaml to work as expected.
+    Simon Tatham's Portable Puzzle Collection: 0.1.16 # Version of the world required for this yaml to work as expected.
 
 Simon Tatham's Portable Puzzle Collection:
   ################
@@ -49,8 +49,9 @@ Simon Tatham's Portable Puzzle Collection:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -75,8 +76,9 @@ Simon Tatham's Portable Puzzle Collection:
     # Maximum value is 2000
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-2000: 0 # random value between 1 and 2000
 
   starting_puzzles:
     # Number of puzzles to randomly add to the starting inventory. These will be
@@ -87,8 +89,9 @@ Simon Tatham's Portable Puzzle Collection:
     # Maximum value is 20
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
 
   completion_percentage:
     # Percent of puzzles which must be completed to finish the world, rounding up.
@@ -100,8 +103,9 @@ Simon Tatham's Portable Puzzle Collection:
     # Maximum value is 100
     80: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-100: 0 # random value between 10 and 100
 
   min_difficulty:
     # Minimum difficulty to select generated presets from. Note that not all genres have presets at "Hard" difficulty,

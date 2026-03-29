@@ -7,7 +7,7 @@ A Hat in Time:
   death_link: 'false'
   death_link_amnesty: '0'
   dw_death_link_amnesty: '5'
-  EndGoal: seal_the_deal
+  EndGoal: rush_hour
   ShuffleStorybookPages: 'true'
   ShuffleAlpineZiplines: 'true'
   ShuffleSubconPaintings: 'false'
@@ -16,7 +16,7 @@ A Hat in Time:
   MaxPonCost: '300'
   BadgeSellerMinItems: '4'
   BadgeSellerMaxItems: '8'
-  LogicDifficulty: normal
+  LogicDifficulty: moderate
   NoPaintingSkips: 'false'
   CTRLogic: scooter
   ActRandomizer: insanity
@@ -40,23 +40,28 @@ A Hat in Time:
   MaxExtraTimePieces: '16'
   YarnBalancePercent: '20'
   TimePieceBalancePercent: '35'
-  EnableDLC1: 'true'
+  EnableDLC1: 'false'
   Tasksanity: 'false'
   TasksanityTaskStep: '1'
   TasksanityCheckCount: '18'
   ShipShapeCustomTaskGoal: '0'
   ExcludeTour: 'false'
   EnableDLC2: 'true'
+  MetroMinPonCost: '50'
+  MetroMaxPonCost: '200'
+  NyakuzaThugMinShopItems: '2'
+  NyakuzaThugMaxShopItems: '4'
   BaseballBat: 'true'
   NoTicketSkips: 'true'
   EnableDeathWish: 'true'
+  DWTimePieceRequirement: '15'
   DWShuffle: 'true'
   DWShuffleCountMin: '18'
   DWShuffleCountMax: '25'
   DWEnableBonus: 'false'
   DWAutoCompleteBonuses: 'true'
   DWExcludeAnnoyingContracts: 'true'
-  DWExcludeAnnoyingBonuses: 'false'
+  DWExcludeAnnoyingBonuses: 'true'
   DWExcludeCandles: 'false'
   DeathWishOnly: 'false'
   TrapChance: '0'
@@ -71,8 +76,3 @@ A Hat in Time:
   priority_locations: []
   start_inventory: {}
   start_inventory_from_pool: {}
-  MetroMinPonCost: random
-  MetroMaxPonCost: random
-  NyakuzaThugMinShopItems: random
-  NyakuzaThugMaxShopItems: random
-  DWTimePieceRequirement: random

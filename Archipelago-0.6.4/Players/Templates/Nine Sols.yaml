@@ -32,7 +32,7 @@ description: Default Nine Sols Template
 
 game: Nine Sols
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     Nine Sols: 0.3.5 # Version of the world required for this yaml to work as expected.
 
@@ -49,8 +49,9 @@ Nine Sols:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -79,8 +80,9 @@ Nine Sols:
     # Maximum value is 8
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   seals_for_prison:
     # The number of Sol Seals needed for Jiequan to appear in Factory (Great Hall), allowing you to "fight" him,
@@ -97,8 +99,9 @@ Nine Sols:
     # Maximum value is 8
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   seals_for_ethereal:
     # The number of Sol Seals needed for the entrance to Lady Ethereal's soulscape to appear in Cortex Center.
@@ -111,8 +114,9 @@ Nine Sols:
     # Maximum value is 7
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-7: 0 # random value between 0 and 7
 
   skip_soulscape_platforming:
     # After you collect enough Sol Seals to unlock Lady Ethereal's soulscape (see seals_for_ethereal),
@@ -142,8 +146,9 @@ Nine Sols:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   jade_cost_max:
     # The maximum possible jade cost. Has no effect if randomize_jade_costs is false.
@@ -153,8 +158,9 @@ Nine Sols:
     # Maximum value is 10
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   jade_cost_plando:
     # Manually specify the cost of certain jades. For example: { "Stasis Jade": 0, "Steely Jade": 10 }

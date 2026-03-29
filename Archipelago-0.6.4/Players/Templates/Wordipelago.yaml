@@ -32,7 +32,7 @@ description: Default Wordipelago Template
 
 game: Wordipelago
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Wordipelago:
   ################
@@ -47,8 +47,9 @@ Wordipelago:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -73,8 +74,9 @@ Wordipelago:
     # Maximum value is 26
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-26: 0 # random value between 1 and 26
 
   starting_guesses:
     # How many guesses you start the game with.
@@ -84,8 +86,9 @@ Wordipelago:
     # Maximum value is 6
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-6: 0 # random value between 1 and 6
 
   additional_guesses:
     # How many extra guesses are added to the item pool.
@@ -96,8 +99,9 @@ Wordipelago:
     # Maximum value is 10
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   starting_cooldown:
     # How long (in seconds) the new round cooldown is at the start of the game.
@@ -107,8 +111,9 @@ Wordipelago:
     # Maximum value is 18000
     120: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-18000: 0 # random value between 0 and 18000
 
   yellow_unlocked:
     # Whether you start with yellow letters unlocked at the start of the game.
@@ -144,8 +149,9 @@ Wordipelago:
     # Maximum value is 50
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-50: 0 # random value between 1 and 50
 
   word_streak_checks:
     # How many words you have to get right in a row to hit you goal
@@ -155,8 +161,9 @@ Wordipelago:
     # Maximum value is 50
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-50: 0 # random value between 1 and 50
 
   win_condition:
     # What is needed to achieve victory, hitting the target for words, streaks or both.
@@ -172,20 +179,36 @@ Wordipelago:
     # easy: easy to get checks, guesses/vowels/yellow likely early.
     # normal: easier to get checks, but still restrictive in some ways.
     # hard: bare minimum required to achive checks.
+    very_easy: 0
     easy: 0
     normal: 50
     hard: 0
+    very_hard: 0
+
+  point_shop_logic_level:
+    # When logic expects you to be able to buy shop items.
+    # one: Matches 1x green letter logic, point generation expected to be very low.
+    # two: Matches 2x green letter logic.
+    # three: Matches 3x green letter logic, default level, reasonable level of point generation.
+    # four: Matches 4x green letter logic.
+    # five: Matches 5x green letter logic, point generation expected to be much higher.
+    one: 0
+    two: 0
+    three: 50
+    four: 0
+    five: 0
 
   word_weighting:
     # How likely new words fit with the letters you have unlocked.
     #
     # You can define additional values between the minimum and maximum values.
-    # Minimum value is 0
+    # Minimum value is 1
     # Maximum value is 10
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   #############
   # Locations #
@@ -198,8 +221,9 @@ Wordipelago:
     # Maximum value is 50
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-50: 0 # random value between 1 and 50
 
   point_shop_check_price:
     # How much AP items cost in the point shop.
@@ -211,8 +235,9 @@ Wordipelago:
     # Maximum value is 1000
     300: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1000: 0 # random value between 0 and 1000
 
   green_checks:
     # How checks work for green letters in words.
@@ -255,8 +280,9 @@ Wordipelago:
     # Maximum value is 30
     12: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-30: 0 # random value between 0 and 30
 
   time_reward_seconds:
     # How many seconds each time reward decreases the new round cooldown by.
@@ -267,8 +293,9 @@ Wordipelago:
     # Maximum value is 30
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-30: 0 # random value between 0 and 30
 
   extra_time_reward_percent:
     # What percentage of filler items will be replaced with an extra cooldown reduction.
@@ -278,8 +305,9 @@ Wordipelago:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   shop_points_item_reward_percent:
     # What percentage of filler items will be replaced with Shop Points.
@@ -289,8 +317,9 @@ Wordipelago:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   shop_points_item_size:
     # How many Shop Points are awarded with Shop Point filler items.
@@ -300,8 +329,9 @@ Wordipelago:
     # Maximum value is 1000
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1000: 0 # random value between 0 and 1000
 
   shop_points_item_default_filler:
     # Whether the default filler item is point shop points, extra fillers are Suggestions otherwise.
@@ -319,8 +349,9 @@ Wordipelago:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   random_guess_trap_percent:
     # What percentage of filler items will be replaced with Random Guess traps.
@@ -330,8 +361,9 @@ Wordipelago:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   extra_cooldown_trap_percent:
     # What percentage of filler items will be replaced with Extra Cooldown traps.
@@ -341,8 +373,9 @@ Wordipelago:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   extra_cooldown_trap_size:
     # How many second are added with the extra cooldown traps.
@@ -352,8 +385,9 @@ Wordipelago:
     # Maximum value is 300
     15: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-300: 0 # random value between 0 and 300
 
   ###########################
   # Item & Location Options #

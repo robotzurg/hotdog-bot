@@ -32,7 +32,7 @@ description: Default Adventure Template
 
 game: Adventure
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Adventure:
   ################
@@ -47,8 +47,9 @@ Adventure:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -101,8 +102,9 @@ Adventure:
     # Maximum value is 17
     17: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-17: 0 # random value between 0 and 17
 
   dragon_rando_type:
     # How to randomize the dragon starting locations
@@ -137,8 +139,9 @@ Adventure:
     # Maximum value is 9
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-9: 0 # random value between 1 and 9
 
   yorgle_min_speed:
     # Sets Yorgle's speed when all speed reducers are found.  Yorgle has a speed of 2 in the original game
@@ -149,8 +152,9 @@ Adventure:
     # Maximum value is 9
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-9: 0 # random value between 1 and 9
 
   grundle_speed:
     # Sets Grundle's initial speed.  Grundle has a speed of 2 in the original game
@@ -161,8 +165,9 @@ Adventure:
     # Maximum value is 9
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-9: 0 # random value between 1 and 9
 
   grundle_min_speed:
     # Sets Grundle's speed when all speed reducers are found.  Grundle has a speed of 2 in the original game
@@ -173,8 +178,9 @@ Adventure:
     # Maximum value is 9
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-9: 0 # random value between 1 and 9
 
   rhindle_speed:
     # Sets Rhindle's initial speed.  Rhindle has a speed of 3 in the original game
@@ -185,8 +191,9 @@ Adventure:
     # Maximum value is 9
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-9: 0 # random value between 1 and 9
 
   rhindle_min_speed:
     # Sets Rhindle's speed when all speed reducers are found.  Rhindle has a speed of 3 in the original game
@@ -197,8 +204,9 @@ Adventure:
     # Maximum value is 9
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-9: 0 # random value between 1 and 9
 
   difficulty_switch_a:
     # Set availability of left difficulty switch

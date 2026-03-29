@@ -32,7 +32,9 @@ description: Default Yacht Dice Template
 
 game: Yacht Dice
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Yacht Dice: 2.1.4 # Version of the world required for this yaml to work as expected.
 
 Yacht Dice:
   ################
@@ -47,8 +49,9 @@ Yacht Dice:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -83,8 +86,9 @@ Yacht Dice:
     # Maximum value is 1000
     1000: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-500-1000: 0 # random value between 500 and 1000
 
   score_for_goal:
     # This option determines what score you need to reach to finish the game.
@@ -95,8 +99,9 @@ Yacht Dice:
     # Maximum value is 1000
     777: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-500-1000: 0 # random value between 500 and 1000
 
   minimal_number_of_dice_and_rolls:
     # The minimal number of dice and rolls in the pool.
@@ -120,8 +125,9 @@ Yacht Dice:
     # Maximum value is 5
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   number_of_roll_fragments_per_roll:
     # Rolls can be split into fragments, gathering enough will give you an extra roll.
@@ -134,8 +140,9 @@ Yacht Dice:
     # Maximum value is 5
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   alternative_categories:
     # There are 16 default categories, but there are also 16 alternative categories.
@@ -149,8 +156,9 @@ Yacht Dice:
     # Maximum value is 16
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-16: 0 # random value between 0 and 16
 
   allow_manual_input:
     # If allowed, players can roll IRL dice and input them manually into the game.
@@ -174,8 +182,9 @@ Yacht Dice:
     # Maximum value is 100
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   weight_of_roll:
     # With more rolls, you will be able to reach higher scores.
@@ -185,8 +194,9 @@ Yacht Dice:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   weight_of_fixed_score_multiplier:
     # Getting a Fixed Score Multiplier will boost all future scores by 10%.
@@ -196,8 +206,9 @@ Yacht Dice:
     # Maximum value is 100
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   weight_of_step_score_multiplier:
     # The Step Score Multiplier boosts your multiplier after every roll by 1%, and resets on sheet reset.
@@ -209,8 +220,9 @@ Yacht Dice:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   weight_of_double_category:
     # This option allows categories to appear multiple times.
@@ -221,8 +233,9 @@ Yacht Dice:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   weight_of_points:
     # Are you tired of rolling dice countless times and tallying up points one by one, all by yourself? 
@@ -235,8 +248,9 @@ Yacht Dice:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   points_size:
     # If you choose to add points to the item pool, you can choose to have many small points,

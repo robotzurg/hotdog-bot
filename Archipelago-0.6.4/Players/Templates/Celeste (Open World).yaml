@@ -32,7 +32,7 @@ description: Default Celeste (Open World) Template
 
 game: Celeste (Open World)
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     Celeste (Open World): 1.0.5 # Version of the world required for this yaml to work as expected.
 
@@ -49,8 +49,9 @@ Celeste (Open World):
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -77,8 +78,9 @@ Celeste (Open World):
     # Maximum value is 30
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-30: 0 # random value between 1 and 30
 
   trap_link:
     # Whether your received traps are linked to other players
@@ -121,8 +123,9 @@ Celeste (Open World):
     # Maximum value is 202
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-202: 0 # random value between 0 and 202
 
   strawberries_required_percentage:
     # Percentage of existing Strawberries you must receive to access your Goal Area (if Lock Goal Area is active) and the Epilogue
@@ -132,8 +135,9 @@ Celeste (Open World):
     # Maximum value is 100
     80: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ####################
   # Location Options #
@@ -205,8 +209,9 @@ Celeste (Open World):
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_fill_percentage:
     # Replace a percentage of junk items in the item pool with random traps
@@ -216,8 +221,9 @@ Celeste (Open World):
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_expiration_action:
     # The type of action which causes traps to wear off
@@ -233,8 +239,9 @@ Celeste (Open World):
     # Maximum value is 10
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   bald_trap_weight:
     # Likelihood of receiving a trap which makes Maddy bald

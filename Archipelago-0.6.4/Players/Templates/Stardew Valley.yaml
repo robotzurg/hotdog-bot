@@ -32,7 +32,7 @@ description: Default Stardew Valley Template
 
 game: Stardew Valley
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     Stardew Valley: 6.0.0 # Version of the world required for this yaml to work as expected.
 
@@ -273,8 +273,9 @@ Stardew Valley:
     # Minimum value is 0
     # Maximum value is 56
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-56: 0 # random value between 0 and 56
     none: 0 # equivalent to -1
     story: 0 # equivalent to 0
     minimum: 50 # equivalent to 7
@@ -334,8 +335,9 @@ Stardew Valley:
     # Maximum value is 8
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-8: 0 # random value between 1 and 8
 
   monstersanity:
     # Locations for slaying monsters?
@@ -393,8 +395,9 @@ Stardew Valley:
     # Minimum value is 0
     # Maximum value is 15
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
     none: 50 # equivalent to 0
     queen_of_sauce: 0 # equivalent to 1
     purchases: 0 # equivalent to 2
@@ -440,8 +443,9 @@ Stardew Valley:
     # Minimum value is 0
     # Maximum value is 50000
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50000: 0 # random value between 0 and 50000
     unlimited: 0 # equivalent to -1
     vanilla: 0 # equivalent to 500
     extra: 0 # equivalent to 2000
@@ -456,8 +460,9 @@ Stardew Valley:
     # Minimum value is 25
     # Maximum value is 400
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-25-400: 0 # random value between 25 and 400
     quarter: 0 # equivalent to 25
     half: 0 # equivalent to 50
     normal: 50 # equivalent to 100
@@ -474,8 +479,9 @@ Stardew Valley:
     # Minimum value is 25
     # Maximum value is 800
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-25-800: 0 # random value between 25 and 800
     half: 0 # equivalent to 50
     vanilla: 0 # equivalent to 100
     double: 50 # equivalent to 200
@@ -491,8 +497,9 @@ Stardew Valley:
     # Minimum value is 25
     # Maximum value is 800
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-25-800: 0 # random value between 25 and 800
     half: 0 # equivalent to 50
     vanilla: 0 # equivalent to 100
     double: 50 # equivalent to 200
@@ -521,8 +528,9 @@ Stardew Valley:
     # Maximum value is 12
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-12: 0 # random value between 0 and 12
 
   enabled_filler_buffs:
     # Enable various permanent player buffs to roll as filler items
@@ -535,7 +543,7 @@ Stardew Valley:
     # Bite Rate: Shorter delay to get a bite when fishing
     # Fish Trap: Effect similar to the Trap Bobber, but weaker
     # Fishing Bar Size: Increased Fishing Bar Size
-    ['Bite Rate', 'Luck', 'Defense']
+    ['Luck', 'Defense', 'Bite Rate']
 
   trap_difficulty:
     # When rolling filler items, including resource packs, the game can also roll trap items.
@@ -591,8 +599,9 @@ Stardew Valley:
     # Minimum value is 0
     # Maximum value is 200
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-200: 0 # random value between 0 and 200
     free: 50 # equivalent to 0
     cheap: 0 # equivalent to 10
     medium: 0 # equivalent to 25
@@ -637,8 +646,9 @@ Stardew Valley:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99

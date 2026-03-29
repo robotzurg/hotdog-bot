@@ -32,7 +32,9 @@ description: Default Slay the Spire Template
 
 game: Slay the Spire
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Slay the Spire: 2.2.1 # Version of the world required for this yaml to work as expected.
 
 Slay the Spire:
   ################
@@ -47,8 +49,9 @@ Slay the Spire:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -62,31 +65,34 @@ Slay the Spire:
     full: 50
     minimal: 0
 
-  character:
-    # Enter the internal ID of the character to use.
-    # 
-    #  if you don't know the exact ID to enter with the mod installed go to
-    # `Mods -> Archipelago Multi-world -> config` to view a list of installed modded character IDs.
-    # 
-    # the downfall characters will only work if you have downfall installed.
-    # 
-    # Spire Take the Wheel will have your client pick a random character from the list of all your installed characters
-    # including custom ones.
-    # 
-    # if the chosen character mod is not installed it will default back to 'The Ironclad'
-    the_ironclad: 50
-    the_silent: 0
-    the_defect: 0
-    the_watcher: 0
-    the_hermit: 0
-    the_slime_boss: 0
-    the_guardian: 0
-    the_hexaghost: 0
-    the_champ: 0
-    the_gremlins: 0
-    the_automaton: 0
-    the_snecko: 0
-    spire_take_the_wheel: 0
+  characters:
+    # Enter the list of characters to play as.  Valid characters are:
+    # 'Ironclad'
+    # 'Silent'
+    # 'Defect'
+    # 'Watcher'
+    # 'Hermit'
+    # 'SlimeBoss'
+    # 'Guardian'
+    # 'Hexaghost'
+    # 'Champ'
+    # 'Gremlins'
+    # 'Automaton'
+    # 'Snecko'
+    # 'Collector'
+    ['Ironclad', 'Silent', 'Defect', 'Watcher']
+
+  num_chars_goal:
+    # How many characters you need to complete a run with before you goal. 0 means all characters
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 18
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-18: 0 # random value between 0 and 18
 
   ascension:
     # What Ascension do you wish to play with.
@@ -94,10 +100,27 @@ Slay the Spire:
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 0
     # Maximum value is 20
+    1: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
+
+  ascension_down:
+    # The number of ascension downs to add to the item pool, per character. Only valid when
+    # `use_advanced_characters` is false (see `advanced_characters`), and when `include_floor_checks` is true.
+    # Will be ignored if invalid.
+    # 
+    # Logic does NOT account for this.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 20
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
 
   final_act:
     # Whether you will need to collect the 3 keys and beat the final act to complete the game.
@@ -117,8 +140,231 @@ Slay the Spire:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  use_advanced_characters:
+    # Whether to use the advanced characters feature. The normal options for character, ascension, etc. are ignored.
+    # See the "advanced_characters" option.
+    'false': 50
+    'true': 0
+
+  lock_characters:
+    # Whether in a multi character run "Unlock [Char]" items should be shuffled in.
+    # locked_fixed means the unlocked_character option is used to determine which character to start with
+    # locked_random means which character you start with is randomized
+    # unlocked means you start with all characters available
+    unlocked: 0
+    locked_random: 50
+    locked_fixed: 0
+
+  unlocked_character:
+    # Which character to start unlocked, if lock_characters is set to locked_fixed.
+    # Can also enter a character name for modded characters.
+    ironclad: 0
+    silent: 0
+    defect: 0
+    watcher: 0
+    hermit: 0
+    slimeboss: 0
+    guardian: 0
+    hexaghost: 0
+    champ: 0
+    gremlins: 0
+    automaton: 0
+    snecko: 0
+    collector: 0
+    '': 50
+
+  advanced_characters:
+    # The configuration for advanced characters.  Each character's options can be configured
+    # independently of each other.  No validation is done on the character name, so use carefully.
+    # Format is:
+    #     <char name>:
+    #         ascension: <number>
+    #         downfall: 0 or 1
+    #         final_act: 0 or 1
+    #         ascension_down: <number>
+    # 
+    # If using a non-downfall modded character:
+    # Enter the internal ID of the character to use.
+    # 
+    #  if you don't know the exact ID to enter with the mod installed go to
+    # `Mods -> Archipelago Multi-world -> config` to view a list of installed modded character IDs.
+    # 
+    # the downfall characters will only work if you have downfall installed.
+    # If the chosen character mod is not installed, checks will be sent when another character
+    # sends them.  If none of the chosen character mods are installed, you will be playing
+    # a very boring Ironclad run.
+    ironclad:
+      ascension: 1
+      ascension_down: 0
+      downfall: 0
+      final_act: 1
+
+  pick_num_characters:
+    # Randomly select from the configured characters this many characters to generate for.
+    # 0 disables.
+    # For example, if "character" is configured to be:
+    #     character:
+    #         - Ironclad
+    #         - Silent
+    #         - Defect
+    # And pick_num_characters is set to 2, then one possible outcome is
+    # to have a run with Ironclad and Defect, but not the Silent.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 17
+    2: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-17: 0 # random value between 0 and 17
+
+  seeded:
+    # Whether each character should have a fixed seed to climb the spire with or not.
+    'false': 50
+    'true': 0
+
+  ############
+  # Sanities #
+  ############
+  include_floor_checks:
+    # Whether to include reaching new floors as a location.  Adds small amounts of gold as items.
+    'false': 0
+    'true': 50
+
+  campfire_sanity:
+    # Whether to shuffle being able to rest and smith at each campsite per act.  Also adds
+    # new locations at campsites per act.
+    'false': 50
+    'true': 0
+
+  gold_sanity:
+    # Whether to enable shuffling gold rewards into the multiworld. Adds 27 locations per character
+    'false': 50
+    'true': 0
+
+  potion_sanity:
+    # Whether to enable shuffling potion drops into the multiworld; adds 9 locations per character.
+    'false': 50
+    'true': 0
+
+  shop_sanity:
+    # Whether to shuffle shop slots into the pool.  Also adds new locations at the shop per slot shuffled.
+    'false': 50
+    'true': 0
+
+  shop_card_slots:
+    # When shop_sanity is enabled, the number of colored card slots to shuffle.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 5
+    2: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
+
+  shop_neutral_card_slots:
+    # When shop_sanity is enabled, the number of neutral card slots to shuffle.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 2
+    1: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2: 0 # random value between 0 and 2
+
+  shop_relic_slots:
+    # WHen shop_sanity is enabled, the number of relic slots to shuffle.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 3
+    2: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-3: 0 # random value between 0 and 3
+
+  shop_potion_slots:
+    # When shop_sanity is enabled, the number of potion slots to shuffle
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 3
+    2: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-3: 0 # random value between 0 and 3
+
+  shop_remove_slots:
+    # When shop_sanity is enabled, whether to shuffle the ability to remove cards at the shop.
+    # Progressive based on Act; i.e. you'll gain the ability to remove cards per Act, starting from Act 1.
+    # Act 4 will be treated as Act 3.
+    'false': 50
+    'true': 0
+
+  shop_sanity_costs:
+    # How expensive the AP shop items should be. Tiered means costs map to typical costs rarity for the slot.
+    # Progression = Rare, Useful = Uncommon, Filler = Common
+    # Logic does not take this option into account.
+    # Fixed=15 gold each
+    # Super_Discount_Tiered=20% of tiered costs
+    # Discount_Tiered=50% of tiered costs
+    # Tiered=Vanilla price for slot
+    fixed: 0
+    super_discount_tiered: 0
+    discount_tiered: 50
+    tiered: 0
+
+  #########
+  # Traps #
+  #########
+  trap_chance:
+    # Chance that a filler item is replaced with a trap.  Requires `include_floor_checks`
+    # for any traps to be added.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  trap_weights:
+    # The list of traps and corresponding weights that will be added to the item pool.
+    # Debuff Trap - Start next combat with a weaker debuff
+    # Strong debuff Trap - Start next combat with a strong debuff
+    # Killer debuff Trap - Start next combat with a debuff has a good chance of killing you
+    # Buff Trap - Next combat, enemies start buffed
+    # Strong Buff Trap - Next combat, enemies start with a strong buff
+    # Status Card Trap - Start next combat with status cards in your draw pile
+    # Gremlin Trap - Next combat, a random gremlin is added to the enemies
+    Buff Trap: 1
+    Debuff Trap: 1
+    Gremlin Trap: 1
+    Killer Debuff Trap: 1
+    Status Card Trap: 1
+    Strong Buff Trap: 1
+    Strong Debuff Trap: 1
+
+  ########
+  # Misc #
+  ########
+  chatty_mc:
+    # Whether the MC should talk about AP events.
+    'false': 0
+    'true': 50
 
   ###########################
   # Item & Location Options #

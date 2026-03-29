@@ -32,7 +32,7 @@ description: Default Timespinner Template
 
 game: Timespinner
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Timespinner:
   ################
@@ -52,8 +52,9 @@ Timespinner:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -248,8 +249,9 @@ Timespinner:
     # Maximum value is 999
     999: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-999: 0 # random value between 1 and 999
 
   aura_cap:
     # Sets the maximum Aura Lunais is allowed to have. Level 1 is 80. Djinn Inferno costs 45.
@@ -259,8 +261,9 @@ Timespinner:
     # Maximum value is 999
     999: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-45-999: 0 # random value between 45 and 999
 
   level_cap:
     # Sets the max level Lunais can achieve.
@@ -270,8 +273,9 @@ Timespinner:
     # Maximum value is 99
     99: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-99: 0 # random value between 1 and 99
 
   extra_earrings_xp:
     # Adds additional XP granted by Galaxy Earrings.
@@ -281,8 +285,9 @@ Timespinner:
     # Maximum value is 24
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-24: 0 # random value between 0 and 24
 
   boss_healing:
     # Enables/disables healing after boss fights. NOTE: Currently only applicable when Boss Rando is enabled.
@@ -313,8 +318,9 @@ Timespinner:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   loot_pool:
     # Sets the items that drop from enemies (does not apply to boss reward checks)
@@ -344,8 +350,9 @@ Timespinner:
     # Maximum value is 100
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   loot_tier_distro:
     # Sets how often items of each rarity tier are placed when 'Loot Pool' is set to 'Random'
@@ -480,8 +487,9 @@ Timespinner:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   traps:
     # List of traps that may be in the item pool to find

@@ -32,7 +32,9 @@ description: Default Ori and the Will of the Wisps Template
 
 game: Ori and the Will of the Wisps
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Ori and the Will of the Wisps: 0.5.3 # Version of the world required for this yaml to work as expected.
 
 Ori and the Will of the Wisps:
   ################
@@ -47,8 +49,9 @@ Ori and the Will of the Wisps:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -126,8 +129,38 @@ Ori and the Will of the Wisps:
     # Maximum value is 11
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-11: 0 # random value between 1 and 11
+
+  launch_fragments:
+    # Spilt Launch into multiple fragments.
+    'false': 50
+    'true': 0
+
+  fragments_required:
+    # Set the amount of launch fragments needed to get Launch.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 10
+    3: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
+
+  fragments_count:
+    # Set the amount of launch fragments in the pool. Launch is in logic when all fragments are accessible.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 10
+    5: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   hard_mode:
     # Play the game in hard difficulty.
@@ -136,6 +169,18 @@ Ori and the Will of the Wisps:
 
   door_rando:
     # Enable door randomizer.
+    'false': 50
+    'true': 0
+
+  regenerate_requirements:
+    # Set a logic difficulty at and above which Regenerate is ignored in region requirements.
+    moki: 0
+    gorlek: 0
+    kii: 50
+    unsafe: 0
+
+  free_teleporters:
+    # Remove the requirements on teleporters for their hard lock skill (e.g. Reach TP requires Flap).
     'false': 50
     'true': 0
 
@@ -149,20 +194,33 @@ Ori and the Will of the Wisps:
     'false': 0
     'true': 50
 
+  zone_hints:
+    # Lupo sells hints that indicate how many progression items are in the area.
+    'false': 0
+    'true': 50
+
   knowledge_hints:
     # Display useful hints on randomizer knowledge while playing the seed.
     'false': 0
     'true': 50
+
+  unpopular:
+    # Enable unpopular paths for unsafe.
+    # 
+    # These involve tedious or extremely hard tricks. No effect without unsafe and glitches.
+    'false': 50
+    'true': 0
 
   death_link:
     # Disable/enable death link. Set this to a non-zero integer to specify how many deaths are needed to trigger it.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 0
-    # Maximum value is 10
+    # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disable: 50 # equivalent to 0
     enable: 0 # equivalent to 1
 
@@ -199,8 +257,8 @@ Ori and the Will of the Wisps:
   #################
   better_spawn:
     # Open some doors so random spawn works better.
-    'false': 50
-    'true': 0
+    'false': 0
+    'true': 50
 
   better_wellspring:
     # The top door of Wellspring Glades is opened by default.
@@ -271,6 +329,11 @@ Ori and the Will of the Wisps:
     # Choose to have Sword at the beginning.
     'false': 0
     'true': 50
+
+  regenerate:
+    # Choose to have Regenerate at the beginning.
+    'false': 50
+    'true': 0
 
   vanilla_shop_upgrades:
     # Weapon upgrades and shards in shops are not randomized.

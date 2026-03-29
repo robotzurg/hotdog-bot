@@ -32,7 +32,7 @@ description: Default Clique Template
 
 game: Clique
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Clique:
   ################
@@ -47,8 +47,9 @@ Clique:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -63,7 +64,7 @@ Clique:
     minimal: 0
 
   color:
-    # Customize your button! Now available in 12 unique colors.
+    # Customize **The Button**! Now available in 12 unique colors.
     red: 50
     orange: 0
     yellow: 0
@@ -81,6 +82,11 @@ Clique:
     # Only for the most masochistically inclined... Requires button activation!
     'false': 50
     'true': 0
+
+  force_progression:
+    # Forces **The Button** to have a progression item. Overrides Excluded Locations.
+    'false': 0
+    'true': 50
 
   ###########################
   # Item & Location Options #

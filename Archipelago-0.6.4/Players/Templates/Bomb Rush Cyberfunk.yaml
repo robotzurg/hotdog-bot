@@ -32,7 +32,7 @@ description: Default Bomb Rush Cyberfunk Template
 
 game: Bomb Rush Cyberfunk
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Bomb Rush Cyberfunk:
   ################
@@ -47,8 +47,9 @@ Bomb Rush Cyberfunk:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -98,8 +99,9 @@ Bomb Rush Cyberfunk:
     # Maximum value is 2000
     1400: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1000-2000: 0 # random value between 1000 and 2000
 
   extra_rep_required:
     # Changes the final boss to require 1000 REP instead of 960 REP to start.
@@ -163,8 +165,9 @@ Bomb Rush Cyberfunk:
     # Maximum value is 6
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-6: 0 # random value between 1 and 6
 
   death_link:
     # When you die, everyone who enabled death link dies. Of course, the reverse is true too.

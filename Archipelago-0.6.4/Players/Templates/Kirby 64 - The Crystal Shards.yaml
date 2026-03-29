@@ -32,7 +32,7 @@ description: Default Kirby 64 - The Crystal Shards Template
 
 game: Kirby 64 - The Crystal Shards
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Kirby 64 - The Crystal Shards:
   ################
@@ -52,8 +52,9 @@ Kirby 64 - The Crystal Shards:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -110,8 +111,9 @@ Kirby 64 - The Crystal Shards:
     # Maximum value is 72
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-72: 0 # random value between 5 and 72
 
   required_crystals:
     # Percentage of crystal shards required to unlock the boss of Ripple Star, and grant access to Zero-Two.
@@ -121,8 +123,9 @@ Kirby 64 - The Crystal Shards:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   filler_percentage:
     # Percentage of non-required Crystal Shards to be converted to filler items (1-Ups, Maxim Tomatoes, Invincibility Candy).
@@ -132,8 +135,9 @@ Kirby 64 - The Crystal Shards:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   kirby_flavor_preset:
     # The color of Kirby, from a list of presets.

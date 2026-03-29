@@ -32,9 +32,7 @@ description: Default Garfield Kart - Furious Racing Template
 
 game: Garfield Kart - Furious Racing
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
-  game:
-    Garfield Kart - Furious Racing: 0.4.2 # Version of the world required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Garfield Kart - Furious Racing:
   ################
@@ -51,8 +49,8 @@ Garfield Kart - Furious Racing:
     # Note on time trials: Although the game generates, please check for mod support
     # before enabling this option, and beware that not all time trials may be
     # beatable with the current logic and you could get stuck.
-    grand_prix: 50
-    races: 0
+    grand_prix: 0
+    races: 50
     time_trials: 0
     puzzle_piece_hunt: 0
 
@@ -87,8 +85,8 @@ Garfield Kart - Furious Racing:
     # - Cups: Grand Prix cup unlocks are shuffled into the item pool, races unlock when you unlock their cup
     # - Races: Race unlocks are shuffled into the item pool, cups unlock when you've unlocked all races in the cup
     # - Cups and Races: Race and cup unlocks are shuffled into the item pool, playing a cup requires all 4 races and the cup item
-    cups: 50
-    races: 0
+    cups: 0
+    races: 50
     cups_and_races: 0
 
   progressive_cups:
@@ -107,8 +105,8 @@ Garfield Kart - Furious Racing:
     # Adds puzzle pieces to the item pool.
     # 
     # Always on when the goal is Puzzle Piece Hunt
-    'false': 0
-    'true': 50
+    'false': 50
+    'true': 0
 
   puzzle_piece_count:
     # Sets the amount of puzzle pieces added to the item pool. If the goal is Puzzle Piece Hunt, 
@@ -121,21 +119,22 @@ Garfield Kart - Furious Racing:
     # Maximum value is 48
     48: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-48: 0 # random value between 1 and 48
 
   #####################
   # Character Options #
   #####################
   randomize_characters:
     # Adds characters to the item pool, and adds a location for winning a race as each character.
-    'false': 50
-    'true': 0
+    'false': 0
+    'true': 50
 
   randomize_karts:
     # Adds karts to the item pool, and adds a location for winning a race with each kart.
-    'false': 50
-    'true': 0
+    'false': 0
+    'true': 50
 
   randomize_hats:
     # Adds hats to the item pool
@@ -157,22 +156,65 @@ Garfield Kart - Furious Racing:
     progressive: 0
     combine_tiers: 50
 
+  stat_randomizer:
+    # Randomizes the top speed, acceleration, and handling for Karts and/or Characters
+    # 
+    # - Off: Karts and characters use their default values
+    # - Karts: Randomizes kart stats, not characters
+    # - Characters: Randomizes character stats, not karts
+    # - Both: Randomizes stats for both karts and characters.
+    'off': 0
+    karts: 0
+    characters: 0
+    both: 50
+
+  random_stat_values:
+    # Choose how high you want randomized stats to be. Note that these are just
+    # averages and outliers may still happen, they're just less likely.
+    # 
+    # - Low: Stats are generally much lower than the base game
+    # - Medium: Stats are generally around the same as the base game
+    # - High: Stats are generally much higher than the base game
+    low: 0
+    medium: 0
+    high: 50
+
   ################
   # Game Options #
   ################
+  single_lap_mode:
+    # Races only have a single lap. This makes the game significantly harder, 
+    # especially on weak kart combos.
+    # 
+    # This overrides Lap Count setting
+    'false': 50
+    'true': 0
+
   lap_count:
-    # Modifies the amount of laps in a race
+    # Modifies the amount of laps in a race, has no effect if single lap mode is on.
     #
     # You can define additional values between the minimum and maximum values.
-    # Minimum value is 1
+    # Minimum value is 2
     # Maximum value is 10
     3: 0
-    random: 50
-    random-low: 0
-    random-high: 0
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-2-10: 50 # random value between 2 and 10
 
   disable_cpu_items:
     # Prevents CPUs from using items for a less chaotic experience.
+    # 
+    # Has no effect if Item Mania is enabled.
+    'false': 50
+    'true': 0
+
+  item_mania:
+    # CPUs will always get 3 copies of items they get from item boxes. CPU items can't be
+    # disabled if this option is selected.
+    # 
+    # !!!WARNING!!! This makes the game significantly harder and more frustrating to play,
+    # not for the faint of heart
     'false': 50
     'true': 0
 
@@ -191,6 +233,12 @@ Garfield Kart - Furious Racing:
     # Randomizes the items that can be received from item boxes and adds locations for
     # acquiring each item from an item box for the first time. 
     # Always starts with one item unlocked, unless Springs Only is enabled.
+    'false': 0
+    'true': 50
+
+  lap_sanity:
+    # Adds checks for finishing a lap in first place, adding anywhere between 1 and 10
+    # filler items to the pool per race, for a total of 16 to 160 extra locations
     'false': 0
     'true': 50
 

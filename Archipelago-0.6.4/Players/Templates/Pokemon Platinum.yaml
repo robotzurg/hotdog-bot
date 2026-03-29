@@ -32,7 +32,9 @@ description: Default Pokemon Platinum Template
 
 game: Pokemon Platinum
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Pokemon Platinum: 0.2.0 # Version of the world required for this yaml to work as expected.
 
 Pokemon Platinum:
   ################
@@ -47,8 +49,9 @@ Pokemon Platinum:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -62,16 +65,41 @@ Pokemon Platinum:
     full: 50
     minimal: 0
 
-  hms:
-    # Adds the HMs to the pool.
-    'false': 0
-    'true': 50
+  goal:
+    # The goal of the randomizer. Currently, this only supports defeating the champion and entering the hall of fame.
+    champion: 50
 
-  badges:
-    # Adds the badges to the pool.
-    'false': 0
-    'true': 50
+  death_link:
+    # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+    # 
+    # In Pokémon Platinum, blacking out sends a death and receiving a death causes you to black out.
+    'false': 50
+    'true': 0
 
+  remote_items:
+    # Whether local items should be given in-game, or sent by the server.
+    # This overrides the show randomized progression items option: all items are shown.
+    # It is highly recommended to use nothing for received items notification, otherwise
+    # you will be notified twice for each item.
+    # 
+    # Choices:
+    # - off: no items are remote.
+    # - only_randomized: only randomized items are remote.
+    # - only_randomized_or_progression: only randomized items or progression items are remote.
+    # - all: all (randomizable) items are remote.
+    'off': 50
+    only_randomized: 0
+    only_randomized_or_progression: 0
+    all: 0
+
+  cheats_enabled:
+    # Client cheats are enabled.
+    'false': 50
+    'true': 0
+
+  #################
+  # Item Shuffles #
+  #################
   overworlds:
     # Adds overworld items to the pool.
     'false': 0
@@ -93,25 +121,46 @@ Pokemon Platinum:
     most: 50
     all: 0
 
-  rods:
-    # Adds rods to the pool. Currently, the Super Rod is unavailable, as it is post-game.
+  hms:
+    # Adds the HMs to the pool.
     'false': 0
     'true': 50
 
-  poketch_apps:
-    # Adds Pokétch apps to the pool (and the Pokétch).
+  badges:
+    # Adds the badges to the pool.
     'false': 0
     'true': 50
+
+  rods:
+    # Adds rods to the pool.
+    'false': 0
+    'true': 50
+
+  bicycle:
+    # Adds the bicycle to the pool.
+    'false': 50
+    'true': 0
+
+  bag:
+    # Add the bag to the item pool. Before obtaining it, the bag cannot be opened in the menu.
+    'false': 50
+    'true': 0
 
   running_shoes:
     # Adds the running shoes to the pool.
     'false': 50
     'true': 0
 
-  bicycle:
-    # Adds the bicycle to the pool.
-    'false': 50
-    'true': 0
+  poketch_apps:
+    # Adds Pokétch apps to the pool (and the Pokétch).
+    'false': 0
+    'true': 50
+
+  cartridges:
+    # Adds the GBA cartridges to the item pool. The no location option removes the location and adds the cartridges to the starting inventory. The false option means they won't be randomized.
+    'true': 50
+    'false': 0
+    no_location: 0
 
   pokedex:
     # Add the Pokedex to the pool. Note: this also adds the national dex to the pool.
@@ -123,16 +172,37 @@ Pokemon Platinum:
     'false': 50
     'true': 0
 
-  hm_badge_requirement:
-    # Require the corresponding badge to use an HM outside of battle.
+  time_items:
+    # Adds the time items to the item pool. The no location option removes the location and adds the time items to the starting inventory. The false option means they won't be randomized.
+    'true': 50
+    'false': 0
+    no_location: 0
+
+  ##############################
+  # Logic and Roadblock Tweaks #
+  ##############################
+  parcel_coupons_route_203:
+    # Whether Looker blocks you from exiting Jubilife city towards Route 203 if you
+    # haven't delivered the parcel and exchanged the three coupons.
     'false': 0
     'true': 50
 
-  remove_badge_requirements:
-    # Specify which HMs do not require a badge to use outside of battle. This overrides the HM Badge Requirements setting.
-    # 
-    # HMs should be provided in the form: "FLY", "WATERFALL", "ROCK_SMASH", etc.
-    []
+  pastoria_barriers:
+    # Add barriers in Route 212 and Route 214, blocking the path to Pastoria City
+    # until the player has surf.
+    'false': 50
+    'true': 0
+
+  north_sinnoh_fly:
+    # Require HM02 Fly (and the badge if necessary) to logically access North Sinnoh.
+    'false': 50
+    'true': 0
+
+  early_sunyshore:
+    # With this option enabled, access to Sunyshore City via Valor Lakefront is no longer blocked
+    # until the Distortion World has been cleared.
+    'false': 50
+    'true': 0
 
   visibility_hm_logic:
     # Logically require Flash or Defog for traversing and finding locations in applicable regions.
@@ -144,16 +214,154 @@ Pokemon Platinum:
     'false': 0
     'true': 50
 
-  north_sinnoh_fly:
-    # Require HM02 Fly (and the badge if necessary) to logically access North Sinnoh.
+  marsh_pass:
+    # Add the Marsh Pass item to the game. The Marsh pass gives free access to the Great Marsh,
+    # but if it is enabled, it is required to enter. (i.e., you cannot pay to enter the Great Marsh
+    # if this option is enabled)
     'false': 50
     'true': 0
 
-  parcel_coupons_route_203:
-    # Whether Looker blocks you from exiting Jubilife city towards Route 203 if you
-    # haven't delivered the parcel and exchanged the three coupons.
+  storage_key:
+    # Add the Storage Key item to the item pool. This allows access to the warehouse portion
+    # of the Veilstone Galactic HQ without having to clear all three lake events.
+    'false': 50
+    'true': 0
+
+  s_s_ticket:
+    # Add the S.S. Ticket to the item pool.
+    # The S.S. ticket can be used to travel to the fight area before defeating Cynthia.
+    # Note: the S.S. Ticket is required to access the fight area, but
+    # if it is not randomized, it is given by the player's mom
+    # after defeating Cynthia.
+    'false': 50
+    'true': 0
+
+  unown_option:
+    # How the Maniac Tunnel is handled.
+    # 
+    # Vanilla: 26 Unown forms must be encountered before the Maniac Tunnel is traversable.
+    # Item: 28 "Unown Form" items are added to the item pool. 26 of them must be collected
+    # before the Maniac Tunnel is traversable.
+    # None: The Maniac Tunnel is always traversable.
+    vanilla: 0
+    item: 50
+    none: 0
+
+  ############
+  # Starters #
+  ############
+  randomize_starters:
+    # Randomize starter Pokémon.
+    'false': 50
+    'true': 0
+
+  require_two_level_evolution_starters:
+    # If the starters are randomized, require that they all be two-level-evolution species.
+    # This option only applies to the blacklist. If the whitelist is nonempty,
+    # it is ignore.
+    'false': 50
+    'true': 0
+
+  starter_whitelist:
+    # Specify the possible starters that can be randomized.
+    # This has precedence over the blacklist and the require two-level-evolution
+    # species.
+    # This has no effect if starters are not randomized.
+    # 
+    # The species names should be entered entirely in lowercase.
+    # Spaces should be replaced by underscores. For example,
+    # Mr. Mime would be mr_mime.
+    # 
+    # Note: legendaries is **not** a valid key for this option.
+    []
+
+  starter_blacklist:
+    # Specify the banned starters.
+    # The whitelist has precedence over this.
+    # This has no effect if starters are not randomized.
+    # 
+    # The species names should be entered entirely in lowercase.
+    # Spaces should be replaced by underscores. For example,
+    # Mr. Mime would be mr_mime.
+    # 
+    # legendaries, all lowercase, will be interpreted as banning all legendary
+    # species.
+    []
+
+  randomize_intro_mon:
+    # Randomize the species of the Pokémon that is shown in the intro.
     'false': 0
     'true': 50
+
+  ###########
+  # Pokémon #
+  ###########
+  randomize_encounters:
+    # Randomize encountered Pokémon. This does not affect static legendaries, like Giratina.
+    'false': 50
+    'true': 0
+
+  in_logic_encounters:
+    # Which methods/variations of encounters are in logic.
+    ['trophy_garden', 'good_rod', 'swarms', 'day', 'odd_keystone', 'great_marsh_observatory', 'emerald', 'surf', 'regular_honey_tree', 'feebas_fishing', 'night', 'roamers', 'sapphire', 'leafgreen', 'old_rod', 'great_marsh_observatory_national_dex', 'super_rod', 'munchlax_honey_tree', 'firered', 'ruby', 'radar']
+
+  encounter_species_blacklist:
+    # Specify the banned encounter species.
+    # The whitelist has precedence over this.
+    # This has no effect if starters are not randomized.
+    # 
+    # The species names should be entered entirely in lowercase.
+    # Spaces should be replaced by underscores. For example,
+    # Mr. Mime would be mr_mime.
+    # 
+    # legendaries, all lowercase, will be interpreted as banning all legendary
+    # species.
+    # 
+    # Currently, this cannot include kecleon, geodude.
+    # Additionally, you cannot block both snorlax and munchlax. If snorlax is blocked,
+    # then level_happiness must be in logic.
+    []
+
+  dexsanity:
+    # How many dexsanity locations there will be.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 493
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-493: 0 # random value between 0 and 493
+    none: 50 # equivalent to 0
+    full: 0 # equivalent to 493
+
+  dexsanity_mode:
+    # The dexsanity mode.
+    # 
+    # Options:
+    # - noreq: no items are required to trigger dexsanity locations.
+    # - req: the Pokedex (or National Dex for non-regional species) is required
+    #        to trigger dexsanity locations.
+    # - req_noprompt: same as req, but when you initially get the Pokedex
+    #                 or National Dex, do not prompt for each already seen
+    #                 dexsanity species.
+    noreq: 50
+    req: 0
+    req_noprompt: 0
+
+  in_logic_evolution_methods:
+    # Evolution methods that are in logic.
+    ['level_male', 'level_happiness', 'level_atk_lt_def', 'level_with_held_item_night', 'use_item_male', 'level_female', 'level_moss_rock', 'trade_with_held_item', 'level', 'level_happiness_day', 'level_with_held_item_day', 'level_know_move', 'level_ninjask', 'level_species_in_party', 'use_item', 'level_magnetic_field', 'level_atk_gt_def', 'level_shedinja', 'level_atk_eq_def', 'trade', 'level_happiness_night', 'level_ice_rock', 'level_beauty', 'level_pid_low', 'use_item_female', 'level_pid_high']
+
+  evo_items_shop_in_ap_helper:
+    # Evolution items shop is available with the AP Helper. (Present in the 2nd floor of any Pokémon Center)
+    'false': 0
+    'true': 50
+
+  reusable_tms:
+    # TMs are reusable.
+    'false': 50
+    'true': 0
 
   regional_dex_goal:
     # Number of seen regional Pokémon required to complete the Regional
@@ -161,24 +369,115 @@ Pokemon Platinum:
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 1
-    # Maximum value is 80
+    # Maximum value is 210
     60: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-210: 0 # random value between 1 and 210
 
-  early_sunyshore:
-    # With this option enabled, access to Sunyshore City via Valor Lakefront is no longer blocked
-    # until the Distortion World has been cleared.
+  start_with_swarms:
+    # Start the game with swarms enabled.
+    # Note: swarms will only be enabled after you obtain the poffin case,
+    # which is when you can control their locations.
+    'false': 0
+    'true': 50
+
+  randomize_roamers:
+    # Randomize roaming Pokemon.
     'false': 50
     'true': 0
 
-  pastoria_barriers:
-    # Add barriers in Route 212 and Route 214, blocking the path to Pastoria City
-    # until the player has surf.
+  roamer_blacklist:
+    # Specify the banned roaming Pokemon species.
+    # The whitelist has precedence over this.
+    # This has no effect if starters are not randomized.
+    # 
+    # The species names should be entered entirely in lowercase.
+    # Spaces should be replaced by underscores. For example,
+    # Mr. Mime would be mr_mime.
+    # 
+    # legendaries, all lowercase, will be interpreted as banning all legendary
+    # species.
+    []
+
+  can_reset_legendaries_in_ap_helper:
+    # Can reset roamers with the AP Helper. (Present in the 2nd floor of any Pokémon Center)
+    'false': 0
+    'true': 50
+
+  ############
+  # Trainers #
+  ############
+  trainersanity:
+    # Each trainer adds a location to the game. These locations are
+    # filled with nuggets by default.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 457
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-457: 0 # random value between 0 and 457
+    none: 50 # equivalent to 0
+    full: 0 # equivalent to 457
+
+  randomize_trainer_parties:
+    # Randomize trainer party members.
     'false': 50
     'true': 0
 
+  trainer_party_blacklist:
+    # Specify the banned trainer party species.
+    # The whitelist has precedence over this.
+    # This has no effect if starters are not randomized.
+    # 
+    # The species names should be entered entirely in lowercase.
+    # Spaces should be replaced by underscores. For example,
+    # Mr. Mime would be mr_mime.
+    # 
+    # legendaries, all lowercase, will be interpreted as banning all legendary
+    # species.
+    []
+
+  #######
+  # HMs #
+  #######
+  hm_badge_requirement:
+    # Require the corresponding badge to use an HM outside of battle.
+    'false': 0
+    'true': 50
+
+  remove_badge_requirements:
+    # Specify which HMs do not require a badge to use outside of battle. This overrides the HM Badge Requirements setting.
+    # 
+    # HMs should be provided in the form: "fly", "waterfall", "rock_smash", etc.
+    []
+
+  hm_reader:
+    # Add the HM Reader item. The HM Reader is an item that lets you use field moves without teaching them.
+    # 
+    # Options:
+    # - no: Don't add the HM Reader item.
+    # - itempool: Add the HM Reader item to the itempool.
+    # - precollected: Start with the HM Reader item.
+    'no': 50
+    itempool: 0
+    precollected: 0
+
+  hm_reader_mode:
+    # Mode for the HM Reader. The HM Reader is an item that lets you use field moves without teaching them.
+    # 
+    # Options:
+    # - req_mon: require a Pokemon in your party to which you can teach the move, in order for the HM Reader to use it.
+    # - noreq_mon: do not require a Pokemon in your party to which you can teach the move.
+    req_mon: 50
+    noreq_mon: 0
+
+  ###################
+  # Quality of Life #
+  ###################
   game_options:
     # Presets in-game options.
     # 
@@ -193,6 +492,7 @@ Pokemon Platinum:
     # received_items_notification: jingle/nothing/message - Sets the received_items_notification.
     # default_player_name: player_name/custom/random/vanilla - Sets the default player name. with player_name, tries to use the AP player name.
     # default_rival_name: random/custom/player_name/vanilla - Sets the default rival name. with random, picks from one of the players in the AP.
+    # name_strictness: relaxed/strict - How strict setting the default player/rival name is. With strict, it will require a name of length less than or equal to 7, with no invalid characters. With relaxed, it will truncate the name and fill the invalid characters with question marks.
     # default_gender: vanilla/male/female/random - Sets the default gender.
     # 
     # The text_speed, sound, battle_scene, battle_style, button_mode, text_frame, and received_items_notification
@@ -202,36 +502,7 @@ Pokemon Platinum:
     # the following characters are accepted:
     # all alphanumeric characters (A-Z, a-z, 0-9),
     # and the following symbols: , . ' - : ; ! ? " ( ) ~ @ # % + * / =,
-    # and as spaces.
-    # as well, there are some special sequences.
-    #   {"} is an opening double-quotation mark
-    #   {'} is an opening single-quotation mark
-    #   {.} is a centred dot (centred vertically)
-    #   {Z} are two superimposed Zs (as in sleep)
-    #   ^ is an upwards arrow
-    #   {v} is a downwards arrow
-    #   {MALE} is the male sign
-    #   {FEMALE} is the female sign
-    #   {...} are ellipsis
-    #   {O.} is a circle with a dot inside it. {.O} also works
-    #   {CIRCLE} is a circle
-    #   {SQUARE} is a square
-    #   {TRIANGLE} is a triangle
-    #   {DIAMOND} is a diamond (hollow)
-    #   {SPADE} is a spade
-    #   {CLUB} is a club
-    #   {HEART} is a heart
-    #   {SUIT DIAMOND} is a diamond (filled)
-    #   {STAR} is a star
-    #   {NOTE} is a music note (1/8)
-    #   {SUN} is a sun
-    #   {CLOUD} is a cloud
-    #   {UMBRELLA} is an umbrella
-    #   {SILHOUETTE} is a really bad looking silhouette
-    #   {SMILE} is a smiling face
-    #   {LAUGH} is a laughing face
-    #   {UPSET} is an upset face
-    #   {FROWN} is a frowning face
+    # and as spaces. Additionally, some special characters, for example most accented vowels, are accepted.
     # 
     # If the player or rival names do not satisfy these constraints, the game will use its original
     # behaviour, where the player or rival names are entered during the starting cutscene.
@@ -241,6 +512,7 @@ Pokemon Platinum:
     default_gender: vanilla
     default_player_name: player_name
     default_rival_name: random
+    name_strictness: relaxed
     received_items_notification: jingle
     sound: stereo
     text_frame: 1
@@ -284,80 +556,78 @@ Pokemon Platinum:
     # Maximum value is 16
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-16: 0 # random value between 1 and 16
+
+  normalize_encounters:
+    # In the vanilla game, encounter table entries have varying probabilities, from 20% down to 1%.
+    # This option will normalize these, so they all have the same probability. The normalized
+    # probabilities are 1/12 for each entry in the land table, and 1/5 for each entry in the water
+    # and rod tables.
+    # 
+    # This option is modifiable in the in-game options menu.
+    # 
+    # Note: this does not mean that there are twelve encounter slots, and a 1/12 chance for each slot.
+    # Often there will only be two or three encounter slots per route, occupying all twelve entries
+    # in the encounter table. This option only means that the *smallest* possible probability for any
+    # slot will be 1/12. (except for special encounters, where there may be more or less table
+    # entries)
+    'false': 0
+    'true': 50
+
+  instant_text:
+    # Have text scroll instantly.
+    # 
+    # This option is modifiable in the in-game options menu.
+    'false': 50
+    'true': 0
+
+  hold_a_to_advance:
+    # You no longer need to press A to advance text, holding it will suffice. (Same for B)
+    # 
+    # This option is modifiable in the in-game options menu.
+    'false': 50
+    'true': 0
+
+  always_catch:
+    # Have a 100% chance of catching any encounter.
+    # 
+    # This option is modifiable in the in-game options menu.
+    'false': 50
+    'true': 0
+
+  guaranteed_escape:
+    # You will always be able to escape from wild encounters.
+    # 
+    # This option is modifiable in the in-game options menu.
+    'false': 50
+    'true': 0
+
+  talk_trainers_without_fight:
+    # You can talk to trainers without having to fight them.
+    # This only applies when you talk to them, not if they spot you.
+    # Note: them spotting you can be disabled by the blind trainers option.
+    # 
+    # This option is modifiable in the in-game options menu.
+    'false': 50
+    'true': 0
+
+  exp_multiplier:
+    # Set an experience multiplier for all gained experience.
+    # This can either be an integer between 0 and 65535, inclusive,
+    # or a string of a fraction "a/b", where the numerator is
+    # between 0 and 65535, inclusive, and the denominator is
+    # between 1 and 65535, inclusive.
+    # 
+    # This option can be modified in-game.
+    1
 
   master_repel:
     # Add a master repel item to the item pool. The master repel is a key item.
     # It is a repel that blocks all encounters, and never runs out.
     'false': 50
     'true': 0
-
-  s_s_ticket:
-    # Add the S.S. Ticket to the item pool.
-    # The S.S. ticket can be used to travel to the fight area before defeating Cynthia.
-    'false': 50
-    'true': 0
-
-  marsh_pass:
-    # Add the Marsh Pass item to the game. The Marsh pass gives free access to the Great Marsh,
-    # but if it is enabled, it is required to enter. (i.e., you cannot pay to enter the Great Marsh
-    # if this option is enabled)
-    'false': 50
-    'true': 0
-
-  exp_multiplier:
-    # Set an experience multiplier for all gained experience.
-    #
-    # You can define additional values between the minimum and maximum values.
-    # Minimum value is 1
-    # Maximum value is 16
-    1: 50
-    random: 0
-    random-low: 0
-    random-high: 0
-
-  storage_key:
-    # Add the Storage Key item to the item pool. This allows access to the warehouse portion
-    # of the Veilstone Galactic HQ without having to clear all three lake events.
-    'false': 50
-    'true': 0
-
-  bag:
-    # Add the bag to the item pool. Before obtaining it, the bag cannot be opened in the menu.
-    'false': 50
-    'true': 0
-
-  unown_option:
-    # How the Maniac Tunnel is handled.
-    # 
-    # Vanilla: 26 Unown forms must be encountered before the Maniac Tunnel is traversable.
-    # Item: 28 "Unown Form" items are added to the item pool. 26 of them must be collected
-    # before the Maniac Tunnel is traversable.
-    # None: The Maniac Tunnel is always traversable.
-    vanilla: 0
-    item: 50
-    none: 0
-
-  show_unrandomized_progression_items:
-    # Whether unrandomized progression items should be sent to the server and
-    # displayed in the chat. This also means that trackers will consider it a location
-    # to be checked. If this is off, trackers may assume that it is obtained when
-    # accessible.
-    'false': 0
-    'true': 50
-
-  remote_items:
-    # Whether local items should be given in-game, or sent by the server.
-    # This overrides the show randomized progression items option: all items are shown.
-    # It is highly recommended to use nothing for received items notification, otherwise
-    # you will be notified twice for each item.
-    'false': 50
-    'true': 0
-
-  goal:
-    # The goal of the randomizer. Currently, this only supports defeating the champion and entering the hall of fame.
-    champion: 50
 
   ###########################
   # Item & Location Options #

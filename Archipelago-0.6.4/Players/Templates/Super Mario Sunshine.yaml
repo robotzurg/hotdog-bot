@@ -32,7 +32,7 @@ description: Default Super Mario Sunshine Template
 
 game: Super Mario Sunshine
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Super Mario Sunshine:
   ################
@@ -47,8 +47,9 @@ Super Mario Sunshine:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -84,8 +85,9 @@ Super Mario Sunshine:
     # Maximum value is 360
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-360: 0 # random value between 0 and 360
 
   blue_coin_sanity:
     # Full shuffle: adds Blue Coins to the pool and makes Blue Coins locations.
@@ -103,8 +105,9 @@ Super Mario Sunshine:
     # Maximum value is 240
     240: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-240: 0 # random value between 0 and 240
 
   trade_shine_maximum:
     # The number of Shines from the boathouse trades that will be shuffled. If the Blue Coin Maximum is not enough
@@ -116,8 +119,9 @@ Super Mario Sunshine:
     # Maximum value is 24
     12: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-24: 0 # random value between 0 and 24
 
   starting_nozzle:
     # If on, you will start with no Spray Nozzle, and in fact, no FLUDD at all. (Still in non-enforce mode)

@@ -32,7 +32,7 @@ description: Default Pokemon FireRed and LeafGreen Template
 
 game: Pokemon FireRed and LeafGreen
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Pokemon FireRed and LeafGreen:
   ################
@@ -47,8 +47,9 @@ Pokemon FireRed and LeafGreen:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -179,8 +180,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 9999
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-9999: 0 # random value between 1 and 9999
 
   maximum_shop_price:
     # Sets the maximum cost of Shop Items when Shopsanity is on.
@@ -190,8 +192,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 9999
     3000: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-9999: 0 # random value between 1 and 9999
 
   trainersanity:
     # Defeating a trainer gives you an item.
@@ -206,8 +209,9 @@ Pokemon FireRed and LeafGreen:
     # Minimum value is 0
     # Maximum value is 456
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-456: 0 # random value between 0 and 456
     none: 50 # equivalent to 0
     all: 0 # equivalent to 456
 
@@ -227,8 +231,9 @@ Pokemon FireRed and LeafGreen:
     # Minimum value is 0
     # Maximum value is 386
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-386: 0 # random value between 0 and 386
     none: 50 # equivalent to 0
     all: 0 # equivalent to 386
 
@@ -432,8 +437,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 50
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
 
   oaks_aide_route_10:
     # Sets the number of Pokemon that need to be registered in the Pokedex to receive the item from Professor Oak's Aide
@@ -444,8 +450,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 50
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
 
   oaks_aide_route_11:
     # Sets the number of Pokemon that need to be registered in the Pokedex to receive the item from Professor Oak's Aide
@@ -456,8 +463,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 50
     15: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
 
   oaks_aide_route_16:
     # Sets the number of Pokemon that need to be registered in the Pokedex to receive the item from Professor Oak's Aide
@@ -468,8 +476,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 50
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
 
   oaks_aide_route_15:
     # Sets the number of Pokemon that need to be registered in the Pokedex to receive the item from Professor Oak's Aide
@@ -480,8 +489,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 50
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
 
   viridian_gym_requirement:
     # Sets the requirement for opening the Viridian Gym.
@@ -499,8 +509,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 7
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-7: 0 # random value between 0 and 7
 
   route22_gate_requirement:
     # Sets the requirement for passing through the Route 22 Gate.
@@ -518,8 +529,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 8
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   route23_guard_requirement:
     # Sets the requirement for passing the Route 23 Guard.
@@ -537,8 +549,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 8
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   elite_four_requirement:
     # Sets the requirement for challenging the Elite Four.
@@ -556,8 +569,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 8
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   elite_four_rematch_count:
     # Sets the number of Badges/Gyms required to challenge the Elite Four Rematch.
@@ -567,8 +581,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 8
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   cerulean_cave_requirement:
     # Sets the requirement for being able to enter Cerulean Cave.
@@ -593,8 +608,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 8
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   level_scaling:
     # Sets whether encounter levels are scaled by sphere access.
@@ -614,8 +630,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 200
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-200: 0 # random value between 0 and 200
 
   force_fully_evolved:
     # Forces opponent's Pokemon to be fully evolved if they are greater than or equal to the specified level.
@@ -629,8 +646,9 @@ Pokemon FireRed and LeafGreen:
     # Minimum value is 1
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
     never: 50 # equivalent to 0
     species: 0 # equivalent to -1
 
@@ -789,8 +807,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   move_normal_type_bias:
     # Sets the probability that a learned move will be forced to be a Normal type move.
@@ -802,8 +821,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   move_blacklist:
     # Prevents species from learning these moves via learnsets, TMs, and move tutors.
@@ -847,8 +867,9 @@ Pokemon FireRed and LeafGreen:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     vanilla: 50 # equivalent to -1
     none: 0 # equivalent to 0
     full: 0 # equivalent to 100
@@ -860,8 +881,9 @@ Pokemon FireRed and LeafGreen:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     vanilla: 50 # equivalent to -1
     none: 0 # equivalent to 0
     full: 0 # equivalent to 100
@@ -887,8 +909,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 255
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-3-255: 0 # random value between 3 and 255
 
   all_pokemon_seen:
     # Start will all Pokemon seen in your Pokedex.
@@ -909,8 +932,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 1000
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-1000: 0 # random value between 1 and 1000
 
   starting_money:
     # Sets the amount of money that you start with.
@@ -920,8 +944,9 @@ Pokemon FireRed and LeafGreen:
     # Maximum value is 999999
     3000: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-999999: 0 # random value between 0 and 999999
 
   better_shops:
     # Most Pokemarts will sell all normal Pokemart items. The exceptions are the following:

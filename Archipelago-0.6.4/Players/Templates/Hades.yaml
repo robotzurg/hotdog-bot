@@ -32,7 +32,7 @@ description: Default Hades Template
 
 game: Hades
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Hades:
   ################
@@ -67,8 +67,9 @@ Hades:
     # Maximum value is 1000
     150: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-72-1000: 0 # random value between 72 and 1000
 
   keepsakesanity:
     # Shuffles NPCs' keepsakes into the item pool, and makes each keepsake location a check. 
@@ -118,8 +119,9 @@ Hades:
     # Maximum value is 20
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-20: 0 # random value between 1 and 20
 
   weapons_clears_needed:
     # How many different weapons clears are needed to win the world.
@@ -129,8 +131,9 @@ Hades:
     # Maximum value is 6
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-6: 0 # random value between 1 and 6
 
   keepsakes_needed:
     # How many different keepsake unlocks are needed to win the world.
@@ -140,8 +143,9 @@ Hades:
     # Maximum value is 23
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-23: 0 # random value between 0 and 23
 
   fates_needed:
     # How many different Fated List completions are needed to win the world.
@@ -151,8 +155,9 @@ Hades:
     # Maximum value is 35
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-35: 0 # random value between 0 and 35
 
   ################
   # Heat Options #
@@ -175,8 +180,9 @@ Hades:
     # Maximum value is 5
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   lasting_consequences_pact_amount:
     # Choose the amount of Lasting Consequences pacts in the pool.
@@ -186,8 +192,9 @@ Hades:
     # Maximum value is 4
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-4: 0 # random value between 0 and 4
 
   convenience_fee_pact_amount:
     # Choose the amount of Convenience Fee pacts in the pool.
@@ -197,8 +204,9 @@ Hades:
     # Maximum value is 2
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2: 0 # random value between 0 and 2
 
   jury_summons_pact_amount:
     # Choose the amount of Jury Summons pacts in the pool.
@@ -208,8 +216,9 @@ Hades:
     # Maximum value is 3
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-3: 0 # random value between 0 and 3
 
   extreme_measures_pact_amount:
     # Choose the amount of Extreme Measures pacts in the pool.
@@ -219,8 +228,9 @@ Hades:
     # Maximum value is 4
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-4: 0 # random value between 0 and 4
 
   calisthenics_program_pact_amount:
     # Choose the amount of Calisthenics Program pacts in the pool.
@@ -230,8 +240,9 @@ Hades:
     # Maximum value is 2
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2: 0 # random value between 0 and 2
 
   benefits_package_pact_amount:
     # Choose the amount of Benefits Package pacts in the pool.
@@ -241,8 +252,9 @@ Hades:
     # Maximum value is 2
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2: 0 # random value between 0 and 2
 
   middle_management_pact_amount:
     # Choose the amount of Middle Management pacts in the pool.
@@ -252,8 +264,9 @@ Hades:
     # Maximum value is 1
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1: 0 # random value between 0 and 1
 
   underworld_customs_pact_amount:
     # Choose the amount of Underworld Customs pacts in the pool.
@@ -263,8 +276,9 @@ Hades:
     # Maximum value is 1
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1: 0 # random value between 0 and 1
 
   forced_overtime_pact_amount:
     # Choose the amount of Forced Overtime pacts in the pool.
@@ -274,8 +288,9 @@ Hades:
     # Maximum value is 2
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2: 0 # random value between 0 and 2
 
   heightened_security_pact_amount:
     # Choose the amount of Heightened Security pacts in the pool.
@@ -285,8 +300,9 @@ Hades:
     # Maximum value is 1
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1: 0 # random value between 0 and 1
 
   routine_inspection_pact_amount:
     # Choose the amount of Routine Inspection pacts in the pool.
@@ -296,8 +312,9 @@ Hades:
     # Maximum value is 4
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-4: 0 # random value between 0 and 4
 
   damage_control_pact_amount:
     # Choose the amount of Damage Control pacts in the pool.
@@ -307,8 +324,9 @@ Hades:
     # Maximum value is 2
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2: 0 # random value between 0 and 2
 
   approval_process_pact_amount:
     # Choose the amount of Approval Process pacts in the pool.
@@ -318,8 +336,9 @@ Hades:
     # Maximum value is 2
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2: 0 # random value between 0 and 2
 
   tight_deadline_pact_amount:
     # Choose the amount of Tight Deadline pacts in the pool.
@@ -329,8 +348,9 @@ Hades:
     # Maximum value is 3
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-3: 0 # random value between 0 and 3
 
   personal_liability_pact_amount:
     # Choose the amount of Personal Liability pacts in the pool.
@@ -340,8 +360,9 @@ Hades:
     # Maximum value is 1
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1: 0 # random value between 0 and 1
 
   ##################
   # Filler Options #
@@ -355,8 +376,9 @@ Hades:
     # Maximum value is 10000
     1000: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10000: 0 # random value between 0 and 10000
 
   keys_pack_value:
     # Choose the value(amount of Keys) of each Keys pack in the pool.
@@ -367,8 +389,9 @@ Hades:
     # Maximum value is 500
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-500: 0 # random value between 0 and 500
 
   gemstones_pack_value:
     # Choose the value(amount of Gemstones) of each Gemstone pack in the pool. 
@@ -379,8 +402,9 @@ Hades:
     # Maximum value is 2500
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2500: 0 # random value between 0 and 2500
 
   diamonds_pack_value:
     # Choose the value(amount of diamonds) of each diamond pack in the pool. 
@@ -391,8 +415,9 @@ Hades:
     # Maximum value is 100
     15: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   titan_blood_pack_value:
     # Choose the value(amount of Titan blood) of each Titan blood pack in the pool. 
@@ -403,8 +428,9 @@ Hades:
     # Maximum value is 50
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
 
   nectar_pack_value:
     # Choose the value(amount of Nectar) of each Nectar pack in the pool. 
@@ -415,8 +441,9 @@ Hades:
     # Maximum value is 50
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
 
   ambrosia_pack_value:
     # Choose the value(amount of Ambrosia) of each Ambrosia pack in the pool. 
@@ -427,8 +454,9 @@ Hades:
     # Maximum value is 50
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-50: 0 # random value between 0 and 50
 
   ############################
   # Helpers and Trap Options #
@@ -442,8 +470,9 @@ Hades:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   max_health_helper_percentage:
     # Choose the percentage of helper items that will boost your max health.
@@ -453,8 +482,9 @@ Hades:
     # Maximum value is 100
     35: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   initial_money_helper_percentage:
     # Choose the percentage of helper items that will boost your initial money by 25 each run.
@@ -467,8 +497,9 @@ Hades:
     # Maximum value is 100
     35: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   filler_trap_percentage:
     # Choose the percentage of filler items in the pool that will be traps instead. 
@@ -479,8 +510,9 @@ Hades:
     # Maximum value is 100
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ###########################
   # Quality of Life Options #

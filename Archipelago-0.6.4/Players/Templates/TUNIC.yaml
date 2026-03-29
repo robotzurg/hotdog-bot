@@ -32,7 +32,7 @@ description: Default TUNIC Template
 
 game: TUNIC
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     TUNIC: 4.1.0 # Version of the world required for this yaml to work as expected.
 
@@ -49,8 +49,9 @@ TUNIC:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -145,8 +146,9 @@ TUNIC:
     # Minimum value is 0
     # Maximum value is 98
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-98: 0 # random value between 0 and 98
     default: 50 # equivalent to -1
 
   #########################
@@ -165,8 +167,9 @@ TUNIC:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   extra_hexagon_percentage:
     # How many extra Gold Questagons are shuffled into the item pool, taken as a percentage of the goal amount.
@@ -178,8 +181,9 @@ TUNIC:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   hexagon_quest_ability_type:
     # Determines how abilities are unlocked when playing Hexagon Quest with Shuffled Abilities enabled.

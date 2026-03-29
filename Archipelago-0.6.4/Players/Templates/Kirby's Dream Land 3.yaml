@@ -32,7 +32,7 @@ description: Default Kirby's Dream Land 3 Template
 
 game: Kirby's Dream Land 3
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Kirby's Dream Land 3:
   ################
@@ -52,8 +52,9 @@ Kirby's Dream Land 3:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -105,8 +106,9 @@ Kirby's Dream Land 3:
     # Maximum value is 99
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-99: 0 # random value between 5 and 99
 
   heart_stars_required:
     # Percentage of heart stars required to purify the five bosses and reach Zero.
@@ -117,8 +119,9 @@ Kirby's Dream Land 3:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   jumping_target:
     # The required score needed to complete the Jumping minigame.
@@ -128,8 +131,9 @@ Kirby's Dream Land 3:
     # Maximum value is 25
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-25: 0 # random value between 1 and 25
 
   #################
   # World Options #
@@ -158,8 +162,9 @@ Kirby's Dream Land 3:
     # Maximum value is 6
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-6: 0 # random value between 1 and 6
 
   consumables:
     # When enabled, adds all 1-Ups and Maxim Tomatoes as possible locations.
@@ -180,8 +185,9 @@ Kirby's Dream Land 3:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_percentage:
     # Percentage of filler items to be converted to trap items (Gooey Bags, Slowness, Eject Ability).
@@ -191,8 +197,9 @@ Kirby's Dream Land 3:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   gooey_trap_weight:
     # Chance that any given trap is a Gooey Bag (spawns Gooey when you receive it).
@@ -202,8 +209,9 @@ Kirby's Dream Land 3:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   slow_trap_weight:
     # Chance that any given trap is Slowness (halves your max speed for 15 seconds when you receive it).
@@ -213,8 +221,9 @@ Kirby's Dream Land 3:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ability_trap_weight:
     # Chance that any given trap is an Eject Ability (ejects your ability when you receive it).
@@ -224,8 +233,9 @@ Kirby's Dream Land 3:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   stage_shuffle:
     # None: No stage shuffling.

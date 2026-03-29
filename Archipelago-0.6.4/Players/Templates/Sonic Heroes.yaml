@@ -32,7 +32,7 @@ description: Default Sonic Heroes Template
 
 game: Sonic Heroes
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Sonic Heroes:
   ################
@@ -47,8 +47,9 @@ Sonic Heroes:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -105,8 +106,9 @@ Sonic Heroes:
     # Maximum value is 14
     12: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-14: 0 # random value between 0 and 14
 
   required_emblems_percent:
     # What percent of the Emblem pool size emblems should be required to unlock the Final Goal? (rounded down)
@@ -118,8 +120,9 @@ Sonic Heroes:
     # Maximum value is 100
     70: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   required_rank:
     # Determines what minimum Rank is required to send a check for a mission
@@ -145,8 +148,9 @@ Sonic Heroes:
     # Maximum value is 7
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-7: 0 # random value between 0 and 7
 
   #################
   # Story Options #
@@ -297,8 +301,9 @@ Sonic Heroes:
     # Maximum value is 100
     80: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ################
   # Ring Options #
@@ -330,8 +335,9 @@ Sonic Heroes:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   stealth_trap_weight:
     # Determines the weight (not percent) for Stealth Trap.
@@ -342,8 +348,9 @@ Sonic Heroes:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   freeze_trap_weight:
     # Determines the weight (not percent) for Freeze Trap.
@@ -354,8 +361,9 @@ Sonic Heroes:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   no_swap_trap_weight:
     # Determines the weight (not percent) for No Swap Trap.
@@ -366,8 +374,9 @@ Sonic Heroes:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ring_trap_weight:
     # Determines the weight (not percent) for Ring Trap.
@@ -378,8 +387,9 @@ Sonic Heroes:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   charmy_trap_weight:
     # Determines the weight (not percent) for Charmy Trap.
@@ -390,8 +400,9 @@ Sonic Heroes:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   #############
   # DeathLink #

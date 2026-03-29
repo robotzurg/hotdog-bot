@@ -32,7 +32,7 @@ description: Default Pokemon Red and Blue Template
 
 game: Pokemon Red and Blue
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Pokemon Red and Blue:
   ################
@@ -47,8 +47,9 @@ Pokemon Red and Blue:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -91,8 +92,9 @@ Pokemon Red and Blue:
     # Maximum value is 8
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   elite_four_key_items_condition:
     # Percentage of available key items (not counting items you can lose) required to challenge the Elite Four. Does
@@ -103,8 +105,9 @@ Pokemon Red and Blue:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   elite_four_pokedex_condition:
     # Percentage of logically-reachable Pokemon that must be registered as "owned" in the Pokedex in order to
@@ -115,8 +118,9 @@ Pokemon Red and Blue:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   victory_road_condition:
     # Number of badges required to reach the front entrance of Victory Road.
@@ -126,8 +130,9 @@ Pokemon Red and Blue:
     # Maximum value is 8
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   route_22_gate_condition:
     # Number of badges required to pass through the Route 22 Gate
@@ -137,8 +142,9 @@ Pokemon Red and Blue:
     # Maximum value is 7
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-7: 0 # random value between 0 and 7
 
   viridian_gym_condition:
     # Number of badges required to enter Viridian Gym.
@@ -148,8 +154,9 @@ Pokemon Red and Blue:
     # Maximum value is 7
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-7: 0 # random value between 0 and 7
 
   cerulean_cave_badges_condition:
     # Number of badges needed to access the Cerulean Cave entrance in addition to the required Key Items.
@@ -159,8 +166,9 @@ Pokemon Red and Blue:
     # Maximum value is 8
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   cerulean_cave_key_items_condition:
     # Percentage of available key items (not counting items you can lose) required to access the Cerulean Cave
@@ -172,8 +180,9 @@ Pokemon Red and Blue:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   route_3_condition:
     # Set a condition to pass through from Pewter City to Route 3.
@@ -197,8 +206,9 @@ Pokemon Red and Blue:
     # Maximum value is 3
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-3: 0 # random value between 0 and 3
 
   fossil_check_item_types:
     # The two fossil checks always contain items for your own game. Here, you can choose what types of items can
@@ -301,8 +311,9 @@ Pokemon Red and Blue:
     # Minimum value is 0
     # Maximum value is 317
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-317: 0 # random value between 0 and 317
     disabled: 50 # equivalent to 0
     full: 0 # equivalent to 317
 
@@ -318,8 +329,9 @@ Pokemon Red and Blue:
     # Minimum value is 0
     # Maximum value is 151
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-151: 0 # random value between 0 and 151
     disabled: 50 # equivalent to 0
     full: 0 # equivalent to 151
 
@@ -350,8 +362,9 @@ Pokemon Red and Blue:
     # Maximum value is 80
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-80: 0 # random value between 1 and 80
 
   oaks_aide_rt_11:
     # Number of Pokemon registered in the Pokedex required to receive the item from Oak's Aide on Route 11.
@@ -362,8 +375,9 @@ Pokemon Red and Blue:
     # Maximum value is 80
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-80: 0 # random value between 1 and 80
 
   oaks_aide_rt_15:
     # Number of Pokemon registered in the Pokedex required to receive the item from Oak's Aide on Route 15.
@@ -374,8 +388,9 @@ Pokemon Red and Blue:
     # Maximum value is 80
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-80: 0 # random value between 1 and 80
 
   stonesanity:
     # Removes the four evolution stones from the Celadon Department Store and replaces four of the five Moon Stones
@@ -441,8 +456,9 @@ Pokemon Red and Blue:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   minimum_steps_between_encounters:
     # Minimum number of steps between wild Pokemon encounters.
@@ -452,8 +468,9 @@ Pokemon Red and Blue:
     # Maximum value is 255
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-255: 0 # random value between 1 and 255
 
   level_scaling:
     # Off: Encounters use vanilla game levels.
@@ -475,8 +492,9 @@ Pokemon Red and Blue:
     # Minimum value is 4
     # Maximum value is 255
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-4-255: 0 # random value between 4 and 255
     half: 0 # equivalent to 8
     normal: 50 # equivalent to 16
     double: 0 # equivalent to 32
@@ -558,8 +576,9 @@ Pokemon Red and Blue:
     # Maximum value is 255
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-255: 0 # random value between 1 and 255
 
   randomize_trainer_parties:
     # Randomize enemy Pokemon encountered in trainer battles.
@@ -623,8 +642,9 @@ Pokemon Red and Blue:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     vanilla: 50 # equivalent to -1
     none: 0 # equivalent to 0
     full: 0 # equivalent to 100
@@ -636,8 +656,9 @@ Pokemon Red and Blue:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     vanilla: 50 # equivalent to -1
     none: 0 # equivalent to 0
     full: 0 # equivalent to 100
@@ -649,8 +670,9 @@ Pokemon Red and Blue:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     vanilla: 50 # equivalent to -1
     none: 0 # equivalent to 0
     full: 0 # equivalent to 100
@@ -663,8 +685,9 @@ Pokemon Red and Blue:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     vanilla: 50 # equivalent to -1
     none: 0 # equivalent to 0
     full: 0 # equivalent to 100
@@ -677,8 +700,9 @@ Pokemon Red and Blue:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     vanilla: 50 # equivalent to -1
     none: 0 # equivalent to 0
     full: 0 # equivalent to 100
@@ -691,8 +715,9 @@ Pokemon Red and Blue:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     vanilla: 50 # equivalent to -1
     none: 0 # equivalent to 0
     full: 0 # equivalent to 100
@@ -726,8 +751,9 @@ Pokemon Red and Blue:
     # Minimum value is 0
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
     vanilla: 50 # equivalent to -1
 
   randomize_type_chart:
@@ -750,8 +776,9 @@ Pokemon Red and Blue:
     # Maximum value is 225
     143: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-225: 0 # random value between 0 and 225
 
   super_effective_matchups:
     # If 'randomize' is chosen for Randomize Type Chart, this will be the weight for super effective matchups.
@@ -762,8 +789,9 @@ Pokemon Red and Blue:
     # Maximum value is 225
     38: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-225: 0 # random value between 0 and 225
 
   not_very_effective_matchups:
     # If 'randomize' is chosen for Randomize Type Chart, this will be the weight for not very effective matchups.
@@ -774,8 +802,9 @@ Pokemon Red and Blue:
     # Maximum value is 225
     38: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-225: 0 # random value between 0 and 225
 
   immunity_matchups:
     # If 'randomize' is chosen for Randomize Type Chart, this will be the exact number of immunities.
@@ -786,8 +815,9 @@ Pokemon Red and Blue:
     # Maximum value is 100
     6: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   type_chart_seed:
     # You can enter a number to use as a seed for the type chart. If you enter anything besides a number or "random",
@@ -828,8 +858,9 @@ Pokemon Red and Blue:
     # Maximum value is 999999
     5000: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-999999: 0 # random value between 0 and 999999
 
   starting_money:
     # The amount of money you start with.
@@ -839,8 +870,9 @@ Pokemon Red and Blue:
     # Maximum value is 999999
     3000: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-999999: 0 # random value between 0 and 999999
 
   lose_money_on_blackout:
     # Lose half your money when blacking out, as in vanilla.
@@ -866,8 +898,9 @@ Pokemon Red and Blue:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   poison_trap_weight:
     # Weights for Poison Traps. These apply the Poison status to all your party members.

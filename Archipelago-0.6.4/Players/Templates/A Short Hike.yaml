@@ -32,7 +32,7 @@ description: Default A Short Hike Template
 
 game: A Short Hike
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 A Short Hike:
   ################
@@ -47,8 +47,9 @@ A Short Hike:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -126,8 +127,9 @@ A Short Hike:
     # Maximum value is 20
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
 
   silver_feathers:
     # Number of Silver Feathers in the item pool.
@@ -137,8 +139,9 @@ A Short Hike:
     # Maximum value is 20
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
 
   buckets:
     # Number of Buckets in the item pool.
@@ -148,8 +151,9 @@ A Short Hike:
     # Maximum value is 2
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-2: 0 # random value between 0 and 2
 
   sticks:
     # Number of Sticks in the item pool.
@@ -159,8 +163,9 @@ A Short Hike:
     # Maximum value is 8
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-8: 0 # random value between 1 and 8
 
   toy_shovels:
     # Number of Toy Shovels in the item pool.
@@ -170,8 +175,9 @@ A Short Hike:
     # Maximum value is 5
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   ################
   # Shop Options #
@@ -189,8 +195,9 @@ A Short Hike:
     # Maximum value is 200
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-25-200: 0 # random value between 25 and 200
 
   shop_check_logic:
     # Determines which items will be added as logical requirements to making certain purchases in shops.

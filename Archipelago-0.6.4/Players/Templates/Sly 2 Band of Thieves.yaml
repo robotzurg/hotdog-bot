@@ -32,7 +32,7 @@ description: 'Default Sly 2: Band of Thieves Template'
 
 game: 'Sly 2: Band of Thieves'
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 'Sly 2: Band of Thieves':
   ################
@@ -47,8 +47,9 @@ requires:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -109,8 +110,9 @@ requires:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   episode_8_keys:
     # Whether to have Anatomy for Disaster be unlocked with a number of Clockwerk
@@ -138,8 +140,9 @@ requires:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   required_keys_goal:
     # How many Clockwerk parts you need to goal, if goal objective is Clockwerk Hunt
@@ -149,8 +152,9 @@ requires:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   #########
   # Items #
@@ -174,8 +178,9 @@ requires:
     # Maximum value is 1000
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1000: 0 # random value between 0 and 1000
 
   coins_maximum:
     # The maximum number of coins you'll receive when you get a "Coins" filler
@@ -186,8 +191,9 @@ requires:
     # Maximum value is 1000
     200: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-1000: 0 # random value between 0 and 1000
 
   bottle_item_bundle_size:
     # How many bottles you receive from an item. Set to 0 to disable bottles
@@ -198,8 +204,9 @@ requires:
     # Maximum value is 30
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-30: 0 # random value between 0 and 30
 
   #############
   # Locations #
@@ -212,8 +219,9 @@ requires:
     # Maximum value is 9999
     200: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-9999: 0 # random value between 0 and 9999
 
   thiefnet_maximum:
     # The maximum number of coins items on ThiefNet will cost.
@@ -223,8 +231,9 @@ requires:
     # Maximum value is 9999
     2000: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-9999: 0 # random value between 0 and 9999
 
   include_vaults:
     # Whether to include vaults as checks.
@@ -240,8 +249,9 @@ requires:
     # Maximum value is 30
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-30: 0 # random value between 0 and 30
 
   bottlesanity:
     # Each bottle is its own check, rather than counting the number of bottles

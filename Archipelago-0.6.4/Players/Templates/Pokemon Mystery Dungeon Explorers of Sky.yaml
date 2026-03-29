@@ -32,7 +32,7 @@ description: Default Pokemon Mystery Dungeon Explorers of Sky Template
 
 game: Pokemon Mystery Dungeon Explorers of Sky
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Pokemon Mystery Dungeon Explorers of Sky:
   ################
@@ -47,8 +47,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -78,8 +79,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Minimum value is 4
     # Maximum value is 15
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-4-15: 0 # random value between 4 and 15
     easy: 0 # equivalent to 4
     normal: 50 # equivalent to 6
     hard: 0 # equivalent to 8
@@ -93,8 +95,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Minimum value is 0
     # Maximum value is 20
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
     easy: 0 # equivalent to 16
     normal: 50 # equivalent to 12
     hard: 0 # equivalent to 8
@@ -109,8 +112,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Minimum value is 4
     # Maximum value is 15
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-4-15: 0 # random value between 4 and 15
     easy: 0 # equivalent to 4
     normal: 50 # equivalent to 6
     hard: 0 # equivalent to 8
@@ -125,8 +129,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Minimum value is 0
     # Maximum value is 20
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
     easy: 0 # equivalent to 16
     normal: 50 # equivalent to 12
     hard: 0 # equivalent to 8
@@ -172,8 +177,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Minimum value is 0
     # Maximum value is 10
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
     all_open: 0 # equivalent to 10
     all_random: 0 # equivalent to 0
     start_with_three: 50 # equivalent to 3
@@ -187,8 +193,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Minimum value is 0
     # Maximum value is 31
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-31: 0 # random value between 0 and 31
     off: 0 # equivalent to 0
     some: 50 # equivalent to 4
     lots: 0 # equivalent to 10
@@ -202,8 +209,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Minimum value is 0
     # Maximum value is 31
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-31: 0 # random value between 0 and 31
     off: 0 # equivalent to 0
     some: 50 # equivalent to 4
     lots: 0 # equivalent to 10
@@ -217,8 +225,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Minimum value is 0
     # Maximum value is 31
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-31: 0 # random value between 0 and 31
     off: 0 # equivalent to 0
     some: 50 # equivalent to 2
     lots: 0 # equivalent to 10
@@ -232,8 +241,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Minimum value is 0
     # Maximum value is 31
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-31: 0 # random value between 0 and 31
     off: 0 # equivalent to 0
     some: 50 # equivalent to 2
     lots: 0 # equivalent to 10
@@ -269,8 +279,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Maximum value is 15
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
 
   xp_scaling:
     # Do you want to scale XP to gain XP faster? What rate? (1x, 2x, 3x, etc.)
@@ -281,8 +292,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Maximum value is 15
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
 
   level_scale:
     # Allow for dungeons to scale to the highest level of your party members?
@@ -324,8 +336,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Maximum value is 21
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-21: 0 # random value between 0 and 21
 
   allowed_legendaries:
     # Set which Legendaries will be available for the item pool as recruits.
@@ -379,8 +392,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   long_location:
     # Include Rule dungeons, clearing all dojos, final dojo, ludicolo dance,
@@ -411,8 +425,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Minimum value is 0
     # Maximum value is 20
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
     few: 50 # equivalent to 5
     some: 0 # equivalent to 10
     lots: 0 # equivalent to 15
@@ -425,8 +440,9 @@ Pokemon Mystery Dungeon Explorers of Sky:
     # Minimum value is 0
     # Maximum value is 20
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
     few: 50 # equivalent to 5
     some: 0 # equivalent to 10
     lots: 0 # equivalent to 15

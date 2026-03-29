@@ -32,7 +32,7 @@ description: Default Heretic Template
 
 game: Heretic
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Heretic:
   ################
@@ -47,8 +47,9 @@ Heretic:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -193,8 +194,9 @@ Heretic:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   max_ammo_crystals:
     # Set the starting ammo capacity for crystals (Elven Wand ammo).
@@ -204,8 +206,9 @@ Heretic:
     # Maximum value is 999
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-100-999: 0 # random value between 100 and 999
 
   max_ammo_arrows:
     # Set the starting ammo capacity for arrows (Ethereal Crossbow ammo).
@@ -215,8 +218,9 @@ Heretic:
     # Maximum value is 999
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-50-999: 0 # random value between 50 and 999
 
   max_ammo_claw_orbs:
     # Set the starting ammo capacity for claw orbs (Dragon Claw ammo).
@@ -226,8 +230,9 @@ Heretic:
     # Maximum value is 999
     200: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-200-999: 0 # random value between 200 and 999
 
   max_ammo_runes:
     # Set the starting ammo capacity for runes (Hellstaff ammo).
@@ -237,8 +242,9 @@ Heretic:
     # Maximum value is 999
     200: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-200-999: 0 # random value between 200 and 999
 
   max_ammo_flame_orbs:
     # Set the starting ammo capacity for flame orbs (Phoenix Rod ammo).
@@ -248,8 +254,9 @@ Heretic:
     # Maximum value is 999
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-20-999: 0 # random value between 20 and 999
 
   max_ammo_spheres:
     # Set the starting ammo capacity for spheres (Firemace ammo).
@@ -259,8 +266,9 @@ Heretic:
     # Maximum value is 999
     150: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-150-999: 0 # random value between 150 and 999
 
   added_ammo_crystals:
     # Set the amount of crystal capacity gained when collecting a bag of holding or a capacity upgrade.
@@ -270,8 +278,9 @@ Heretic:
     # Maximum value is 999
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-999: 0 # random value between 10 and 999
 
   added_ammo_arrows:
     # Set the amount of arrow capacity gained when collecting a bag of holding or a capacity upgrade.
@@ -281,8 +290,9 @@ Heretic:
     # Maximum value is 999
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-999: 0 # random value between 5 and 999
 
   added_ammo_claw_orbs:
     # Set the amount of claw orb capacity gained when collecting a bag of holding or a capacity upgrade.
@@ -292,8 +302,9 @@ Heretic:
     # Maximum value is 999
     200: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-20-999: 0 # random value between 20 and 999
 
   added_ammo_runes:
     # Set the amount of rune capacity gained when collecting a bag of holding or a capacity upgrade.
@@ -303,8 +314,9 @@ Heretic:
     # Maximum value is 999
     200: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-20-999: 0 # random value between 20 and 999
 
   added_ammo_flame_orbs:
     # Set the amount of flame orb capacity gained when collecting a bag of holding or a capacity upgrade.
@@ -314,8 +326,9 @@ Heretic:
     # Maximum value is 999
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-2-999: 0 # random value between 2 and 999
 
   added_ammo_spheres:
     # Set the amount of sphere capacity gained when collecting a bag of holding or a capacity upgrade.
@@ -325,8 +338,9 @@ Heretic:
     # Maximum value is 999
     150: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-15-999: 0 # random value between 15 and 999
 
   ###########################
   # Item & Location Options #

@@ -32,7 +32,7 @@ description: Default Yu-Gi-Oh! 2006 Template
 
 game: Yu-Gi-Oh! 2006
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Yu-Gi-Oh! 2006:
   ################
@@ -47,8 +47,9 @@ Yu-Gi-Oh! 2006:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -105,8 +106,9 @@ Yu-Gi-Oh! 2006:
     # Maximum value is 91
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-91: 0 # random value between 0 and 91
 
   fourth_tier_5_campaign_boss_challenges:
     # Number of Limited/Theme Duels completed for the Fourth Level 5 Campaign Opponent to appear
@@ -116,8 +118,9 @@ Yu-Gi-Oh! 2006:
     # Maximum value is 91
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-91: 0 # random value between 0 and 91
 
   third_tier_5_campaign_boss_challenges:
     # Number of Limited/Theme Duels completed for the Third Level 5 Campaign Opponent to appear
@@ -127,8 +130,9 @@ Yu-Gi-Oh! 2006:
     # Maximum value is 91
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-91: 0 # random value between 0 and 91
 
   final_campaign_boss_campaign_opponents:
     # Number of Campaign Opponents Duels defeated for the Final Campaign Boss to appear
@@ -138,8 +142,9 @@ Yu-Gi-Oh! 2006:
     # Maximum value is 24
     12: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-24: 0 # random value between 0 and 24
 
   fourth_tier_5_campaign_boss_campaign_opponents:
     # Number of Campaign Opponents Duels defeated for the Fourth Level 5 Campaign Opponent to appear
@@ -149,8 +154,9 @@ Yu-Gi-Oh! 2006:
     # Maximum value is 23
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-23: 0 # random value between 0 and 23
 
   third_tier_5_campaign_boss_campaign_opponents:
     # Number of Campaign Opponents Duels defeated for the Third Level 5 Campaign Opponent to appear
@@ -160,8 +166,9 @@ Yu-Gi-Oh! 2006:
     # Maximum value is 22
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-22: 0 # random value between 0 and 22
 
   number_of_challenges:
     # Number of random Limited/Theme Duels that are included. The rest will be inaccessible.
@@ -171,8 +178,9 @@ Yu-Gi-Oh! 2006:
     # Maximum value is 91
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-91: 0 # random value between 0 and 91
 
   starting_money:
     # The amount of money you start with
@@ -182,8 +190,9 @@ Yu-Gi-Oh! 2006:
     # Maximum value is 100000
     3000: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100000: 0 # random value between 0 and 100000
 
   money_reward_multiplier:
     # By which amount the campaign reward money is multiplied
@@ -193,8 +202,9 @@ Yu-Gi-Oh! 2006:
     # Maximum value is 255
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-255: 0 # random value between 1 and 255
 
   normalize_boosters_packs:
     # If enabled every booster pack costs the same otherwise vanilla cost is used
@@ -210,8 +220,9 @@ Yu-Gi-Oh! 2006:
     # Maximum value is 3000
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-3000: 0 # random value between 1 and 3000
 
   add_empty_banlist:
     # Adds a Ban List where everything is at 3 to the item pool

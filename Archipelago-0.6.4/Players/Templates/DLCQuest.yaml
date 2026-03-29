@@ -32,7 +32,7 @@ description: Default DLCQuest Template
 
 game: DLCQuest
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 DLCQuest:
   ###########
@@ -78,8 +78,9 @@ DLCQuest:
     # Minimum value is 1
     # Maximum value is 100
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
     low: 0 # equivalent to 5
     normal: 50 # equivalent to 20
     high: 0 # equivalent to 50
@@ -116,8 +117,9 @@ DLCQuest:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99

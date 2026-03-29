@@ -32,7 +32,7 @@ description: Default Zillion Template
 
 game: Zillion
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Zillion:
   ################
@@ -47,8 +47,9 @@ Zillion:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -71,8 +72,9 @@ Zillion:
     # Minimum value is 0
     # Maximum value is 21
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-21: 0 # random value between 0 and 21
     vanilla: 50 # equivalent to 3
     infinity: 0 # equivalent to 21
 
@@ -84,8 +86,9 @@ Zillion:
     # Maximum value is 8
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   gun_levels:
     # Zillion gun power for the number of Zillion power ups you pick up
@@ -118,8 +121,9 @@ Zillion:
     # Maximum value is 8
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-3-8: 0 # random value between 3 and 8
 
   start_char:
     # which character you start with
@@ -138,8 +142,9 @@ Zillion:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   early_scope:
     # make sure Scope is available early
@@ -159,8 +164,9 @@ Zillion:
     # Maximum value is 5
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   starting_cards:
     # how many ID Cards to start the game with
@@ -173,8 +179,9 @@ Zillion:
     # Maximum value is 10
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
     vanilla: 0 # equivalent to 0
 
   map_gen:
@@ -207,8 +214,9 @@ Zillion:
     # Maximum value is 126
     42: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-126: 0 # random value between 0 and 126
 
   bread_count:
     # how many Breads are in the game
@@ -222,8 +230,9 @@ Zillion:
     # Maximum value is 126
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-126: 0 # random value between 0 and 126
 
   opa_opa_count:
     # how many Opa-Opas are in the game
@@ -237,8 +246,9 @@ Zillion:
     # Maximum value is 126
     26: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-126: 0 # random value between 0 and 126
 
   zillion_count:
     # how many Zillion gun power ups are in the game
@@ -252,8 +262,9 @@ Zillion:
     # Maximum value is 126
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-126: 0 # random value between 0 and 126
 
   floppy_disk_count:
     # how many Floppy Disks are in the game
@@ -267,8 +278,9 @@ Zillion:
     # Maximum value is 126
     7: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-126: 0 # random value between 0 and 126
 
   scope_count:
     # how many Scopes are in the game
@@ -282,8 +294,9 @@ Zillion:
     # Maximum value is 126
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-126: 0 # random value between 0 and 126
 
   red_id_card_count:
     # how many Red ID Cards are in the game
@@ -297,8 +310,9 @@ Zillion:
     # Maximum value is 126
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-126: 0 # random value between 0 and 126
 
   ###########################
   # Item & Location Options #

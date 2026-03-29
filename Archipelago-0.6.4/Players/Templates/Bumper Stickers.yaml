@@ -32,7 +32,7 @@ description: Default Bumper Stickers Template
 
 game: Bumper Stickers
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     Bumper Stickers: 1.0.0 # Version of the world required for this yaml to work as expected.
 
@@ -49,8 +49,9 @@ Bumper Stickers:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -72,8 +73,9 @@ Bumper Stickers:
     # Maximum value is 5
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   turners:
     # Turners allow you to change the direction of a Bumper. These restock when the board resets.
@@ -83,8 +85,9 @@ Bumper Stickers:
     # Maximum value is 5
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   paint_cans:
     # Paint Cans allow you to change the color of a Bumper.
@@ -95,8 +98,9 @@ Bumper Stickers:
     # Maximum value is 5
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   trap_count:
     # Traps affect the board in various ways.
@@ -107,8 +111,9 @@ Bumper Stickers:
     # Maximum value is 15
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
 
   rainbow_trap_weight:
     # Rainbow Traps change the color of every bumper on the field.
@@ -118,8 +123,9 @@ Bumper Stickers:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   spinner_trap_weight:
     # Spinner Traps change the direction of every bumper on the field.
@@ -129,8 +135,9 @@ Bumper Stickers:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   killer_trap_weight:
     # Killer Traps end the current board immediately.
@@ -140,8 +147,9 @@ Bumper Stickers:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ###########################
   # Item & Location Options #

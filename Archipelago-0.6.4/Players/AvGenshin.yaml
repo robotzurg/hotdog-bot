@@ -1,4 +1,4 @@
-# Q. What is this file?
+﻿# Q. What is this file?
 # A. This file contains options which allow you to configure your multiworld experience while allowing
 #    others to play how they want as well.
 #
@@ -28,13 +28,13 @@
 name: AvGenshin
 
 # Used to describe your yaml. Useful if you have multiple files.
-description: Default Manual_GenshinImpact_ArcaniaCQ Template
+description: Default Manual_Genshin Impact_MGThunder Template
 
-game: Manual_GenshinImpact_ArcaniaCQ
+game: Manual_Genshin Impact_MGThunder
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
-Manual_GenshinImpact_ArcaniaCQ:
+Manual_Genshin Impact_MGThunder:
   ################
   # Game Options #
   ################
@@ -63,73 +63,142 @@ Manual_GenshinImpact_ArcaniaCQ:
     full: 0
     minimal: 50
 
-  prog_statues:
-    # If enabled, the Statues of the Seven that unlock areas will be progressive.
-    # In order, they lead from Liyue, to Inazuma, to Fontaine, to Sumeru, and to Natlan.
-    # If disabled, the Statues of the Seven work on an individual basis.
-    'false': 50
-    'true': 0
+  Primogems_Required:
+    # Amount of Primogem items required to collect to achieve victory,
+    # or if you're looking for flavor, to make a wish.
+    # This number must be lower than Primogems_Available.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 160
+    40: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-160: 0 # random value between 1 and 160
 
-  character_shuffle:
-    # If enabled, shuffles character packs into the item pool.
-    # These character packs are themed around major characters in the game.
-    'false': 0
-    'true': 50
+  Primogems_Available:
+    # How many Primogem items will be available in the item pool.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 160
+    80: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-160: 0 # random value between 1 and 160
 
-  element_shuffle:
-    # If enabled, shuffles elements into the item pool.
-    # This affects both characters locked to that Vision as well as the Traveler (who must have the starting Element).
-    'false': 0
-    'true': 50
+  Available_Characters:
+    # The list of characters that will be available as items. If you don't have a character,
+    # it's recommended to remove that character from this list.
+    ['Aino', 'Albedo', 'Amber', 'Arlecchino', 'Baizhu', 'Barbara', 'Beidou', 'Bennett', 'Candace', 'Charlotte', 'Chasca', 'Chevreuse', 'Chiori', 'Chongyun', 'Citlali', 'Clorinde', 'Collei', 'Columbina', 'Cyno', 'Dahlia', 'Dehya', 'Diluc', 'Diona', 'Dori', 'Durin', 'Emilie', 'Escoffier', 'Eula', 'Faruzan', 'Fischl', 'Freminet', 'Furina', 'Gaming', 'Ganyu', 'Gorou', 'Hu Tao', 'Iansan', 'Ifa', 'Ineffa', 'Jahoda', 'Jean', 'Kachina', 'Kaedehara Kazuha', 'Kaeya',  'Kamisato Ayato', 'Kaveh', 'Keqing', 'Kirara', 'Kujou Sara', 'Kuki Shinobu', 'Lan Yan', 'Lauma', 'Layla', 'Lisa', 'Lynette', 'Mavuika', 'Mika', 'Mona', 'Nahida', 'Navia', 'Nefer', 'Neuvillette', 'Ningguang', 'Noelle', 'Ororon', 'Qiqi', 'Raiden Shogun', 'Razor', 'Rosaria', 'Sayu', 'Sethos', 'Shenhe', 'Shikanoin Heizou', 'Skirk', 'Sucrose', 'Thoma', 'Tighnari', 'Varesa', 'Wanderer', 'Xiangling', 'Xianyun', 'Xilonen', 'Xingqiu', 'Xinyan', 'Yanfei', 'Yaoyao', 'Yelan', 'Yoimiya', 'Yun Jin', 'Zhongli']
 
-  weapon_shuffle:
-    # If enabled, shuffles weapons into the item pool.
-    # Only the appropriate weaponry can be used.
-    'false': 0
-    'true': 50
+  Theater_Elements:
+    # The elements currently needed to participate in Imaginarium Theater. If these are out of date,
+    # just change them to be the current elements here and the logic will be set to that.
+    ['Geo', 'Cryo', 'Hydro']
 
-  split_chambers:
-    # If enabled, each Chamber of the Spiral Abyss will be a check.
-    # If disabled, only the floor completions will be checks.
-    # Floor completions are not enabled independently if Split Chambers is enabled.
-    'false': 0
-    'true': 50
+  Opening_Characters:
+    # The characters that you start with in Imaginarium Theater. Feel free to change these if they're out of date.
+    # They can be used in Imaginarium Theater even if they're not in the item pool, or you haven't received them yet.
+    ['Varesa', 'Dori', 'Eula', 'Mika', 'Xianyun', 'Sayu']
 
-  late_floors:
-    # Allow the lower floors of the Spiral Abyss to have items.
-    'false': 50
-    'true': 0
-
-  fishing:
-    # Enable Fishing Points as locations. You must have the Serenitea Pot item to get these locations.
-    'false': 0
-    'true': 50
-
-  fishsanity:
-    # Adds bait to the item pool, as well as locations for catching each fish. Requires Fishing to be enabled.
-    'false': 0
-    'true': 50
-
-  death_link:
-    # If your party wipes, or for every four deaths, send a Death Link.
-    # If you recieve a Death Link, you must teleport and restart the current battle.
-    'false': 50
-    'true': 0
+  Special_Guests:
+    # The Special Guest Stars characters. Feel free to change these if they're out of date.
+    # If you don't have the character, it's recommended that you remove them from the list.
+    ['Furina', 'Columbina', 'Durin', 'Bennet']
 
   goal:
-    # Choose your victory condition.
-    defeat the lord of eroded primal fire: 0
-    spiral abyss floor 8 clear: 0
-    spiral abyss floor 12 clear: 50
-    imaginarium theater easy: 0
-    imaginarium theater normal: 0
-    imaginarium theater hard: 0
-    all weekly bosses: 0
+    # Choose your end goal.
+    # Savior of Teyvat - Defeat every weekly boss
+    # Abyssal Destroyer - Clear Floor 8 of Spiral Abyss
+    # Abyssal Descender - Clear Floor 12 of Spiral Abyss
+    # Tone-Deaf Bard - Clear Imaginarium Theater on Easy
+    # Troupe Member - Clear Imaginarium Theater on Normal
+    # Acting Authority - Clear Imaginarium Theater on Hard
+    # Thespian Visionary - Clear Imaginarium Theater on Visionary
+    # Fight to Fish Another Day - Catch a fish at every fishing point
+    # Wish Making - Collect primogem items that have been shuffled in
+    # The rest are to defeat a specific weekly boss. Hopefully the names are clear enough to know which boss it's tied to.
+    wish granted: 0
+    savior of teyvat: 0
+    abyssal destroyer: 0
+    abyssal descender: 50
+    tone-deaf bard: 0
+    troupe member: 0
+    acting authority: 0
+    thespian visionary: 0
+    fighting to fish another day: 0
+    quell stormterror: 0
+    challenge lupus boreas: 0
+    win the unresolved chess game: 0
+    reseal azhdaha: 0
+    entertain childe: 0
+    duel la signora: 0
+    end the eternal fight: 0
+    deconstruct the false god: 0
+    purify apep's oasis: 0
+    satiate the narwhal's hunger: 0
+    stand against the knave: 0
+    end the abyssal invasion: 0
+    unveil the true moon: 0
 
-  rhythm_game:
-    # Should items/locations linked to this option be enabled?
+  Random_Starting_Character:
+    # Start your game with a random character so you're not just using the Traveler
     'false': 0
     'true': 50
+
+  Late_Spiral_Abyss_Floors:
+    # Allow floors 9-12 to be included in the item distribution.
+    'false': 0
+    'true': 50
+
+  Split_Spiral_Abyss_Chambers:
+    # Makes each chamber of a floor hold an item as opposed to one item per floor.
+    'false': 0
+    'true': 50
+
+  Imaginarium_Theater_Maximum_Difficulty:
+    # Choose the maximum difficulty you'll be expected to clear of Imaginarium Theater.
+    disabled: 0
+    easy: 0
+    normal: 50
+    hard: 0
+    visionary: 0
+
+  Myriad_Melodies:
+    # Include the rhythm mini-game in the mix.
+    # The logic for being able to do checks in this getting the Repertoire of Myriad Melodies item and access to a nation.
+    'false': 0
+    'true': 50
+
+  Fishing_Tour:
+    # Include catching a fish at each fishing point.
+    # Each fishing point is locked behind one bait needed for that fishing point, the fishing rod pack and nation access.
+    'false': 0
+    'true': 50
+
+  Fishsanity:
+    # Include each type of fish as a check.
+    # Each fish has requirements for the bait they use and the nations they can be found in.
+    'false': 50
+    'true': 0
+
+  Progressive_Statues:
+    # Choose if you want the Statues of the Seven, or access to nations, to be progressive or not.
+    # If this option is false, you'll start in Mondstadt and have to get each nation's Statue of the Seven.
+    # If this option is true, you start in Mondstadt and unlock nations in story order (Mondstadt->Liyue->Inazuma...).
+    # Even though the statues in Nod-Krai aren't Statues of the Seven in game, for the purposes of this randomizer, they are.
+    # If you have progressive statues set to false, the location access for Nod-Krai will be 'Statue of the New Moon - Nod-Krai'
+    'false': 0
+    'true': 50
+
+  Randomize_Starting_Nation:
+    # Randomize which nation you start with access to.
+    # Progressive Statues must be false to use this option.
+    'false': 50
+    'true': 0
 
   ###########################
   # Item & Location Options #

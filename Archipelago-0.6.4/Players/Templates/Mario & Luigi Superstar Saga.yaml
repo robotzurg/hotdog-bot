@@ -32,7 +32,7 @@ description: Default Mario & Luigi Superstar Saga Template
 
 game: Mario & Luigi Superstar Saga
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Mario & Luigi Superstar Saga:
   ################
@@ -47,8 +47,9 @@ Mario & Luigi Superstar Saga:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -138,8 +139,9 @@ Mario & Luigi Superstar Saga:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
 
   emblems_amount:
     # Number of Beanstar Emblems that are in the pool.
@@ -151,8 +153,9 @@ Mario & Luigi Superstar Saga:
     # Maximum value is 150
     75: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-150: 0 # random value between 1 and 150
 
   music_options:
     # Choose if you want to randomize or disable music.
@@ -209,8 +212,9 @@ Mario & Luigi Superstar Saga:
     # Maximum value is 4
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-4: 0 # random value between 0 and 4
 
   tattle_hp:
     # This will display the enemies' current and max health while in battle.

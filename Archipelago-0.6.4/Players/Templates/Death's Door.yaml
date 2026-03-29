@@ -32,7 +32,7 @@ description: Default Death's Door Template
 
 game: Death's Door
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Death's Door:
   ################
@@ -47,8 +47,9 @@ Death's Door:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -89,8 +90,9 @@ Death's Door:
     # Maximum value is 50
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-50: 0 # random value between 1 and 50
 
   early_important_item:
     # Choose whether one random important item will be placed early in the multiworld, early and in your world, or to allow the items to be placed randomly.
@@ -156,8 +158,9 @@ Death's Door:
     # Maximum value is 20
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range--49-20: 0 # random value between -49 and 20
 
   extra_magic_shards:
     # Add extra magic shards to the item pool, replacing Soul Orb items. Extra magic shards can allow your magic to go over the vanilla maximum of 6. Each extra pip of magic requires 4 shards.
@@ -167,8 +170,9 @@ Death's Door:
     # Maximum value is 8
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   extra_vitality_shards:
     # Add extra vitality shards to the item pool, replacing Soul Orb items. Extra vitality shards can allow your health to go over the vanilla maximum of 6. Each extra pip of health requires 4 shards.
@@ -178,8 +182,9 @@ Death's Door:
     # Maximum value is 8
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   remove_spell_upgrades:
     # Remove the spell upgrades from the pool, such that there is only 1 Fire, 1 Bomb, and 1 Hookshot in the pool (and no upgrade for Arrow).
@@ -228,8 +233,9 @@ Death's Door:
     # Maximum value is 10
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   starting_souls:
     # Amount of souls to start the game with. Each full upgrade of a stat costs 4,300 souls.
@@ -239,8 +245,9 @@ Death's Door:
     # Maximum value is 17200
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-17200: 0 # random value between 0 and 17200
 
   ###########################
   # Item & Location Options #

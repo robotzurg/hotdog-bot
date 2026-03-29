@@ -32,7 +32,7 @@ description: Default Manual_GenshinImpact_ArcaniaCQ Template
 
 game: Manual_GenshinImpact_ArcaniaCQ
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Manual_GenshinImpact_ArcaniaCQ:
   ################
@@ -47,8 +47,9 @@ Manual_GenshinImpact_ArcaniaCQ:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -62,6 +63,59 @@ Manual_GenshinImpact_ArcaniaCQ:
     full: 50
     minimal: 0
 
+  prog_statues:
+    # If enabled, the Statues of the Seven that unlock areas will be progressive.
+    # In order, they lead from Liyue, to Inazuma, to Fontaine, to Sumeru, and to Natlan.
+    # If disabled, the Statues of the Seven work on an individual basis.
+    'false': 50
+    'true': 0
+
+  character_shuffle:
+    # If enabled, shuffles character packs into the item pool.
+    # These character packs are themed around major characters in the game.
+    'false': 0
+    'true': 50
+
+  element_shuffle:
+    # If enabled, shuffles elements into the item pool.
+    # This affects both characters locked to that Vision as well as the Traveler (who must have the starting Element).
+    'false': 0
+    'true': 50
+
+  weapon_shuffle:
+    # If enabled, shuffles weapons into the item pool.
+    # Only the appropriate weaponry can be used.
+    'false': 50
+    'true': 0
+
+  split_chambers:
+    # If enabled, each Chamber of the Spiral Abyss will be a check.
+    # If disabled, only the floor completions will be checks.
+    # Floor completions are not enabled independently if Split Chambers is enabled.
+    'false': 50
+    'true': 0
+
+  late_floors:
+    # Allow the lower floors of the Spiral Abyss to have items.
+    'false': 50
+    'true': 0
+
+  fishing:
+    # Enable Fishing Points as locations. You must have the Serenitea Pot item to get these locations.
+    'false': 50
+    'true': 0
+
+  fishsanity:
+    # Adds bait to the item pool, as well as locations for catching each fish. Requires Fishing to be enabled.
+    'false': 50
+    'true': 0
+
+  death_link:
+    # If your party wipes, or for every four deaths, send a Death Link.
+    # If you recieve a Death Link, you must teleport and restart the current battle.
+    'false': 50
+    'true': 0
+
   goal:
     # Choose your victory condition.
     defeat the lord of eroded primal fire: 50
@@ -71,49 +125,8 @@ Manual_GenshinImpact_ArcaniaCQ:
     imaginarium theater normal: 0
     imaginarium theater hard: 0
     all weekly bosses: 0
-    primogem hunt: 0
-
-  character_shuffle:
-    # Should items/locations linked to this option be enabled?
-    'false': 0
-    'true': 50
-
-  weapon_shuffle:
-    # Should items/locations linked to this option be enabled?
-    'false': 0
-    'true': 50
-
-  element_shuffle:
-    # Should items/locations linked to this option be enabled?
-    'false': 0
-    'true': 50
-
-  late_floors:
-    # Should items/locations linked to this option be enabled?
-    'false': 0
-    'true': 50
-
-  split_chambers:
-    # Should items/locations linked to this option be enabled?
-    'false': 0
-    'true': 50
 
   rhythm_game:
-    # Should items/locations linked to this option be enabled?
-    'false': 0
-    'true': 50
-
-  fishing:
-    # Should items/locations linked to this option be enabled?
-    'false': 0
-    'true': 50
-
-  fishsanity:
-    # Should items/locations linked to this option be enabled?
-    'false': 0
-    'true': 50
-
-  prog_statues:
     # Should items/locations linked to this option be enabled?
     'false': 0
     'true': 50

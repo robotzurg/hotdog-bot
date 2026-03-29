@@ -32,7 +32,7 @@ description: Default Castlevania - Circle of the Moon Template
 
 game: Castlevania - Circle of the Moon
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Castlevania - Circle of the Moon:
   ################
@@ -47,8 +47,9 @@ Castlevania - Circle of the Moon:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -86,8 +87,9 @@ Castlevania - Circle of the Moon:
     # Maximum value is 9
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-9: 0 # random value between 0 and 9
 
   available_last_keys:
     # How many Last Keys are in the pool in total.
@@ -98,8 +100,9 @@ Castlevania - Circle of the Moon:
     # Maximum value is 9
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-9: 0 # random value between 0 and 9
 
   required_skirmishes:
     # Forces a Last Key after every boss or after every boss and the Battle Arena and forces the required Last Keys to enter the Ceremonial Room to 8 or 9 for All Bosses and All Bosses And Arena respectively.

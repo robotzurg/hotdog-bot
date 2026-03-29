@@ -32,7 +32,7 @@ description: Default The Binding of Isaac Repentance Template
 
 game: The Binding of Isaac Repentance
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 The Binding of Isaac Repentance:
   ################
@@ -47,8 +47,9 @@ The Binding of Isaac Repentance:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -65,7 +66,7 @@ The Binding of Isaac Repentance:
   goals:
     # Set of all bosses you'll have to beat to sucessfully win the game.
     # Valid bosses are: ["Mom", "Mom's Heart", "Isaac", "Satan", "Blue Baby", "The Lamb", "Mega Satan", "Boss Rush", "Hush", "Beast", "Mother", "Delirium"]
-    ['Mother', 'Beast', 'Mega Satan', 'Delirium']
+    ['Delirium', 'Mega Satan', 'Mother', 'Beast']
 
   excluded_areas:
     # Entire areas to exclude from the game. By excluding an area, none of the entrance methods to the area will be able to spawn and neither are locations placed in those areas.
@@ -118,8 +119,9 @@ The Binding of Isaac Repentance:
     # Maximum value is 300
     80: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-300: 0 # random value between 0 and 300
 
   item_location_step:
     # Frequency of how many Items are replaced by AP Items.
@@ -133,8 +135,9 @@ The Binding of Isaac Repentance:
     # Maximum value is 5
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
 
   item_weights:
     # Specify the distribution of items that should be placed into the pool.
@@ -160,8 +163,9 @@ The Binding of Isaac Repentance:
     # Maximum value is 100
     30: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   junk_percentage:
     # Percentage of junk items (Non-Collectable Pickups like Coins, Bombs etc.)
@@ -171,8 +175,9 @@ The Binding of Isaac Repentance:
     # Maximum value is 100
     85: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   junk_weights:
     # Specify the distribution of junk that should be placed into the pool.
@@ -195,8 +200,9 @@ The Binding of Isaac Repentance:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_percentage:
     # Percentage of junk items to be replaced by traps
@@ -206,8 +212,9 @@ The Binding of Isaac Repentance:
     # Maximum value is 100
     10: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_weights:
     # Specify the distribution of traps that should be placed into the pool.
@@ -233,8 +240,9 @@ The Binding of Isaac Repentance:
     # Maximum value is 10
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   retain_one_ups_percentage:
     # Fraction of the 1-UPs you received that are re-given to you on a new run. (Will always be given immediately and not spread across floors.)
@@ -244,8 +252,9 @@ The Binding of Isaac Repentance:
     # Maximum value is 100
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   ###########################
   # Item & Location Options #

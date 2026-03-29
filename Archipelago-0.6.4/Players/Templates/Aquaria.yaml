@@ -32,7 +32,7 @@ description: Default Aquaria Template
 
 game: Aquaria
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Aquaria:
   ################
@@ -47,8 +47,9 @@ Aquaria:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -78,8 +79,9 @@ Aquaria:
     # Maximum value is 8
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   big_bosses_to_beat:
     # The number of big bosses to beat before having access to the creator (the final boss). The big bosses are
@@ -90,8 +92,9 @@ Aquaria:
     # Maximum value is 5
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   turtle_randomizer:
     # Randomize the transportation turtle.

@@ -32,7 +32,7 @@ description: Default Spyro 2 Template
 
 game: Spyro 2
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Spyro 2:
   ################
@@ -47,8 +47,9 @@ Spyro 2:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -103,8 +104,9 @@ Spyro 2:
     # Maximum value is 22
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-22: 0 # random value between 0 and 22
 
   open_world_ability_and_warp_unlocks:
     # If on in Open World mode, the player will start with swim, climb, headbash, and access to all 3 homeworlds.
@@ -148,8 +150,9 @@ Spyro 2:
     # Maximum value is 10000
     4000: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-500-10000: 0 # random value between 500 and 10000
 
   enable_skillpoint_checks:
     # Adds checks for getting skill points
@@ -221,8 +224,9 @@ Spyro 2:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   enable_trap_damage_sparx:
     # Allows filler items to include damaging Sparx. Cannot directly kill Spyro.

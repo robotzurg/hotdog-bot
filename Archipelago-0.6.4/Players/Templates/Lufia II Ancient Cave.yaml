@@ -32,7 +32,7 @@ description: Default Lufia II Ancient Cave Template
 
 game: Lufia II Ancient Cave
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Lufia II Ancient Cave:
   ################
@@ -47,8 +47,9 @@ Lufia II Ancient Cave:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -75,8 +76,9 @@ Lufia II Ancient Cave:
     # Maximum value is 75
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-75: 0 # random value between 5 and 75
 
   blue_chest_count:
     # The number of blue chest items that will be in your item pool.
@@ -93,8 +95,9 @@ Lufia II Ancient Cave:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-100: 0 # random value between 10 and 100
 
   boss:
     # Which boss to fight on the final floor.
@@ -138,10 +141,10 @@ Lufia II Ancient Cave:
     daos: 0
     egg_dragon: 0
     master: 50
-    random-sinistral: 0
-    random-middle: 0
-    random-low: 0
     random-high: 0
+    random-middle: 0
+    random-sinistral: 0
+    random-low: 0
 
   capsule_cravings_jp_style:
     # Make capsule monster cravings behave as in the Japanese version.
@@ -171,8 +174,9 @@ Lufia II Ancient Cave:
     # Minimum value is 1
     # Maximum value is 5
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-5: 0 # random value between 1 and 5
     default: 50 # equivalent to 1
     m: 0 # equivalent to 5
 
@@ -187,8 +191,9 @@ Lufia II Ancient Cave:
     # Minimum value is 1
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-99: 0 # random value between 1 and 99
     default: 50 # equivalent to 1
     party_starting_level: 0 # equivalent to 0
 
@@ -205,8 +210,9 @@ Lufia II Ancient Cave:
     # Maximum value is 255
     16: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-255: 0 # random value between 0 and 255
 
   custom_item_pool:
     # Customize your multiworld item pool.
@@ -365,8 +371,9 @@ Lufia II Ancient Cave:
     # Maximum value is 500
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-100-500: 0 # random value between 100 and 500
 
   final_floor:
     # The final floor, where the boss resides.
@@ -379,8 +386,9 @@ Lufia II Ancient Cave:
     # Maximum value is 99
     99: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-2-99: 0 # random value between 2 and 99
 
   gear_variety_after_b9:
     # Fixes a bug that prevents various gear from appearing after B9.
@@ -422,8 +430,9 @@ Lufia II Ancient Cave:
     # Maximum value is 400
     100: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-25-400: 0 # random value between 25 and 400
 
   healing_floor_chance:
     # The chance of a floor having a healing tile hidden under a bush.
@@ -437,8 +446,9 @@ Lufia II Ancient Cave:
     # Maximum value is 255
     16: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-255: 0 # random value between 0 and 255
 
   inactive_exp_gain:
     # The rate at which characters not currently in the active party gain EXP.
@@ -461,8 +471,9 @@ Lufia II Ancient Cave:
     # Maximum value is 98
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-98: 0 # random value between 1 and 98
 
   iris_floor_chance:
     # The chance of a floor being able to generate an Iris treasure.
@@ -478,8 +489,9 @@ Lufia II Ancient Cave:
     # Maximum value is 255
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-255: 0 # random value between 5 and 255
 
   iris_treasures_required:
     # The number of Iris treasures required to complete the goal.
@@ -493,8 +505,9 @@ Lufia II Ancient Cave:
     # Maximum value is 9
     9: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-9: 0 # random value between 1 and 9
 
   master_hp:
     # The number of hit points of the Master
@@ -508,8 +521,9 @@ Lufia II Ancient Cave:
     # Maximum value is 9980
     9980: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-9980: 0 # random value between 1 and 9980
 
   party_starting_level:
     # The starting level of your party members.
@@ -522,8 +536,9 @@ Lufia II Ancient Cave:
     # Maximum value is 99
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-99: 0 # random value between 1 and 99
 
   run_speed:
     # Modifies the game to allow you to move faster than normal when pressing the Y button.
@@ -550,8 +565,9 @@ Lufia II Ancient Cave:
     # Minimum value is 1
     # Maximum value is 10
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
     disabled: 50 # equivalent to 0
 
   shop_inventory:

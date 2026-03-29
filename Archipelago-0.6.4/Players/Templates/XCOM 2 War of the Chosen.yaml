@@ -32,7 +32,7 @@ description: Default XCOM 2 War of the Chosen Template
 
 game: XCOM 2 War of the Chosen
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 XCOM 2 War of the Chosen:
   ################
@@ -47,8 +47,9 @@ XCOM 2 War of the Chosen:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -115,7 +116,7 @@ XCOM 2 War of the Chosen:
   progressive_items:
     # Force these items to be collected in order.
     # Valid values: 'RifleTech', 'MeleeWeaponTech', 'ArmorTech', 'GREMLINTech', 'PsionicsTech'
-    ['MeleeWeaponTech', 'ArmorTech', 'PsionicsTech', 'RifleTech', 'GREMLINTech']
+    ['ArmorTech', 'PsionicsTech', 'MeleeWeaponTech', 'RifleTech', 'GREMLINTech']
 
   early_proving_ground:
     # Force the Proving Ground to be unlockable very early (sphere 1).
@@ -131,8 +132,9 @@ XCOM 2 War of the Chosen:
     # Maximum value is 100
     15: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   staff_share:
     # Set the share of filler items to be staff.
@@ -142,8 +144,9 @@ XCOM 2 War of the Chosen:
     # Maximum value is 100
     20: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_share:
     # Set the share of filler items to be traps.
@@ -153,14 +156,15 @@ XCOM 2 War of the Chosen:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   skip_mission_types:
     # Automatically skip these mission types when they are spawned from a regular calendar event.
     # Can be changed in-game via Mod Config Menu.
     # Valid values: 'SupplyRaid', 'CouncilMission', 'ResistanceOp'
-    ['CouncilMission', 'ResistanceOp', 'SupplyRaid']
+    ['SupplyRaid', 'ResistanceOp', 'CouncilMission']
 
   disable_covert_action_risks:
     # Disable these covert action risks.
@@ -179,8 +183,9 @@ XCOM 2 War of the Chosen:
     # Maximum value is 100
     50: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   supply_raid_reward_error:
     # Set the amount of resources that are rewarded for skipped supply raids.
@@ -193,8 +198,9 @@ XCOM 2 War of the Chosen:
     # Maximum value is 100
     15: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   extra_xp_gain:
     # Set the amount of extra XP that soldiers gain passively.
@@ -209,8 +215,9 @@ XCOM 2 War of the Chosen:
     # Maximum value is 200
     35: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-200: 0 # random value between 0 and 200
 
   extra_corpse_gain:
     # Set the amount of extra corpses that each enemy drops.
@@ -221,8 +228,9 @@ XCOM 2 War of the Chosen:
     # Maximum value is 5
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   disable_day_one_traps:
     # Disable traps when they are received during the first day of a campaign.

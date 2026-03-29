@@ -32,7 +32,9 @@ description: Default Starcraft 2 Template
 
 game: Starcraft 2
 requires:
-  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Starcraft 2: 4.0.0 # Version of the world required for this yaml to work as expected.
 
 Starcraft 2:
   ################
@@ -47,8 +49,9 @@ Starcraft 2:
     # Minimum value is 0
     # Maximum value is 99
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
     disabled: 0 # equivalent to 0
     normal: 50 # equivalent to 50
     extreme: 0 # equivalent to 99
@@ -63,7 +66,7 @@ Starcraft 2:
     minimal: 0
 
   start_inventory:
-    # Start with these items.
+    # Start with these items. Use an amount of -1 to start with all copies of an item.
     {}
 
   disable_forced_camera:
@@ -171,8 +174,9 @@ Starcraft 2:
     # Maximum value is 195
     83: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-195: 0 # random value between 1 and 195
 
   enabled_campaigns:
     # Determines which campaign's missions will be used.
@@ -250,7 +254,7 @@ Starcraft 2:
 
   selected_races:
     # Pick which factions' missions and items can be shuffled into the world.
-    ['Terran', 'Protoss', 'Zerg']
+    ['Zerg', 'Protoss', 'Terran']
 
   exclude_very_hard_missions:
     # Excludes Very Hard missions outside of Epilogue campaign (All-In, The Reckoning, Salvation, and all Epilogue missions are considered Very Hard).
@@ -292,8 +296,9 @@ Starcraft 2:
     # Maximum value is 100
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   min_number_of_upgrades:
     # Set a minimum to the number of upgrade items a unit/structure can have.
@@ -307,8 +312,9 @@ Starcraft 2:
     # Maximum value is 13
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-13: 0 # random value between 0 and 13
 
   max_number_of_upgrades:
     # Set a maximum to the number of upgrade items a unit/structure can have.
@@ -322,8 +328,9 @@ Starcraft 2:
     # Maximum value is 13
     -1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range--1-13: 0 # random value between -1 and 13
 
   max_upgrade_level:
     # Controls the maximum number of weapon/armor upgrades that can be found or unlocked.
@@ -333,8 +340,9 @@ Starcraft 2:
     # Maximum value is 5
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-3-5: 0 # random value between 3 and 5
 
   generic_upgrade_missions:
     # Determines the percentage of missions in the mission order that must be completed before
@@ -350,8 +358,9 @@ Starcraft 2:
     # Maximum value is 100
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   generic_upgrade_research:
     # Determines how weapon and armor upgrades affect missions once unlocked.
@@ -449,8 +458,9 @@ Starcraft 2:
     # Maximum value is 20
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
 
   kerrigan_levels_per_mission_completed_cap:
     # Limits how many total levels Kerrigan can gain from beating missions.  This does not affect levels gained from items.  
@@ -466,8 +476,9 @@ Starcraft 2:
     # Maximum value is 140
     -1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range--1-140: 0 # random value between -1 and 140
 
   kerrigan_level_item_sum:
     # Determines the sum of the level items in the world.  This does not affect levels gained from beating missions.
@@ -482,8 +493,9 @@ Starcraft 2:
     # Maximum value is 140
     70: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-140: 0 # random value between 0 and 140
 
   kerrigan_level_item_distribution:
     # Determines the amount and size of Kerrigan level items.
@@ -530,8 +542,9 @@ Starcraft 2:
     # Maximum value is 140
     -1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range--1-140: 0 # random value between -1 and 140
 
   start_primary_abilities:
     # Number of Primary Abilities (Kerrigan Tier 1, 2, and 4) to start the game with.
@@ -542,8 +555,9 @@ Starcraft 2:
     # Maximum value is 4
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-4: 0 # random value between 0 and 4
 
   kerrigan_primal_status:
     # Determines when Kerrigan appears in her Primal Zerg form.
@@ -573,8 +587,9 @@ Starcraft 2:
     # Maximum value is 12
     12: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-12: 0 # random value between 0 and 12
 
   kerrigan_max_passive_abilities:
     # Determines the maximum number of Kerrigan passive abilities that can be present in the game
@@ -585,8 +600,9 @@ Starcraft 2:
     # Maximum value is 5
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   #################
   # Spear of Adun #
@@ -649,8 +665,9 @@ Starcraft 2:
     # Maximum value is 13
     13: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-13: 0 # random value between 0 and 13
 
   spear_of_adun_max_passive_abilities:
     # Determines the maximum number of Spear of Adun passive abilities that can be present in the game
@@ -662,8 +679,9 @@ Starcraft 2:
     # Maximum value is 3
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-3: 0 # random value between 0 and 3
 
   ########
   # Nova #
@@ -679,8 +697,9 @@ Starcraft 2:
     # Maximum value is 5
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   nova_max_gadgets:
     # Determines maximum number of Nova gadgets that can be present in the game.
@@ -694,8 +713,9 @@ Starcraft 2:
     # Maximum value is 5
     5: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
 
   nova_ghost_of_a_chance_variant:
     # Determines which variant of Nova should be used in Ghost of a Chance mission.
@@ -736,8 +756,9 @@ Starcraft 2:
     # Maximum value is 10
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   vanilla_locations:
     # Enables or disables checks for completing vanilla objectives.
@@ -878,8 +899,9 @@ Starcraft 2:
     # Maximum value is 70
     0: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-70: 0 # random value between 0 and 70
 
   minerals_per_item:
     # Configures how many minerals are given per resource item.
@@ -889,8 +911,9 @@ Starcraft 2:
     # Maximum value is 200
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-200: 0 # random value between 0 and 200
 
   vespene_per_item:
     # Configures how much vespene gas is given per resource item.
@@ -900,8 +923,9 @@ Starcraft 2:
     # Maximum value is 200
     25: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-200: 0 # random value between 0 and 200
 
   starting_supply_per_item:
     # Configures how much starting supply per is given per item.
@@ -911,8 +935,9 @@ Starcraft 2:
     # Maximum value is 16
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-16: 0 # random value between 0 and 16
 
   maximum_supply_per_item:
     # Configures how much the maximum supply limit increases per item.
@@ -922,8 +947,9 @@ Starcraft 2:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   maximum_supply_reduction_per_item:
     # Configures how much maximum supply is reduced per trap item.
@@ -933,19 +959,21 @@ Starcraft 2:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
 
   lowest_maximum_supply:
     # Controls how far max supply reduction traps can reduce maximum supply.
     #
     # You can define additional values between the minimum and maximum values.
-    # Minimum value is 100
+    # Minimum value is 50
     # Maximum value is 200
     180: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-50-200: 0 # random value between 50 and 200
 
   research_cost_reduction_per_item:
     # Controls how much weapon/armor research cost is cut per research cost filler item.
@@ -956,8 +984,9 @@ Starcraft 2:
     # Maximum value is 10
     2: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   filler_items_distribution:
     # Controls the relative probability of each filler item being generated over others.
@@ -979,17 +1008,17 @@ Starcraft 2:
   ###########################
   locked_items:
     # Guarantees that these items will be unlockable, in the amount specified.
-    # Specify an amount of 0 to lock all copies of an item.
+    # Specify an amount of -1 to lock all copies of an item.
     {}
 
   excluded_items:
     # Guarantees that these items will not be unlockable, in the amount specified.
-    # Specify an amount of 0 to exclude all copies of an item.
+    # Specify an amount of -1 to exclude all copies of an item.
     {}
 
   unexcluded_items:
     # Undoes an item exclusion; useful for whitelisting or fine-tuning a category.
-    # Specify an amount of 0 to unexclude all copies of an item.
+    # Specify an amount of -1 to unexclude all copies of an item.
     {}
 
   vanilla_items_only:
