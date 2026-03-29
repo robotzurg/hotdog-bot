@@ -112,6 +112,7 @@ async function start(discordClient, db) {
 
         try {
             if (slot) {
+                console.log(`Attempting to reconnect to Archipelago at ${address} with slot ${slot}...`);
                 await archClient.login(address, slot, 'Clique');
             } else {
                 await archClient.login(address);
@@ -373,7 +374,7 @@ async function start(discordClient, db) {
 
     try {
         if (slot) {
-            await archClient.login(address, slot, 'Garfield Kart - Furious Racing');
+            await archClient.login(address, slot, 'Clique');
         } else {
             await archClient.login(address);
         }

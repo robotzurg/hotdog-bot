@@ -96,9 +96,11 @@ module.exports = {
 
         const slotName = interaction.options.getString('slot-name');
         const port = db.archipelago.get('server_port');
-        const launcherScript = path.join(__dirname, '../../Archipelago-0.6.4/Launcher.py');
+        const launcherScript = path.join(__dirname, '../../Archipelago-0.6.6/Launcher.py');
         // Use the venv's Python interpreter instead of system python3
-        const pythonPath = path.join(__dirname, '../../Archipelago-0.6.4/venv/bin/python3');
+        const pythonPath = process.platform === 'win32'
+            ? path.join(__dirname, '../../Archipelago-0.6.6/venv/Scripts/python.exe')
+            : path.join(__dirname, '../../Archipelago-0.6.6/venv/bin/python3');
         const pythonProcess = spawn(pythonPath, [
             launcherScript, 
             'Universal Tracker', 
@@ -134,8 +136,27 @@ module.exports = {
 
         pythonProcess.stdout.on('data', (data) => {
             const s = data instanceof Buffer ? data.toString('utf8') : String(data);
-            if (!s.includes('Archipelago (0.6.4)') && !s.includes('enter to exit') && !s.includes('found cached multiworld')) {
-                const parts = s.split(/[\r\n,]+/).map(p => p.trim()).filter(Boolean);
+            console.log('Python stdout:', s);
+            if (s.toLowerCase().includes('press enter to install')) {
+                pythonProcess.stdin.write('\n');
+            }
+            if (!s.includes('Archipelago (0.6.6)') && !s.includes('enter to exit') && !s.includes('found cached multiworld')) {
+                const noisePatterns = [
+                    /^Shop Upgrade total:/,
+                    /^Location id:/,
+                    /^Adding rule for/,
+                    /^Creating \d+/,
+                    /^Making /,
+                    /^Excluding /,
+                    /Pelly (Added|added)/,
+                    /^(Loaction|Location|Item) Count:/,
+                    /^(Total Filler|Filler needed):/,
+                    /^\[/,
+                    /^\d+$/,
+                ];
+                const parts = s.split(/[\r\n]+/)
+                    .map(p => p.trim())
+                    .filter(p => p && !noisePatterns.some(re => re.test(p)));
                 if (parts.length) message.push(...parts);
             }
 
