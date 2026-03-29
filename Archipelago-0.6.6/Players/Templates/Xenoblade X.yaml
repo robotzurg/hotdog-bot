@@ -1,0 +1,450 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Xenoblade X Template
+
+game: Xenoblade X
+requires:
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Xenoblade X: 0.1.13 # Version of the world required for this yaml to work as expected.
+
+Xenoblade X:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  death_link:
+    # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+    'false': 50
+    'true': 0
+
+  #############
+  # Locations #
+  #############
+  clp:
+    # Allows you to get items from collectopedia entries and adds those locations to the pool
+    'false': 0
+    'true': 50
+
+  loc:
+    # Allows you to get items from locations and adds those locations to the pool
+    'false': 0
+    'true': 50
+
+  ebk:
+    # Allows you to get items from completing enemy entries(white dot in the menu)
+    # and adds those locations to the pool
+    'false': 0
+    'true': 50
+
+  enemy_book_threshold:
+    # Sets the required kills to unlock a enemy location. White dot in enemy book appears at 3 for normal enemies.
+    # Uniques are fixed at 1
+    discovery: 0
+    '1': 0
+    '2': 0
+    '3': 50
+
+  #########
+  # Items #
+  #########
+  amr:
+    # Allows you to receive ground armor as items and adds those items to the pool
+    'off': 0
+    'on': 50
+
+  wpn:
+    # Allows you to receive ground weapons as items and adds those items to the pool
+    'off': 0
+    'on': 50
+
+  aug:
+    # Allows you to receive ground augments as items and adds those items to the pool
+    'off': 0
+    'on': 50
+
+  skwpn:
+    # Allows you to receive skell weapons as items and adds those items to the pool
+    'off': 0
+    'on': 50
+
+  skamr:
+    # Allows you to receive skell armor as items and adds those items to the pool
+    'off': 0
+    'on': 50
+
+  skaug:
+    # Allows you to receive skell augments as items and adds those items to the pool
+    'off': 0
+    'on': 50
+
+  impit:
+    # Allows you to receive important items and adds those items to the pool. Has no logic currently
+    'off': 50
+    'on': 0
+
+  #################
+  # Graphic packs #
+  #################
+  enemy_aggro:
+    # Increase or decrease the enemy aggression
+    none: 50
+    hell_never_deaggro: 0
+    increase_range_x2: 0
+    decrease_range_2: 0
+    decrease_range_4: 0
+
+  enemy_stats:
+    # Adjust the stats of the enemies
+    none: 50
+    25_percent: 0
+    50_percent: 0
+    75_percent: 0
+    125_percent: 0
+    150_percent: 0
+    200_percent: 0
+    hell_300_percent: 0
+    impossible_1000_percent: 0
+
+  damage_divisor:
+    # Divide your teams damage output. Note: Displayed damage values stay the same regardless
+    none: 50
+    '2': 0
+    '3': 0
+    '5': 0
+    '10': 0
+    '50': 0
+    '100': 0
+
+  damage_multiplicator:
+    # Multiply your teams damage output. Note: Displayed damage values stay the same regardless
+    none: 50
+    x2: 0
+    x3: 0
+    x5: 0
+    x10: 0
+    x25: 0
+    x100: 0
+
+  qte_auto:
+    # Automatically completes Quicktime-Events with the specified rating
+    none: 50
+    excellent: 0
+    good: 0
+    fail: 0
+
+  qte_speed:
+    # Sets the speed for every Quicktime-Event manually
+    none: 50
+    slow: 0
+    mid: 0
+    fast: 0
+    faster: 0
+
+  qte_skell:
+    # Restores skells automatically if the insurance is still valid
+    'off': 50
+    'on': 0
+
+  collection_range:
+    # Increases the collection range of items in the field
+    none: 50
+    big: 0
+    bigger: 0
+
+  armor_slot_upgrades:
+    # Allows you to further upgrade armor slots.
+    'off': 50
+    'on': 0
+
+  armor_traits_upgrades:
+    # Allows you to further upgrade equipment traits. Optional without ressources
+    none: 50
+    normal: 0
+    cheat: 0
+
+  lv_points_modifier:
+    # Modifies the level experience gain and disables 9999 exp cap
+    none: 50
+    '1': 0
+    '2': 0
+    '3': 0
+    '5': 0
+    '10': 0
+    '50': 0
+    '100': 0
+    '1000': 0
+
+  battle_points_modifier:
+    # Modifies the battle experience gain
+    none: 50
+    '2': 0
+    '3': 0
+    '5': 0
+    '10': 0
+    '50': 0
+    '100': 0
+    '1000': 0
+
+  blade_points_modifier:
+    # Modifies the BLADE experience gain
+    none: 50
+    '2': 0
+    '3': 0
+    '5': 0
+    '10': 0
+    '50': 0
+
+  frontier_nav_miranium_frequency:
+    # Alters the frequency of the Frontier-Nav Miranium bonuses
+    none: 50
+    '1': 0
+    '2': 0
+    '5': 0
+    '10': 0
+    '15': 0
+    '20': 0
+
+  frontier_nav_miranium_quantity:
+    # Alters the quantity of the Frontier-Nav Miranium bonuses
+    none: 50
+    '2': 0
+    '3': 0
+    '5': 0
+    '10': 0
+    '50': 0
+    '100': 0
+
+  frontier_nav_money_frequency:
+    # Alters the frequency of the Frontier-Nav Money bonuses
+    none: 50
+    '1': 0
+    '2': 0
+    '5': 0
+    '7': 0
+    '10': 0
+
+  frontier_nav_money_quantity:
+    # Alters the quantity of the Frontier-Nav Money bonuses
+    none: 50
+    '2': 0
+    '3': 0
+    '5': 0
+    '10': 0
+    '50': 0
+    '100': 0
+    '1000': 0
+
+  frontier_nav_resources_frequency:
+    # Alters the frequency of the Frontier-Nav Resource bonuses
+    none: 50
+    '1': 0
+    '2': 0
+    '5': 0
+
+  frontier_nav_resources_quantity:
+    # Alters the quantity of the Frontier-Nav Resource bonuses
+    none: 50
+    '2': 0
+    '3': 0
+    '5': 0
+    '10': 0
+    '50': 0
+    '100': 0
+
+  frontier_nav_no_miranium_cap:
+    # Removes the Miranium cap caused by missing storage probes
+    'off': 50
+    'on': 0
+
+  equip_alternate_ratio:
+    # In vanilla, equipment traits have a percent chance to be selected, some of them have 90 or 100%
+    # , while others have 10%. This mod changes that: everything above 80% is capped at 80%
+    # , and everything else is set to 20%
+    'off': 50
+    'on': 0
+
+  equip_chest_count:
+    # Alters the guranteed item count in treasure chests
+    none: 50
+    '1': 0
+    '2': 0
+    '3': 0
+
+  equip_quality:
+    # Alters the guranteed equipment trait count
+    none: 50
+    0_traits: 0
+    1_traits: 0
+    2_traits: 0
+    3_traits: 0
+
+  equip_slots:
+    # Alters the guranteed equipment augments slots count
+    none: 50
+    '0': 0
+    '1': 0
+    '2': 0
+    '3': 0
+
+  broken_equip:
+    # Alters chance to get broken equipment
+    none: 50
+    never: 0
+    always: 0
+
+  materials_drop_ratio:
+    # Alters the materials drop ratio
+    none: 50
+    drop_100_percent: 0
+    drop_70_percent: 0
+    drop_50_percent: 0
+    drop_30_percent: 0
+    drop_0_percent: 0
+
+  treasure_quality:
+    # Forces a specific quality
+    none: 50
+    gold_quality: 0
+    silver_quality: 0
+    bronze_quality: 0
+    no_treasure: 0
+
+  moon_jump_width:
+    # Alters the jump width
+    none: 50
+    distance_150_percent: 0
+    distance_160_percent: 0
+    distance_170_percent: 0
+    distance_180_percent: 0
+    distance_190_percent: 0
+    distance_200_percent: 0
+    distance_250_percent: 0
+    distance_300_percent: 0
+    distance_500_percent: 0
+    cheat_1000_percent: 0
+
+  moon_jump_height:
+    # Alters the jump height
+    none: 50
+    height_105_percent: 0
+    height_106_percent: 0
+    height_107_percent: 0
+    height_108_percent: 0
+    height_109_percent: 0
+    height_110_percent: 0
+    height_120_percent: 0
+    height_130_percent: 0
+    height_140_percent: 0
+    height_150_percent: 0
+    height_2500_percent: 0
+
+  moon_jump_type:
+    # Alters the landing type after the jump
+    short_land: 50
+    step_forward: 0
+    normal_land: 0
+    role: 0
+    full_stop: 0
+    half_stop: 0
+    never_land_softlocks: 0
+
+  run_forrest_run:
+    # Alters the running speed
+    none: 50
+    speed_125_percent: 0
+    speed_150_percent: 0
+    speed_200_percent: 0
+    speed_300_percent: 0
+    cheat_2000_percent: 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

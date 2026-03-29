@@ -1,0 +1,666 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Plants vs. Zombies Template
+
+game: Plants vs. Zombies
+requires:
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+
+Plants vs. Zombies:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  ###############
+  # AP Settings #
+  ###############
+  goty_compatability_mode:
+    # This APWorld is primarily designed to be used with Plants vs. Zombies: Replanted.
+    # If you wish to connect to this world using GOTY, you can - but there are certain limitations.    
+    # Enabling this option will automatically adjust your YAML to ensure it is compatible with the restrictions of Victor Tran's GOTY client.
+    'false': 50
+    'true': 0
+
+  death_link:
+    # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+    'false': 50
+    'true': 0
+
+  energy_link:
+    # Adds an "Energy Link" button, allowing you to deposit and withdraw money via Energy Link.
+    'false': 50
+    'true': 0
+
+  ################
+  # Level Access #
+  ################
+  adventure_mode_progression:
+    # Determines the way in which you will progress through Adventure Mode.
+    # This setting only affects levels within Adventure Mode and has no impact on the other modes.
+    # 
+    # - linear: Adventure Mode levels will be unlocked by clearing the previous level, just like in the vanilla game. Clearing an area will unlock the next one.
+    # - area_unlock_items: Locks each unique area (Night, Pool, Fog and Roof) of Adventure Mode behind a different item. You can swap between unlocked areas whenever you like, but the levels within each area must be cleared in order. (e.g. You must clear 5-1 before you can play 5-2)
+    # - open_area_unlock_items: After receiving an area unlock item, all levels within that area are instantly unlocked. (e.g. After unlocking Fog Access, you can instantly play 4-2 without playing 4-1)
+    # - level_items: You will start with the first five levels unlocked. Other levels are individually unlocked as separate items. If this option is enabled without enabling enough additional locations to place these items in, you will not be able to generate a world.
+    linear: 0
+    area_unlock_items: 50
+    open_area_unlock_items: 0
+    level_items: 0
+
+  minigame_levels:
+    # Determines how Mini-game levels will be incorporated into the game.
+    # 
+    # - off: Mini-game levels will not be included.
+    # - vanilla: After obtaining the "Mini-games" item, the first three Mini-game levels will be available to play. Clearing any Mini-game level will unlock a new one, in order.
+    # - randomised_order: After obtaining the "Mini-games" item, three random Mini-game levels will be available to play. Clearing any Mini-game level will unlock a new one, in a randomised order.
+    # - open: After obtaining the "Mini-games" item, you have instant access to all Mini-game levels.
+    # - level_items: Every individual Mini-game level is a separate item.
+    'off': 0
+    vanilla: 0
+    randomised_order: 50
+    open: 0
+    level_items: 0
+
+  puzzle_levels:
+    # Determines how Puzzle levels will be incorporated into the game.
+    # 
+    # - off: Puzzle levels will not be included.
+    # - vanilla: After obtaining the "Puzzle Mode" item, the first Vasebreaker level and the first I, Zombie level will be available to play. Clearing a Puzzle level will unlock the next one in its category, in order.
+    # - randomised_order: After obtaining the "Puzzle Mode" item, one random Vasebreaker level and one random I, Zombie level will be available to play. Clearing any Puzzle level will unlock the next one in its category, in a randomised order.
+    # - open: After obtaining the "Puzzle Mode" item, you have instant access to all Puzzle levels.
+    # - level_items: Every individual Puzzle level is a separate item.
+    'off': 0
+    vanilla: 0
+    randomised_order: 50
+    open: 0
+    level_items: 0
+
+  survival_levels:
+    # Determines how Survival levels will be incorporated into the game.
+    # 
+    # - off: Survival levels will not be included.
+    # - vanilla: After obtaining the "Survival Mode" item, the first three Survival levels will be available to play. Clearing any Survival level will unlock a new one, in order.
+    # - randomised_order: After obtaining the "Survival Mode" item, three random Survival levels will be available to play. Clearing any Survival level will unlock a new one, in a randomised order.
+    # - open: After obtaining the "Survival Mode" item, you have instant access to all Survival levels.
+    # - level_items: Every individual Survival level is a separate item.
+    'off': 0
+    vanilla: 0
+    randomised_order: 50
+    open: 0
+    level_items: 0
+
+  cloudy_day_levels:
+    # Determines how Cloudy Day levels will be incorporated into the game.
+    # These can be particularly challenging compared to the rest of the game.
+    # 
+    # - off: Cloudy Day levels will not be included.
+    # - vanilla: After obtaining the "Cloudy Day" item, the first Cloudy Day level will be available to play. Clearing a Cloudy Day level will unlock the next one, in order.
+    # - randomised_order: After obtaining the "Cloudy Day" item, one random Cloudy Day level will be available to play. Clearing a Cloudy Day level will unlock a new one, in a randomised order.
+    # - open: After obtaining the "Cloudy Day" item, you have instant access to all Cloudy Day levels.
+    # - level_items: Every individual Cloudy Day level is a separate item.
+    # 
+    # *This option is forced to "off" if goty_compatability_mode is enabled.
+    'off': 50
+    vanilla: 0
+    randomised_order: 0
+    open: 0
+    level_items: 0
+
+  bonus_levels:
+    # Determines how Bonus Levels (also known as Limbo Levels) will be incorporated into the game.
+    # 
+    # - off: Bonus Levels will not be included.
+    # - vanilla: After obtaining the "Bonus Levels" item, you have instant access to all Bonus Levels.
+    # - level_items: Every individual Bonus Level is a separate item.
+    # 
+    # *This option is forced to "off" if goty_compatability_mode is enabled.
+    'off': 50
+    vanilla: 0
+    level_items: 0
+
+  china_level:
+    # Determines how the China level ("The Great Wall") will be incorporated into the game.
+    # 
+    # - off: The China level will not be included.
+    # - vanilla: The China level will be instantly accessible.
+    # - item: The China level will be locked behind an item.
+    # 
+    # *This option is forced to "off" if goty_compatability_mode is enabled.
+    'off': 50
+    vanilla: 0
+    item: 0
+
+  ###################
+  # Extra Locations #
+  ###################
+  huge_wave_locations:
+    # Include locations for defeating Huge Waves prior to each level's Final Wave.
+    'false': 0
+    'true': 50
+
+  shop_items:
+    # How many items to include in Crazy Dave's shop.
+    # You cannot access the shop until you obtain Crazy Dave's Car Keys. 
+    # 
+    # Each page contains eight items. 
+    # Each page after the first must be unlocked by obtaining a "Twiddydinkies Restock" item.
+    # 
+    # A value of 0 disables the shop entirely.
+    # A value of 64 has eight pages.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 64
+    16: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-64: 0 # random value between 0 and 64
+
+  ########
+  # Goal #
+  ########
+  adventure_levels_goal:
+    # Determines how many unique levels of Adventure Mode (if any) must be cleared before you can play the final battle with Dr. Zomboss in Roof: Level 5-10.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 49
+    49: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-49: 0 # random value between 0 and 49
+
+  adventure_areas_goal:
+    # Determines how many unique areas of Adventure Mode (if any) must be fully cleared before you can play the final battle with Dr. Zomboss in Roof: Level 5-10.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 5
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
+
+  minigame_levels_goal:
+    # Determines how many unique Mini-game levels (if any) must be cleared before you can play the final battle with Dr. Zomboss in Roof: Level 5-10.
+    # Mini-games must be enabled in order for this setting to have any effect.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 20
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-20: 0 # random value between 0 and 20
+
+  puzzle_levels_goal:
+    # Determines how many unique Puzzle levels (if any) must be cleared before you can play the final battle with Dr. Zomboss in Roof: Level 5-10.
+    # Puzzle Levels must be enabled in order for this setting to have any effect.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 18
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-18: 0 # random value between 0 and 18
+
+  survival_levels_goal:
+    # Determines how many unique Survival levels (if any) must be cleared before you can play the final battle with Dr. Zomboss in Roof: Level 5-10.
+    # Survival Levels must be enabled in order for this setting to have any effect.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 10
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
+
+  cloudy_day_levels_goal:
+    # Determines how many unique Cloudy Day levels (if any) must be cleared before you can play the final battle with Dr. Zomboss in Roof: Level 5-10.
+    # Cloudy Day Levels must be enabled in order for this setting to have any effect.
+    # 
+    # *This option is forced to 0 if goty_compatability_mode is enabled.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 12
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-12: 0 # random value between 0 and 12
+
+  bonus_levels_goal:
+    # Determines how many unique Bonus Levels (if any) must be cleared before you can play the final battle with Dr. Zomboss in Roof: Level 5-10.
+    # Bonus Levels must be enabled in order for this setting to have any effect.
+    # 
+    # *This option is forced to 0 if goty_compatability_mode is enabled.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 10
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
+
+  total_levels_goal:
+    # Determines how many unique levels (if any) must be cleared across all modes combined before you can play the final battle with Dr. Zomboss in Roof: Level 5-10.
+    # If this option is assigned a number higher than the number of available levels then it will be automatically reduced.
+    # 
+    # *This option is limited to 97 if goty_compatability_mode is enabled.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 120
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-120: 0 # random value between 0 and 120
+
+  taco_hunt_items:
+    # Determines the total number of Taco items to be included in the item pool.
+    # If necessary, this number will be automatically reduced to match the amount of remaining locations.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 30
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-30: 0 # random value between 0 and 30
+
+  taco_hunt_percentage:
+    # Determines what percentage of Taco items must be obtained before you can play the final battle with Dr. Zomboss in Roof: Level 5-10.
+    # 
+    # *This option requires that taco_hunt_items be set to a number higher than 0.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 100
+    100: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
+
+  fast_goal:
+    # If this option is enabled, you can instantly fight Dr. Zomboss in Roof: Level 5-10 as soon as your custom goal requirements are met.
+    # If this option is disabled, your custom goal requirements will be needed in addition to how your chosen adventure_mode_progression setting would typically lead to 5-10. (i.e. "linear" requires 5-9 to be completed; "area_unlock_items" requires Roof Access and 5-9 to be completed; "open_area_unlock_items" requires Roof Access)
+    # 
+    # This option is forced on if adventure_mode_progression is set to "level_items".
+    # If you are playing with adventure_mode_progression set to "level_items", make sure you set at least one goal.
+    # If you have adventure_mode_progression set to "level_items" with all goals set to 0, you will be able to complete the game immediately!
+    'false': 50
+    'true': 0
+
+  ################################
+  # Zombie & Plant Randomisation #
+  ################################
+  conveyor_randomisation:
+    # Randomises the Seed Packet types present on Conveyor Belt levels.
+    'false': 50
+    'true': 0
+
+  zombie_randomisation:
+    # Randomises the Zombie types included in each level.
+    'false': 50
+    'true': 0
+
+  zombie_randomised_modes:
+    # Determines which levels will have their Zombies randomised.
+    # This setting only matters if zombie_randomisation is set to true.
+    # If zombie_randomisation is set to false, this option will be ignored and no Zombies will be randomised.
+    # 
+    # Any mode set to 1 will feature levels with randomised selection of Zombies.
+    # Any mode set to 0 will contain its usual Zombies from the original game.
+    Adventure: 1
+    Bonus Levels: 1
+    Cloudy Day: 0
+    Mini-games: 1
+    Survival: 1
+
+  randomised_zombies:
+    # Determines which Zombie types will be included in randomisation.
+    # This setting only matters if zombie_randomisation is set to true.
+    # If zombie_randomisation is set to false, this option will be ignored and no Zombies will be randomised.
+    # 
+    # Any Zombie type set to 1 will be included in randomisation and can appear in randomly selected levels.
+    # Any Zombie type set to 0 will stay in its usual level(s) and will not be randomised to any others.
+    # 
+    # *Trash Can Zombie is forced to 0 if goty_compatability_mode is enabled.
+    Balloon: 1
+    Buckethead: 1
+    Bungee: 1
+    Catapult: 1
+    Conehead: 1
+    Dancer: 1
+    Digger: 1
+    DolphinRider: 1
+    Football: 1
+    Gargantuar: 1
+    GatlingHead: 0
+    GigaGargantuar: 0
+    JackInTheBox: 1
+    JalapenoHead: 0
+    Ladder: 1
+    Newspaper: 1
+    PeaHead: 0
+    Pogo: 1
+    Polevaulter: 1
+    ScreenDoor: 1
+    Snorkel: 1
+    SquashHead: 0
+    TallnutHead: 0
+    TrashCan: 0
+    WallnutHead: 0
+    Zomboni: 1
+
+  plant_stat_randomisation:
+    # Randomises the stats of each Plant in the game. 
+    # This affects Sun Cost, Packet Refresh Time, Toughness, Firing Rate and Projectile Damage.
+    # Plants should remain relatively balanced while still providing variety.
+    # 
+    # While this affects the majority of levels in the game, it doesn't affect Puzzle levels or certain Mini-game levels.
+    # It only affects Conveyor Belt levels if conveyor_randomisation is set to true.
+    # 
+    # This is a brand new option that has not yet been heavily tested. 
+    # It may be unwise to bring it to group multiworlds in its current state.
+    # Enable at your own risk, but if you're up to the challenge, let me know how you get on!
+    'false': 50
+    'true': 0
+
+  maintain_vanilla_projectile_strength:
+    # Prevents Plant Stat Randomisation from affecting the damage of projectiles.
+    # If this option is enabled, then projectiles will maintain their original damage values.
+    # This will result in plants that play much more similarly to their standard versions.
+    # 
+    # This option only matters if plant_stat_randomisation is set to true.
+    # If plant_stat_randomisation is set to false then projectiles will provide their usual damage and this option is irrelevant.
+    'false': 50
+    'true': 0
+
+  ###################
+  # Gameplay Tweaks #
+  ###################
+  easy_upgrade_plants:
+    # Allows you to place upgrade plants without requiring their base form.
+    # For example, Gatling Pea could be placed straight onto the lawn without requiring a Repeater first.
+    # Enabling this option increases the Sun prices of Upgrade Plants accordingly.
+    'false': 50
+    'true': 0
+
+  imitater_behaviour:
+    # Determines which seeds can be copied by Imitater.
+    # 
+    # - normal: Imitater can copy the seeds of plants you have already unlocked.
+    # - open: Imitater can copy any seed in the game - even the seeds of plants you haven't unlocked yet.
+    normal: 50
+    open: 0
+
+  disable_storm_flashes:
+    # Disables the storm flashes in "Fog: Level 4-10" and "Dark Stormy Night".
+    'false': 50
+    'true': 0
+
+  music_shuffle:
+    # Randomises the music played during levels.
+    disabled: 50
+    by_type: 0
+    by_level: 0
+
+  ###################
+  # Item Generation #
+  ###################
+  zen_garden_items:
+    # Determines whether to include Zen Garden items.
+    # 
+    # Enabling Zen Garden items adds the following useful items to your game: Zen Garden, Phonograph, Gardening Glove, Wheelbarrow, Stinky and Gold Watering Can.
+    # It also adds the following filler items: Fertilizer, Bug Spray, Chocolate and Tree Food.
+    # Fertilizer, Bug Spray and Tree Food will be infinitely repurchaseable in Crazy Dave's shop.
+    # 
+    # There are no AP locations related to Zen Garden, but growing your Tree of Wisdom can provide item hints.
+    'false': 0
+    'true': 50
+
+  starting_sun_upgrades:
+    # Adds "Additional Starting Sun" items to the item pool.
+    # Obtaining an "Additional Starting Sun" item increases the amount of Sun you will start a level with.
+    # 
+    # - off: No "Additional Starting Sun" items will be generated.
+    # - 5_sun_each: Each "Additional Starting Sun" item you obtain will give you 5 additional Sun at the beginning of each level.
+    # - 25_sun_each: Each "Additional Starting Sun" item you obtain will give you 25 additional Sun at the beginning of each level.
+    # - 50_sun_each: Each "Additional Starting Sun" item you obtain will give you 50 additional Sun at the beginning of each level.
+    'off': 50
+    5_sun_each: 0
+    25_sun_each: 0
+    50_sun_each: 0
+
+  maximum_sun_upgrade:
+    # Determines the maximum amount of additional Sun that "Additional Starting Sun" items can provide.
+    # Increasing this number results in more "Additional Starting Sun" items being generated.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 50
+    # Maximum value is 150
+    50: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-50-150: 0 # random value between 50 and 150
+
+  mower_reward_upgrades:
+    # Determines the number of "Mower Reward Upgrade" items to include in the item pool.
+    # Obtaining an "Mower Reward Upgrade" item increases the number of Gold Coins you receive for each remaining Lawn Mower at the end of a level.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 5
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
+
+  random_seed_filler:
+    # Determines whether to include "Random Seed Packet" filler items.
+    # This item drops a random Seed Packet onto the lawn which can be freely picked up and planted, just like the ones you see in Vasebreaker.
+    'false': 50
+    'true': 0
+
+  starting_plants:
+    # How many unique plants to begin the game with.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 49
+    1: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-49: 0 # random value between 1 and 49
+
+  starting_seed_slots:
+    # How many seed slots to begin the game with.
+    # 
+    # *Choosing to start with fewer than three seed slots may result in generation failures.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 10
+    6: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
+
+  early_sunflower:
+    # Attempts to place Sunflower, Sun-shroom and Coffee Bean in the first sphere, making for a more beginner-friendly game.
+    'false': 50
+    'true': 0
+
+  early_shovel:
+    # Attempts to place the Shovel in the first sphere.
+    'false': 50
+    'true': 0
+
+  early_zen_garden:
+    # Attempts to place Zen Garden in the first sphere.
+    'false': 50
+    'true': 0
+
+  #########
+  # Traps #
+  #########
+  trap_percentage:
+    # Determines the percentage of filler items that will be replaced with trap items.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  mower_deploy_trap_weight:
+    # This trap instantly activates all Lawn Mowers on the lawn.
+    # A higher number means that you are more likely to see the given trap. A value of 0 means the trap will not appear.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    50: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  seed_packet_cooldown_trap_weight:
+    # This trap instantly puts all Seed Packets on cooldown.
+    # A higher number means that you are more likely to see the given trap. A value of 0 means the trap will not appear.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    50: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  zombie_ambush_trap_weight:
+    # This trap instantly causes an ambush of Zombies.
+    # A higher number means that you are more likely to see the given trap. A value of 0 means the trap will not appear.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    50: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []
