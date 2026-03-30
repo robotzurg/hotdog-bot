@@ -401,7 +401,7 @@ universal_tracker:
   # Show Location names in the UT tab
   include_location_name: true
   # Have the UT tab ignore excluded locations
-  hide_excluded_locations: false
+  hide_excluded_locations: true
   # Use split icons rather then mixed for the UT map tab
   use_split_map_icons: true
   # Determines how worlds should be allowed to use deferred entrances
