@@ -410,7 +410,7 @@ universal_tracker:
   # off: Force worlds to connect all entrances
   enforce_deferred_entrances: "default"
   # Enable showing Glitched/yellow logic in tracker tab
-  display_glitched_logic: true
+  display_glitched_logic: false
 wargroove_options:
   # Locates the Wargroove root directory on your system.
   # This is used by the Wargroove client, so it knows where to send communication files to.
