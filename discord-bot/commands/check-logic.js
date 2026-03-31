@@ -109,14 +109,17 @@ module.exports = {
             '--list', 
             `archipelago://${slotName}:None@archipelago.gg:${port}`
         ], {
-            env: {
-                ...process.env,
-                SDL_AUDIODRIVER: 'dummy',
-                SDL_VIDEODRIVER: 'dummy',
-                QT_QPA_PLATFORM: 'offscreen',
-                DISPLAY: '',  // Empty string to prevent X connection attempts
-                MPLBACKEND: 'Agg'  // Non-interactive matplotlib backend
-            }
+            env: (() => {
+                const e = { ...process.env };
+                delete e.DISPLAY;
+                e.SDL_AUDIODRIVER = 'dummy';
+                e.SDL_VIDEODRIVER = 'dummy';
+                e.QT_QPA_PLATFORM = 'offscreen';
+                e.MPLBACKEND = 'Agg';
+                e.KIVY_WINDOW = 'headless';
+                e.KIVY_NO_ENV_CONFIG = '1';
+                return e;
+            })()
         });
 
         // Track whether we've already replied to avoid duplicate replies
