@@ -282,6 +282,8 @@ async function start(discordClient, db) {
                     return `${text} <:mariosunshine:1487560188738404492>`; 
                 case 'Yacob-TP':
                     return `${text} <:twilightprincess:1426636411980877985>`; 
+                case 'AriaSouls:':
+                    return `${text} <:darksouls3:1443882694642499688>`;
                 default:
                     return text;
             }
