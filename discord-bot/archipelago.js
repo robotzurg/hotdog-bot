@@ -335,7 +335,7 @@ async function start(discordClient, db) {
     archClient.messages.on('deathReceived', async (source, _time, cause) => {
         try {
             const causeStr = cause ? `: ${cause}` : '';
-            const message = `💀 **${source}** has died: ${causeStr}`;
+            const message = `💀 **${mapEmoji(source)}** has died${causeStr}`;
             if (discordChannel) {
                 await discordChannel.send({ content: message });
             } else {
