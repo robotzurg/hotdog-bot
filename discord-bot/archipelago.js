@@ -143,25 +143,7 @@ async function start(discordClient, db) {
         }
     }
 
-    // Helper to format nodes into a message string safely
-    function formatNodes(nodes, hint = false) {
-        if (!Array.isArray(nodes)) return String(nodes || '');
-        // Games which are considered "finished"; if any appear in the nodes
-        // we will prefix the entire message with "-#" to match the format used
-        // elsewhere (see check-logic.js)
-        let finishedGames = db.archipelago.get('finished_games') || [
-            "AriaSouls",
-            "AllRepo",
-            "Yacob-KH",
-            "NateTruck",
-            "AriaChess",
-            "NateOriK"
-        ];
-
-        // determine presence of any finished game node
-        const anyFinished = nodes.some(n => n && typeof n.text === 'string' && finishedGames.includes(n.text.replace('\'s', '')));
-
-        const mapEmoji = (text) => {
+    const mapEmoji = (text) => {
             formatText = text.replace('\'s', '')
             switch (text) {
                 case 'AriaCeleste':
@@ -289,6 +271,20 @@ async function start(discordClient, db) {
                     return text;
             }
         };
+
+    // Helper to format nodes into a message string safely
+    function formatNodes(nodes, hint = false) {
+        if (!Array.isArray(nodes)) return String(nodes || '');
+        let finishedGames = db.archipelago.get('finished_games') || [
+            "AriaSouls",
+            "AllRepo",
+            "Yacob-KH",
+            "NateTruck",
+            "AriaChess",
+            "NateOriK"
+        ];
+
+        const anyFinished = nodes.some(n => n && typeof n.text === 'string' && finishedGames.includes(n.text.replace('\'s', '')));
 
         // build the formatted string from individual nodes
         const formatted = nodes.map((node, index) => {
