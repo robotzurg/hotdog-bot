@@ -332,6 +332,20 @@ async function start(discordClient, db) {
     });
 
 
+    archClient.messages.on('deathReceived', async (source, _time, cause) => {
+        try {
+            const causeStr = cause ? `: ${cause}` : '';
+            const message = `💀 **${source}** has died: ${causeStr}`;
+            if (discordChannel) {
+                await discordChannel.send({ content: message });
+            } else {
+                console.log('[Archipelago]', message);
+            }
+        } catch (err) {
+            console.error('Error forwarding DeathLink message to Discord:', err);
+        }
+    });
+
     // Helper to set up socket event listeners (called after each connection)
     function setupSocketListeners() {
         if (archClient.socket) {
