@@ -120,6 +120,7 @@ async function start(discordClient, db) {
 
             // Set up socket listeners after successful reconnection
             setupSocketListeners();
+            archClient.deathLink.enableDeathLink();
 
             // Reset attempts on successful connection
             reconnectAttempts = 0;
@@ -332,7 +333,7 @@ async function start(discordClient, db) {
     });
 
 
-    archClient.messages.on('deathReceived', async (source, _time, cause) => {
+    archClient.deathLink.on('deathReceived', async (source, _time, cause) => {
         try {
             const causeStr = cause ? `: ${cause}` : '';
             const message = `💀 **${mapEmoji(source)}** has died${causeStr}`;
@@ -397,6 +398,7 @@ async function start(discordClient, db) {
 
         // Set up socket listeners after successful initial connection
         setupSocketListeners();
+        archClient.deathLink.enableDeathLink();
 
         console.log('Connected to the Archipelago server!');
         sendDiscordMessage('Connected to Archipelago server!');
