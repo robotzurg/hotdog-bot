@@ -315,29 +315,6 @@ async function start(discordClient, db) {
         return anyFinished ? `-# ${formatted}` : formatted;
     }
 
-    // Track which slots currently have DeathLink enabled
-    const deathLinkSlots = new Set();
-
-    archClient.messages.on('connected', (_text, player, tags) => {
-        if (tags.includes('DeathLink')) {
-            deathLinkSlots.add(player.slot);
-        } else {
-            deathLinkSlots.delete(player.slot);
-        }
-    });
-
-    archClient.messages.on('disconnected', (_text, player) => {
-        deathLinkSlots.delete(player.slot);
-    });
-
-    archClient.messages.on('tagsUpdated', (_text, player, tags) => {
-        if (tags.includes('DeathLink')) {
-            deathLinkSlots.add(player.slot);
-        } else {
-            deathLinkSlots.delete(player.slot);
-        }
-    });
-
     archClient.messages.on('itemSent', async (_text, _item, nodes) => {
         try {
             const messageStr = formatNodes(nodes);
@@ -354,10 +331,6 @@ async function start(discordClient, db) {
 
     archClient.deathLink.on('deathReceived', async (source, _time, cause) => {
         try {
-            const botSlot = archClient.players.self?.slot;
-            const nonBotDeathLinkCount = [...deathLinkSlots].filter(s => s !== botSlot).length;
-            if (nonBotDeathLinkCount <= 1) return;
-
             const causeStr = cause ? `: ${cause}` : '';
             const message = `💀 **${mapEmoji(source)}** has died${causeStr}`;
             if (discordChannel) {
