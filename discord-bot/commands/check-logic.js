@@ -2,7 +2,6 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = re
 const db = require('../db.js');
 const { spawn } = require('child_process');
 const path = require('path');
-const fs = require('fs');
 
 const SLOT_NAMES = [
     'AllFactory',
@@ -84,10 +83,6 @@ module.exports = {
                 .setDescription('The archipelago slot name to check')
                 .setRequired(true)
                 .setAutocomplete(true))
-        .addBooleanOption(option =>
-            option.setName('show-excluded')
-                .setDescription('Include excluded locations in the output (default: false)')
-                .setRequired(false))
         .setDMPermission(false),
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused().toLowerCase();
@@ -101,21 +96,7 @@ module.exports = {
         await interaction.editReply(`Gathering Universal Tracker data, this may take a moment...`);
 
         const slotName = interaction.options.getString('slot-name');
-        const showExcluded = interaction.options.getBoolean('show-excluded') ?? false;
         const port = db.archipelago.get('server_port');
-        const hostYamlPath = path.join(__dirname, '../../Archipelago-0.6.6/host.yaml');
-
-        const patchHostYaml = (hideExcluded) => {
-            const yaml = fs.readFileSync(hostYamlPath, 'utf8');
-            const patched = yaml.replace(
-                /(\s*hide_excluded_locations:\s*)(true|false)/,
-                `$1${hideExcluded}`
-            );
-            fs.writeFileSync(hostYamlPath, patched, 'utf8');
-        };
-
-        patchHostYaml(!showExcluded);
-
         const launcherScript = path.join(__dirname, '../../Archipelago-0.6.6/Launcher.py');
         // Use the venv's Python interpreter instead of system python3
         const pythonPath = process.platform === 'win32'
@@ -202,7 +183,6 @@ module.exports = {
         // When the process exits (either normally or after being killed), reply to the interaction
         pythonProcess.on('close', async (code, signal) => {
             console.log(`Ending python, ${code}, ${signal}`)
-            patchHostYaml(true);
             let checks = message.length - 1;
             message = message.map(v => `- ${v}`)
             message[0] = message[0].replace(`- `, '');
@@ -306,7 +286,6 @@ module.exports = {
         // In case the process errors during spawn
         pythonProcess.on('error', async (err) => {
             console.error('Failed to start python process:', err);
-            patchHostYaml(true);
             await finishReply(`Launcher failed to start: ${err.message}`);
         });
 
