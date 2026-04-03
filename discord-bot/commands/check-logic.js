@@ -10,6 +10,7 @@ const SLOT_NAMES = [
     'AllRepo',
     'AriaCeleste',
     'AriaChess',
+    'AriaSouls',
     'AriaHollow',
     'AriaLilies',
     'AriaOri',
