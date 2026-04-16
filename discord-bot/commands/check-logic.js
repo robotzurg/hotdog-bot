@@ -184,7 +184,11 @@ module.exports = {
         pythonProcess.on('close', async (code, signal) => {
             console.log(`Ending python, ${code}, ${signal}`)
             let checks = message.length - 1;
-            message = message.map(v => `- ${v}`)
+            let hintedCount = message.filter(v => v.includes('(Hinted)')).length;
+            message = message.map(v => {
+                if (v.includes('(Hinted)')) return `-${v}`;
+                return `- ${v}`;
+            });
             message[0] = message[0].replace(`- `, '');
 
             const itemsPerPage = 10;
@@ -199,7 +203,7 @@ module.exports = {
                 const pageContent = [
                     message[0], // Header
                     ...pageItems,
-                    `\n-# Page ${page + 1}/${totalPages} | **${checks}** In Logic`
+                    `\n-# Page ${page + 1}/${totalPages} | **${checks}** In Logic${hintedCount > 0 ? ` | **${hintedCount}** Hinted` : ''}`
                 ];
 
                 return pageContent.join('\n');
@@ -234,7 +238,7 @@ module.exports = {
 
             if (totalPages <= 1) {
                 // No pagination needed
-                message.push(`-# (**${checks}** In Logic)`);
+                message.push(`-# (**${checks}** In Logic${hintedCount > 0 ? ` | **${hintedCount}** Hinted` : ''})`);
                 await finishReply(message);
             } else {
                 // Send initial page with buttons

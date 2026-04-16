@@ -309,7 +309,7 @@ rabi_ribi_options:
   # The installation folder of the game.
   game_installation_path: "C:/Program Files (x86)/Steam/steamapps/common/Rabi-Ribi"
   # The Poptracker pack for Rabi-Ribi.
-  ut_pack_path: ""
+  ut_pack_path: null
 saving_princess_settings:
   # Path to the game executable from which files are extracted
   exe_path: "Saving Princess.exe"
