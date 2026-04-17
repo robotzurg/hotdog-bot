@@ -358,7 +358,7 @@ class TrackerCore():
                         item_name = hint_data.get("item_name") if isinstance(hint_data, dict) else None
                         receiving_player = hint_data.get("receiving_player") if isinstance(hint_data, dict) else None
                         if item_name and receiving_player:
-                            hint_suffix = f" ({item_name} for {receiving_player})"
+                            hint_suffix = f" (**{item_name}** for {receiving_player})"
                         elif receiving_player:
                             hint_suffix = f" (Hinted Item for {receiving_player})"
                         else:

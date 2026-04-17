@@ -263,7 +263,7 @@ module.exports = {
                 const player = hintMatch[1] ?? hintMatch[2];
                 const emote = player ? (SLOT_EMOTES[player] ?? '') : '';
                 const line = emote ? v.replace(/\)$/, ` ${emote})`) : v;
-                return `-${line}`;
+                return `- ${line}`;
             });
             message[0] = message[0].replace(`- `, '');
 
