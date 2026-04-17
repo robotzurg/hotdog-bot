@@ -54,7 +54,7 @@ module.exports = {
             }
 
             await client.login(`archipelago.gg:${port}`, slotName);
-            await client.messages.say(`!hint ${itemName}`);
+            await client.messages.say(`!hint ${outputItemName}`);
             await new Promise(resolve => setTimeout(resolve, 2000));
             client.socket.disconnect();
         } catch (err) {
