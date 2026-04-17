@@ -36,6 +36,8 @@ module.exports = {
         const client = new Client();
         const hintResults = [];
         let messageOutput = "";
+        let fullMsgOutput = [];
+        let outputItemName = "N/A";
 
         client.messages.on('itemHinted', (text, item, found) => {
             hintResults.push({ item, found });
@@ -43,11 +45,12 @@ module.exports = {
 
         client.messages.on('message', (text) => {
             messageOutput = text;
+            fullMsgOutput.push(text);
         });
 
         try {
-            if (itemName == '-') {
-                itemName = '';
+            if (itemName == '-' || itemName == 'all') {
+                outputItemName = '';
             }
 
             await client.login(`archipelago.gg:${port}`, slotName);
@@ -63,6 +66,10 @@ module.exports = {
         if (itemName === '') {
             await interaction.editReply(`## Hint Points for ${slotName}\n${messageOutput}`);
             return;
+        }
+
+        if (itemName === 'all') {
+            await interaction.editReply(`## All Hints for ${slotName}\n${fullMsgOutput.join('\n')}`);
         }
 
         if (hintResults.length === 0) {
