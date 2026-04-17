@@ -29,7 +29,7 @@ module.exports = {
         await interaction.deferReply();
 
         const slotName = interaction.options.getString('slot-name');
-        const itemName = interaction.options.getString('item-name');
+        let itemName = interaction.options.getString('item-name');
         const port = db.archipelago.get('server_port');
 
         const { Client } = await import('archipelago.js');
@@ -46,6 +46,10 @@ module.exports = {
         });
 
         try {
+            if (itemName == '-') {
+                itemName = '';
+            }
+            
             await client.login(`archipelago.gg:${port}`, slotName);
             await client.messages.say(`!hint ${itemName}`);
             await new Promise(resolve => setTimeout(resolve, 2000));
