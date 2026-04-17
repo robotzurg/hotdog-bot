@@ -64,7 +64,9 @@ module.exports = {
         const lines = sorted.map(hint => {
             const foundTag = hint.found ? ' *(found)*' : '';
             const entrance = hint.entrance && hint.entrance !== 'Vanilla' ? ` via **${hint.entrance}**` : '';
-            return `- **${hint.item.name}** for ${mapEmote(hint.item.receiver.name)} at **${hint.item.locationName}** in ${mapEmote(hint.item.sender.name)}'s world${entrance}${foundTag}`;
+            const receiver = hint.item.receiver?.name ?? '???';
+            const sender = hint.item.sender?.name ?? '???';
+            return `- **${hint.item.name}** for ${mapEmote(receiver)} at **${hint.item.locationName}** in ${mapEmote(sender)}'s world${entrance}${foundTag}`;
         });
 
         const header = `## Hints for ${slotName}\n`;
