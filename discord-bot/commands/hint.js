@@ -61,7 +61,7 @@ module.exports = {
         }
 
         if (itemName === '') {
-            await interaction.editReply(`${messageOutput}`);
+            await interaction.editReply(`## Hint Points for ${slotName}\n${messageOutput}`);
             return;
         }
 
