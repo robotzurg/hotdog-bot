@@ -13,7 +13,7 @@ module.exports = {
                 .setAutocomplete(true))
         .addStringOption(option =>
             option.setName('item-name')
-                .setDescription('The item name to hint')
+                .setDescription('The item name to hint. Use "-" to view hint points')
                 .setRequired(true))
         .setDMPermission(false),
 
