@@ -257,6 +257,8 @@ module.exports = {
             let checks = message.length - 1;
             const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
             let hintedCount = message.filter(v => hintRegex.test(v)).length;
+            const header = message[0];
+            message = [header, ...[...message.slice(1)].sort((a, b) => hintRegex.test(b) - hintRegex.test(a))];
             message = message.map(v => {
                 const hintMatch = v.match(hintRegex);
                 if (!hintMatch) return `- ${v}`;
