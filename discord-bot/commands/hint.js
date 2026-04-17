@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { Client } = require('archipelago.js');
 const db = require('../db.js');
 const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
 
@@ -33,6 +32,7 @@ module.exports = {
         const itemName = interaction.options.getString('item-name');
         const port = db.archipelago.get('server_port');
 
+        const { Client } = await import('archipelago.js');
         const client = new Client();
         const hintResults = [];
 
