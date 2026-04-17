@@ -49,7 +49,7 @@ module.exports = {
             if (itemName == '-') {
                 itemName = '';
             }
-            
+
             await client.login(`archipelago.gg:${port}`, slotName);
             await client.messages.say(`!hint ${itemName}`);
             await new Promise(resolve => setTimeout(resolve, 2000));
@@ -57,6 +57,11 @@ module.exports = {
         } catch (err) {
             console.error('Hint error:', err);
             await interaction.editReply(`Failed to connect or send hint: ${err.message}`);
+            return;
+        }
+
+        if (itemName === '') {
+            await interaction.editReply(`${messageOutput}`);
             return;
         }
 
