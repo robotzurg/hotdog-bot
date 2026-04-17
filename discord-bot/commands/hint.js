@@ -35,9 +35,14 @@ module.exports = {
         const { Client } = await import('archipelago.js');
         const client = new Client();
         const hintResults = [];
+        const messageOutput = "";
 
         client.messages.on('itemHinted', (text, item, found) => {
             hintResults.push({ item, found });
+        });
+
+        client.messages.on('message', (text) => {
+            messageOutput = text;
         });
 
         try {
@@ -52,7 +57,7 @@ module.exports = {
         }
 
         if (hintResults.length === 0) {
-            await interaction.editReply(`No hint found for **${itemName}** on **${slotName}**. The item may not exist or was already found.`);
+            await interaction.editReply(`No hint found for **${itemName}** on **${slotName}**. The item may not exist or was already found.\nOutput from Archipelago: ${messageOutput}`);
             return;
         }
 
