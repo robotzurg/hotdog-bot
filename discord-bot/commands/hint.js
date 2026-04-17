@@ -35,7 +35,7 @@ module.exports = {
         const { Client } = await import('archipelago.js');
         const client = new Client();
         const hintResults = [];
-        const messageOutput = "";
+        let messageOutput = "";
 
         client.messages.on('itemHinted', (text, item, found) => {
             hintResults.push({ item, found });
