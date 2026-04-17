@@ -61,12 +61,13 @@ module.exports = {
         // Unfound hints first, then found
         const sorted = [...hints].sort((a, b) => a.found - b.found);
 
-        const lines = sorted.map(hint => {
+        const lines = sorted.flatMap(hint => {
+            if (!hint.item) return [];
             const foundTag = hint.found ? ' *(found)*' : '';
             const entrance = hint.entrance && hint.entrance !== 'Vanilla' ? ` via **${hint.entrance}**` : '';
             const receiver = hint.item.receiver?.name ?? '???';
             const sender = hint.item.sender?.name ?? '???';
-            return `- **${hint.item.name}** for ${mapEmote(receiver)} at **${hint.item.locationName}** in ${mapEmote(sender)}'s world${entrance}${foundTag}`;
+            return [`- **${hint.item.name}** for ${mapEmote(receiver)} at **${hint.item.locationName}** in ${mapEmote(sender)}'s world${entrance}${foundTag}`];
         });
 
         const header = `## Hints for ${slotName}\n`;
