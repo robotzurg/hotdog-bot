@@ -70,6 +70,7 @@ module.exports = {
 
         if (itemName === 'all') {
             await interaction.editReply(`## All Hints for ${slotName}\n${fullMsgOutput.join('\n')}`);
+            return;
         }
 
         if (hintResults.length === 0) {
