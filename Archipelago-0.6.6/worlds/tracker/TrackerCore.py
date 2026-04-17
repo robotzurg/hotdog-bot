@@ -358,11 +358,11 @@ class TrackerCore():
                         item_name = hint_data.get("item_name") if isinstance(hint_data, dict) else None
                         receiving_player = hint_data.get("receiving_player") if isinstance(hint_data, dict) else None
                         if item_name and receiving_player:
-                            hint_suffix = f" ⭐ (**{item_name}** for **{receiving_player}**)"
+                            hint_suffix = f" ({item_name} for {receiving_player})"
                         elif receiving_player:
-                            hint_suffix = f" ⭐ (Hinted Item for **{receiving_player}**)"
+                            hint_suffix = f" (Hinted Item for {receiving_player})"
                         else:
-                            hint_suffix = " ⭐ (**Hinted**)"
+                            hint_suffix = " (Hinted)"
                     if self.output_format == "Both":
                         if temp_loc.progress_type == LocationProgressType.EXCLUDED:
                             self.log_to_tab("[color="+self.get_ut_color("excluded") + "]" +region + " | " + temp_name+"[/color]", True)
@@ -433,11 +433,11 @@ class TrackerCore():
                                     item_name_g = hint_data_g.get("item_name") if isinstance(hint_data_g, dict) else None
                                     receiving_player_g = hint_data_g.get("receiving_player") if isinstance(hint_data_g, dict) else None
                                     if item_name_g and receiving_player_g:
-                                        hint_suffix_glitched = f" ⭐ (**{item_name_g}** for **{receiving_player_g}**)"
+                                        hint_suffix_glitched = f" ({item_name_g} for {receiving_player_g})"
                                     elif receiving_player_g:
-                                        hint_suffix_glitched = f" ⭐ (Hinted Item for **{receiving_player_g}**)"
+                                        hint_suffix_glitched = f" (Hinted Item for {receiving_player_g})"
                                     else:
-                                        hint_suffix_glitched = " ⭐ (**Hinted**)"
+                                        hint_suffix_glitched = " (Hinted)"
                                 if self.output_format == "Both":
                                     if temp_loc.progress_type == LocationProgressType.EXCLUDED:
                                         self.log_to_tab("[color="+self.get_ut_color("out_of_logic_glitched") + "]" +region + " | " + temp_name+"[/color]", True)

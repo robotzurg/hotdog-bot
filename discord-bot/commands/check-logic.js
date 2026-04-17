@@ -255,13 +255,15 @@ module.exports = {
         pythonProcess.on('close', async (code, signal) => {
             console.log(`Ending python, ${code}, ${signal}`)
             let checks = message.length - 1;
-            const hintRegex = /for \*\*(.+?)\*\*/;
-            let hintedCount = message.filter(v => v.includes('⭐')).length;
+            const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
+            let hintedCount = message.filter(v => hintRegex.test(v)).length;
             message = message.map(v => {
-                if (!v.includes('⭐')) return `- ${v}`;
                 const hintMatch = v.match(hintRegex);
-                const emote = hintMatch ? (SLOT_EMOTES[hintMatch[1]] ?? '') : '';
-                return `-${v}${emote ? ' ' + emote : ''}`;
+                if (!hintMatch) return `- ${v}`;
+                const player = hintMatch[1] ?? hintMatch[2];
+                const emote = player ? (SLOT_EMOTES[player] ?? '') : '';
+                const line = emote ? v.replace(/\)$/, ` ${emote})`) : v;
+                return `-${line}`;
             });
             message[0] = message[0].replace(`- `, '');
 
