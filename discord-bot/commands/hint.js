@@ -78,7 +78,7 @@ module.exports = {
             }
 
             const lines = unfound.map(({ item }) =>
-                `- **${item.name}** for ${mapEmote(item.receiver?.name ?? '???')} at **${item.locationName}**`
+                `- **${item.name}** for ${mapEmote(item.receiver?.name ?? '???')} at **${item.locationName}**${item.sender?.name !== slotName ? ` in ${mapEmote(item.sender?.name ?? '???')}'s world` : ''}`
             );
 
             const header = `## Unfound Hints for ${slotName}`;
@@ -129,7 +129,7 @@ module.exports = {
 
         const lines = hintResults.map(({ item, found }) => {
             const foundTag = found ? ' *(found)*' : '';
-            return `- **${item.name}** for ${mapEmote(item.receiver?.name ?? '???')} at **${item.locationName}**${foundTag}`;
+            return `- **${item.name}** for ${mapEmote(item.receiver?.name ?? '???')} at **${item.locationName}**${item.sender?.name !== slotName ? ` in ${mapEmote(item.sender?.name ?? '???')}'s world` : ''}${foundTag}`;
         });
 
         await interaction.editReply(`## Hint result for ${slotName}\n${lines.join('\n')}`);
