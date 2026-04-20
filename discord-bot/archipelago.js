@@ -149,6 +149,20 @@ async function start(discordClient, db) {
         return emote ? `${text} ${emote}` : text;
     };
 
+    const FLAG_EMOTES = {
+        Progression: '<:Progression:1495879488716668988>',
+        Useful:      '<:Useful:1495879485407494354>',
+        Trap:        '<:Trap:1495879486346887238>',
+        Junk:        '<:Junk:1495879487538204804>',
+    };
+    const flagEmote = (flags) => {
+        // Bit flags for the flag types
+        if (flags & 0b0001) return FLAG_EMOTES.Progression;
+        if (flags & 0b0100) return FLAG_EMOTES.Trap;
+        if (flags & 0b0010) return FLAG_EMOTES.Useful;
+        return FLAG_EMOTES.Junk;
+    };
+
     // Helper to format nodes into a message string safely
     function formatNodes(nodes, hint = false) {
         if (!Array.isArray(nodes)) return String(nodes || '');
@@ -175,7 +189,7 @@ async function start(discordClient, db) {
             }
 
             if (index === idx2) {
-                return `**${text}**`;
+                return `**${text}** ${flagEmote(node.flags ?? 0)}`;
             }
 
             if (index === idx3 && !text.includes('(')) {
