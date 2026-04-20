@@ -164,7 +164,7 @@ async function start(discordClient, db) {
     };
 
     // Helper to format nodes into a message string safely
-    function formatNodes(nodes, hint = false) {
+    function formatNodes(nodes, hint = false, item = false) {
         if (!Array.isArray(nodes)) return String(nodes || '');
         let finishedGames = db.archipelago.get('finished_games') || [
             "AriaSouls",
@@ -189,7 +189,7 @@ async function start(discordClient, db) {
             }
 
             if (index === idx2) {
-                return `**${text}** ${flagEmote(node.flags ?? 0)}`;
+                return `**${text}**${item != false ? ` ${flagEmote(item.flags ?? 0)}` : ``}`;
             }
 
             if (index === idx3 && !text.includes('(')) {
@@ -208,7 +208,7 @@ async function start(discordClient, db) {
 
     archClient.messages.on('itemSent', async (_text, _item, nodes) => {
         try {
-            const messageStr = formatNodes(nodes);
+            const messageStr = formatNodes(nodes, false, _item);
             if (discordChannel) {
                 await discordChannel.send({ content: messageStr });
             } else {
