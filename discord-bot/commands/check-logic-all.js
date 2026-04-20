@@ -18,6 +18,12 @@ const PLAYER_SLOTS = {
 
 const ITEMS_PER_PAGE = 10;
 
+function parseEmote(emoteStr) {
+    if (!emoteStr) return null;
+    const match = emoteStr.match(/^<:(\w+):(\d+)>$/);
+    return match ? { name: match[1], id: match[2] } : null;
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('check-logic-all')
@@ -60,7 +66,7 @@ module.exports = {
                 const { items, hintedCount } = slotResults[slot] ?? { items: [], hintedCount: 0 };
                 const emote = SLOT_EMOTES[slot] ?? '';
                 const hintSuffix = hintedCount > 0 ? ` (${hintedCount} hinted)` : '';
-                lines.push(`- **${slot}**${emote ? ` ${emote}` : ''}: ${items.length} in logic${hintSuffix}`);
+                lines.push(`- ${emote ? `${emote} ` : ''}**${slot}**: ${items.length} in logic${hintSuffix}`);
             }
             return lines.join('\n');
         };
@@ -72,11 +78,14 @@ module.exports = {
                 .addOptions(slots.map(slot => {
                     const { items, hintedCount } = slotResults[slot] ?? { items: [], hintedCount: 0 };
                     const hintSuffix = hintedCount > 0 ? ` • ${hintedCount} hinted` : '';
-                    return new StringSelectMenuOptionBuilder()
+                    const emoji = parseEmote(SLOT_EMOTES[slot]);
+                    const option = new StringSelectMenuOptionBuilder()
                         .setLabel(slot)
                         .setValue(slot)
                         .setDescription(`${items.length} in logic${hintSuffix}`)
                         .setDefault(slot === selectedSlot);
+                    if (emoji) option.setEmoji(emoji);
+                    return option;
                 }));
             return new ActionRowBuilder().addComponents(select);
         };
