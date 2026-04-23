@@ -1,8 +1,9 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const db = require('../db.js');
-const { spawn } = require('child_process');
-const path = require('path');
 const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
+const { runTrackerForSlot } = require('../tracker.js');
+
+const ITEMS_PER_PAGE = 10;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,223 +15,70 @@ module.exports = {
                 .setRequired(true)
                 .setAutocomplete(true))
         .setDMPermission(false),
+
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused().toLowerCase();
         const filtered = SLOT_NAMES.filter(name => name.toLowerCase().includes(focusedValue));
-        await interaction.respond(
-            filtered.slice(0, 25).map(name => ({ name: name, value: name }))
-        );
+        await interaction.respond(filtered.slice(0, 25).map(name => ({ name, value: name })));
     },
+
     async execute(interaction) {
         await interaction.deferReply();
         await interaction.editReply(`Gathering Universal Tracker data, this may take a moment...`);
 
         const slotName = interaction.options.getString('slot-name');
         const port = db.archipelago.get('server_port');
-        const launcherScript = path.join(__dirname, '../../Archipelago-0.6.6/Launcher.py');
-        // Use the venv's Python interpreter instead of system python3
-        const pythonPath = process.platform === 'win32'
-            ? path.join(__dirname, '../../Archipelago-0.6.6/venv/Scripts/python.exe')
-            : path.join(__dirname, '../../Archipelago-0.6.6/venv/bin/python3');
-        const pythonProcess = spawn(pythonPath, [
-            launcherScript, 
-            'Universal Tracker', 
-            '--', 
-            '--nogui', 
-            '--list', 
-            `archipelago://${slotName}:None@archipelago.gg:${port}`
-        ], {
-            env: (() => {
-                const e = { ...process.env };
-                delete e.DISPLAY;
-                e.SDL_AUDIODRIVER = 'dummy';
-                e.SDL_VIDEODRIVER = 'dummy';
-                e.QT_QPA_PLATFORM = 'offscreen';
-                e.MPLBACKEND = 'Agg';
-                e.KIVY_WINDOW = 'headless';
-                e.KIVY_NO_ENV_CONFIG = '1';
-                return e;
-            })()
-        });
 
-        // Track whether we've already replied to avoid duplicate replies
-        let replied = false;
-        let message = [`## In Logic Checks For ${slotName}`];
+        const { items, hintedCount } = await runTrackerForSlot(slotName, port);
 
-        const finishReply = async (message) => {
-            if (replied) return;
-            replied = true;
-            try {
-                const out = Array.isArray(message) ? message.join('\n') : String(message);
-                await interaction.editReply(out);
-            } catch (err) {
-                console.error('Failed to reply to interaction:', err);
-            }
+        const emote = SLOT_EMOTES[slotName] ?? '';
+        const header = `## In Logic Checks For ${slotName}${emote ? ` ${emote}` : ''}`;
+        const checks = items.length;
+        const hintSuffix = hintedCount > 0 ? ` | **${hintedCount}** Hinted` : '';
+        const totalPages = Math.max(1, Math.ceil(checks / ITEMS_PER_PAGE));
+        let currentPage = 0;
+
+        const generatePage = (page) => {
+            const start = page * ITEMS_PER_PAGE;
+            const pageItems = items.slice(start, start + ITEMS_PER_PAGE);
+            return [
+                header,
+                ...pageItems,
+                `\n-# Page ${page + 1}/${totalPages} | **${checks}** In Logic${hintSuffix}`
+            ].join('\n');
         };
 
-        pythonProcess.stdout.on('data', (data) => {
-            const s = data instanceof Buffer ? data.toString('utf8') : String(data);
-            console.log('Python stdout:', s);
-            if (s.toLowerCase().includes('press enter to install')) {
-                pythonProcess.stdin.write('\n');
-            }
-            if (!s.includes('Archipelago (0.6.6)') && !s.includes('enter to exit') && !s.includes('found cached multiworld')) {
-                const noisePatterns = [
-                    /^Shop Upgrade total:/,
-                    /^Location id:/,
-                    /^Adding rule for/,
-                    /^Creating \d+/,
-                    /^Making /,
-                    /^Excluding /,
-                    /Pelly (Added|added)/,
-                    /^(Loaction|Location|Item) Count:/,
-                    /^(Total Filler|Filler needed):/,
-                    /^\[/,
-                    /^\d+$/,
-                ];
-                const parts = s.split(/[\r\n]+/)
-                    .map(p => p.trim())
-                    .filter(p => p && !noisePatterns.some(re => re.test(p)));
-                if (parts.length) message.push(...parts);
-            }
+        const generateButtons = (page) => new ActionRowBuilder().addComponents(
+            new ButtonBuilder().setCustomId('first').setLabel('⏮️ First').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
+            new ButtonBuilder().setCustomId('prev').setLabel('◀️ Previous').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
+            new ButtonBuilder().setCustomId('next').setLabel('Next ▶️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
+            new ButtonBuilder().setCustomId('last').setLabel('Last ⏭️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
+        );
 
-            // If the launcher prints 'enter' we assume it's finished gathering and will exit
-            if (s.toLowerCase().includes('enter to exit')) {
-                // Ask the process to exit and mark completion — the 'close' handler will reply
-                try {
-                    pythonProcess.kill();
-                } catch (err) {
-                    console.error('Error killing python process on enter:', err);
-                }
-            }
+        if (totalPages <= 1) {
+            await interaction.editReply([header, ...items, `-# (**${checks}** In Logic${hintSuffix})`].join('\n'));
+            return;
+        }
+
+        const response = await interaction.editReply({
+            content: generatePage(currentPage),
+            components: [generateButtons(currentPage)]
         });
 
-        pythonProcess.stderr.on('data', (data) => {
-            const s = data instanceof Buffer ? data.toString('utf8') : String(data);
-            console.error('Python stderr:', s);
-        });
+        const collector = response.createMessageComponentCollector({ time: 600000 });
 
-        // When the process exits (either normally or after being killed), reply to the interaction
-        pythonProcess.on('close', async (code, signal) => {
-            console.log(`Ending python, ${code}, ${signal}`)
-            let checks = message.length - 1;
-            const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
-            let hintedCount = message.filter(v => hintRegex.test(v)).length;
-            const header = message[0];
-            message = [header, ...[...message.slice(1)].sort((a, b) => hintRegex.test(b) - hintRegex.test(a))];
-            message = message.map(v => {
-                const hintMatch = v.match(hintRegex);
-                if (!hintMatch) return `- ${v}`;
-                const player = hintMatch[1] ?? hintMatch[2];
-                const emote = player ? (SLOT_EMOTES[player] ?? '') : '';
-                const line = emote ? v.replace(/\)$/, ` ${emote})`) : v;
-                return `- ${line}`;
-            });
-            message[0] = message[0].replace(`- `, '');
-
-            const itemsPerPage = 10;
-            const totalPages = Math.ceil((message.length - 1) / itemsPerPage);
-            let currentPage = 0;
-
-            const generatePage = (page) => {
-                const start = page * itemsPerPage + 1; // +1 to skip the header
-                const end = Math.min(start + itemsPerPage, message.length);
-                const pageItems = message.slice(start, end);
-
-                const pageContent = [
-                    message[0], // Header
-                    ...pageItems,
-                    `\n-# Page ${page + 1}/${totalPages} | **${checks}** In Logic${hintedCount > 0 ? ` | **${hintedCount}** Hinted` : ''}`
-                ];
-
-                return pageContent.join('\n');
-            };
-
-            const generateButtons = (page) => {
-                const row = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('first')
-                            .setLabel('⏮️ First')
-                            .setStyle(ButtonStyle.Primary)
-                            .setDisabled(page === 0),
-                        new ButtonBuilder()
-                            .setCustomId('prev')
-                            .setLabel('◀️ Previous')
-                            .setStyle(ButtonStyle.Primary)
-                            .setDisabled(page === 0),
-                        new ButtonBuilder()
-                            .setCustomId('next')
-                            .setLabel('Next ▶️')
-                            .setStyle(ButtonStyle.Primary)
-                            .setDisabled(page === totalPages - 1),
-                        new ButtonBuilder()
-                            .setCustomId('last')
-                            .setLabel('Last ⏭️')
-                            .setStyle(ButtonStyle.Primary)
-                            .setDisabled(page === totalPages - 1)
-                    );
-                return row;
-            };
-
-            if (totalPages <= 1) {
-                // No pagination needed
-                message.push(`-# (**${checks}** In Logic${hintedCount > 0 ? ` | **${hintedCount}** Hinted` : ''})`);
-                await finishReply(message);
-            } else {
-                // Send initial page with buttons
-                const response = await interaction.editReply({
-                    content: generatePage(currentPage),
-                    components: [generateButtons(currentPage)]
-                });
-                replied = true;
-
-                // Create collector for button interactions
-                const collector = response.createMessageComponentCollector({
-                    time: 600000 // 10 minutes
-                });
-
-                collector.on('collect', async i => {
-                    switch (i.customId) {
-                        case 'first':
-                            currentPage = 0;
-                            break;
-                        case 'prev':
-                            currentPage = Math.max(0, currentPage - 1);
-                            break;
-                        case 'next':
-                            currentPage = Math.min(totalPages - 1, currentPage + 1);
-                            break;
-                        case 'last':
-                            currentPage = totalPages - 1;
-                            break;
-                    }
-
-                    await i.update({
-                        content: generatePage(currentPage),
-                        components: [generateButtons(currentPage)]
-                    });
-                });
-
-                collector.on('end', async () => {
-                    try {
-                        await interaction.editReply({
-                            components: []
-                        });
-                    } catch (err) {
-                        console.error('Failed to remove buttons:', err);
-                    }
-                });
+        collector.on('collect', async i => {
+            switch (i.customId) {
+                case 'first': currentPage = 0; break;
+                case 'prev': currentPage = Math.max(0, currentPage - 1); break;
+                case 'next': currentPage = Math.min(totalPages - 1, currentPage + 1); break;
+                case 'last': currentPage = totalPages - 1; break;
             }
+            await i.update({ content: generatePage(currentPage), components: [generateButtons(currentPage)] });
         });
 
-        // In case the process errors during spawn
-        pythonProcess.on('error', async (err) => {
-            console.error('Failed to start python process:', err);
-            await finishReply(`Launcher failed to start: ${err.message}`);
+        collector.on('end', async () => {
+            try { await interaction.editReply({ components: [] }); } catch (e) {}
         });
-
-        // Return immediately; reply will be sent when the process closes
-        return;
     },
 };

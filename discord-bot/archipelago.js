@@ -149,8 +149,22 @@ async function start(discordClient, db) {
         return emote ? `${text} ${emote}` : text;
     };
 
+    const FLAG_EMOTES = {
+        Progression: '<:Progression:1495879488716668988>',
+        Useful:      '<:Useful:1495879485407494354>',
+        Trap:        '<:Trap:1495879486346887238>',
+        Junk:        '<:Junk:1495879487538204804>',
+    };
+    const flagEmote = (flags) => {
+        // Bit flags for the flag types
+        if (flags & 0b0001) return FLAG_EMOTES.Progression;
+        if (flags & 0b0100) return FLAG_EMOTES.Trap;
+        if (flags & 0b0010) return FLAG_EMOTES.Useful;
+        return FLAG_EMOTES.Junk;
+    };
+
     // Helper to format nodes into a message string safely
-    function formatNodes(nodes, hint = false) {
+    function formatNodes(nodes, hint = false, item = false) {
         if (!Array.isArray(nodes)) return String(nodes || '');
         let finishedGames = db.archipelago.get('finished_games') || [
             "AriaSouls",
@@ -175,7 +189,7 @@ async function start(discordClient, db) {
             }
 
             if (index === idx2) {
-                return `**${text}**`;
+                return `**${text}**${item != false ? ` ${flagEmote(item.flags ?? 0)}` : ``}`;
             }
 
             if (index === idx3 && !text.includes('(')) {
@@ -194,7 +208,7 @@ async function start(discordClient, db) {
 
     archClient.messages.on('itemSent', async (_text, _item, nodes) => {
         try {
-            const messageStr = formatNodes(nodes);
+            const messageStr = formatNodes(nodes, false, _item);
             if (discordChannel) {
                 await discordChannel.send({ content: messageStr });
             } else {
