@@ -41,7 +41,7 @@ module.exports = {
 
         const port = db.archipelago.get('server_port');
 
-        const { items, hintedCount } = await runTrackerForSlot(slotName, port);
+        const { items, hintedCount } = await runTrackerForSlot(slotName, port, finishedGames);
 
         const emote = SLOT_EMOTES[slotName] ?? '';
         const header = `## In Logic Checks For ${slotName}${emote ? ` ${emote}` : ''}`;

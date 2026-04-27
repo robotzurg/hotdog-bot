@@ -57,7 +57,7 @@ module.exports = {
 
         await interaction.editReply(`Gathering Universal Tracker data for all **${player}** slots (${activeSlots.length} active), this may take a moment...`);
 
-        const results = await Promise.all(activeSlots.map(slot => runTrackerForSlot(slot, port)));
+        const results = await Promise.all(activeSlots.map(slot => runTrackerForSlot(slot, port, finishedGames)));
 
         const slotResults = Object.fromEntries(
             results.map(({ slotName, items, hintedCount }) => [slotName, { items, hintedCount }])
