@@ -74,7 +74,10 @@ module.exports = {
         };
 
         if (isAll) {
-            const unfound = hintResults.filter(({ found }) => !found);
+            const finishedGames = db.archipelago.get('finished_games') ?? [];
+            const unfound = hintResults.filter(({ found, item }) =>
+                !found && !finishedGames.includes(item.receiver?.name)
+            );
             if (unfound.length === 0) {
                 await interaction.editReply(`No unfound hints for **${slotName}**.`);
                 return;
