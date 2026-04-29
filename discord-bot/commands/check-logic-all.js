@@ -52,9 +52,12 @@ module.exports = {
         }
 
         const port = db.archipelago.get('server_port');
-        await interaction.editReply(`Gathering Universal Tracker data for all **${player}** slots (${slots.length} slots), this may take a moment...`);
+        const finishedGames = db.archipelago.get('finished_games') ?? [];
+        const activeSlots = slots.filter(slot => !finishedGames.includes(slot));
 
-        const results = await Promise.all(slots.map(slot => runTrackerForSlot(slot, port)));
+        await interaction.editReply(`Gathering Universal Tracker data for all **${player}** slots (${activeSlots.length} active), this may take a moment...`);
+
+        const results = await Promise.all(activeSlots.map(slot => runTrackerForSlot(slot, port, finishedGames)));
 
         const slotResults = Object.fromEntries(
             results.map(({ slotName, items, hintedCount }) => [slotName, { items, hintedCount }])
@@ -63,10 +66,15 @@ module.exports = {
         const buildOverview = () => {
             const lines = [`## Logic Check Overview: ${player}`];
             for (const slot of slots) {
-                const { items, hintedCount } = slotResults[slot] ?? { items: [], hintedCount: 0 };
                 const emote = SLOT_EMOTES[slot] ?? '';
+                const prefix = emote ? `${emote} ` : '';
+                if (finishedGames.includes(slot)) {
+                    lines.push(`- ${prefix}**${slot}**: Completed`);
+                    continue;
+                }
+                const { items, hintedCount } = slotResults[slot] ?? { items: [], hintedCount: 0 };
                 const hintSuffix = hintedCount > 0 ? ` (${hintedCount} hinted)` : '';
-                lines.push(`- ${emote ? `${emote} ` : ''}**${slot}**: ${items.length} in logic${hintSuffix}`);
+                lines.push(`- ${prefix}**${slot}**: ${items.length} in logic${hintSuffix}`);
             }
             return lines.join('\n');
         };
@@ -75,7 +83,7 @@ module.exports = {
             const select = new StringSelectMenuBuilder()
                 .setCustomId('slot_select')
                 .setPlaceholder('Select a slot to view details...')
-                .addOptions(slots.map(slot => {
+                .addOptions(activeSlots.map(slot => {
                     const { items, hintedCount } = slotResults[slot] ?? { items: [], hintedCount: 0 };
                     const hintSuffix = hintedCount > 0 ? ` • ${hintedCount} hinted` : '';
                     const emoji = parseEmote(SLOT_EMOTES[slot]);
@@ -127,8 +135,10 @@ module.exports = {
 
         const response = await interaction.editReply({
             content: buildOverview(),
-            components: [buildSelectMenu()]
+            components: activeSlots.length > 0 ? [buildSelectMenu()] : []
         });
+
+        if (activeSlots.length === 0) return;
 
         let currentSlot = null;
         let currentPage = 0;

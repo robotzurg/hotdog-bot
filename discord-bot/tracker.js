@@ -18,12 +18,22 @@ const noisePatterns = [
 
 const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
 
-function processItems(rawItems) {
-    const hintedCount = rawItems.filter(v => hintRegex.test(v)).length;
-    const sorted = [...rawItems].sort((a, b) => hintRegex.test(b) - hintRegex.test(a));
+function processItems(rawItems, finishedGames = []) {
+    const isFinishedHint = (v) => {
+        const m = v.match(hintRegex);
+        if (!m) return false;
+        const player = m[1] ?? m[2];
+        return player && finishedGames.includes(player);
+    };
+    const hintedCount = rawItems.filter(v => hintRegex.test(v) && !isFinishedHint(v)).length;
+    const sorted = [...rawItems].sort((a, b) => {
+        const aHinted = hintRegex.test(a) && !isFinishedHint(a);
+        const bHinted = hintRegex.test(b) && !isFinishedHint(b);
+        return bHinted - aHinted;
+    });
     const items = sorted.map(v => {
         const hintMatch = v.match(hintRegex);
-        if (!hintMatch) return `- ${v}`;
+        if (!hintMatch || isFinishedHint(v)) return `- ${v.replace(/\s*\([^)]*\)$/, '')}`;
         const player = hintMatch[1] ?? hintMatch[2];
         const emote = player ? (SLOT_EMOTES[player] ?? '') : '';
         const line = emote ? v.replace(/\)$/, ` ${emote})`) : v;
@@ -32,7 +42,7 @@ function processItems(rawItems) {
     return { items, hintedCount };
 }
 
-function runTrackerForSlot(slotName, port) {
+function runTrackerForSlot(slotName, port, finishedGames = []) {
     return new Promise((resolve) => {
         const launcherScript = path.join(__dirname, '../Archipelago-0.6.6/Launcher.py');
         const pythonPath = process.platform === 'win32'
@@ -82,7 +92,7 @@ function runTrackerForSlot(slotName, port) {
             console.error(`[${slotName}] stderr:`, data.toString('utf8'));
         });
 
-        pythonProcess.on('close', () => resolve({ slotName, ...processItems(rawItems) }));
+        pythonProcess.on('close', () => resolve({ slotName, ...processItems(rawItems, finishedGames) }));
         pythonProcess.on('error', (err) => {
             console.error(`[${slotName}] spawn error:`, err);
             resolve({ slotName, items: [], hintedCount: 0 });

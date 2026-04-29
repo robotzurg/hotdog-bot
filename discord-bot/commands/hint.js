@@ -19,7 +19,10 @@ module.exports = {
 
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused().toLowerCase();
-        const filtered = SLOT_NAMES.filter(name => name.toLowerCase().includes(focusedValue));
+        const finishedGames = db.archipelago.get('finished_games') ?? [];
+        const filtered = SLOT_NAMES.filter(name =>
+            !finishedGames.includes(name) && name.toLowerCase().includes(focusedValue)
+        );
         await interaction.respond(
             filtered.slice(0, 25).map(name => ({ name, value: name }))
         );
@@ -71,7 +74,10 @@ module.exports = {
         };
 
         if (isAll) {
-            const unfound = hintResults.filter(({ found }) => !found);
+            const finishedGames = db.archipelago.get('finished_games') ?? [];
+            const unfound = hintResults.filter(({ found, item }) =>
+                !found && !finishedGames.includes(item.receiver?.name)
+            );
             if (unfound.length === 0) {
                 await interaction.editReply(`No unfound hints for **${slotName}**.`);
                 return;

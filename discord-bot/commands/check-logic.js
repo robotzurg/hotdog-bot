@@ -18,18 +18,30 @@ module.exports = {
 
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused().toLowerCase();
-        const filtered = SLOT_NAMES.filter(name => name.toLowerCase().includes(focusedValue));
+        const finishedGames = db.archipelago.get('finished_games') ?? [];
+        const filtered = SLOT_NAMES.filter(name =>
+            !finishedGames.includes(name) && name.toLowerCase().includes(focusedValue)
+        );
         await interaction.respond(filtered.slice(0, 25).map(name => ({ name, value: name })));
     },
 
     async execute(interaction) {
         await interaction.deferReply();
-        await interaction.editReply(`Gathering Universal Tracker data, this may take a moment...`);
 
         const slotName = interaction.options.getString('slot-name');
+        const finishedGames = db.archipelago.get('finished_games') ?? [];
+
+        if (finishedGames.includes(slotName)) {
+            const emote = SLOT_EMOTES[slotName] ?? '';
+            await interaction.editReply(`## ${slotName}${emote ? ` ${emote}` : ''} has been goaled!`);
+            return;
+        }
+
+        await interaction.editReply(`Gathering Universal Tracker data, this may take a moment...`);
+
         const port = db.archipelago.get('server_port');
 
-        const { items, hintedCount } = await runTrackerForSlot(slotName, port);
+        const { items, hintedCount } = await runTrackerForSlot(slotName, port, finishedGames);
 
         const emote = SLOT_EMOTES[slotName] ?? '';
         const header = `## In Logic Checks For ${slotName}${emote ? ` ${emote}` : ''}`;

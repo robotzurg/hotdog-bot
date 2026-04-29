@@ -61,7 +61,7 @@ async function start(discordClient, db) {
 
     // Helper: Send message to Discord channel
     async function sendDiscordMessage(message) {
-        if (discordChannel) {
+        if (discordChannel && discordClient.isReady()) {
             try {
                 await discordChannel.send({ content: `[Archipelago] ${message}` });
             } catch (err) {
@@ -209,7 +209,7 @@ async function start(discordClient, db) {
     archClient.messages.on('itemSent', async (_text, _item, nodes) => {
         try {
             const messageStr = formatNodes(nodes, false, _item);
-            if (discordChannel) {
+            if (discordChannel && discordClient.isReady()) {
                 await discordChannel.send({ content: messageStr });
             } else {
                 console.log('[Archipelago]', messageStr);
@@ -224,7 +224,7 @@ async function start(discordClient, db) {
         try {
             const causeStr = cause ? `: ${cause}` : '';
             const message = `💀 **${mapEmoji(source)}** has died${causeStr}`;
-            if (discordChannel) {
+            if (discordChannel && discordClient.isReady()) {
                 await discordChannel.send({ content: message });
             } else {
                 console.log('[Archipelago]', message);
