@@ -601,6 +601,8 @@ def init_logging(name: str, loglevel: typing.Union[str, int] = logging.INFO,
                 if datetime.datetime.now() - last_change > datetime.timedelta(days=7):
                     try:
                         os.unlink(file.path)
+                    except FileNotFoundError:
+                        pass
                     except Exception as e:
                         logging.exception(e)
                     else:
