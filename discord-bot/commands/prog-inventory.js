@@ -6,7 +6,7 @@ const ITEMS_PER_PAGE = 15;
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('progression-items')
+        .setName('prog-inventory')
         .setDescription('List all progression items in a slot\'s inventory')
         .addStringOption(option =>
             option.setName('slot-name')
