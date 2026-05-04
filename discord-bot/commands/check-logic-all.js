@@ -4,7 +4,7 @@ const { SLOT_EMOTES } = require('../slots.js');
 const { runTrackerForSlot } = require('../tracker.js');
 
 const PLAYER_SLOTS = {
-    'Aria': ['AriaCeleste', 'AriaChess', 'AriaHollow', 'AriaLilies', 'AriaOri', 'AriaPizza', 'AriaTruck'],
+    'Aria': ['AriaCeleste', 'AriaChess', 'AriaHollow', 'AriaLilies', 'AriaOri', 'AriaPizza', 'AriaTruck', 'AriaSouls'],
     'Av': ['AvGenshin', 'AvGK', 'AvHat', 'AvNiko', 'AvTy', 'AvWitch'],
     'Ethan': ['Ethan-Celeste', 'Ethan-DKC', 'Ethan-Duck', 'Ethan-Hylics', 'Ethan-Ori', 'Ethan-Peggle', 'Ethan-Taxi', 'Ethan-TOEM', 'Ethan-Yoku'],
     'HDW': ['HDWClique', 'AllFactory', 'AllMinecraft', 'AllRepo'],
