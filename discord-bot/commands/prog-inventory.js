@@ -2,7 +2,7 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = re
 const db = require('../db.js');
 const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 10;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -30,7 +30,7 @@ module.exports = {
         const slotName = interaction.options.getString('slot-name');
         const port = db.archipelago.get('server_port');
 
-        await interaction.editReply(`Connecting to Archipelago to read **${slotName}**'s inventory...`);
+        await interaction.editReply(`Getting info about Archipelago for **${slotName}**'s progression inventory...`);
 
         const { Client } = await import('archipelago.js');
         const client = new Client();
