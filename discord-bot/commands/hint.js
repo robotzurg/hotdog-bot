@@ -133,9 +133,14 @@ module.exports = {
             return;
         }
 
-        const lines = hintResults.map(({ item, found }) => {
-            const foundTag = found ? ' *(found)*' : '';
-            return `- **${item.name}** for ${mapEmote(item.receiver?.name ?? '???')} at **${item.locationName}**${item.sender?.name !== slotName ? ` in ${mapEmote(item.sender?.name ?? '???')}'s world` : ''}${foundTag}`;
+        const unfoundResults = hintResults.filter(({ found }) => !found);
+        if (unfoundResults.length === 0) {
+            await interaction.editReply(`All hints for **${itemName}** on **${slotName}** have already been found.`);
+            return;
+        }
+
+        const lines = unfoundResults.map(({ item }) => {
+            return `- **${item.name}** for ${mapEmote(item.receiver?.name ?? '???')} at **${item.locationName}**${item.sender?.name !== slotName ? ` in ${mapEmote(item.sender?.name ?? '???')}'s world` : ''}`;
         });
 
         await interaction.editReply(`## Hint result for ${slotName}\n${lines.join('\n')}`);
