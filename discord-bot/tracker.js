@@ -33,7 +33,8 @@ function processItems(rawItems, finishedGames = []) {
     });
     const items = sorted.map(v => {
         const hintMatch = v.match(hintRegex);
-        if (!hintMatch || isFinishedHint(v)) return `- ${v.replace(/\s*\([^)]*\)$/, '')}`;
+        if (!hintMatch) return `- ${v}`;
+        if (isFinishedHint(v)) return `- ${v.replace(/\s*\([^)]*\)$/, '')}`;
         const player = hintMatch[1] ?? hintMatch[2];
         const emote = player ? (SLOT_EMOTES[player] ?? '') : '';
         const line = emote ? v.replace(/\)$/, ` ${emote})`) : v;
