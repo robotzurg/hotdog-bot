@@ -52,7 +52,7 @@ const MURDERER_SHARE_WIN_COUNT = 3;  // important hints shared *to* murderer to 
 //   "share_checks_sent":          0        (next Share location index to consume)
 //   "shared_to_murderer_count":   0        (important shares delivered to murderer)
 //   "important_flags":            { "<player>::<template>": true }
-//        — snapshot of important flags from the JSON file. These are the
+//        - snapshot of important flags from the JSON file. These are the
 //        truthful, solution-bearing hints. Used both as the murderer's
 //        share-win-condition material AND as the gate on /conclude (all
 //        of them must be received from the multiworld before a conclusion
@@ -191,7 +191,7 @@ function getHintText(player, template) {
 }
 
 // ---------------------------------------------------------------------------
-// Archipelago helpers — one-shot connections as HDWMurder
+// Archipelago helpers - one-shot connections as HDWMurder
 // ---------------------------------------------------------------------------
 
 async function mmConnect() {
@@ -306,9 +306,9 @@ function markInvestigated(player, template) {
 // Adds a shared hint to the target's board, consumes a share charge from the
 // caller, and returns the AP location id for the caller's next Share check.
 //
-// `caller`     — { player, discordId } — who pays the Progressive Share charge
-// `hint`       — { sourcePlayer, template } — whose clue this originally is
-// `targetPlayer` — receiving player
+// `caller`     - { player, discordId } - who pays the Progressive Share charge
+// `hint`       - { sourcePlayer, template } - whose clue this originally is
+// `targetPlayer` - receiving player
 //
 // Returns { locationId, important } on success or { locationId: null, reason }
 // if the caller has used both of their share locations.

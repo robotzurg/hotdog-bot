@@ -13,7 +13,7 @@ function formatBoard(player, board, progress) {
     lines.push('');
     lines.push(`**Your investigations:**`);
     for (const c of board.clues) {
-        const head = `- ${c.template} — ${statusBadge(c.status)}`;
+        const head = `- ${c.template} - ${statusBadge(c.status)}`;
         if (c.status === 'INVESTIGATED' && c.text) {
             lines.push(`${head}\n  > ${c.text}`);
         } else {
@@ -30,7 +30,7 @@ function formatBoard(player, board, progress) {
     } else {
         lines.push(`**Shared to you:**`);
         board.sharedToMe.forEach((s, i) => {
-            lines.push(`- *(${i + 1})* from **${s.from}** — ${s.template} (originally **${s.sourcePlayer}**'s clue)`);
+            lines.push(`- *(${i + 1})* from **${s.from}** - ${s.template} (originally **${s.sourcePlayer}**'s clue)`);
             lines.push(`  > ${s.text}`);
         });
     }
@@ -79,7 +79,7 @@ module.exports = {
             await interaction.editReply('Sent your clue board via DM.');
         } catch (err) {
             console.error('clues: failed to DM user', err);
-            await interaction.editReply('Could not DM you — make sure DMs from server members are enabled.');
+            await interaction.editReply('Could not DM you - make sure DMs from server members are enabled.');
         }
     },
 };

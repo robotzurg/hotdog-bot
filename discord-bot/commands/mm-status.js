@@ -33,7 +33,7 @@ module.exports = {
         const sharedMurderer = mm.getSharedToMurdererCount();
 
         const lines = [];
-        lines.push(`## Murder Mystery — Game State`);
+        lines.push(`## Murder Mystery - Game State`);
         lines.push(`- Solution: **${sol.murderer}** in **${sol.location}** with the **${sol.weapon}**`);
         lines.push(`- Winner: ${winner ? `**${winner}**` : '*(not yet)*'}`);
         lines.push(`- Wrong conclusions: ${wrong}/${mm.MAX_WRONG_CONCLUSIONS + 1}`);

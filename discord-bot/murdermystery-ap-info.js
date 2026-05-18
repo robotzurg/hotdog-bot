@@ -1,4 +1,4 @@
-// Hotdog Water Murder Mystery — Archipelago item/location IDs
+// Hotdog Water Murder Mystery - Archipelago item/location IDs
 // Generated to match worlds/hdw_murder/items.py + locations.py
 
 const PERSONS = ["Av", "Jeff", "Vlad", "Ethan", "Yacob", "Aero", "Snow", "Kirby", "Iapg"];

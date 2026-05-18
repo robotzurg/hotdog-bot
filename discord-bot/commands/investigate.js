@@ -7,7 +7,7 @@ const SLOT_CHOICES = HINT_TEMPLATES.map(t => ({ name: t, value: t }));
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('investigate')
-        .setDescription('Investigate one of your AVAILABLE clue slots — DMs you the result.')
+        .setDescription('Investigate one of your AVAILABLE clue slots - DMs you the result.')
         .addStringOption(option =>
             option.setName('slot')
                 .setDescription('Which clue slot to investigate')
@@ -43,7 +43,7 @@ module.exports = {
         const clue = board.clues.find(c => c.template === template);
 
         if (!clue || clue.status === 'LOCKED') {
-            await interaction.editReply(`**${template}** is LOCKED for you — the multiworld hasn't sent that item to HDWMurder yet.`);
+            await interaction.editReply(`**${template}** is LOCKED for you - the multiworld hasn't sent that item to HDWMurder yet.`);
             return;
         }
         if (clue.status === 'INVESTIGATED') {
@@ -64,7 +64,7 @@ module.exports = {
         }
 
         try {
-            await interaction.user.send(`## ${template} — ${player}\n${text}`);
+            await interaction.user.send(`## ${template} - ${player}\n${text}`);
             await interaction.editReply(`Investigated **${template}**. Result sent via DM.`);
         } catch (err) {
             console.error('investigate: failed to DM user', err);

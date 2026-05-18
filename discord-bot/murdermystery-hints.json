@@ -7,76 +7,76 @@
   },
   "hints": {
     "Av": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Av — Location clue 1.", "important": false },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Av — Location clue 2.", "important": true },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Av — Person clue 1.",   "important": true },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Av — Person clue 2.",   "important": false },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Av — Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Av — Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "[PLACEHOLDER] Av - Location clue 1.", "important": false },
+      "Location Investigation 2": { "text": "[PLACEHOLDER] Av - Location clue 2.", "important": true },
+      "Person Investigation 1":   { "text": "[PLACEHOLDER] Av - Person clue 1.",   "important": true },
+      "Person Investigation 2":   { "text": "[PLACEHOLDER] Av - Person clue 2.",   "important": false },
+      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Av - Weapon clue 1.",   "important": false },
+      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Av - Weapon clue 2.",   "important": false }
     },
     "Jeff": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Jeff — Location clue 1.", "important": true },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Jeff — Location clue 2.", "important": true },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Jeff — Person clue 1.",   "important": false },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Jeff — Person clue 2.",   "important": false },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Jeff — Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Jeff — Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "[PLACEHOLDER] Jeff - Location clue 1.", "important": true },
+      "Location Investigation 2": { "text": "[PLACEHOLDER] Jeff - Location clue 2.", "important": true },
+      "Person Investigation 1":   { "text": "[PLACEHOLDER] Jeff - Person clue 1.",   "important": false },
+      "Person Investigation 2":   { "text": "[PLACEHOLDER] Jeff - Person clue 2.",   "important": false },
+      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Jeff - Weapon clue 1.",   "important": false },
+      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Jeff - Weapon clue 2.",   "important": false }
     },
     "Vlad": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Vlad — Location clue 1.", "important": false },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Vlad — Location clue 2.", "important": false },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Vlad — Person clue 1.",   "important": true },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Vlad — Person clue 2.",   "important": false },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Vlad — Weapon clue 1.",   "important": true },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Vlad — Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "[PLACEHOLDER] Vlad - Location clue 1.", "important": false },
+      "Location Investigation 2": { "text": "[PLACEHOLDER] Vlad - Location clue 2.", "important": false },
+      "Person Investigation 1":   { "text": "[PLACEHOLDER] Vlad - Person clue 1.",   "important": true },
+      "Person Investigation 2":   { "text": "[PLACEHOLDER] Vlad - Person clue 2.",   "important": false },
+      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Vlad - Weapon clue 1.",   "important": true },
+      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Vlad - Weapon clue 2.",   "important": false }
     },
     "Ethan": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Ethan — Location clue 1.", "important": false },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Ethan — Location clue 2.", "important": false },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Ethan — Person clue 1.",   "important": true },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Ethan — Person clue 2.",   "important": false },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Ethan — Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Ethan — Weapon clue 2.",   "important": true }
+      "Location Investigation 1": { "text": "[PLACEHOLDER] Ethan - Location clue 1.", "important": false },
+      "Location Investigation 2": { "text": "[PLACEHOLDER] Ethan - Location clue 2.", "important": false },
+      "Person Investigation 1":   { "text": "[PLACEHOLDER] Ethan - Person clue 1.",   "important": true },
+      "Person Investigation 2":   { "text": "[PLACEHOLDER] Ethan - Person clue 2.",   "important": false },
+      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Ethan - Weapon clue 1.",   "important": false },
+      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Ethan - Weapon clue 2.",   "important": true }
     },
     "Yacob": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Yacob — Location clue 1.", "important": false },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Yacob — Location clue 2.", "important": false },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Yacob — Person clue 1.",   "important": false },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Yacob — Person clue 2.",   "important": true },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Yacob — Weapon clue 1.",   "important": true },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Yacob — Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "[PLACEHOLDER] Yacob - Location clue 1.", "important": false },
+      "Location Investigation 2": { "text": "[PLACEHOLDER] Yacob - Location clue 2.", "important": false },
+      "Person Investigation 1":   { "text": "[PLACEHOLDER] Yacob - Person clue 1.",   "important": false },
+      "Person Investigation 2":   { "text": "[PLACEHOLDER] Yacob - Person clue 2.",   "important": true },
+      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Yacob - Weapon clue 1.",   "important": true },
+      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Yacob - Weapon clue 2.",   "important": false }
     },
     "Aero": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Aero — Location clue 1.", "important": true },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Aero — Location clue 2.", "important": true },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Aero — Person clue 1.",   "important": false },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Aero — Person clue 2.",   "important": false },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Aero — Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Aero — Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "[PLACEHOLDER] Aero - Location clue 1.", "important": true },
+      "Location Investigation 2": { "text": "[PLACEHOLDER] Aero - Location clue 2.", "important": true },
+      "Person Investigation 1":   { "text": "[PLACEHOLDER] Aero - Person clue 1.",   "important": false },
+      "Person Investigation 2":   { "text": "[PLACEHOLDER] Aero - Person clue 2.",   "important": false },
+      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Aero - Weapon clue 1.",   "important": false },
+      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Aero - Weapon clue 2.",   "important": false }
     },
     "Snow": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Snow — Location clue 1.", "important": false },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Snow — Location clue 2.", "important": false },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Snow — Person clue 1.",   "important": true },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Snow — Person clue 2.",   "important": false },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Snow — Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Snow — Weapon clue 2.",   "important": true }
+      "Location Investigation 1": { "text": "[PLACEHOLDER] Snow - Location clue 1.", "important": false },
+      "Location Investigation 2": { "text": "[PLACEHOLDER] Snow - Location clue 2.", "important": false },
+      "Person Investigation 1":   { "text": "[PLACEHOLDER] Snow - Person clue 1.",   "important": true },
+      "Person Investigation 2":   { "text": "[PLACEHOLDER] Snow - Person clue 2.",   "important": false },
+      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Snow - Weapon clue 1.",   "important": false },
+      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Snow - Weapon clue 2.",   "important": true }
     },
     "Kirby": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Kirby — Location clue 1.", "important": true },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Kirby — Location clue 2.", "important": false },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Kirby — Person clue 1.",   "important": false },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Kirby — Person clue 2.",   "important": true },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Kirby — Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Kirby — Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "[PLACEHOLDER] Kirby - Location clue 1.", "important": true },
+      "Location Investigation 2": { "text": "[PLACEHOLDER] Kirby - Location clue 2.", "important": false },
+      "Person Investigation 1":   { "text": "[PLACEHOLDER] Kirby - Person clue 1.",   "important": false },
+      "Person Investigation 2":   { "text": "[PLACEHOLDER] Kirby - Person clue 2.",   "important": true },
+      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Kirby - Weapon clue 1.",   "important": false },
+      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Kirby - Weapon clue 2.",   "important": false }
     },
     "Iapg": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Iapg — Location clue 1.", "important": true },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Iapg — Location clue 2.", "important": false },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Iapg — Person clue 1.",   "important": false },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Iapg — Person clue 2.",   "important": true },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Iapg — Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Iapg — Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "[PLACEHOLDER] Iapg - Location clue 1.", "important": true },
+      "Location Investigation 2": { "text": "[PLACEHOLDER] Iapg - Location clue 2.", "important": false },
+      "Person Investigation 1":   { "text": "[PLACEHOLDER] Iapg - Person clue 1.",   "important": false },
+      "Person Investigation 2":   { "text": "[PLACEHOLDER] Iapg - Person clue 2.",   "important": true },
+      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Iapg - Weapon clue 1.",   "important": false },
+      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Iapg - Weapon clue 2.",   "important": false }
     }
   }
 }

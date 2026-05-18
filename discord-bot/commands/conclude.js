@@ -48,8 +48,8 @@ module.exports = {
             const impGate = progress.importantComplete ? '✅' : '❌';
             await interaction.editReply(
                 `Conclusion is locked. Both gates must pass:\n`
-              + `- ${pctGate} Multiworld progress: **${pct}%** (${progress.received}/${progress.total}) — need **${threshold}%**\n`
-              + `- ${impGate} Important hints received: **${progress.importantReceived}/${progress.importantTotal}** — need all`
+              + `- ${pctGate} Multiworld progress: **${pct}%** (${progress.received}/${progress.total}) - need **${threshold}%**\n`
+              + `- ${impGate} Important hints received: **${progress.importantReceived}/${progress.importantTotal}** - need all`
             );
             return;
         }
@@ -62,7 +62,7 @@ module.exports = {
 
         if (outcome.correct) {
             await interaction.editReply(
-                `🕵️ **Conclusion correct — detectives win!**\n`
+                `🕵️ **Conclusion correct - detectives win!**\n`
               + `It was **${murderer}** in **${location}** with the **${weapon}**.`
             );
             return;
@@ -71,7 +71,7 @@ module.exports = {
         if (outcome.winner === 'murderer-wrong') {
             const sol = outcome.solution;
             await interaction.editReply(
-                `❌ Wrong (${outcome.wrong}/${mm.MAX_WRONG_CONCLUSIONS + 1}). The detectives have run out of attempts — **the murderer wins!**\n`
+                `❌ Wrong (${outcome.wrong}/${mm.MAX_WRONG_CONCLUSIONS + 1}). The detectives have run out of attempts - **the murderer wins!**\n`
               + `The truth: **${sol.murderer}** in **${sol.location}** with the **${sol.weapon}**.`
             );
             return;
