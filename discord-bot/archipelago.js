@@ -102,7 +102,7 @@ async function start(discordClient, db) {
 
         const port = db.archipelago.get('server_port');
         const slot = db.archipelago.get('slot');
-        const game = db.archipelago.get('game') ?? 'Clique';
+        const game = db.archipelago.get('game');
 
         if (!port) {
             console.error('Archipelago server_port is not configured in the database. Cannot reconnect.');
@@ -269,7 +269,7 @@ async function start(discordClient, db) {
 
     const port = db.archipelago.get('server_port');
     const slot = db.archipelago.get('slot');
-    const game = db.archipelago.get('game') ?? 'Clique';
+    const game = db.archipelago.get('game');
 
     if (!port) {
         console.error('Archipelago server_port is not configured in the database. Skipping Archipelago login.');

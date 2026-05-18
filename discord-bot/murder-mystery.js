@@ -197,7 +197,7 @@ function getHintText(player, template) {
 async function mmConnect() {
     const port = db.archipelago.get('server_port');
     const slot = db.archipelago.get('slot');
-    const game = db.archipelago.get('game') ?? 'Clique';
+    const game = db.archipelago.get('game');
     if (!port) throw new Error('Archipelago server_port is not configured.');
     if (!slot) throw new Error('Archipelago slot is not configured.');
     const { Client } = await import('archipelago.js');

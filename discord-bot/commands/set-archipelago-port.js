@@ -19,14 +19,14 @@ module.exports = {
                 .setRequired(true))
         .addStringOption(option =>
             option.setName('game')
-                .setDescription('The archipelago game name to log in as (defaults to Clique).')
-                .setRequired(false))
+                .setDescription('The archipelago game name to log in as.')
+                .setRequired(true))
         .setDMPermission(false),
 	async execute(interaction) {
         const channel = interaction.options.getChannel('channel');
         const port = interaction.options.getString('port');
         const slot = interaction.options.getString('slot');
-        const game = interaction.options.getString('game') ?? 'Clique';
+        const game = interaction.options.getString('game');
         db.archipelago.set('server_port', port);
         db.archipelago.set('server_channel', channel.id);
         db.archipelago.set('slot', slot);
