@@ -3,7 +3,6 @@ const {
     PERSONS,
     HINT_TEMPLATES,
     HINT_CATEGORIES,
-    MM_SLOT_NAME,
     PLAYER_DISCORD_IDS,
     LOCATION_POOL,
     WEAPON_POOL,
@@ -197,10 +196,12 @@ function getHintText(player, template) {
 
 async function mmConnect() {
     const port = db.archipelago.get('server_port');
+    const slot = db.archipelago.get('slot');
     if (!port) throw new Error('Archipelago server_port is not configured.');
+    if (!slot) throw new Error('Archipelago slot is not configured.');
     const { Client } = await import('archipelago.js');
     const client = new Client();
-    await client.login(`archipelago.gg:${port}`, MM_SLOT_NAME, 'Hotdog Water Murder Mystery');
+    await client.login(`archipelago.gg:${port}`, slot, 'Hotdog Water Murder Mystery');
     return client;
 }
 
