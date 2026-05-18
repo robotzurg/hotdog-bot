@@ -2,5 +2,6 @@ const Enmap = require("enmap");
 
 module.exports = {
   potd: new Enmap({ name: "potd" }),
-  archipelago: new Enmap({ name: "archipelago" })
+  archipelago: new Enmap({ name: "archipelago" }),
+  murder: new Enmap({ name: "murder" })
 };
