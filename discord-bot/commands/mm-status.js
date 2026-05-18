@@ -27,7 +27,6 @@ module.exports = {
         }
 
         const sol = mm.getSolution();
-        const winner = mm.getWinner();
         const progress = mm.concludeProgress(received);
         const wrong = mm.getWrongConclusions();
         const sharedMurderer = mm.getSharedToMurdererCount();
@@ -35,7 +34,6 @@ module.exports = {
         const lines = [];
         lines.push(`## Murder Mystery - Game State`);
         lines.push(`- Solution: **${sol.murderer}** in **${sol.location}** with the **${sol.weapon}**`);
-        lines.push(`- Winner: ${winner ? `**${winner}**` : '*(not yet)*'}`);
         lines.push(`- Wrong conclusions: ${wrong}/${mm.MAX_WRONG_CONCLUSIONS + 1}`);
         lines.push(`- Important hints shared to murderer: ${sharedMurderer}/${mm.MURDERER_SHARE_WIN_COUNT}`);
         lines.push(`- Multiworld progress: ${progress.received}/${progress.total} (${(progress.pct * 100).toFixed(0)}%)`);

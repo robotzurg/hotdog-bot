@@ -191,7 +191,7 @@ function getHintText(player, template) {
 }
 
 // ---------------------------------------------------------------------------
-// Archipelago helpers - one-shot connections as HDWMurder
+// Archipelago helpers
 // ---------------------------------------------------------------------------
 
 async function mmConnect() {
@@ -208,7 +208,6 @@ async function mmConnect() {
 
 async function readReceivedItems() {
     const client = await mmConnect();
-    // Give the server a moment to flush the received-items batch.
     await new Promise(r => setTimeout(r, 4000));
     const received = [...client.items.received];
     try { client.socket.disconnect(); } catch (_) {}
@@ -220,7 +219,6 @@ async function sendChecks(locationIds) {
     const client = await mmConnect();
     await new Promise(r => setTimeout(r, 1500));
     client.check(...locationIds);
-    // Allow the packet to flush before disconnect.
     await new Promise(r => setTimeout(r, 1500));
     try { client.socket.disconnect(); } catch (_) {}
 }
