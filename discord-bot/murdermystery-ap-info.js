@@ -21,10 +21,6 @@ const HINT_CATEGORIES = {
   "Weapon Investigation 2":   "weapon",
 };
 
-// AP slot the bot logs in as to read HDWMurder's received items and to send
-// location checks back out.
-const MM_SLOT_NAME = "HDWMurder";
-
 // Discord user IDs for each player. Fill these in before running a game.
 const PLAYER_DISCORD_IDS = {
   "Av":    "156110247004471296",
@@ -38,7 +34,6 @@ const PLAYER_DISCORD_IDS = {
   "Iapg":  "449314134387982347",
 };
 
-// Placeholder pools used by /mm-start to pick the real solution.
 const LOCATION_POOL = [
   "The Kitchen", "The Library", "The Conservatory", "The Ballroom",
   "The Study", "The Billiard Room", "The Dining Room", "The Lounge", "The Cellar",
@@ -227,7 +222,6 @@ module.exports = {
   PERSONS,
   HINT_TEMPLATES,
   HINT_CATEGORIES,
-  MM_SLOT_NAME,
   PLAYER_DISCORD_IDS,
   LOCATION_POOL,
   WEAPON_POOL,
