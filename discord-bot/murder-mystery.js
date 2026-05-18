@@ -223,6 +223,14 @@ async function sendChecks(locationIds) {
     try { client.socket.disconnect(); } catch (_) {}
 }
 
+async function sendGoal() {
+    const client = await mmConnect();
+    await new Promise(r => setTimeout(r, 1500));
+    client.goal();
+    await new Promise(r => setTimeout(r, 1500));
+    try { client.socket.disconnect(); } catch (_) {}
+}
+
 // ---------------------------------------------------------------------------
 // Per-player clue board built from AP receipts + DB investigated state
 // ---------------------------------------------------------------------------
@@ -335,17 +343,19 @@ function recordShare({ caller, hint, targetPlayer, sharesReceived }) {
     callerState.shares_used = callerState.shares_used + 1;
     setPlayerState(caller.player, callerState);
 
+    let goalReached = false;
     if (important && targetPlayer === db.murder.get('murderer')) {
         const next = (db.murder.get('shared_to_murderer_count') ?? 0) + 1;
         db.murder.set('shared_to_murderer_count', next);
         if (next >= MURDERER_SHARE_WIN_COUNT && !db.murder.get('winner')) {
             db.murder.set('winner', 'murderer-share');
+            goalReached = true;
         }
     }
 
     const locationId = shareLocationId(callerState.shares_used, caller.player);
     db.murder.set('share_checks_sent', (db.murder.get('share_checks_sent') ?? 0) + 1);
-    return { locationId, important };
+    return { locationId, important, goalReached };
 }
 
 // ---------------------------------------------------------------------------
@@ -396,8 +406,9 @@ function submitConclusion({ location, weapon, murderer }) {
                  && solution.murderer === murderer;
 
     if (correct) {
-        if (!db.murder.get('winner')) db.murder.set('winner', 'detectives');
-        return { correct: true, winner: 'detectives', solution };
+        const goalReached = !db.murder.get('winner');
+        if (goalReached) db.murder.set('winner', 'detectives');
+        return { correct: true, winner: 'detectives', solution, goalReached };
     }
 
     const wrong = (db.murder.get('wrong_conclusions') ?? 0) + 1;
@@ -405,7 +416,7 @@ function submitConclusion({ location, weapon, murderer }) {
 
     if (wrong > MAX_WRONG_CONCLUSIONS && !db.murder.get('winner')) {
         db.murder.set('winner', 'murderer-wrong');
-        return { correct: false, winner: 'murderer-wrong', wrong, solution };
+        return { correct: false, winner: 'murderer-wrong', wrong, solution, goalReached: true };
     }
     return { correct: false, wrong, remaining: MAX_WRONG_CONCLUSIONS - wrong + 1, solution: null };
 }
@@ -431,6 +442,7 @@ module.exports = {
     // AP
     readReceivedItems,
     sendChecks,
+    sendGoal,
 
     // hints
     getHintText,

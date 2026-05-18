@@ -137,6 +137,14 @@ module.exports = {
             return;
         }
 
+        if (result.goalReached) {
+            try {
+                await mm.sendGoal();
+            } catch (err) {
+                console.error('share: failed to send AP goal', err);
+            }
+        }
+
         await interaction.editReply(
             `Shared **${hint.sourcePlayer === player ? hint.template : `${hint.template} (originally ${hint.sourcePlayer}'s)`}** with **${targetPlayer}**.`
         );

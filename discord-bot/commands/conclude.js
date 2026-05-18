@@ -60,6 +60,14 @@ module.exports = {
 
         const outcome = mm.submitConclusion({ murderer, location, weapon });
 
+        if (outcome.goalReached) {
+            try {
+                await mm.sendGoal();
+            } catch (err) {
+                console.error('conclude: failed to send AP goal', err);
+            }
+        }
+
         if (outcome.correct) {
             await interaction.editReply(
                 `🕵️ **Conclusion correct - detectives win!**\n`
