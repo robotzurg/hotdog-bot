@@ -428,6 +428,7 @@ module.exports = {
 
     // user mapping
     resolveDiscordUser,
+    getPlayerState,
 
     // AP
     readReceivedItems,

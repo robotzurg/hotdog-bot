@@ -1,5 +1,4 @@
 {
-  "_comment": "Single source of truth for the Murder Mystery game. /mm-start reads this file fresh each run. `solution` is the actual answer. `hints[player][template]` has the revealed text and the `important` flag (true = truthful, solution-bearing hint that gates /conclude and counts toward the murderer's share-win condition; false = red herring / flavor).",
   "solution": {
     "murderer": "Jeff",
     "location": "The Library",

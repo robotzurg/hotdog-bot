@@ -5,7 +5,6 @@ const { PERSONS } = require('../murdermystery-ap-info.js');
 const PLAYER_CHOICES = PERSONS.map(p => ({ name: p, value: p }));
 
 // hint values are encoded as `self::<template>` or `shared::<index>` so the
-// autocomplete can disambiguate own-clue vs shared-with-me clues.
 function encodeSelf(template) { return `self::${template}`; }
 function encodeShared(index) { return `shared::${index}`; }
 
@@ -32,26 +31,18 @@ module.exports = {
             return;
         }
 
-        let received = [];
-        try {
-            received = await mm.readReceivedItems();
-        } catch (_) {
-            await interaction.respond([]);
-            return;
-        }
-
-        const board = mm.buildClueBoard(player, received);
+        const state = mm.getPlayerState(player);
         const options = [];
 
-        for (const c of board.clues) {
-            if (c.status === 'INVESTIGATED') {
+        for (const template of Object.keys(state.investigated)) {
+            if (state.investigated[template] === true) {
                 options.push({
-                    name: `${c.template} (yours)`,
-                    value: encodeSelf(c.template),
+                    name: `${template} (yours)`,
+                    value: encodeSelf(template),
                 });
             }
         }
-        board.sharedToMe.forEach((s, i) => {
+        state.shared_to_me.forEach((s, i) => {
             options.push({
                 name: `${s.template} (from ${s.from}, originally ${s.sourcePlayer}'s)`,
                 value: encodeShared(i),
