@@ -43,7 +43,7 @@ module.exports = {
         const clue = board.clues.find(c => c.template === template);
 
         if (!clue || clue.status === 'LOCKED') {
-            await interaction.editReply(`**${template}** is LOCKED for you — the multiworld hasn't sent that item to HDWMystery yet.`);
+            await interaction.editReply(`**${template}** is LOCKED for you — the multiworld hasn't sent that item to HDWMurder yet.`);
             return;
         }
         if (clue.status === 'INVESTIGATED') {

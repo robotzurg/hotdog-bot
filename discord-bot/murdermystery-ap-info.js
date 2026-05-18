@@ -21,9 +21,9 @@ const HINT_CATEGORIES = {
   "Weapon Investigation 2":   "weapon",
 };
 
-// AP slot the bot logs in as to read HDWMystery's received items and to send
+// AP slot the bot logs in as to read HDWMurder's received items and to send
 // location checks back out.
-const MM_SLOT_NAME = "HDWMystery";
+const MM_SLOT_NAME = "HDWMurder";
 
 // Discord user IDs for each player. Fill these in before running a game.
 const PLAYER_DISCORD_IDS = {

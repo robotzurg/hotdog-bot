@@ -192,7 +192,7 @@ function getHintText(player, template) {
 }
 
 // ---------------------------------------------------------------------------
-// Archipelago helpers — one-shot connections as HDWMystery
+// Archipelago helpers — one-shot connections as HDWMurder
 // ---------------------------------------------------------------------------
 
 async function mmConnect() {
