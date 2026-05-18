@@ -102,6 +102,7 @@ async function start(discordClient, db) {
 
         const port = db.archipelago.get('server_port');
         const slot = db.archipelago.get('slot');
+        const game = db.archipelago.get('game') ?? 'Clique';
 
         if (!port) {
             console.error('Archipelago server_port is not configured in the database. Cannot reconnect.');
@@ -112,8 +113,8 @@ async function start(discordClient, db) {
 
         try {
             if (slot) {
-                console.log(`Attempting to reconnect to Archipelago at ${address} with slot ${slot}...`);
-                await archClient.login(address, slot, 'Hotdog Water Murder Mystery');
+                console.log(`Attempting to reconnect to Archipelago at ${address} with slot ${slot} (game ${game})...`);
+                await archClient.login(address, slot, game);
             } else {
                 await archClient.login(address);
             }
@@ -268,6 +269,7 @@ async function start(discordClient, db) {
 
     const port = db.archipelago.get('server_port');
     const slot = db.archipelago.get('slot');
+    const game = db.archipelago.get('game') ?? 'Clique';
 
     if (!port) {
         console.error('Archipelago server_port is not configured in the database. Skipping Archipelago login.');
@@ -278,7 +280,7 @@ async function start(discordClient, db) {
 
     try {
         if (slot) {
-            await archClient.login(address, slot, 'Hotdog Water Murder Mystery');
+            await archClient.login(address, slot, game);
         } else {
             await archClient.login(address);
         }
