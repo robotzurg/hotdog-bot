@@ -125,6 +125,7 @@ async function start(discordClient, db) {
 
             // Reset attempts on successful connection
             reconnectAttempts = 0;
+            await cacheSlotData();
             sendDiscordMessage('Successfully reconnected to Archipelago server!');
             console.log('Reconnected to the Archipelago server!');
         } catch (err) {
@@ -167,15 +168,7 @@ async function start(discordClient, db) {
     // Helper to format nodes into a message string safely
     function formatNodes(nodes, hint = false, item = false) {
         if (!Array.isArray(nodes)) return String(nodes || '');
-        let finishedGames = db.archipelago.get('finished_games') || [
-            "AriaSouls",
-            "AllRepo",
-            "Yacob-KH",
-            "NateTruck",
-            "AriaChess",
-            "NateOriK"
-        ];
-
+        let finishedGames = db.archipelago.get('finished_games') || [];
         const anyFinished = nodes.some(n => n && typeof n.text === 'string' && finishedGames.includes(n.text.replace('\'s', '')));
 
         // build the formatted string from individual nodes
@@ -199,6 +192,10 @@ async function start(discordClient, db) {
                 return mapEmoji(text);
             }
 
+            if (index === nodes.length - 1 && hint == false) {
+                return `\n-# ${text}`; 
+            }
+
             return text;
         }).join('');
 
@@ -208,6 +205,7 @@ async function start(discordClient, db) {
     }
 
     archClient.messages.on('itemSent', async (_text, _item, nodes) => {
+        // Send to Discord channel
         try {
             const messageStr = formatNodes(nodes, false, _item);
             if (discordChannel && discordClient.isReady()) {
@@ -218,13 +216,55 @@ async function start(discordClient, db) {
         } catch (err) {
             console.error('Error forwarding Archipelago message to Discord:', err);
         }
+
+        const receiverName = _item?.receiver?.name;
+        const itemName = _item?.name;
+        const senderName = _item?.sender?.name;
+        const flags = _item?.flags ?? 0;
+
+        if (!receiverName || !itemName) return;
+
+        let group;
+        if (flags & 0b0001) group = 'Progression';
+        else if (flags & 0b0100) group = 'Trap';
+        else if (flags & 0b0010) group = 'Useful';
+        else group = 'Junk';
+
+        // Record to persistent history
+        try {
+            const history = db.archipelago.get('ap_history') ?? [];
+            history.push({ type: 'item', receiver: receiverName, sender: senderName, itemName, flags, group, timestamp: Date.now() });
+            db.archipelago.set('ap_history', history);
+        } catch (err) {
+            console.error('Error recording item to ap_history:', err);
+        }
+
+        // Notify subscribers
+        try {
+            const subscriptions = db.archipelago.get('subscriptions') ?? [];
+            const matching = subscriptions.filter(s =>
+                s.slot === receiverName && (
+                    (s.type === 'item' && s.value.toLowerCase() === itemName.toLowerCase()) ||
+                    (s.type === 'group' && s.value === group)
+                )
+            );
+            for (const sub of matching) {
+                try {
+                    const user = await discordClient.users.fetch(sub.userId);
+                    await user.send(`**${mapEmoji(receiverName)}** received **${itemName}** ${flagEmote(flags)}`);
+                } catch (dmErr) {
+                    console.error(`Failed to DM subscriber ${sub.userId}:`, dmErr);
+                }
+            }
+        } catch (err) {
+            console.error('Error processing subscriptions for itemSent:', err);
+        }
     });
 
 
     archClient.deathLink.on('deathReceived', async (source, _time, cause) => {
         try {
-            const causeStr = cause ? `: ${cause}` : '';
-            const message = `💀 **${mapEmoji(source)}** has died${causeStr}`;
+            const message = cause ? `🪦 ${cause.split(' ').map(str => mapEmoji(str)).join(' ')}` : `🪦 ${mapEmoji(source)} has died.`;
             if (discordChannel && discordClient.isReady()) {
                 await discordChannel.send({ content: message });
             } else {
@@ -233,7 +273,41 @@ async function start(discordClient, db) {
         } catch (err) {
             console.error('Error forwarding DeathLink message to Discord:', err);
         }
+
+        // Record to persistent history
+        try {
+            const history = db.archipelago.get('ap_history') ?? [];
+            history.push({ type: 'death', source, cause: cause ?? null, timestamp: Date.now() });
+            db.archipelago.set('ap_history', history);
+        } catch (err) {
+            console.error('Error recording death to ap_history:', err);
+        }
     });
+
+    // Cache all slot data in db for autocomplete and commands
+    async function cacheSlotData() {
+        try {
+            const dataPackage = archClient.package.exportPackage();
+            const slots = archClient.players.slots;
+            const slotData = {};
+
+            for (const slot of Object.values(slots)) {
+                if (!slot.name) continue;
+                const pkg = slot.game && dataPackage.games[slot.game];
+                slotData[slot.name] = {
+                    game: slot.game,
+                    type: slot.type,
+                    items: pkg ? Object.keys(pkg.item_name_to_id).sort() : [],
+                    locations: pkg ? Object.keys(pkg.location_name_to_id).sort() : [],
+                };
+            }
+
+            db.archipelago.set('slot_data', slotData);
+            console.log(`[Archipelago] Cached data for ${Object.keys(slotData).length} slots.`);
+        } catch (err) {
+            console.error('[Archipelago] Failed to cache slot data:', err);
+        }
+    }
 
     // Helper to set up socket event listeners (called after each connection)
     function setupSocketListeners() {
@@ -253,7 +327,6 @@ async function start(discordClient, db) {
             });
         }
 
-        // If the client has a different way to listen for disconnections, add them here
         if (archClient.on) {
             archClient.on('error', (error) => {
                 console.error('Archipelago client error:', error);
@@ -288,6 +361,7 @@ async function start(discordClient, db) {
         // Set up socket listeners after successful initial connection
         setupSocketListeners();
         archClient.deathLink.enableDeathLink();
+        await cacheSlotData();
 
         console.log('Connected to the Archipelago server!');
         sendDiscordMessage('Connected to Archipelago server!');

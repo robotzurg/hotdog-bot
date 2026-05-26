@@ -1,38 +1,61 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
+
+const slotOption = (option) =>
+    option.setName('slot-name')
+        .setDescription('The archipelago slot name to hint as')
+        .setRequired(true)
+        .setAutocomplete(true);
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('hint')
-        .setDescription('Hint an item for a slot')
-        .addStringOption(option =>
-            option.setName('slot-name')
-                .setDescription('The archipelago slot name to hint as')
-                .setRequired(true)
-                .setAutocomplete(true))
-        .addStringOption(option =>
-            option.setName('item-name')
-                .setDescription('The item name to hint. Use "-" to view hint points, "all" to show all hints')
-                .setRequired(true))
+        .setDescription('Hint commands for Archipelago')
+        .addSubcommand(sub =>
+            sub.setName('item')
+                .setDescription('Hint a specific item for a slot')
+                .addStringOption(slotOption)
+                .addStringOption(option =>
+                    option.setName('item-name')
+                        .setDescription('The item name to hint')
+                        .setRequired(true)
+                        .setAutocomplete(true)))
+        .addSubcommand(sub =>
+            sub.setName('all')
+                .setDescription('Show all unfound hints for a slot')
+                .addStringOption(slotOption))
+        .addSubcommand(sub =>
+            sub.setName('points')
+                .setDescription('Show hint points for a slot')
+                .addStringOption(slotOption))
         .setDMPermission(false),
 
     async autocomplete(interaction) {
-        const focusedValue = interaction.options.getFocused().toLowerCase();
+        const focused = interaction.options.getFocused(true);
         const finishedGames = db.archipelago.get('finished_games') ?? [];
-        const filtered = SLOT_NAMES.filter(name =>
-            !finishedGames.includes(name) && name.toLowerCase().includes(focusedValue)
-        );
-        await interaction.respond(
-            filtered.slice(0, 25).map(name => ({ name, value: name }))
-        );
+
+        if (focused.name === 'slot-name') {
+            const query = focused.value.toLowerCase();
+            const filtered = SLOT_NAMES.filter(name =>
+                !finishedGames.includes(name) && name.toLowerCase().includes(query)
+            );
+            await interaction.respond(filtered.slice(0, 25).map(name => ({ name, value: name })));
+        } else if (focused.name === 'item-name') {
+            const query = focused.value.toLowerCase();
+            const slotName = interaction.options.getString('slot-name');
+            const slotData = db.archipelago.get('slot_data') ?? {};
+            const items = slotData[slotName]?.items ?? [];
+            const filtered = items.filter(name => name.toLowerCase().includes(query));
+            await interaction.respond(filtered.slice(0, 25).map(name => ({ name, value: name })));
+        }
     },
 
     async execute(interaction) {
         await interaction.deferReply();
 
+        const sub = interaction.options.getSubcommand();
         const slotName = interaction.options.getString('slot-name');
-        let itemName = interaction.options.getString('item-name');
         const port = db.archipelago.get('server_port');
 
         const { Client } = await import('archipelago.js');
@@ -43,18 +66,13 @@ module.exports = {
         client.messages.on('itemHinted', (text, item, found) => {
             hintResults.push({ item, found });
         });
-
-        client.messages.on('message', (text) => {
-            messageOutput = text;
+        client.messages.on('message', (_text) => {
+            messageOutput = _text;
         });
-
-        const isAll = itemName === 'all';
-        const isPoints = itemName === '-';
-        const sendArg = (isAll || isPoints) ? '' : itemName;
 
         try {
             await client.login(`archipelago.gg:${port}`, slotName);
-            await client.messages.say(`!hint ${sendArg}`);
+            await client.messages.say(sub === 'item' ? `!hint ${interaction.options.getString('item-name')}` : '!hint');
             await new Promise(resolve => setTimeout(resolve, 2000));
             client.socket.disconnect();
         } catch (err) {
@@ -63,7 +81,7 @@ module.exports = {
             return;
         }
 
-        if (isPoints) {
+        if (sub === 'points') {
             await interaction.editReply(`## Hint Points for ${slotName}\n${messageOutput}`);
             return;
         }
@@ -73,7 +91,7 @@ module.exports = {
             return emote ? `${name} ${emote}` : `**${name}**`;
         };
 
-        if (isAll) {
+        if (sub === 'all') {
             const finishedGames = db.archipelago.get('finished_games') ?? [];
             const unfound = hintResults.filter(({ found, item }) =>
                 !found && !finishedGames.includes(item.receiver?.name)
@@ -90,8 +108,6 @@ module.exports = {
             const header = `## Unfound Hints for ${slotName}`;
             const itemsPerPage = 10;
             const totalPages = Math.ceil(lines.length / itemsPerPage);
-
-            const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
             let currentPage = 0;
 
             const generatePage = (page) => {
@@ -128,6 +144,8 @@ module.exports = {
             return;
         }
 
+        // sub === 'item'
+        const itemName = interaction.options.getString('item-name');
         if (hintResults.length === 0) {
             await interaction.editReply(`No hint found for **${itemName}** on **${slotName}**. The item may not exist or was already found.\nOutput from Archipelago: ${messageOutput}`);
             return;
@@ -139,9 +157,9 @@ module.exports = {
             return;
         }
 
-        const lines = unfoundResults.map(({ item }) => {
-            return `- **${item.name}** for ${mapEmote(item.receiver?.name ?? '???')} at **${item.locationName}**${item.sender?.name !== slotName ? ` in ${mapEmote(item.sender?.name ?? '???')}'s world` : ''}`;
-        });
+        const lines = unfoundResults.map(({ item }) =>
+            `- **${item.name}** for ${mapEmote(item.receiver?.name ?? '???')} at **${item.locationName}**${item.sender?.name !== slotName ? ` in ${mapEmote(item.sender?.name ?? '???')}'s world` : ''}`
+        );
 
         await interaction.editReply(`## Hint result for ${slotName}\n${lines.join('\n')}`);
     },
