@@ -101,4 +101,18 @@ function runTrackerForSlot(slotName, port, finishedGames = []) {
     });
 }
 
-module.exports = { runTrackerForSlot };
+async function fetchCheckCounts(slotName, port) {
+    try {
+        const { Client } = await import('archipelago.js');
+        const client = new Client();
+        await client.login(`archipelago.gg:${port}`, slotName);
+        const checked = client.room.checkedLocations.length;
+        const total = client.room.allLocations.length;
+        client.socket.disconnect();
+        return { checked, total };
+    } catch {
+        return { checked: 0, total: 0 };
+    }
+}
+
+module.exports = { runTrackerForSlot, fetchCheckCounts };

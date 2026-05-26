@@ -2,19 +2,7 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Strin
 const db = require('../db.js');
 const { SLOT_EMOTES } = require('../slots.js');
 const { runTrackerForSlot } = require('../tracker.js');
-
-const PLAYER_SLOTS = {
-    'Aria': ['AriaCeleste', 'AriaChess', 'AriaHollow', 'AriaLilies', 'AriaOri', 'AriaPizza', 'AriaTruck', 'AriaSouls'],
-    'Av': ['AvGenshin', 'AvGK', 'AvHat', 'AvNiko', 'AvTy', 'AvWitch'],
-    'Ethan': ['Ethan-Celeste', 'Ethan-DKC', 'Ethan-Duck', 'Ethan-Hylics', 'Ethan-Ori', 'Ethan-Peggle', 'Ethan-Taxi', 'Ethan-TOEM', 'Ethan-Yoku'],
-    'HDW': ['HDWClique', 'AllFactory', 'AllMinecraft', 'AllRepo'],
-    'Jeff': ['Jeff-C64', 'Jeff-COTM', 'Jeff-DUCK', 'Jeff-KH2', 'Jeff-SOL', 'Jeff-SP', 'Jeff-Stardew', 'Jeff-Truck', 'Jeff-TS', 'Jeff-UT'],
-    'Kirby': ['KirbyKSS'],
-    'Nate': ['NateGK', 'NateGo', 'NateHunie', 'NateMK', 'NateOri', 'NatePvZ', 'NateRabi', 'NateTy', 'NateWitch', 'NateXeno'],
-    'Raveel': ['RaveelCeleste', 'RaveelConquest', 'RaveelOri', 'RaveelPizza', 'RaveelXY', 'RaveelZA'],
-    'vlad': ['vlad-dd', 'vlad-fm', 'vlad-hk', 'vlad-mini', 'vlad-ref'],
-    'Yacob': ['Yacob-HK', 'Yacob-KH', 'Yacob-KH2', 'Yacob-Lies', 'Yacob-MIKU', 'Yacob-OOT', 'Yacob-SOLS', 'Yacob-SUNSHINE', 'Yacob-TP'],
-};
+const { PLAYER_SLOTS } = require('../players.js');
 
 const ITEMS_PER_PAGE = 10;
 
@@ -57,10 +45,14 @@ module.exports = {
 
         await interaction.editReply(`Gathering Universal Tracker data for all **${player}** slots (${activeSlots.length} active), this may take a moment...`);
 
-        const results = await Promise.all(activeSlots.map(slot => runTrackerForSlot(slot, port, finishedGames)));
+        const cachedCounts = db.archipelago.get('check_counts') ?? {};
+        const trackerResults = await Promise.all(activeSlots.map(slot => runTrackerForSlot(slot, port, finishedGames)));
 
         const slotResults = Object.fromEntries(
-            results.map(({ slotName, items, hintedCount }) => [slotName, { items, hintedCount }])
+            trackerResults.map(({ slotName, items, hintedCount }) => {
+                const { checked, total } = cachedCounts[slotName] ?? { checked: 0, total: 0 };
+                return [slotName, { items, hintedCount, checked, total }];
+            })
         );
 
         const buildOverview = () => {
@@ -72,9 +64,10 @@ module.exports = {
                     lines.push(`- ${prefix}**${slot}**: Completed`);
                     continue;
                 }
-                const { items, hintedCount } = slotResults[slot] ?? { items: [], hintedCount: 0 };
+                const { items, hintedCount, checked, total } = slotResults[slot] ?? { items: [], hintedCount: 0, checked: 0, total: 0 };
                 const hintSuffix = hintedCount > 0 ? ` (${hintedCount} hinted)` : '';
-                lines.push(`- ${prefix}**${slot}**: ${items.length} in logic${hintSuffix}`);
+                const checkStr = total > 0 ? ` | ${checked}/${total} checks` : '';
+                lines.push(`- ${prefix}**${slot}**: ${items.length} in logic${hintSuffix}${checkStr}`);
             }
             return lines.join('\n');
         };
@@ -84,13 +77,14 @@ module.exports = {
                 .setCustomId('slot_select')
                 .setPlaceholder('Select a slot to view details...')
                 .addOptions(activeSlots.map(slot => {
-                    const { items, hintedCount } = slotResults[slot] ?? { items: [], hintedCount: 0 };
-                    const hintSuffix = hintedCount > 0 ? ` • ${hintedCount} hinted` : '';
+                    const { items, hintedCount, checked, total } = slotResults[slot] ?? { items: [], hintedCount: 0, checked: 0, total: 0 };
+                    const hintStr = hintedCount > 0 ? ` • ${hintedCount} hinted` : '';
+                    const checkStr = total > 0 ? ` • ${checked}/${total} checks` : '';
                     const emoji = parseEmote(SLOT_EMOTES[slot]);
                     const option = new StringSelectMenuOptionBuilder()
                         .setLabel(slot)
                         .setValue(slot)
-                        .setDescription(`${items.length} in logic${hintSuffix}`)
+                        .setDescription(`${items.length} in logic${hintStr}${checkStr}`.slice(0, 100))
                         .setDefault(slot === selectedSlot);
                     if (emoji) option.setEmoji(emoji);
                     return option;
@@ -99,16 +93,17 @@ module.exports = {
         };
 
         const buildDetailContent = (slotName, page) => {
-            const { items, hintedCount } = slotResults[slotName] ?? { items: [], hintedCount: 0 };
+            const { items, hintedCount, checked, total } = slotResults[slotName] ?? { items: [], hintedCount: 0, checked: 0, total: 0 };
             const totalPages = Math.max(1, Math.ceil(items.length / ITEMS_PER_PAGE));
             const start = page * ITEMS_PER_PAGE;
             const pageItems = items.slice(start, start + ITEMS_PER_PAGE);
             const emote = SLOT_EMOTES[slotName] ?? '';
             const hintSuffix = hintedCount > 0 ? ` | **${hintedCount}** Hinted` : '';
+            const checkSuffix = total > 0 ? ` | **${checked}/${total}** Checks (${((checked / total) * 100).toFixed(1)}%)` : '';
             const content = [
                 `## In Logic Checks For ${slotName}${emote ? ` ${emote}` : ''}`,
                 ...pageItems,
-                `\n-# Page ${page + 1}/${totalPages} | **${items.length}** In Logic${hintSuffix}`
+                `\n-# Page ${page + 1}/${totalPages} | **${items.length}** In Logic${hintSuffix}${checkSuffix}`
             ].join('\n');
             return { content, totalPages };
         };

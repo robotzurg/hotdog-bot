@@ -40,6 +40,7 @@ module.exports = {
         await interaction.editReply(`Gathering Universal Tracker data, this may take a moment...`);
 
         const port = db.archipelago.get('server_port');
+        const { checked, total } = (db.archipelago.get('check_counts') ?? {})[slotName] ?? { checked: 0, total: 0 };
 
         const { items, hintedCount } = await runTrackerForSlot(slotName, port, finishedGames);
 
@@ -47,6 +48,7 @@ module.exports = {
         const header = `## In Logic Checks For ${slotName}${emote ? ` ${emote}` : ''}`;
         const checks = items.length;
         const hintSuffix = hintedCount > 0 ? ` | **${hintedCount}** Hinted` : '';
+        const checkSuffix = total > 0 ? ` | **${checked}/${total}** Checks (${((checked / total) * 100).toFixed(1)}%)` : '';
         const totalPages = Math.max(1, Math.ceil(checks / ITEMS_PER_PAGE));
         let currentPage = 0;
 
@@ -56,7 +58,7 @@ module.exports = {
             return [
                 header,
                 ...pageItems,
-                `\n-# Page ${page + 1}/${totalPages} | **${checks}** In Logic${hintSuffix}`
+                `\n-# Page ${page + 1}/${totalPages} | **${checks}** In Logic${hintSuffix}${checkSuffix}`
             ].join('\n');
         };
 
@@ -68,7 +70,7 @@ module.exports = {
         );
 
         if (totalPages <= 1) {
-            await interaction.editReply([header, ...items, `-# (**${checks}** In Logic${hintSuffix})`].join('\n'));
+            await interaction.editReply([header, ...items, `-# (**${checks}** In Logic${hintSuffix}${checkSuffix})`].join('\n'));
             return;
         }
 

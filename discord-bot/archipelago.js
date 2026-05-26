@@ -126,6 +126,7 @@ async function start(discordClient, db) {
             // Reset attempts on successful connection
             reconnectAttempts = 0;
             await cacheSlotData();
+            await syncCheckCounts();
             sendDiscordMessage('Successfully reconnected to Archipelago server!');
             console.log('Reconnected to the Archipelago server!');
         } catch (err) {
@@ -239,6 +240,19 @@ async function start(discordClient, db) {
             console.error('Error recording item to ap_history:', err);
         }
 
+        // Increment cached check count for the sender slot
+        if (senderName) {
+            try {
+                const counts = db.archipelago.get('check_counts') ?? {};
+                if (counts[senderName]) {
+                    counts[senderName].checked = Math.min(counts[senderName].checked + 1, counts[senderName].total);
+                    db.archipelago.set('check_counts', counts);
+                }
+            } catch (err) {
+                console.error('Error updating check count:', err);
+            }
+        }
+
         // Notify subscribers
         try {
             const subscriptions = db.archipelago.get('subscriptions') ?? [];
@@ -309,6 +323,24 @@ async function start(discordClient, db) {
         }
     }
 
+    // Sync check counts for all player slots from the server and store in DB
+    async function syncCheckCounts() {
+        try {
+            const { fetchCheckCounts } = require('./tracker.js');
+            const port = db.archipelago.get('server_port');
+            const slots = Object.values(archClient.players.slots).filter(s => s.name && s.game);
+            const results = await Promise.all(slots.map(s => fetchCheckCounts(s.name, port)));
+            const counts = {};
+            for (let i = 0; i < slots.length; i++) {
+                counts[slots[i].name] = results[i];
+            }
+            db.archipelago.set('check_counts', counts);
+            console.log(`[Archipelago] Synced check counts for ${slots.length} slots.`);
+        } catch (err) {
+            console.error('[Archipelago] Failed to sync check counts:', err);
+        }
+    }
+
     // Helper to set up socket event listeners (called after each connection)
     function setupSocketListeners() {
         if (archClient.socket) {
@@ -362,6 +394,7 @@ async function start(discordClient, db) {
         setupSocketListeners();
         archClient.deathLink.enableDeathLink();
         await cacheSlotData();
+        await syncCheckCounts();
 
         console.log('Connected to the Archipelago server!');
         sendDiscordMessage('Connected to Archipelago server!');

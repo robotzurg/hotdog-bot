@@ -96,7 +96,7 @@ module.exports = {
         let header = `## ${roleLabel} ${slotName}${slotEmote}`;
         if (eventType === 'deaths') header = `## Deaths for ${slotName}${slotEmote}`;
         else if (eventType === 'all') header = `## History for ${slotName}${slotEmote}`;
-        header += ` — ${tfLabel}`;
+        header += ` - ${tfLabel}`;
 
         if (entries.length === 0) {
             await interaction.editReply(`${header}\n*No events found.*`);

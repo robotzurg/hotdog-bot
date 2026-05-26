@@ -17,7 +17,7 @@ module.exports = {
         }
 
         const lines = subscriptions.map((s, i) =>
-            `**${i + 1}.** **${s.slot}** — ${s.type === 'group' ? `Group: ${s.value}` : `Item: ${s.value}`}`
+            `**${i + 1}.** **${s.slot}** - ${s.type === 'group' ? `Group: ${s.value}` : `Item: ${s.value}`}`
         );
 
         await interaction.reply({
