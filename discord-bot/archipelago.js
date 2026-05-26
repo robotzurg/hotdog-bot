@@ -301,6 +301,7 @@ async function start(discordClient, db) {
     // Cache all slot data in db for autocomplete and commands
     async function cacheSlotData() {
         try {
+            await archClient.package.fetchPackage(); // downloads all game packages not yet cached
             const dataPackage = archClient.package.exportPackage();
             const slots = archClient.players.slots;
             const slotData = {};

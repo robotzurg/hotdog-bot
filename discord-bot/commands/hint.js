@@ -43,7 +43,7 @@ module.exports = {
             await interaction.respond(filtered.slice(0, 25).map(name => ({ name, value: name })));
         } else if (focused.name === 'item-name') {
             const query = focused.value.toLowerCase();
-            const slotName = interaction.options.getString('slot-name');
+            const slotName = interaction.options.get('slot-name')?.value ?? '';
             const slotData = db.archipelago.get('slot_data') ?? {};
             const items = slotData[slotName]?.items ?? [];
             const filtered = items.filter(name => name.toLowerCase().includes(query));
