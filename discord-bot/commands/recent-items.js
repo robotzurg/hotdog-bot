@@ -10,12 +10,12 @@ const FLAG_EMOTES = {
 };
 
 const TIMEFRAMES = [
-    { name: 'Last 15 minutes', value: '15m',  ms: 15 * 60 * 1000 },
-    { name: 'Last hour',       value: '1h',   ms: 60 * 60 * 1000 },
-    { name: 'Last 6 hours',    value: '6h',   ms: 6 * 60 * 60 * 1000 },
-    { name: 'Last 24 hours',   value: '24h',  ms: 24 * 60 * 60 * 1000 },
-    { name: 'Last 7 days',     value: '7d',   ms: 7 * 24 * 60 * 60 * 1000 },
-    { name: 'All time',        value: 'all',  ms: null },
+    { name: 'Last 15 minutes', value: '15m', ms: 15 * 60 * 1000 },
+    { name: 'Last hour',       value: '1h',  ms: 60 * 60 * 1000 },
+    { name: 'Last 6 hours',    value: '6h',  ms: 6 * 60 * 60 * 1000 },
+    { name: 'Last 24 hours',   value: '24h', ms: 24 * 60 * 60 * 1000 },
+    { name: 'Last 7 days',     value: '7d',  ms: 7 * 24 * 60 * 60 * 1000 },
+    { name: 'All time',        value: 'all', ms: null },
 ];
 
 const ITEMS_PER_PAGE = 15;
@@ -28,7 +28,7 @@ const mapEmote = (name) => {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('recent-items')
-        .setDescription('View history for a slot')
+        .setDescription('View item history for a slot')
         .addStringOption(option =>
             option.setName('slot-name')
                 .setDescription('The slot to look up')
@@ -41,15 +41,6 @@ module.exports = {
                 .addChoices(
                     { name: 'Received', value: 'received' },
                     { name: 'Sent', value: 'sent' },
-                ))
-        .addStringOption(option =>
-            option.setName('event-type')
-                .setDescription('Which events to show (default: all)')
-                .setRequired(false)
-                .addChoices(
-                    { name: 'All', value: 'all' },
-                    { name: 'Items only', value: 'items' },
-                    { name: 'Deaths only', value: 'deaths' },
                 ))
         .addStringOption(option =>
             option.setName('timeframe')
@@ -69,7 +60,6 @@ module.exports = {
 
         const slotName  = interaction.options.getString('slot-name');
         const role      = interaction.options.getString('role') ?? 'received';
-        const eventType = interaction.options.getString('event-type') ?? 'all';
         const timeframe = interaction.options.getString('timeframe') ?? 'all';
 
         const tfConfig = TIMEFRAMES.find(t => t.value === timeframe);
@@ -78,42 +68,27 @@ module.exports = {
         const history = db.archipelago.get('ap_history') ?? [];
 
         const entries = history.filter(e => {
+            if (e.type !== 'item') return false;
             if (cutoff && e.timestamp < cutoff) return false;
-            if (e.type === 'item') {
-                if (eventType === 'deaths') return false;
-                return role === 'received' ? e.receiver === slotName : e.sender === slotName;
-            }
-            if (e.type === 'death') {
-                if (eventType === 'items') return false;
-                return e.source === slotName;
-            }
-            return false;
+            return role === 'received' ? e.receiver === slotName : e.sender === slotName;
         }).reverse();
 
         const slotEmote = SLOT_EMOTES[slotName] ? ` ${SLOT_EMOTES[slotName]}` : '';
         const roleLabel = role === 'received' ? 'Received by' : 'Sent from';
-        const tfLabel = tfConfig?.name ?? 'All time';
-        let header = `## ${roleLabel} ${slotName}${slotEmote}`;
-        if (eventType === 'deaths') header = `## Deaths for ${slotName}${slotEmote}`;
-        else if (eventType === 'all') header = `## History for ${slotName}${slotEmote}`;
-        header += ` - ${tfLabel}`;
+        const header = `## ${roleLabel} ${slotName}${slotEmote} - ${tfConfig?.name ?? 'All time'}`;
 
         if (entries.length === 0) {
-            await interaction.editReply(`${header}\n*No events found.*`);
+            await interaction.editReply(`${header}\n*No items found.*`);
             return;
         }
 
         const lines = entries.map(e => {
             const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
-            if (e.type === 'item') {
-                const flagEmote = FLAG_EMOTES[e.group] ?? '';
-                const other = role === 'received'
-                    ? (e.sender ? `from ${mapEmote(e.sender)}` : '')
-                    : `to ${mapEmote(e.receiver)}`;
-                return `- **${e.itemName}** ${flagEmote} ${other} · ${ts}`;
-            }
-            const cause = e.cause ? `: ${e.cause}` : '';
-            return `- 🪦 Died${cause} · ${ts}`;
+            const flagEmote = FLAG_EMOTES[e.group] ?? '';
+            const other = role === 'received'
+                ? (e.sender ? `from ${mapEmote(e.sender)}` : '')
+                : `to ${mapEmote(e.receiver)}`;
+            return `- **${e.itemName}** ${flagEmote} ${other} · ${ts}`;
         });
 
         const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
@@ -121,7 +96,7 @@ module.exports = {
 
         const generatePage = (page) => {
             const slice = lines.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
-            return `${header}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${entries.length}** events`;
+            return `${header}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${entries.length}** items`;
         };
 
         const generateButtons = (page) => new ActionRowBuilder().addComponents(
@@ -132,7 +107,7 @@ module.exports = {
         );
 
         if (totalPages <= 1) {
-            await interaction.editReply(`${header}\n${lines.join('\n')}\n-# **${entries.length}** events`);
+            await interaction.editReply(`${header}\n${lines.join('\n')}\n-# **${entries.length}** items`);
             return;
         }
 
