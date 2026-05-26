@@ -302,18 +302,17 @@ async function start(discordClient, db) {
     async function cacheSlotData() {
         try {
             await archClient.package.fetchPackage(); // downloads all game packages not yet cached
-            const dataPackage = archClient.package.exportPackage();
             const slots = archClient.players.slots;
             const slotData = {};
 
             for (const slot of Object.values(slots)) {
                 if (!slot.name) continue;
-                const pkg = slot.game && dataPackage.games[slot.game];
+                const pkg = slot.game ? archClient.package.findPackage(slot.game) : null;
                 slotData[slot.name] = {
                     game: slot.game,
                     type: slot.type,
-                    items: pkg ? Object.keys(pkg.item_name_to_id).sort() : [],
-                    locations: pkg ? Object.keys(pkg.location_name_to_id).sort() : [],
+                    items: pkg ? Object.keys(pkg.itemTable).sort() : [],
+                    locations: pkg ? Object.keys(pkg.locationTable).sort() : [],
                 };
             }
 
