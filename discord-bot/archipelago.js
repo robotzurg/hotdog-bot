@@ -169,39 +169,25 @@ async function start(discordClient, db) {
     // Helper to format nodes into a message string safely
     function formatNodes(nodes, hint = false, item = false) {
         if (!Array.isArray(nodes)) return String(nodes || '');
-        let finishedGames = db.archipelago.get('finished_games') || [];
+        const finishedGames = db.archipelago.get('finished_games') || [];
         const anyFinished = nodes.some(n => n && typeof n.text === 'string' && finishedGames.includes(n.text.replace('\'s', '')));
 
-        // build the formatted string from individual nodes
-        const formatted = nodes.map((node, index) => {
-            const text = node && typeof node.text === 'string' ? node.text : '';
-            let idx1 = hint ? 1 : 0
-            let idx2 = hint ? 3 : 2
-            let idx3 = hint ? 7 : 4
+        const formatted = nodes.map((node, i) => {
+            if (!node) return '';
+            const text = typeof node.text === 'string' ? node.text : '';
 
-            if (index === idx1) {
-                return mapEmoji(text);
+            if (node.type === 'player') return mapEmoji(text);
+            if (node.type === 'item') return `**${text}**${item !== false ? ` ${flagEmote(item.flags ?? 0)}` : ''}`;
+            if (node.type === 'location') return hint ? text : `\n-# ${text}`;
+
+            // Skip the parentheses wrapping the location node in send messages
+            if (!hint) {
+                if (nodes[i + 1]?.type === 'location' && text.trimStart().startsWith('(')) return '';
+                if (nodes[i - 1]?.type === 'location' && text.trimEnd().endsWith(')')) return '';
             }
-
-            if (index === idx2) {
-                return `**${text}**${item != false ? ` ${flagEmote(item.flags ?? 0)}` : ``}`;
-            }
-
-            if (index === idx3 && !text.includes('(')) {
-                return mapEmoji(text);
-            } else if (index === idx3 && hint == true) {
-                return mapEmoji(text);
-            }
-
-            if (index === nodes.length - 1 && hint == false) {
-                return `\n-# ${text}`; 
-            }
-
             return text;
         }).join('');
 
-        // if any of the nodes correspond to a finished game, prefix the
-        // final string with '-#'
         return anyFinished ? `-# ${formatted}` : formatted;
     }
 
@@ -234,7 +220,8 @@ async function start(discordClient, db) {
         // Record to persistent history
         try {
             const history = db.archipelago.get('ap_history') ?? [];
-            history.push({ type: 'item', receiver: receiverName, sender: senderName, itemName, flags, group, timestamp: Date.now() });
+            const locationName = _item?.locationName ?? null;
+            history.push({ type: 'item', receiver: receiverName, sender: senderName, itemName, locationName, flags, group, timestamp: Date.now() });
             db.archipelago.set('ap_history', history);
         } catch (err) {
             console.error('Error recording item to ap_history:', err);
