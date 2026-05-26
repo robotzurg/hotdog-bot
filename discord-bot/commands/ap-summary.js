@@ -48,7 +48,8 @@ function buildOverview(cachedCounts, finishedGames) {
         grandTotal += playerTotal;
         const finishedCount = slots.filter(s => finishedGames.includes(s)).length;
         const goalStr = finishedCount > 0 ? ` | ${finishedCount}/${slots.length} goals` : '';
-        lines.push(`- **${player}**: **${playerChecked}/${playerTotal}** (${pct(playerChecked, playerTotal)})${goalStr}`);
+        const checkmark = playerTotal > 0 && playerChecked === playerTotal ? ' ✅' : '';
+        lines.push(`- **${player}**${checkmark}: **${playerChecked}/${playerTotal}** (${pct(playerChecked, playerTotal)})${goalStr}`);
     }
 
     lines.push(`\n-# **${grandChecked}/${grandTotal}** checks total (${pct(grandChecked, grandTotal)})`);

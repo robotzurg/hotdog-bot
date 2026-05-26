@@ -33,13 +33,10 @@ module.exports = {
 
     async autocomplete(interaction) {
         const focused = interaction.options.getFocused(true);
-        const finishedGames = db.archipelago.get('finished_games') ?? [];
 
         if (focused.name === 'slot-name') {
             const query = focused.value.toLowerCase();
-            const filtered = SLOT_NAMES.filter(name =>
-                !finishedGames.includes(name) && name.toLowerCase().includes(query)
-            );
+            const filtered = SLOT_NAMES.filter(name => name.toLowerCase().includes(query));
             await interaction.respond(filtered.slice(0, 25).map(name => ({ name, value: name })));
         } else if (focused.name === 'item-name') {
             const query = focused.value.toLowerCase();
@@ -63,7 +60,7 @@ module.exports = {
         const hintResults = [];
         let messageOutput = '';
 
-        client.messages.on('itemHinted', (text, item, found) => {
+        client.messages.on('itemHinted', (_text, item, found) => {
             hintResults.push({ item, found });
         });
         client.messages.on('message', (_text) => {
