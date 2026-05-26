@@ -89,7 +89,7 @@ module.exports = {
                 ? (e.sender ? `from ${mapEmote(e.sender)}` : '')
                 : `to ${mapEmote(e.receiver)}`;
             const main = `- **${e.itemName}** ${flagEmote} ${other} · ${ts}`;
-            return e.locationName ? [main, `-# ${e.locationName}`] : [main];
+            return e.locationName ? [main, `-# at ${e.locationName}`] : [main];
         });
 
         const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));

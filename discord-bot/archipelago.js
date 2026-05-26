@@ -188,7 +188,7 @@ async function start(discordClient, db) {
             return text;
         }).join('');
 
-        return anyFinished ? `${formatted}` : formatted;
+        return anyFinished ? `-# ${formatted}` : formatted;
     }
 
     archClient.messages.on('itemSent', async (_text, _item, nodes) => {
