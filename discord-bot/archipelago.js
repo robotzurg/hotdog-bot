@@ -178,7 +178,7 @@ async function start(discordClient, db) {
 
             if (node.type === 'player') return mapEmoji(text);
             if (node.type === 'item') return `**${text}**${item !== false ? ` ${flagEmote(item.flags ?? 0)}` : ''}`;
-            if (node.type === 'location') return hint ? text : `\n-# ${text}`;
+            if (node.type === 'location') return hint ? text : `\n-# at ${text}`;
 
             // Skip the parentheses wrapping the location node in send messages
             if (!hint) {
@@ -188,7 +188,7 @@ async function start(discordClient, db) {
             return text;
         }).join('');
 
-        return anyFinished ? `-# ${formatted}` : formatted;
+        return anyFinished ? `${formatted}` : formatted;
     }
 
     archClient.messages.on('itemSent', async (_text, _item, nodes) => {
