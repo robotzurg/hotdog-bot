@@ -32,7 +32,7 @@ description: Default Factorio Template
 
 game: Factorio
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 Factorio:
   ################
@@ -79,6 +79,21 @@ Factorio:
     # Goal required to complete the game.
     rocket: 50
     satellite: 0
+
+  craftsanity:
+    # Choose a number of researches to require crafting a specific item rather than with science packs.
+    # May be capped based on the total number of locations.
+    # There will always be at least 2 Science Pack research locations for automation and logistics, and 1 for rocket-silo
+    # if the Rocket Silo option is not set to Spawn.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 183
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-183: 0 # random value between 0 and 183
+    disabled: 50 # equivalent to 0
 
   silo:
     # Ingredients to craft rocket silo or auto-place if set to spawn.

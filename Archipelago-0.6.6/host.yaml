@@ -124,33 +124,15 @@ adventure_options:
   rom_args: " "
   # Set this to true to display item received messages in EmuHawk
   display_msgs: true
-animal_well_settings:
-  # Choose the mode for the in-game tracker.
-  # 0 -> Disable the in-game tracker.
-  # 1 -> Only show checked locations, hide all others.
-  # 2 -> Show the in-game tracker with no logic.
-  # 3 -> Full in-game tracker, including logic.
-  in_game_tracker: 3
-cuphead_options:
-  # Debug mode.
-  debug: 0
 cv64_options:
   # File name of the CV64 US 1.0 rom
   rom_file: "Castlevania (USA).z64"
 cvcotm_options:
   # File name of the Castlevania CotM US rom
   rom_file: "Castlevania - Circle of the Moon (USA).gba"
-deep_rock_galactic_options:
-  # Path to Deep Rock Galactic installation subfolder "Mods" inside FSD. Should contain the readme.txt
-  # Should look like :...\Deep Rock Galactic\FSD\Mods
-  # By Default this assumes you have DRG installed on C drive in standard location.
-  root_directory: "C:/Program Files (x86)/Steam/steamapps/common/Deep Rock Galactic/FSD/Mods"
 dkc3_options:
   # File name of the DKC3 US rom
   rom_file: "Donkey Kong Country 3 - Dixie Kong's Double Trouble! (USA) (En,Fr).sfc"
-dkc_options:
-  # File name of the Donkey Kong Country US v1.0 ROM
-  rom_file: "Donkey Kong Country (USA).sfc"
 earthbound_options:
   # File name of the EarthBound US ROM
   rom_file: "EarthBound.sfc"
@@ -167,12 +149,6 @@ factorio_options:
   bridge_chat_out: true
 ffr_options:
   display_msgs: true
-hades_options:
-  # Path to the StyxScribe install
-  styx_scribe_path: "C:/Program Files/Steam/steamapps/common/Hades/StyxScribe.py"
-hitman_woa_options:
-  # The url on which the Peacock-Server is running. Leave it as "127.0.0.1" if the server is hosted on the same machine as the client.
-  peacock_url: "127.0.0.1"
 hk_options:
   # Disallows the APMapMod from showing spoiler placements.
   disable_spoilers: false
@@ -187,15 +163,9 @@ jakanddaxter_options:
   # Enforce friendly player options in both single and multiplayer seeds. Disabling this allows for
   # more disruptive and challenging options, but may impact seed generation. Use at your own risk!
   enforce_friendly_options: true
-k64_options:
-  # File name of the K64 EN rom
-  rom_file: "Kirby 64 - The Crystal Shards (USA).z64"
 kdl3_options:
   # File name of the KDL3 JP or EN rom
   rom_file: "Kirby's Dream Land 3.sfc"
-kss_options:
-  # File name of the KSS JP or EN rom
-  rom_file: "Kirby Super Star.sfc"
 ladx_options:
   # File name of the Link's Awakening DX rom
   rom_file: "Legend of Zelda, The - Link's Awakening DX (USA, Europe) (SGB Enhanced).gbc"
@@ -218,23 +188,8 @@ lttp_options:
 lufia2ac_options:
   # File name of the US rom
   rom_file: "Lufia II - Rise of the Sinistrals (USA).sfc"
-megamix_options:
-  # Path to the HMPDMM+'s game exe. Usually ends with "DivaMegaMix.exe"
-  # Players (Mega Mix Clients) must have this set correctly in THEIR host.yaml.
-  # Generating and hosting do not rely on this.
-  game_exe: "C:/Program Files (x86)/Steam/steamapps/common/Hatsune Miku Project DIVA Mega Mix Plus/DivaMegaMix.exe"
 messenger_settings:
   game_path: "TheMessenger.exe"
-minecraft_options:
-  # Path to local directory to install Java, Neo Forge, etc.
-  server_directory: "Minecraft AP Server Directory"
-  max_heap_size: "2G"
-  min_heap_size: "1G"
-  # release channel, currently "release", or "beta"
-  # any games played on the "beta" channel have a high likelihood of no longer working on the "release" channel.
-  release_channel: "release"
-  # Path to Java executable. If not set, will attempt to fall back to Java system installation.
-  java: ""
 mlss_options:
   # File name of the MLSS US rom
   rom_file: "Mario & Luigi - Superstar Saga (U).gba"
@@ -242,6 +197,9 @@ mlss_options:
 mm2_options:
   # File name of the MM2 EN rom
   rom_file: "Mega Man 2 (USA).nes"
+mm3_options:
+  # File name of the MM3 EN rom
+  rom_file: "Mega Man 3 (USA).nes"
 mmbn3_options:
   # File name of the MMBN3 Blue US rom
   rom_file: "Mega Man Battle Network 3 - Blue Version (USA).gba"
@@ -256,60 +214,13 @@ oot_options:
   # true  for operating system default program
   # Alternatively, a path to a program to open the .z64 file with
   rom_start: true
-oot_soh_options:
-  # Allows SoH players to enable the true_no_logic hidden option, which makes every region and logically accessible.
-  # Do not enable this if you are not ready to use /send, !getitem, or similar commands.
-  # Do not enable this if you don't trust the players using it to play responsibly.
-  allow_true_no_logic: false
-pmd_eos_options:
-  # File name of the EoS EU rom
-  rom_file: "POKEDUN_SORA_C2SP01_00.nds"
-  rom_start: true
-pokemon_bw_settings:
-  # File name of your Pokémon Black Version ROM
-  black_rom: "PokemonBlack.nds"
-  # File name of your Pokémon White Version ROM
-  white_rom: "PokemonWhite.nds"
-  # Toggles whether Encounter Plando is enabled for players in generation.
-  # If disabled, yamls that use Encounter Plando do not raise OptionErrors, but display a warning.
-  enable_encounter_plando: true
-  # If enabled, files inside the rom that are changed as part of the patching process (except for base patches)
-  # will be dumped into a zip file next to the patched rom (for debug purposes).
-  dump_patched_files: false
-pokemon_crystal_settings:
-  rom_file: "Pokemon - Crystal Version (UE) [C][!].gbc"
 pokemon_emerald_settings:
   # File name of your English Pokemon Emerald ROM
   rom_file: "Pokemon - Emerald Version (USA, Europe).gba"
-pokemon_frlg_settings:
-  # File name of your English Pokémon FireRed ROM
-  firered_rom_file: "Pokemon - FireRed Version (USA, Europe).gba"
-  # File name of your English Pokémon LeafGreen ROM
-  leafgreen_rom_file: "Pokemon - LeafGreen Version (USA, Europe).gba"
-pokemon_platinum_settings:
-  rom_file: "pokeplatinum.nds"
 pokemon_rb_options:
   # File names of the Pokemon Red and Blue roms
   red_rom_file: "Pokemon Red (UE) [S][!].gb"
   blue_rom_file: "Pokemon Blue (UE) [S][!].gb"
-powerwashsimulator_options:
-  # Allow players to have the Percentsanity setting to be below 7%
-  allow_percentsanity_below_7: false
-  # Allow players to enable Objectsanity
-  allow_objectsanity: false
-  # Allow players to have local fill below the defined minimums
-  allow_below_localfill_minimums: false
-  # Allow players to have less than 50% levels be required for level hunt, this can cause very large releases
-  allow_potentially_excessive_releases: false
-psychonauts_options:
-  # Locate the Psychonauts root directory on your system.
-  # This is used by the Psychonauts client, so it knows where to send communication files to
-  root_directory: "C:\\\\Program Files (x86)\\\\Steam\\\\steamapps\\\\common\\\\Psychonauts"
-rabi_ribi_options:
-  # The installation folder of the game.
-  game_installation_path: "C:/Program Files (x86)/Steam/steamapps/common/Rabi-Ribi"
-  # The Poptracker pack for Rabi-Ribi.
-  ut_pack_path: null
 saving_princess_settings:
   # Path to the game executable from which files are extracted
   exe_path: "Saving Princess.exe"
@@ -319,7 +230,8 @@ saving_princess_settings:
   launch_game: true
   # The console command that will be used to launch the game
   # The command will be executed with the installation folder as the current directory
-  launch_command: "\"Saving Princess v0_8.exe\""
+  # Additional items in the list will be passed in as arguments
+  launch_command_with_args: []
 sc2_options:
   # The starting width the client window in pixels
   window_width: 1080
@@ -358,25 +270,29 @@ sm_options:
 sml2_options:
   # File name of the Super Mario Land 2 1.0 ROM
   rom_file: "Super Mario Land 2 - 6 Golden Coins (USA, Europe).gb"
-sms_options:
-  iso_file: "None"
-  # The name of the Dolphin process to connect to. Leave blank for system default.
-  dolphin_process_name: ""
 smw_options:
   # File name of the SMW US rom
   rom_file: "Super Mario World (USA).sfc"
 soe_options:
   # File name of the SoE US ROM
   rom_file: "Secret of Evermore (USA).sfc"
-sonic_rush_options:
-  # File name of the Sonic Rush USA rom
-  rom_file: "SONICRUSH_USA.nds"
-  rom_start: true
-tcg_card_shop_simulator_options:
-  # This limits goals to a reasonable number and sets all excessive settings to local_fill or Excluded for better sync experiences.
-  limit_checks_for_syncs: false
-  # Card Sanity adds pure randomness to card checks. This option disables this sanity in your multiworlds
-  allow_card_sanity: true
+stardew_valley_options:
+  # Allow players to pick the goal 'Allsanity'. If disallowed, generation will fail.
+  allow_allsanity: true
+  # Allow players to pick the goal 'Perfection'. If disallowed, generation will fail.
+  allow_perfection: true
+  # Allow players to pick the option 'Bundle Price: Maximum'. If disallowed, it will be replaced with 'Very Expensive'
+  allow_max_bundles: true
+  # Allow players to pick the option 'Entrance Randomization: Chaos'. If disallowed, it will be replaced with 'Buildings'
+  allow_chaos_er: false
+  # Allow players to pick the option 'Shipsanity: Everything'. If disallowed, it will be replaced with 'Full Shipment With Fish'
+  allow_shipsanity_everything: true
+  # Allow players to pick the option 'Hatsanity: Near Perfection OR Post Perfection'. If disallowed, it will be replaced with 'Difficult'
+  allow_hatsanity_perfection: true
+  # Allow players to toggle on Custom logic flags. If disallowed, it will be disabled
+  allow_custom_logic: true
+  # Allow players to enable Jojapocalypse. If disallowed, it will be disabled
+  allow_jojapocalypse: false
 tloz_options:
   # File name of the Zelda 1
   rom_file: "Legend of Zelda, The (U) (PRG0) [!].nes"
@@ -393,24 +309,6 @@ tunic_options:
   limit_grass_rando: true
   # Path to the user's TUNIC Poptracker Pack.
   ut_poptracker_path: ""
-universal_tracker:
-  # Players folder for UT look for YAMLs
-  player_files_path: "Players"
-  # Show Region names in the UT tab
-  include_region_name: false
-  # Show Location names in the UT tab
-  include_location_name: true
-  # Have the UT tab ignore excluded locations
-  hide_excluded_locations: true
-  # Use split icons rather then mixed for the UT map tab
-  use_split_map_icons: true
-  # Determines how worlds should be allowed to use deferred entrances
-  # on: Force worlds to disconnect entrances
-  # default: Allow worlds to decide if entrances should be deferred
-  # off: Force worlds to connect all entrances
-  enforce_deferred_entrances: "default"
-  # Enable showing Glitched/yellow logic in tracker tab
-  display_glitched_logic: false
 wargroove_options:
   # Locates the Wargroove root directory on your system.
   # This is used by the Wargroove client, so it knows where to send communication files to.
@@ -418,18 +316,6 @@ wargroove_options:
   # Locates the Wargroove save file directory on your system.
   # This is used by the Wargroove client, so it knows where to send mod and save files to.
   save_directory: "%APPDATA%"
-x2wotc_options:
-  # Path to your installation of XCOM 2, most likely ending in `/XCOM 2`
-  game_path: "C:/Program Files (x86)/Steam/steamapps/common/XCOM 2"
-xenobladex_options:
-  executable: "Cemu"
-yellowtaxi_options:
-  # Caps the percentage of Coinsanity coins that can be checks.
-  # Any players that set a Coinsanity percentage above this will have it lowered to this value.
-  multiworld_coinsanity_percentage_cap: 100
-  # Caps the percentage of individual coins that can be anything other than filler in Multiworld games.
-  # 100% is thousands of coins even in the smallest game, so it's recommended to keep this low for most cases.
-  multiworld_coinsanity_percentage_non_filler_cap: 5
 yoshisisland_options:
   # File name of the Yoshi's Island 1.0 US rom
   rom_file: "Super Mario World 2 - Yoshi's Island (U).sfc"

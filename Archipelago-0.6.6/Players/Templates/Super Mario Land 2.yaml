@@ -32,7 +32,7 @@ description: Default Super Mario Land 2 Template
 
 game: Super Mario Land 2
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 Super Mario Land 2:
   ################
