@@ -20,7 +20,8 @@ module.exports = {
 
         const history = db.archipelago.get('ap_history') ?? [];
         const count = history.length;
+        db.archipelago.set('finished_games', []);
         db.archipelago.set('ap_history', []);
-        await interaction.reply({ content: `Cleared **${count}** events from Archipelago history.`, ephemeral: true });
+        await interaction.reply({ content: `Cleared **${count}** events from Archipelago history, and cleared finished games.`, ephemeral: true });
     },
 };

@@ -3,22 +3,25 @@
 // PLAYERS drives prefix-based helpers (getPlayerForSlot, getSlotsForPlayer).
 
 const PLAYER_SLOTS = {
-    'Aria':   ['AriaCeleste', 'AriaChess', 'AriaHollow', 'AriaLilies', 'AriaOri', 'AriaPizza', 'AriaTruck', 'AriaSouls'],
-    'Av':     ['AvGenshin', 'AvGK', 'AvHat', 'AvNiko', 'AvTy', 'AvWitch'],
-    'Ethan':  ['Ethan-Celeste', 'Ethan-DKC', 'Ethan-Duck', 'Ethan-Hylics', 'Ethan-Ori', 'Ethan-Peggle', 'Ethan-Taxi', 'Ethan-TOEM', 'Ethan-Yoku'],
-    'HDW':    ['HDWClique', 'AllFactory', 'AllMinecraft', 'AllRepo'],
-    'Jeff':   ['Jeff-C64', 'Jeff-COTM', 'Jeff-DUCK', 'Jeff-KH2', 'Jeff-SOL', 'Jeff-SP', 'Jeff-Stardew', 'Jeff-Truck', 'Jeff-TS', 'Jeff-UT'],
-    'Kirby':  ['KirbyKSS'],
-    'Nate':   ['NateGK', 'NateGo', 'NateHunie', 'NateMK', 'NateOri', 'NatePvZ', 'NateRabi', 'NateTy', 'NateWitch', 'NateXeno'],
-    'Raveel': ['RaveelCeleste', 'RaveelConquest', 'RaveelOri', 'RaveelPizza', 'RaveelXY', 'RaveelZA'],
-    'Vlad':   ['vlad-dd', 'vlad-fm', 'vlad-hk', 'vlad-mini', 'vlad-ref'],
-    'Yacob':  ['Yacob-HK', 'Yacob-KH', 'Yacob-KH2', 'Yacob-Lies', 'Yacob-MIKU', 'Yacob-OOT', 'Yacob-SOLS', 'Yacob-SUNSHINE', 'Yacob-TP'],
+    'Aria':   ['AriaBlas', 'AriaCeleste', 'AriaFuni', 'AriaLandstalker', 'AriaOri', 'AriaPortal', 'AriaTruck'],
+    'Av':     ['AvGK', 'AvSpyro', 'AvGo', 'AvBurnout', 'AvCookie', 'AvCrab', 'AvHat', 'AvLego'],
+    'Ethan':  ['Ethan-Blas', 'Ethan-DKC2', 'Ethan-Funi', 'Ethan-Marble', 'Ethan-Ori', 'Ethan-Pizza', 'Ethan-PvZ', 'Ethan-Sonic', 'Ethan-Sub', 'Ethan-Ty'],
+    'HDW':    ['AllBingo', 'AllClique', 'AllDRG', 'AllJigsaw', 'AllLethal', 'AllMurder', 'AllRepo'],
+    'iapg':   ['iapg-ASH', 'iapg-B3', 'iapg-CT', 'iapg-FRG', 'iapg-GK', 'iapg-HK', 'iapg-Hylics', 'iapg-Tax', 'iapg-V', 'iapg-WIT'],
+    'Jeff':   ['Jeff-Botw', 'Jeff-Celeste', 'Jeff-Crab', 'Jeff-Cup', 'Jeff-Funi', 'Jeff-Lies', 'Jeff-Marble', 'Jeff-Mario', 'Jeff-Mlss', 'Jeff-Quest', 'Jeff-Ty', 'JeffYacob-Ktane'],
+    'Kirby':  ['Kirby64', 'KirbyLilies', 'KirbySols', 'KirbyUT', 'KirbyWW'],
+    'Nate':   ['NateBloons', 'NateCeleste', 'NateCube', 'NateDoor', 'NateFE', 'NateLies', 'NateMario', 'NateMini', 'NateOri', 'NateRefunct', 'NateSols', 'NateSpire'],
+    'Raveel': ['Raveel3H', 'RaveelBalatro', 'RaveelCiVI', 'RaveelGenshin', 'RaveelKartWii', 'RaveelKong', 'RaveelKong2', 'RaveelResort'],
+    'Vlad':   ['vlad-blas', 'vlad-chess', 'vlad-crab', 'vlad-dd', 'vlad-elem', 'vlad-hike', 'vlad-hk', 'vlad-simp', 'vlad-sub', 'vlad-ultra', 'vlad-wit'],
+    'Yacob':  ['Yacob-2077', 'Yacob-C', 'Yacob-DS3', 'Yacob-GH3', 'Yacob-LIES', 'Yacob-LOR', 'Yacob-MEGAMIX', 'Yacob-PKMN', 'Yacob-REPO', 'Yacob-STAR'],
 };
 
 const PLAYERS = [
     { name: 'Aria',   prefix: 'Aria'   },
     { name: 'Av',     prefix: 'Av'     },
     { name: 'Ethan',  prefix: 'Ethan'  },
+    { name: 'HDW',    prefix: 'All'    },
+    { name: 'iapg',   prefix: 'iapg'   },
     { name: 'Jeff',   prefix: 'Jeff'   },
     { name: 'Kirby',  prefix: 'Kirby'  },
     { name: 'Nate',   prefix: 'Nate'   },
