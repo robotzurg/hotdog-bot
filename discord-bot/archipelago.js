@@ -149,7 +149,7 @@ async function start(discordClient, db) {
     const { SLOT_EMOTES } = require('./slots.js');
     const mapEmoji = (text) => {
         const emote = SLOT_EMOTES[text];
-        return emote ? `${text} ${emote}` : text;
+        return emote ? `${text}${emote}` : text;
     };
 
     const FLAG_EMOTES = {
