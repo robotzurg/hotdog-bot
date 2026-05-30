@@ -14,6 +14,9 @@ const noisePatterns = [
     /^(Total Filler|Filler needed):/,
     /^\[/,
     /^\d+$/,
+    /There is no item named 'archipelago\.json' in the archive/,
+    /Invalid or missing manifest file for .+\.apworld/,
+    /This apworld will stop working with Archipelago/,
 ];
 
 const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
