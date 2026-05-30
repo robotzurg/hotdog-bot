@@ -17,6 +17,11 @@ const noisePatterns = [
     /There is no item named 'archipelago\.json' in the archive/,
     /Invalid or missing manifest file for .+\.apworld/,
     /This apworld will stop working with Archipelago/,
+    /This might be the incorrect world version for this file/,
+    /^Archipelago \([\d.]+\) logging initialized/,
+    /^Could not remove enough non-progression items/,
+    /^Traps needed:/,
+    /^TODO:/,
 ];
 
 const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
