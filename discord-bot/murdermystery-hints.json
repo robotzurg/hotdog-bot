@@ -1,81 +1,81 @@
 {
   "solution": {
-    "murderer": "Jeff",
-    "location": "The Library",
-    "weapon": "Rope"
+    "murderer": "Aero",
+    "location": "Women's Restroom",
+    "weapon": "Cast Iron Pan"
   },
   "hints": {
     "Av": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Av - Location clue 1.", "important": false },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Av - Location clue 2.", "important": true },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Av - Person clue 1.",   "important": true },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Av - Person clue 2.",   "important": false },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Av - Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Av - Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "Rather than hanging out at this beach, you'd rather be at 648603, where the occupants are no stranger to cowkinis.", "important": false },
+      "Location Investigation 2": { "text": "You noticed that Nate would leave to use the restroom frequently, but always returned to his tables quickly.", "important": true },
+      "Person Investigation 1":   { "text": "You are rather annoyed with Yacob, as the bar has been receiving all the customers (and all the tips) lately.",   "important": false },
+      "Person Investigation 2":   { "text": "To nobody's surprise, the day before the events of the murder, Nate was gooning to Chiori.",   "important": false },
+      "Weapon Investigation 1":   { "text": "Despite helping so much at the restaurant, you always know Vlad is too particular to ever allow you to touch his cookware, even if just to clean it.",   "important": true },
+      "Weapon Investigation 2":   { "text": "Someone left a bowl of leeks on a table the other day, and you noticed that the liquid around it was green and sickly looking.",   "important": false }
     },
     "Jeff": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Jeff - Location clue 1.", "important": true },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Jeff - Location clue 2.", "important": true },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Jeff - Person clue 1.",   "important": false },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Jeff - Person clue 2.",   "important": false },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Jeff - Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Jeff - Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "It is on this farm where you might find bombo juicy things, long yellow tickly things, or even things that make your breath stink.", "important": false },
+      "Location Investigation 2": { "text": "You have made frequent trips to the men's restroom, but it has been emptier than you would expect with mostly men around.", "important": true },
+      "Person Investigation 1":   { "text": "Your honeymoon has been going great, but you keep going too hard at Yacob's bar, where Aero often leaves you behind.",   "important": true },
+      "Person Investigation 2":   { "text": "Your husband, Aero, has been happier than normal on your beach honeymoon!",   "important": false },
+      "Weapon Investigation 1":   { "text": "Despite breaking so many bottles at Yacob's bar, you have never bothered to clean the glass shards up.",   "important": false },
+      "Weapon Investigation 2":   { "text": "While in your drunken stupors, you have considered eating that bowl of leeks that keeps sitting at the table behind you.",   "important": false }
     },
     "Vlad": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Vlad - Location clue 1.", "important": false },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Vlad - Location clue 2.", "important": false },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Vlad - Person clue 1.",   "important": true },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Vlad - Person clue 2.",   "important": false },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Vlad - Weapon clue 1.",   "important": true },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Vlad - Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "You have been keeping the freezer well stocked and organized, putting your fresh catch of crab legs right at the front.", "important": false },
+      "Location Investigation 2": { "text": "The kitchen has its own private restroom, so you have enjoyed not having to use the public ones. Better not tell anyone else, though!", "important": false },
+      "Person Investigation 1":   { "text": "Av and Yacob have been very insistent on transforming the restaurant into a gacha theme, but there have been heated arguments as to what characters to use.",   "important": false },
+      "Person Investigation 2":   { "text": "You despise letting people into your kitchen, but you keep noticing Aero spending extra time watching your techniques from the dining room.",   "important": true },
+      "Weapon Investigation 1":   { "text": "A truly murderous weapon, this spinning toy features the highest stats of its class, yet doesn't sell for the most.",   "important": false },
+      "Weapon Investigation 2":   { "text": "You typically leave larger pans to soak over night. When returning to work today, you removed everything from the sink, including some silverware, two nonstick pans, three pots, and your favorite cast iron pan.",   "important": true }
     },
     "Ethan": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Ethan - Location clue 1.", "important": false },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Ethan - Location clue 2.", "important": false },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Ethan - Person clue 1.",   "important": true },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Ethan - Person clue 2.",   "important": false },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Ethan - Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Ethan - Weapon clue 2.",   "important": true }
+      "Location Investigation 1": { "text": "While this plant's damage may pale in comparison to similar options, it can surely put the hungry opposition in a buttery situation.", "important": false },
+      "Location Investigation 2": { "text": "You have been happy that the men's restroom has stayed fairly clean, but the women's restroom needed some extra deep cleaning yesterday.", "important": true },
+      "Person Investigation 1":   { "text": "Last time you went to clean the women's restroom, you heard a male voice from one of the stalls when you knocked.",   "important": true },
+      "Person Investigation 2":   { "text": "Between the gacha gooners in the restaurant, Jeff and Aero's honeymoon, and Snow's collection of yuri manga, cleaning up this beach has you contemplating a career change.",   "important": false },
+      "Weapon Investigation 1":   { "text": "You keep your janitor cleaning supplies locked up in a closet near the restroom, and they have never gone missing.",   "important": false },
+      "Weapon Investigation 2":   { "text": "You noticed that your blue cleaning liquid had turned slightly purple on the last cleaning of the restrooms.",   "important": false }
     },
     "Yacob": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Yacob - Location clue 1.", "important": false },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Yacob - Location clue 2.", "important": false },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Yacob - Person clue 1.",   "important": false },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Yacob - Person clue 2.",   "important": true },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Yacob - Weapon clue 1.",   "important": true },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Yacob - Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "The dining room has been fairly quiet, leaving Vlad and Av a lot of time to cook for themselves instead of customers.", "important": false },
+      "Location Investigation 2": { "text": "The dried fish she gave me was the best in all of Amphoreus. And somehow... it never ran out!", "important": false },
+      "Person Investigation 1":   { "text": "In the past, Nate and Av have been seen discussing hiring Siobhan as another bartender. Could they be replacing you?",   "important": false },
+      "Person Investigation 2":   { "text": "Aero and Jeff have been frequent visitors to the bar on their honeymoon, but usually Aero returns to the beach early if Jeff gets overly drunk.",   "important": true },
+      "Weapon Investigation 1":   { "text": "You have been running low on glasses for the bar, but getting Vlad to part with any of his kitchen equipment is always difficult.",   "important": true },
+      "Weapon Investigation 2":   { "text": "Jeff's drunken state has left him feeling not so dextrous, and thus many glasses have been broken at the bar, leaving glass shards everywhere.",   "important": false }
     },
     "Aero": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Aero - Location clue 1.", "important": true },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Aero - Location clue 2.", "important": true },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Aero - Person clue 1.",   "important": false },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Aero - Person clue 2.",   "important": false },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Aero - Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Aero - Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "You have spent a long time sunbathing with Jeff, but never saw anyone other than Kirby and IAPG enter the water.", "important": true },
+      "Location Investigation 2": { "text": "Many would say a beach is a great place for jellyfish, pufferfish, and starfish, but you would rather see none of those ever again.", "important": false },
+      "Person Investigation 1":   { "text": "Your husband, Jeff, has been awfully distracted by Archipelago despite being on your beach honeymoon.",   "important": false },
+      "Person Investigation 2":   { "text": "Despite wanting to stop Snow from peeping in the women's restroom, you have avoided ever stepping foot in it yourself.",   "important": true },
+      "Weapon Investigation 1":   { "text": "The scariest weapon on this beach is the one Jeff is packing for you, or so he keeps saying.",   "important": false },
+      "Weapon Investigation 2":   { "text": "Despite always ordering food at the bar, Yacob has never provided you with a knife.",   "important": false }
     },
     "Snow": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Snow - Location clue 1.", "important": false },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Snow - Location clue 2.", "important": false },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Snow - Person clue 1.",   "important": true },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Snow - Person clue 2.",   "important": false },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Snow - Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Snow - Weapon clue 2.",   "important": true }
+      "Location Investigation 1": { "text": "IAPG advised you to never look over at the beach, else you learn what plap truly means.", "important": false },
+      "Location Investigation 2": { "text": "While stalking the women's restroom through your peephole earlier, you noticed what looked like two male figures entering.", "important": true },
+      "Person Investigation 1":   { "text": "While you may both love swimming, IAPG has confided in you that he prefers driving over 800 feet off mountaintop ramps.",   "important": false },
+      "Person Investigation 2":   { "text": "plcr xln",   "important": false },
+      "Weapon Investigation 1":   { "text": "While using the women's restroom, you noticed someone making scrubbing sounds at the sink, but seemed to stop and leave unsuccessfully.",   "important": true },
+      "Weapon Investigation 2":   { "text": "Someone left a bowl of leeks at the restaurant, so you decided to poison it. Why? Only you could know.",   "important": false }
     },
     "Kirby": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Kirby - Location clue 1.", "important": true },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Kirby - Location clue 2.", "important": false },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Kirby - Person clue 1.",   "important": false },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Kirby - Person clue 2.",   "important": true },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Kirby - Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Kirby - Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "This treasure can be found deep in a cave, selling for the exact cost of 55,480G.", "important": false },
+      "Location Investigation 2": { "text": "The beach has been fairly quiet, with most only moving around to use the restrooms, except for IAPG, Snow, Aero, Jeff, and yourself.", "important": true },
+      "Person Investigation 1":   { "text": "Jeff and Aero never split up during the day, but you often only find Jeff at the bar once you are done surfing for the day.",   "important": false },
+      "Person Investigation 2":   { "text": "You have noticed that Snow and IAPG have been inattentive, often ignoring your daring, yet dangerous adventures on the waves.",   "important": false },
+      "Weapon Investigation 1":   { "text": "While on your surfing adventures, you have seen IAPG rescue a motionless body from the waves, but it was not someone you knew.",   "important": true },
+      "Weapon Investigation 2":   { "text": "You used to lend your surfboard to curious tourists, but after an incident last year, you have kept a close eye on it.",   "important": false }
     },
     "Iapg": {
-      "Location Investigation 1": { "text": "[PLACEHOLDER] Iapg - Location clue 1.", "important": true },
-      "Location Investigation 2": { "text": "[PLACEHOLDER] Iapg - Location clue 2.", "important": false },
-      "Person Investigation 1":   { "text": "[PLACEHOLDER] Iapg - Person clue 1.",   "important": false },
-      "Person Investigation 2":   { "text": "[PLACEHOLDER] Iapg - Person clue 2.",   "important": true },
-      "Weapon Investigation 1":   { "text": "[PLACEHOLDER] Iapg - Weapon clue 1.",   "important": false },
-      "Weapon Investigation 2":   { "text": "[PLACEHOLDER] Iapg - Weapon clue 2.",   "important": false }
+      "Location Investigation 1": { "text": "This neon entertainment district is a popular place for tourists all over, but you care about it more for its tight drifts during street races.", "important": false },
+      "Location Investigation 2": { "text": "The lifeguard hut is rather quiet, especially when Snow spends half her time in the women's restroom.", "important": false },
+      "Person Investigation 1":   { "text": "While off duty, you noticed Snow reading a pile of yuri manga in the lifeguard hut.",   "important": false },
+      "Person Investigation 2":   { "text": "When interrogating Snow about the body in the lifeguard hut, she confirmed that the one that drowned earlier was a stranger to her.",   "important": true },
+      "Weapon Investigation 1":   { "text": "After a stranger drowned recently, you have been on high alert, yet you trust Kirby's constant daring moves on his surfboard.",   "important": true },
+      "Weapon Investigation 2":   { "text": "You have noticed that extra medication has surfaced around the lifeguard hut, but Snow may have ordered it without your knowledge.",   "important": false }
     }
   }
 }
