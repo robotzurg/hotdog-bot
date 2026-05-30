@@ -35,13 +35,15 @@ const PLAYER_DISCORD_IDS = {
 };
 
 const LOCATION_POOL = [
-  "The Kitchen", "The Library", "The Conservatory", "The Ballroom",
-  "The Study", "The Billiard Room", "The Dining Room", "The Lounge", "The Cellar",
+  "The Ocean", "The Beach", "Lifeguard Hut",
+  "Men's Restroom", "Women's Restroom",
+  "Restaurant: Bar Area", "Restaurant: Dining Room", "Restaurant: Kitchen",
 ];
 
 const WEAPON_POOL = [
-  "Rope", "Lead Pipe", "Knife", "Wrench",
-  "Candlestick", "Revolver", "Poison", "Spanner", "Crowbar",
+  "Surfboard", "Drowning", "Medication Overdose", "Cast Iron Pan",
+  "Poisoned Bowl of Leeks", "Jeff's \"Secret Weapon\"", "Knife Utensil",
+  "Janitor's Mop", "Broken Glass Shards",
 ];
 
 // ---------------------------------------------------------------------------
