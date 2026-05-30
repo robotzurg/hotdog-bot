@@ -1,0 +1,422 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Library of Ruina Template
+
+game: Library of Ruina
+requires:
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+
+Library of Ruina:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  lock_floors:
+    # If 'true', every floor except one (Random or preset) is locked at the start of the run and must be unlocked via respective items.
+    'false': 0
+    'true': 50
+
+  starting_floor:
+    # If "Lock Floors" is 'true', select which floor will be unlocked at the start of the run.
+    malkuth: 0
+    yesod: 0
+    hod: 0
+    netzach: 0
+    tiphereth: 0
+    gebura: 0
+    chesed: 0
+    binah: 0
+    hokma: 0
+    keter: 0
+    randomized: 50
+
+  endgoals:
+    # Select Endgoals of a Run.
+    # You must achieve all of the selected goals, in order for the Run to be completed.
+    # Goals contain checks which WONT yield any items progression relies on (Mostly only Passive/Emotion upgrades and Book of Everything)
+    # Goals that are not selected will STILL be accessed in the game and WILL yield checks.
+    # 
+    # 'Reverberation Ensemble' - Defeat X out of 10 Ensemble battles. X can be set in the 'Reverberation Ensemble Goal Receptions' setting.
+    # 'Black Silence' - Complete Reception of The Black Silence.
+    # 'Keter Realization' - Realize the Floor of General Works.
+    # 'Distorted Ensemble' - Complete Reception of The Reverberation Ensemble Distorted.
+    ['Reverberation Ensemble']
+
+  ensemble_battles:
+    # Select amount of Reverberation Ensemble Receptions you have to complete in order for 'Reverberation Ensemble' goal to be considered completed.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 10
+    10: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
+
+  abno_page_shuffle:
+    # Select the way Abnormality Pages are shuffled.
+    # 
+    # None - Abno Pages are not shuffled and are placed exactly like in the vanilla game.
+    # InFloor - Pages are shuffled in their floors individually.
+    # Sets - Pages are shuffled between floors in abnormality sets
+    #        (For example 3 of Scorched Girl's pages are gonna end up in the same page group after randomization).
+    # Pages - Pages are shuffled between floors idividually.
+    none: 0
+    infloor: 0
+    sets: 0
+    pages: 50
+
+  abno_page_randomization:
+    # Select the way Abnormality Pages are randomized.
+    # 
+    # None - Abno Pages retain their vanilla Emotion State, Level and Rate.
+    # Guarantee - Every stat is randomized, but it is guaranteed that there will be at least: 4 Positive Pages, 4 Negative Pages, 3 Pages of each Emotion Level per floor.
+    # Unbound - Every stat is randomized, without restrictions.
+    none: 0
+    guarantee: 0
+    unbound: 50
+
+  exodia_guaratnee:
+    # If 'Abnormality Page Shuffle' option is set to 'Sets' or 'Pages', forces certain Abno Pages to be on the same floor after randomization:
+    # 'Hate', 'Desair', 'Greed', 'Wrath', 'Nix';
+    # 'Big Eyes', 'Small Beak', 'Long Arms', 'The Beast';
+    # 'Baptism', 'Apostles', 'Advent'.
+    # 
+    # !!! IMPORTANT: If 'Abnormality Page Shuffle' is set to 'Sets', one of the floors will be forced to have exact same pool of Abno Pages as vanilla Tiphereth floor.
+    'false': 50
+    'true': 0
+
+  ego_page_shuffle:
+    # Select if EGO Pages should be shuffled between floors.
+    'false': 0
+    'true': 50
+
+  page_randomization:
+    # !!!NOT IMPLEMENTED!!! TODO
+    # 
+    # Select the way Key/Combat Pages are randomized.
+    # 
+    # None - Key/Combat Pages are not randomized.
+    # Basic - Game Randomizes: Combat Pages' Dices and effects; Key Pages' HP, Break, Vulnerabilities.
+    # More - Above and: Combat Pages' Names and CG, Key Pages' Passives.
+    # Havoc - Above and: Combat Pages' VFX and SFX, Key Pages' visuals.
+    none: 50
+    basic: 0
+    more: 0
+    havoc: 0
+
+  randomize_black_silence_page:
+    # If 'true', Black Silence Page item's location will be random.
+    # If 'false', Black Silence Page will be unlocked after completing Reception of Oliver
+    'false': 0
+    'true': 50
+
+  book_contents_randomization:
+    # Select the way every vanilla book's contents will be randomized.
+    # 
+    # BookChapter - Book contents will be balanced around the chapter of the book.
+    # StageChapter - Book contents will be balanced around the chapter of the reception/suppression/realization they're required in.
+    # Chaotic - Book contents are fully random.
+    bookchapter: 50
+    stagechapter: 0
+    chaotic: 0
+
+  balance_book_requirements:
+    # If true, receptions/suppressions/realizations will require books from around their chapters.
+    # Otherwise, random books will be selected.
+    'false': 0
+    'true': 50
+
+  custom_lorap_seed:
+    # Optional custom seed for LORAP-specific generation.
+    # 
+    # Leave empty to use Archipelago's normal per-slot random seed.
+    # If set, the same value with the same options will reproduce the same LORAP battle tree, book requirements, floor shuffle and client-side RNG seed.
+    '': 50
+
+  receptions_require_books:
+    # If 'true', every reception will require books to send invitation.
+    # 
+    # Turning this off majorly distorts (heh, get it?) intended progression and has high chance to BK you and/or others.
+    'false': 0
+    'true': 50
+
+  shuffle_abnos:
+    # If 'true', Abnormalities will be shuffled between the floors.
+    'false': 0
+    'true': 50
+
+  shuffle_realizations:
+    # If 'true', Realizations will be shuffled between the Floors.
+    'false': 0
+    'true': 50
+
+  floors_require_books:
+    # If 'true', Abnormality Suppressions and Realizations will require books.
+    # 
+    # Turning this off majorly distorts (heh, get it?) intended progression and has high chance to BK you and/or others.
+    'false': 0
+    'true': 50
+
+  enemies_turn_into_checks:
+    # If 'true', instead of receiving Checks after completing the Reception, You get one check for each defeated enemy.
+    # (There CAN be more checks than there is enemies!)
+    # 
+    # If you really hate yourself and want to complete some receptions more than once.
+    'false': 0
+    'true': 50
+
+  passive_points_items:
+    # Select the amount of "Passive Attribution Points" Items you'll be able to acquire in total.
+    # You always start with 2 Items (Unless configured otherwise) and get 2 Passive Attribution Points for each Item.
+    # Base amount is 15 Items, meaning up to 34 Passive Attribution Points in-game.
+    # 
+    # Do note that adding more of those Items leads to having less free space in the Item Pool,
+    # potentially lowering the amount of other filler items you'll be able to get.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    15: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  starting_passive_points_items:
+    # Select the amount of "Passive Attribution Points" Items you are starting with.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    2: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  passive_limits_items:
+    # Select the amount of "Passive Limits Break" Items you'll be able to acquire in total.
+    # You always start with 2 Items (Unless configured otherwise) and get 1 Passive slot for each Item.
+    # These Items determine how much Passives you'll be able to put on a single Key Page (Not including passives tied to the page itself)
+    # Base amount is 10 Items, meaning up to 12 Passives attributed in-game.
+    # 
+    # Do note that adding more of those Items leads to having less free space in the Item Pool,
+    # potentially lowering the amount of other filler items you'll be able to get.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 25
+    10: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-25: 0 # random value between 0 and 25
+
+  starting_passive_limits_items:
+    # Select the amount of "Passive Limits Break" Items you are starting with.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 25
+    2: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-25: 0 # random value between 0 and 25
+
+  emotion_limits_items:
+    # Select the amount of "Emotion Limits Break" Items you'll be able to acquire in total.
+    # You always start with 0 Items (Unless configured otherwise) and your max Emotion Level increases by 1 for each Item.
+    # These Items determine the Maximum Emotion Level your librarians can get during receptions.
+    # Levels past 5 (Vanilla max) give additional small buffs like +1 Light, Page Draw & accasionally a Speed Die.
+    # That also means that you won't be getting Abno and EGO Pages even if you have them unless your Max Emotion Level is atleast 1 and 3 respectively.
+    # Base amount is 10 Items, meaning up to 10 Max Emotion Level in-game.
+    # 
+    # Do Note that adding more of those Items leads to having less free space in the Item Pool,
+    # potentially lowering the amount of other filler items you'll be able to get.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    10: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  starting_emotion_limits_items:
+    # Select the amount of "Emotion Limits Break" Items you are starting with.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  remove_exclusive:
+    # Select if "Combat Page Exclusiveness Removal" item should be added to the pool.
+    # 
+    # I think option names are self explanatory?
+    dontadd: 0
+    item: 50
+    remove: 0
+
+  filler_items:
+    # Select which filler items are going to be in the pool.
+    # 
+    # NOTE: Book of Everything doesn't work yet.
+    # 
+    # Book of Everything - It's drops adapt to your current progress, giving you pages around your current level.
+    #                      Page rarity has small impact on item weights (Every rarity can drop almost with the same chance).
+    #                      Allows for a more balanced playthrough. Amount of each page dropped is random.
+    # Booster Packs - Can give you any page in the game no matter when you burn them, but every page is dropped as a single copy,
+    #                 and page weight decreases with rarity drastically (Higher rarity will drop a lot less).
+    #                 Makes playthough a less balanced, and maybe more fun. If you win in the gacha.
+    bookofeverything: 0
+    boosterpacks: 50
+
+  filler_pages:
+    # !!!NOT IMPLEMENTED!!! TODO
+    # 
+    # Select the amount of pages (in %) from burning Filler Items that will turn into Filler Pages.
+    # Filler Pages are one-time instant use Pages that grant different buffs to your units or debuffs to enemy units
+    # (Example: Instant use +5 Strength). Filler Pages are only considered used if you win the reception.
+    # 
+    # !!! Sum of this and "Traps%" must not exceed 100!
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    10: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  traps:
+    # !!!NOT IMPLEMENTED!!! TODO
+    # 
+    # Select the amount of pages (in %) from burning Filler Items that will turn into Traps.
+    # Traps are different effects that put you in a disadvantage and their
+    # severeness depends on the "Traps Impact Level" option.
+    # 
+    # !!! Sum of this and "Filler Page%" must not exceed 100!
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    5: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  traps_severeness:
+    # !!!NOT IMPLEMENTED!!! TODO
+    # 
+    # Select the severeness level of trap effects.
+    # 
+    # Weak - Traps activate as soon as possible (first available Scene), once. Effects are mostly minor inconveniences.
+    # Mediocre - Traps can activate at the beginning of any Scene from the moment you get them, once. Effects can ruin your plans and be a nuisance for you;
+    # Dangerous - Traps can activate at any time from the moment you get them (at any point of any scene). They also get tied to the exact Scene and Reception they activated at,
+    #         making it so they are repeated if you restart the reception (by losing or restarting), until you beat that reception.
+    #         This level has the most impactful and invonvenient effects ready to mess up your run.
+    weak: 0
+    mediocre: 50
+    dangerous: 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

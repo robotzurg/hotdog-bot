@@ -1,0 +1,226 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Another Crabs Treasure Template
+
+game: Another Crabs Treasure
+requires:
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+
+Another Crabs Treasure:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  goal:
+    # Choose your goal for the multiworld
+    # - Home: Defeat the final boss and equip the Home shell
+    # - Roland: Defeat Roland on the Pinbarge
+    # - Voltai: Defeat Voltai in Scuttleport
+    # - Magista: Defeat Magista in Slacktide
+    home: 50
+    roland: 0
+    voltai: 0
+    magista: 0
+
+  fork_location:
+    # Choose where the Fork(weapon) location is set. Does nothing if [Allow Forkless] option is enabled.
+    # - Shuffled Early Local: Forces Fork location to be somewhere early in your own game.
+    # - Shuffled Early Global: Forces Fork location to be somewhere early in any game.
+    # - Vanilla Location: Forces Fork to be placed at its intended location.
+    vanilla_location: 50
+    shuffled_early_local: 0
+    shuffled_early_global: 0
+
+  allow_forkless:
+    # If enabled, allows for the Fork to not be required early on, meaning you may have to play some amount of the game without it. Ignores [Fork Location] option and shuffles Fork into item pool if enabled.
+    # - Disabled: Fork is required to fight early bosses, meaning that it will be placed early in your run.
+    # - Forkless Easy: Ensures that the intended forkless strategy is not too advanced (Includes logic for adaptation and shellspell focused builds)
+    # - Forkless Hard: Allows for the possibility of more advanced forkless strategies to be necessary (Includes logic for rolling attack and summon focused builds)
+    disabled: 50
+    forkless_easy: 0
+    forkless_hard: 0
+
+  logic_rules:
+    # Set the preferred logic rules for your game
+    # - Vanilla: Standard logic, no skips/glitches required to complete the goal.
+    # - Glitchless: Allows for the following parkour-based skips (list of glitchless rules here) to be required to complete the goal.
+    # - Restricted: In addition to the list under glitchless, allows for (list of easy glitches/skips here) to be required to complete the goal.
+    # - Unrestricted: In addition to the lists under both glitchless and restricted, allows for (list of hard glitches/skips here) to be required to complete the goal.
+    vanilla: 50
+    glitchless: 0
+    restricted: 0
+    unrestricted: 0
+
+  shelleport_location:
+    # Choose where the Shelleport (fast travel) skill location is set
+    # - Shuffled: Shelleport is placed into the item pool.
+    # - Shuffled Early Local: Forces Shelleport location to be somewhere early in your own game.
+    # - Shuffled Early Global: Forces Shelleport location to somewhere early in any game.
+    # - Starting Items: Places Shelleport in your starting inventory.
+    # - Vanilla Location: Forces Shelleport to be placed at its intended location
+    shuffled: 0
+    shuffled_early_local: 50
+    shuffled_early_global: 0
+    starting_items: 0
+    vanilla_location: 0
+
+  fishing_line_location:
+    # Choose where the Fishing Line (grapple) location is set
+    # - Shuffled: Fishing Line is placed into item pool.
+    # - Vanilla Location: Forces Fishing Line to be placed at its intended location
+    shuffled: 50
+    vanilla_location: 0
+
+  randomshells:
+    # Choose whether or not shells will be randomized. Only randomizes shells within other shell locations.
+    'false': 0
+    'true': 50
+
+  randomfuse:
+    # Choose if the location of the Plug Fuse shell is randomized when using the shell randomizer. Does nothing if [RandomShells] is set to false
+    'false': 0
+    'true': 50
+
+  remove_costumes:
+    # Choose whether or not to include Costumes in the item pool. Set to true to remove them.
+    'false': 50
+    'true': 0
+
+  microplasticMultiplier:
+    # Multiplies the amount of microplastics received from all sources. Only supports integer values.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 100
+    1: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-100: 0 # random value between 1 and 100
+
+  trapamount:
+    # Defines a percentage of the filler items to be replaced with trap items
+    # Set to 0 to not include any traps
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  deathlink:
+    # Enables Death Link
+    'false': 50
+    'true': 0
+
+  ngplus_bosses:
+    # Replaces all bosses with their NG+ variants.
+    # This can make runs signifigantly more difficult, especially early on.
+    'false': 50
+    'true': 0
+
+  ngplus_stowaways:
+    # Adds New Game+ stowaways to the item pool.
+    'false': 50
+    'true': 0
+
+  ngplus_slots:
+    # Determines stowaway capacity and slots
+    # False = NG (3 Stowaways, 9 Slot Max)
+    # True = NG+ (4 Stowaways, 12 Slot Max)
+    'false': 50
+    'true': 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

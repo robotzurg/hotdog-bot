@@ -41,7 +41,6 @@ dist
 README.html
 .vs/
 EnemizerCLI/
-/Players/
 /SNI/
 /sni-*/
 /appimagetool*
@@ -65,7 +64,6 @@ Output Logs/
 /data/user.kv
 /datapackage
 /datapackage_export.json
-/custom_worlds
 # stubgen output
 /out/
 
