@@ -1,0 +1,225 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default R.E.P.O Template
+
+game: R.E.P.O
+requires:
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    R.E.P.O: 0.4.1 # Version of the world required for this yaml to work as expected.
+
+R.E.P.O:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  pellys_required:
+    # Choose how many Pellys will be required for victory.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 12
+    12: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-12: 0 # random value between 0 and 12
+
+  level_quota:
+    # Choose how many levels must be completed for your goal, in addition to gathering enough Pellys.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 20
+    8: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-20: 0 # random value between 1 and 20
+
+  valuable_hunt:
+    # Determines if extracting all valuables (excluding pellys) is required for your goal.
+    'false': 50
+    'true': 0
+
+  monster_hunt:
+    # Determines if extracting all monster souls is required for your goal.
+    'false': 50
+    'true': 0
+
+  combat_logic:
+    # Determines what items are logically required to fight monsters.
+    # Easy: Guns or Explosives
+    # Medium: Strength Upgrades + Stun Items, Melee Weapons, Guns, or Explosives
+    # Hard: No combat logic. Player may have to kill monsters with valuables found in levels.
+    easy: 0
+    medium: 50
+    hard: 0
+
+  shop_stock:
+    # Choose how many Archipelago Shop Items are unlocked with each Progressive Shop Stock.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 5
+    # Maximum value is 50
+    10: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-5-50: 0 # random value between 5 and 50
+
+  shop_upgrade_total:
+    # Choose how many Archipelago Items show up in the Upgrades section of the Shop.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 20
+    # Maximum value is 100
+    80: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-20-100: 0 # random value between 20 and 100
+
+  shop_upgrade_logical:
+    # Choose how many shop upgrades will potentially be logically relevant.
+    # Items past this number will not have progression items.
+    # This number gets set to the Total Shop Upgrade Locations if it is greater.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 20
+    # Maximum value is 100
+    60: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-20-100: 0 # random value between 20 and 100
+
+  starting_level_type:
+    # Choose which level type to start with.
+    swiftbroom_academy: 0
+    headman_manor: 0
+    mcjannek_station: 0
+    museum_of_human_art: 0
+    random: 50
+
+  filler_item_weights:
+    # Choose the weights for adding filler and traps to the item pool.
+    # Each upgrade item will spawn one upgrade of that type in the truck.
+    # Each small health pack spawns one small health pack (25hp) in the truck.
+    # Traps:
+    #     Extra Monster Trap - Spawns an extra enemy (or enemy group) from the tier 3 enemy pool.
+    #     Audit Trap - Takes half of your money the next time you visit a shop.
+    #     Monster Lure Trap - Lures monsters to your location for two minutes.
+    #     Progressive Moon Phase Trap - Increases the moon phase by one stage FOR THE REST OF THE MULTIWORLD.
+    Audit Trap: 6
+    Crouch Rest Upgrade: 40
+    Death Head Battery Upgrade: 10
+    Double Jump Upgrade: 20
+    Extra Monster Trap: 8
+    Health Upgrade: 40
+    Monster Lure Trap: 15
+    Progressive Moon Phase Trap: 3
+    Range Upgrade: 40
+    Small Health Pack: 20
+    Sprint Speed Upgrade: 30
+    Stamina Upgrade: 50
+    Strength Upgrade: 30
+    Tumble Climb Upgrade: 20
+    Tumble Launch Upgrade: 20
+    Tumble Wings Upgrade: 20
+
+  death_link:
+    # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+    'false': 50
+    'true': 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

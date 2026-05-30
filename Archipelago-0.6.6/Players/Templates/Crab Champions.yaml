@@ -1,0 +1,532 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Crab Champions Template
+
+game: Crab Champions
+requires:
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Crab Champions: 0.0.1 # Version of the world required for this yaml to work as expected.
+
+Crab Champions:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  required_rank:
+    # The minimum rank you must complete to win.  A run is "completed at
+    # Rank X" when you finish the final island while accumulating at least
+    # Rank X's worth of difficulty modifier points.
+    # 
+    # Difficulty thresholds:
+    #   Bronze (0), Silver (1), Gold (2-3), Sapphire (4-5), Emerald (6-7),
+    #   Ruby (8-9), Diamond (10-15), Prismatic (16+)
+    # 
+    # Higher ranks demand stacking more modifier cards before each island, so
+    # higher requirements mean tougher runs.  Run-completion locations are
+    # generated for this rank by default; see Extra Rank Checks to also
+    # generate locations for higher ranks.
+    bronze: 50
+    silver: 0
+    gold: 0
+    sapphire: 0
+    emerald: 0
+    ruby: 0
+    diamond: 0
+    prismatic: 0
+
+  run_length:
+    # How many islands a run must complete to count as finished.  The game
+    # cycles biomes every 28 islands, so:
+    #   short (28): one full biome cycle
+    #   full  (56): two full biome cycles
+    # 
+    # All island/equipment/rank locations scale with this value - a Full run
+    # has roughly twice the location count of a Short run.
+    short: 50
+    full: 0
+
+  weapons_for_completion:
+    # How many DIFFERENT weapons must be used to complete victory-rank runs
+    # before you can win.  E.g. with this set to 5, you'll need to finish the
+    # final island five separate times, each with a different weapon, all at
+    # Required Rank or higher.
+    # 
+    # Capped at the total number of weapons in the game (20).
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 20
+    5: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-20: 0 # random value between 1 and 20
+
+  melee_for_completion:
+    # How many DIFFERENT melee weapons must be used to complete victory-rank
+    # runs before you can win.  Works the same as Weapons for Completion but
+    # for melee.
+    # 
+    # Set to 0 to disable melee entirely - no melee items in the pool, no
+    # melee location checks, and no melee requirement for victory.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 5
+    3: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-5: 0 # random value between 0 and 5
+
+  ability_for_completion:
+    # How many DIFFERENT abilities must be used to complete victory-rank
+    # runs before you can win.  Works the same as Weapons for Completion but
+    # for abilities.
+    # 
+    # Set to 0 to disable abilities entirely - no ability items in the pool,
+    # no ability location checks, and no ability requirement for victory.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 7
+    3: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-7: 0 # random value between 0 and 7
+
+  weapons_in_pool:
+    # How many weapons are randomly selected from the 20 available to be
+    # AP items.  Pool weapons must be received via Archipelago before you can
+    # use them.  Non-pool weapons are always available from the start.
+    # 
+    # Each pool weapon also generates its own per-island run-completion
+    # location, so a larger pool means more checks.
+    # 
+    # Example: pool=5, for_completion=3 means 5 weapons are AP items, all 5
+    # have location checks, but only 3 distinct ones must be used to win.
+    # 
+    # Must be >= Weapons for Completion (auto-clamped).  Capped at 19 so you
+    # always start with at least one usable weapon.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 19
+    5: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-19: 0 # random value between 1 and 19
+
+  melee_in_pool:
+    # How many melee weapons (out of 5) are randomly selected to be AP
+    # items.  See Weapons in Pool for the full mechanic.
+    # 
+    # Must be >= Melee for Completion (auto-clamped).  Forced to 0 when
+    # Melee for Completion is 0.  Capped at 4 so you always start with at
+    # least one melee available.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 4
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-4: 0 # random value between 0 and 4
+
+  abilities_in_pool:
+    # How many abilities (out of 7) are randomly selected to be AP items.
+    # See Weapons in Pool for the full mechanic.
+    # 
+    # Must be >= Abilities for Completion (auto-clamped).  Forced to 0 when
+    # Abilities for Completion is 0.  Capped at 6 so you always start with
+    # at least one ability available.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 6
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-6: 0 # random value between 0 and 6
+
+  starting_weapons:
+    # How many of your pool weapons you begin the game already holding.
+    # These are randomly selected from Weapons in Pool and pre-collected, so
+    # you can start working on equipment-run checks immediately without
+    # waiting to receive a weapon from another player.
+    # 
+    # Must be < Weapons in Pool (at least one weapon must still be findable
+    # via AP).  Set to 0 to start with no pool weapons unlocked.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 19
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-19: 0 # random value between 0 and 19
+
+  equipment_check_mode:
+    # Controls whether non-pool weapons/melee/abilities have their own
+    # run-completion location checks.  (Pool equipment ALWAYS has checks -
+    # this option is only about non-pool items, which are available from
+    # the start.)
+    # 
+    # regular:
+    #     Non-pool equipment runs are normal location checks that can hold
+    #     any item, including progression.  Maximum locations.
+    # filler_only:
+    #     Non-pool equipment runs exist as locations but are marked excluded
+    #     - they only ever hold filler.  Adds checks for variety without
+    #     requiring you to use every weapon for progression.
+    # disabled:
+    #     Non-pool equipment run locations are not generated at all.  This
+    #     is the default due to how many extra locations it creates.
+    regular: 0
+    filler_only: 0
+    disabled: 50
+
+  max_rank:
+    # The highest rank for which any location checks are generated.  Must
+    # be >= Required Rank (auto-clamped).
+    # 
+    # Has no effect unless Extra Rank Checks is set to something other than
+    # "none" - without extra rank checks, only Required Rank generates
+    # locations and Max Rank is ignored.
+    bronze: 0
+    silver: 0
+    gold: 0
+    sapphire: 50
+    emerald: 0
+    ruby: 0
+    diamond: 0
+    prismatic: 0
+
+  extra_rank_checks:
+    # Controls whether ranks ABOVE Required Rank generate additional
+    # location checks.  Replaces the legacy Extra Ranked Island Checks +
+    # Non-Progression Above Required pair with one option that captures
+    # the meaningful combinations.
+    # 
+    # none:
+    #     Only Required Rank produces ranked checks.  Higher ranks are
+    #     ignored and produce no additional locations.  Smallest pool.
+    # progression:
+    #     Ranks above Required (up to Max Rank) add new ranked checks AND
+    #     those locations can hold progression items.  Greatly increases
+    #     location count and turns higher difficulty into real progression.
+    # filler_only:
+    #     Ranks above Required add new ranked checks but those locations
+    #     are marked excluded - they only hold filler.  Use this to add
+    #     more checks for variety/filler without forcing yourself to grind
+    #     higher ranks for critical items.
+    # 
+    # Has no effect when Required Rank == Max Rank (no extra ranks exist).
+    none: 50
+    progression: 0
+    filler_only: 0
+
+  cascade_ranked_checks:
+    # When enabled, completing an in-game check at a higher rank also
+    # triggers the equivalent check at every lower rank.  E.g. completing
+    # "Island 5 with Auto Rifle on Gold" also sends checks for "Island 5
+    # with Auto Rifle on Silver" and "...on Bronze".
+    # 
+    # Convenient when playing at high ranks - you don't have to redo runs
+    # at lower ranks for the easier checks.  Has no effect on generation
+    # or fill, only on what the in-game client sends as you play.
+    'false': 50
+    'true': 0
+
+  minimize_run_checks:
+    # When enabled, drops generalized run-completion checks that are made
+    # redundant by the most-specific equipment-and-rank check.  Pool weapons
+    # always have these locations, so the redundant ones are always covered:
+    # 
+    #   - "Complete Island X on Rank" checks are removed
+    #   - "Complete Island X with Weapon" checks are removed
+    # 
+    # The most specific "Complete Island X with Weapon on Rank" check is
+    # always kept, since completing it implies completing all the dropped
+    # variants.  Plain "Complete Island X" (unranked) is also kept.
+    # 
+    # Has no effect only in the unusual case where there are no equipment
+    # runs at all (which currently can't happen since Weapons in Pool is
+    # forced to >= 1).
+    'false': 50
+    'true': 0
+
+  pickup_checks:
+    # When enabled, picking up perks, relics, weapon mods, melee mods,
+    # or ability mods for the FIRST TIME (per item, per multiworld) sends
+    # a location check, e.g. "Perk: Driller" or "Relic: Time Ring".
+    # 
+    # Adds up to 305 location checks.  When disabled, these pickup
+    # locations don't exist and the item pool focuses on island/equipment/
+    # rank-run checks only.
+    # 
+    # See also Limit Pickup Pool / Limit Pickup Locations to scale this
+    # down to per-run inventory caps.
+    'false': 0
+    'true': 50
+
+  limit_pickup_pool:
+    # When enabled, the AP item pool is limited to a randomly-selected
+    # subset of pickups matching your per-run inventory caps:
+    #   24 perks, 24 weapon mods, 12 ability mods, 12 melee mods, 10 relics
+    # 
+    # Items NOT in the chosen subset stay in-game and can be picked up
+    # normally during runs, but are never sent or received via AP.
+    # 
+    # Tag-group coverage is enforced - at least one provider per pickup-tag
+    # group is guaranteed in the subset, so tag-gated locations (like
+    # "Relic: Time Ring") remain reachable.
+    # 
+    # Pairs naturally with Limit Pickup Locations.  Either option can be
+    # enabled independently; both share the same chosen subset.
+    'false': 50
+    'true': 0
+
+  limit_pickup_locations:
+    # When enabled, pickup location checks are only generated for items
+    # in the randomly-selected subset (see Limit Pickup Pool for the
+    # subset sizes).  Items not in the subset still appear in-game but
+    # produce no location check when picked up.
+    # 
+    # Pairs naturally with Limit Pickup Pool.  Either option can be
+    # enabled independently; both share the same chosen subset when both
+    # are on.
+    'false': 50
+    'true': 0
+
+  progressive_slots:
+    # When enabled, you start with fewer inventory slots than the game
+    # normally allows, and receive additional slots as AP items.  The
+    # in-game crystal-purchase upgrade for slots is blocked.
+    # 
+    # When disabled, you have all slots available from the start as
+    # normal.
+    # 
+    # See Starting Perk/Weapon Mod/Ability Mod/Melee Mod Slots to control
+    # how many slots you start with.
+    'false': 50
+    'true': 0
+
+  starting_perk_slots:
+    # When Progressive Inventory Slots is enabled, how many perk slots
+    # you start with.  The remaining (24 - this value) slots are sent as
+    # "Progressive Perk Slot" items in the AP pool.
+    # 
+    # Has no effect when Progressive Inventory Slots is disabled.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 24
+    6: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-24: 0 # random value between 1 and 24
+
+  starting_weapon_mod_slots:
+    # When Progressive Inventory Slots is enabled, how many weapon mod
+    # slots you start with.  The remaining (24 - this value) slots are
+    # sent as "Progressive Weapon Mod Slot" items in the AP pool.
+    # 
+    # Has no effect when Progressive Inventory Slots is disabled.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 24
+    6: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-24: 0 # random value between 1 and 24
+
+  starting_ability_mod_slots:
+    # When Progressive Inventory Slots is enabled, how many ability mod
+    # slots you start with.  The remaining (12 - this value) slots are
+    # sent as "Progressive Ability Mod Slot" items in the AP pool.
+    # 
+    # Has no effect when Progressive Inventory Slots is disabled.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 12
+    4: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-12: 0 # random value between 1 and 12
+
+  starting_melee_mod_slots:
+    # When Progressive Inventory Slots is enabled, how many melee mod
+    # slots you start with.  The remaining (12 - this value) slots are
+    # sent as "Progressive Melee Mod Slot" items in the AP pool.
+    # 
+    # Has no effect when Progressive Inventory Slots is disabled.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 12
+    4: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-12: 0 # random value between 1 and 12
+
+  crystal_cache_percentage:
+    # Percentage of "extra" item pool slots filled with Crystal Cache
+    # (in-game currency rewards) instead of duplicate perk/mod stacks.
+    # 
+    # The pool is built by first adding required items (pool equipment,
+    # one of each pickup, etc.).  Whatever slots remain are split between
+    # crystal filler and extra stackable copies based on this percentage:
+    #   0%   = all extras are duplicate perks/mods (more variety in
+    #          received items)
+    #   75%  = default; balanced mix
+    #   100% = all extras are Crystal Cache (less spam of duplicates)
+    # 
+    # Crystal Cache items grant in-game currency for shops/upgrades.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    75: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  greed_item_mode:
+    # How to handle Greed items - perks/relics/mods that can't be dropped
+    # once picked up, making them a permanent commitment for the run.
+    # 
+    # auto:
+    #     Greed items received from AP go directly to your inventory the
+    #     next time you start a run, even though you can't drop them.
+    # drop:
+    #     Greed items received from AP spawn on the lobby floor for you
+    #     to pick up only when you're ready to commit.
+    # skip:
+    #     Greed items are never granted via AP at all.  You can only
+    #     find them naturally in-game.  Their pickup locations are also
+    #     excluded from generation.
+    auto: 0
+    drop: 0
+    skip: 50
+
+  guaranteed_items:
+    # Forces specific items into the item pool regardless of other
+    # settings.  Format is a YAML mapping of item names to copy counts:
+    # 
+    #   guaranteed_items:
+    #     Auto Rifle: 1
+    #     Time Bolt: 2
+    # 
+    # Useful for ensuring favorite items end up randomized.  Item names
+    # must match exactly (case-sensitive).
+    {}
+
+  death_link:
+    # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+    'false': 50
+    'true': 0
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []

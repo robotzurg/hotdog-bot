@@ -1,0 +1,241 @@
+﻿# Q. What is this file?
+# A. This file contains options which allow you to configure your multiworld experience while allowing
+#    others to play how they want as well.
+#
+# Q. How do I use it?
+# A. The options in this file are weighted. This means the higher number you assign to a value, the
+#    more chances you have for that option to be chosen. For example, an option like this:
+#
+#    map_shuffle:
+#      on: 5
+#      off: 15
+#
+#    Means you have 5 chances for map shuffle to occur, and 15 chances for map shuffle to be turned
+#    off.
+#
+# Q. I've never seen a file like this before. What characters am I allowed to use?
+# A. This is a .yaml file. You are allowed to use most characters.
+#    To test if your yaml is valid or not, you can use this website:
+#        http://www.yamllint.com/
+#    You can also verify that your Archipelago options are valid at this site:
+#        https://archipelago.gg/check
+
+# Your name in-game, limited to 16 characters.
+#     {player} will be replaced with the player's slot number.
+#     {PLAYER} will be replaced with the player's slot number, if that slot number is greater than 1.
+#     {number} will be replaced with the counter value of the name.
+#     {NUMBER} will be replaced with the counter value of the name, if the counter value is greater than 1.
+name: Player{number}
+
+# Used to describe your yaml. Useful if you have multiple files.
+description: Default Lego Harry Potter 5-7 Template
+
+game: Lego Harry Potter 5-7
+requires:
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+
+Lego Harry Potter 5-7:
+  ################
+  # Game Options #
+  ################
+  progression_balancing:
+    # A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.
+    # 
+    # A lower setting means more getting stuck. A higher setting means less getting stuck.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 99
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-99: 0 # random value between 0 and 99
+    disabled: 0 # equivalent to 0
+    normal: 50 # equivalent to 50
+    extreme: 0 # equivalent to 99
+
+  accessibility:
+    # Set rules for reachability of your items/locations.
+    # 
+    # **Full:** ensure everything can be reached and acquired.
+    # 
+    # **Minimal:** ensure what is needed to reach your goal can be acquired.
+    full: 50
+    minimal: 0
+
+  EndGoal:
+    # Determine the goal for the seed
+    # 
+    # Defeat Voldemort: Collect the 7 Horcruxes and defeat Voldemort in The Flaw in the Plan
+    defeat_voldemort: 50
+
+  NumHorcruxRequired:
+    # Determine the required number of Horcruxes to beat the game.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 7
+    4: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-7: 0 # random value between 1 and 7
+
+  NumStartSpells:
+    # Determine the number of starting spells (excludes joke spells).
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 10
+    0: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
+
+  NumStartLevels:
+    # Determine the number of starting levels.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 24
+    1: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-24: 0 # random value between 1 and 24
+
+  StartingLevelOptions:
+    # Determines which levels you start with.
+    # Please note due to technical limitations, you will always start with Dark Times.
+    # 
+    # Valid Keys:
+    # "Dumbledore's Army"
+    # "Focus!"
+    # "Kreacher Discomforts"
+    # "A Giant Virtuoso"
+    # "A Veiled Threat"
+    # "Out of Retirement"
+    # "Just Desserts"
+    # "A Not So Merry Christmas"
+    # "Love Hurts"
+    # "Felix Felicis"
+    # "The Horcrux and the Hand"
+    # "The Seven Harry's"
+    # "Magic is Might"
+    # "In Grave Danger"
+    # "Sword and Locket"
+    # "Lovegood's Lunacy"
+    # "DOBBY!"
+    # "The Thief's Downfall"
+    # "Back to School"
+    # "Burning Bridges"
+    # "Fiendfyre Frenzy"
+    # "Snape's Tears"
+    # "The Flaw in the Plan"
+    ["Dumbledore's Army", 'Focus!', 'Kreacher Discomforts', 'A Giant Virtuoso', 'A Veiled Threat', 'Out of Retirement', 'Just Desserts', 'A Not So Merry Christmas', 'Love Hurts', 'Felix Felicis', 'The Horcrux and the Hand', 'The Seven Harrys', 'Magic is Might', 'In Grave Danger', 'Sword and Locket', "Lovegood's Lunacy", 'DOBBY!', "The Thief's Downfall", 'Back to School', 'Burning Bridges', 'Fiendfyre Frenzy', "Snape's Tears", 'The Flaw in the Plan']
+
+  ShuffleJokeSpells:
+    # Turning this on makes it so Joke Shop purchases are shuffled
+    'false': 0
+    'true': 50
+
+  ShuffleGoldBrickPurchases:
+    # Turning this on makes it so Gold Brick purchases are shuffled
+    'false': 0
+    'true': 50
+
+  CheaperShops:
+    # Determines how many times cheaper purchases are from vanilla game.
+    # 1 is no change and 10 is 10x cheaper.
+    # This is taken into account for stud multiplier logic
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 10
+    5: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
+
+  HardPurchases:
+    # Turning this on makes it so purchases no longer require a stud multiplier.
+    'false': 50
+    'true': 0
+
+  LowMultiplierPriceMinimum:
+    # Determines the starting price for a low multiplier.
+    # A low multiplier is defined as any multiplier.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 10
+    # Maximum value is 10000000
+    50000: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-10000000: 0 # random value between 10 and 10000000
+
+  HighMultiplierPriceMinimum:
+    # Determines the starting price for a high multiplier.
+    # Must be larger than Low Multiplier Price.
+    # A high multiplier is defined as Score x6, Score x8, Score x10 or both Score x2 and Score x4.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 10
+    # Maximum value is 10000000
+    100000: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-10-10000000: 0 # random value between 10 and 10000000
+
+  StartingDetectors:
+    # Determines if the player starts with Character Token, Red Brick, Hogwarts Crest, & Gold Brick Detectors.
+    'false': 0
+    'true': 50
+
+  StartingFastMagic:
+    # Determines if the player starts with Fast Magic & Dig.
+    'false': 0
+    'true': 50
+
+  ###########################
+  # Item & Location Options #
+  ###########################
+  local_items:
+    # Forces these items to be in their native world.
+    []
+
+  non_local_items:
+    # Forces these items to be outside their native world.
+    []
+
+  start_inventory:
+    # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_hints:
+    # Start with these item's locations prefilled into the ``!hint`` command.
+    []
+
+  start_location_hints:
+    # Start with these locations and their item prefilled into the ``!hint`` command.
+    []
+
+  exclude_locations:
+    # Prevent these locations from having an important item.
+    []
+
+  priority_locations:
+    # Prevent these locations from having an unimportant item.
+    []
+
+  item_links:
+    # Share part of your item pool with other players.
+    []
+
+  plando_items:
+    # Generic items plando.
+    []
