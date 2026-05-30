@@ -32,7 +32,7 @@ description: Default A Hat in Time Template
 
 game: A Hat in Time
 requires:
-  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 A Hat in Time:
   ################
@@ -115,12 +115,6 @@ A Hat in Time:
     # The Compass Badge can track these down for you.
     'false': 0
     'true': 50
-
-  ShuffleDirectorTokens:
-    # If enabled, causes the Conductor/DJ Grooves tokens found in Chapter 2 levels to become item checks.
-    # NOTE: This also includes the time bonus pickups from Train Rush, since the level doesn't have any tokens.
-    'false': 50
-    'true': 0
 
   ShuffleAlpineZiplines:
     # If enabled, Alpine's zipline paths leading to the peaks will be locked behind items.

@@ -32,7 +32,7 @@ description: Default Starcraft 2 Template
 
 game: Starcraft 2
 requires:
-  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
     Starcraft 2: 4.0.0 # Version of the world required for this yaml to work as expected.
 
@@ -254,7 +254,7 @@ Starcraft 2:
 
   selected_races:
     # Pick which factions' missions and items can be shuffled into the world.
-    ['Protoss', 'Terran', 'Zerg']
+    ['Zerg', 'Protoss', 'Terran']
 
   exclude_very_hard_missions:
     # Excludes Very Hard missions outside of Epilogue campaign (All-In, The Reckoning, Salvation, and all Epilogue missions are considered Very Hard).

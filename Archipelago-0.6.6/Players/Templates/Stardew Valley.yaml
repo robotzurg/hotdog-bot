@@ -32,9 +32,9 @@ description: Default Stardew Valley Template
 
 game: Stardew Valley
 requires:
-  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
   game:
-    Stardew Valley: 7.4.0 # Version of the world required for this yaml to work as expected.
+    Stardew Valley: 6.0.0 # Version of the world required for this yaml to work as expected.
 
 Stardew Valley:
   ################
@@ -59,8 +59,6 @@ Stardew Valley:
     # Craft Master: Craft every item
     # Legend: Earn 10 000 000g
     # Mystery of the Stardrops: Find every stardrop
-    # Mad Hatter: Complete all your hatsanity locations. If hatsanity is disabled, will enable it on "Easy+Tailoring"
-    # Ultimate Foodie: Eat all items in the game. Adapts to Eatsanity
     # Allsanity: Complete every check in your slot
     # Perfection: Attain Perfection
     community_center: 50
@@ -77,8 +75,6 @@ Stardew Valley:
     craft_master: 0
     legend: 0
     mystery_of_the_stardrops: 0
-    mad_hatter: 0
-    ultimate_foodie: 0
     allsanity: 0
     perfection: 0
 
@@ -97,18 +93,16 @@ Stardew Valley:
 
   bundle_randomization:
     # What items are needed for the community center bundles?
-    # Vanilla: Standard bundles from the vanilla game.
-    # Thematic: Every bundle will require random items compatible with their original theme.
-    # Remixed: Picks bundles at random from thematic, vanilla remixed and new custom ones.
+    # Vanilla: Standard bundles from the vanilla game
+    # Thematic: Every bundle will require random items compatible with their original theme
+    # Remixed: Picks bundles at random from thematic, vanilla remixed and new custom ones
     # Remixed Anywhere: Remixed, but bundles are not locked to specific rooms.
-    # Shuffled: Every bundle will require random items and follow no particular structure.
-    # Meme: A set of entirely custom bundles are generated purely based on jokes, references, and trolling. Funny but not balanced at all. Not for the faint of heart.
+    # Shuffled: Every bundle will require random items and follow no particular structure
     vanilla: 0
     thematic: 0
     remixed: 50
     remixed_anywhere: 0
     shuffled: 0
-    meme: 0
 
   bundle_price:
     # How many items are needed for the community center bundles?
@@ -126,24 +120,6 @@ Stardew Valley:
     expensive: 0
     very_expensive: 0
     maximum: 0
-
-  bundle_per_room:
-    # How many bundles are in each room of the community center?
-    # Rooms that already have the max cannot increase further
-    # 2 Fewer: Every room will have 2 fewer bundles
-    # 1 Fewer: Every room will have 1 fewer bundle
-    # Normal: Every room will have its usual number of bundles
-    # 1 Extra: Every room will have 1 extra bundle
-    # 2 Extra: Every room will have 2 extra bundles
-    # 3 Extra: Every room will have 3 extra bundles
-    # 4 Extra: Every room will have 4 extra bundles
-    two_fewer: 0
-    one_fewer: 0
-    normal: 50
-    one_extra: 0
-    two_extra: 0
-    three_extra: 0
-    four_extra: 0
 
   entrance_randomization:
     # Should area entrances be randomized?
@@ -226,8 +202,8 @@ Stardew Valley:
     # Progressive: Skill levels are unlocked randomly, and earning xp sends checks. Masteries are excluded
     # With Masteries: Skill levels are unlocked randomly, and earning xp sends checks. Masteries are included
     vanilla: 0
-    progressive: 50
-    progressive_with_masteries: 0
+    progressive: 0
+    progressive_with_masteries: 50
 
   building_progression:
     # Shuffle Carpenter Buildings?
@@ -242,16 +218,6 @@ Stardew Valley:
     progressive: 0
     progressive_cheap: 50
     progressive_very_cheap: 0
-
-  start_without:
-    # Items that, in vanilla, you generally start with (or get very quickly), but in Archipelago, you would rather start without them.
-    # If the relevant item is not randomized, this option will do nothing.
-    # Tools: Start without an Axe, Pickaxe, Hoe, Watering can and Scythe
-    # Backpack: Start with 4 backpack slots, instead of 12, if your backpack size allows it
-    # Landslide: Start without the landslide that leads to the mines
-    # Community Center: Start without the key to the Community Center, and the Forest Magic to allow reading the bundles
-    # Buildings: Start without the Shipping Bin and Pet Bowl
-    []
 
   ###################
   # Extra Shuffling #
@@ -360,6 +326,19 @@ Stardew Valley:
     all: 0
     all_with_marriage: 0
 
+  friendsanity_heart_size:
+    # If using friendsanity, how many hearts are received per heart item, and how many hearts must be earned to send a check
+    # A higher value will lead to fewer heart items in the item pool, reducing bloat
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 8
+    4: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-8: 0 # random value between 1 and 8
+
   monstersanity:
     # Locations for slaying monsters?
     # None: There are no checks for slaying monsters
@@ -379,13 +358,60 @@ Stardew Valley:
     progressive_goals: 0
     split_goals: 0
 
+  shipsanity:
+    # Locations for shipping items?
+    # None: There are no checks for shipping items
+    # Crops: Every crop and forageable being shipped is a check
+    # Fish: Every fish being shipped is a check except legendaries
+    # Full Shipment: Every item in the Collections page is a check
+    # Full Shipment With Fish: Every item in the Collections page and every fish is a check
+    # Everything: Every item in the game that can be shipped is a check
+    none: 50
+    crops: 0
+    fish: 0
+    full_shipment: 0
+    full_shipment_with_fish: 0
+    everything: 0
+
+  cooksanity:
+    # Locations for cooking food?
+    # None: There are no checks for cooking
+    # Queen of Sauce: Every Queen of Sauce Recipe can be cooked for a check
+    # All: Every cooking recipe can be cooked for a check
+    none: 50
+    queen_of_sauce: 0
+    all: 0
+
   chefsanity:
-    # Locations for learning cooking recipes? Omitted categories are learned normally
-    # Queen of Sauce: Every Queen of Sauce episode is a check
+    # Locations for learning cooking recipes?
+    # Vanilla: All cooking recipes are learned normally
+    # Queen of Sauce: Every Queen of Sauce episode is a check, all Queen of Sauce recipes are items
     # Purchases: Every purchasable recipe is a check
     # Friendship: Recipes obtained from friendship are checks
     # Skills: Recipes obtained from skills are checks
-    []
+    # All: Learning every cooking recipe is a check
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 15
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-15: 0 # random value between 0 and 15
+    none: 50 # equivalent to 0
+    queen_of_sauce: 0 # equivalent to 1
+    purchases: 0 # equivalent to 2
+    qos_and_purchases: 0 # equivalent to 3
+    skills: 0 # equivalent to 4
+    friendship: 0 # equivalent to 8
+    all: 0 # equivalent to 15
+
+  craftsanity:
+    # Checks for crafting items?
+    # If enabled, all recipes purchased in shops will be checks as well.
+    # Recipes obtained from other sources will depend on their respective archipelago settings
+    none: 50
+    all: 0
 
   booksanity:
     # Shuffle Books?
@@ -406,97 +432,9 @@ Stardew Valley:
     # Repeatables: Random chance walnuts from normal actions (fishing, farming, combat, etc)
     []
 
-  moviesanity:
-    # Add checks for watching movies?
-    # None: No movie checks
-    # One: There is a check for watching a movie, regardless of which
-    # All Movies: Watching all individual movies are checks
-    # All Movies Loved: Watching all individual movies are checks, but you have to invite someone who loves it
-    # All Movies With Loved Snacks: Watching movies only counts if you invite someone who loves it and buy them a loved snack
-    # All Movies And All Snacks: Watch all movies with someone who loves them, and purchase all the snacks once
-    # All Movies And All Loved Snacks: Watch all movies with someone who loves them, and purchase all the snacks for someone who loves them
-    none: 0
-    one: 50
-    all_movies: 0
-    all_movies_loved: 0
-    all_movies_with_loved_snack: 0
-    all_movies_and_all_snacks: 0
-    all_movies_and_all_loved_snacks: 0
-
-  ###################
-  # Extreme Options #
-  ###################
-  shipsanity:
-    # Locations for shipping items?
-    # None: There are no checks for shipping items
-    # Crops: Every crop and forageable being shipped is a check
-    # Fish: Every fish being shipped is a check
-    # Full Shipment: Every item in the Collections page is a check
-    # Full Shipment With Fish: Every item in the Collections page and every fish is a check
-    # Everything: Every item in the game that can be shipped is a check
-    none: 50
-    crops: 0
-    fish: 0
-    crops_and_fish: 0
-    full_shipment: 0
-    full_shipment_with_fish: 0
-    everything: 0
-
-  cooksanity:
-    # Locations for cooking food?
-    # None: There are no checks for cooking
-    # Queen of Sauce: Every Queen of Sauce Recipe can be cooked for a check
-    # All: Every cooking recipe can be cooked for a check
-    none: 50
-    queen_of_sauce: 0
-    all: 0
-
-  craftsanity:
-    # Checks for crafting items?
-    # If enabled, all recipes purchased in shops will be checks as well.
-    # Recipes obtained from other sources will depend on their respective archipelago settings
-    none: 50
-    all: 0
-
-  eatsanity:
-    # Locations for eating various items?
-    # Cooking: Includes all cooked and crafted edible items
-    # Crops: Includes all crops and forageable edible items
-    # Fish: Includes all fish and fished edible items
-    # Artisan: Includes all edible items produced by machines and animals
-    # Shop: Includes all edible items purchased primarily in shops
-    # Poisonous: Includes items that cause negative effects when consumed
-    # Lock Effects: Whether each positive effect from edible items is unlocked through an archipelago "Enzyme" item. Requires some eatsanity locations to be enabled.
-    []
-
-  secretsanity:
-    # Add checks for the various secrets and easter eggs present in Stardew Valley. Some of them can be very obscure. If you enable this setting, you should expect to need the wiki a lot.
-    # Easy: Secrets that can be obtained quickly and easily, if you know what to do
-    # Difficult: Includes secrets that require a lot of grinding or a lot of luck. Not for the faint of heart. Enabling this will also modify some secrets from the other categories to require their harder variation, if there is one.
-    # Fishing: Various special items and furniture that can be fished up in specific places
-    # Secret Notes: Complete tasks described in the various secret notes, when applicable
-    []
-
-  hatsanity:
-    # Add checks for wearing hats?
-    # Tailoring: Locations for wearing the hats created through tailoring
-    # Easy: Locations for wearing the easily obtainable hats
-    # Medium: Locations for wearing the hats that are obtainable through a task that requires a bit of effort
-    # Difficult: Locations for wearing hats that are difficult to obtain
-    # RNG: Locations for wearing hats that are extremely rng-dependent to obtain. Generally an unpleasant grind.
-    # Near Perfection: Locations for wearing hats that are late game and generally obtained by doing the equivalent of a perfection task
-    # Post Perfection: Locations for wearing all hats, including the hyper-late game ones that require more work than perfection itself
-    []
-
-  include_endgame_locations:
-    # Whether to include, as locations, several very expensive things that are usually purchased during the end-game in vanilla.
-    # Examples: Obelisks, Community Upgrades, Catalogues, etc
-    'false': 50
-    'true': 0
-
-  ##############################################
-  # Multipliers, Buffs and extra customization #
-  ##############################################
+  #########################
+  # Multipliers and Buffs #
+  #########################
   starting_money:
     # Amount of gold when arriving at the farm.
     # Set to -1 or unlimited for infinite money
@@ -568,19 +506,6 @@ Stardew Valley:
     triple: 0 # equivalent to 300
     quadruple: 0 # equivalent to 400
 
-  friendsanity_heart_size:
-    # If using friendsanity, how many hearts are received per heart item, and how many hearts must be earned to send a check
-    # A higher value will lead to fewer heart items in the item pool, reducing bloat
-    #
-    # You can define additional values between the minimum and maximum values.
-    # Minimum value is 1
-    # Maximum value is 8
-    4: 50
-    random: 0
-    random-low: 0 # random value weighted towards lower values
-    random-high: 0 # random value weighted towards higher values
-    random-range-1-8: 0 # random value between 1 and 8
-
   debris_multiplier:
     # How much debris will spawn on the player's farm?
     # Vanilla: debris spawns normally
@@ -593,19 +518,6 @@ Stardew Valley:
     quarter: 0
     none: 0
     start_clear: 0
-
-  backpack_size:
-    # Customize the granularity of the backpack upgrades
-    # This works with vanilla and progressive backpack.
-    # Default size is 12, which means you start with one backpack (12 slots), and get 2 more upgrades up to 36 slots.
-    # If you pick 4, then you start with 3 backpacks (12 slots), and get 6 more upgrades up to 36 slots.
-    # If you picked "Start Without Backpack", you will only be provided start upgrades up to 4 slots, instead of up to 12
-    '1': 0
-    '2': 0
-    '3': 0
-    '4': 0
-    '6': 0
-    '12': 50
 
   movement_buff_number:
     # Number of movement speed buffs to the player that exist as items in the pool.
@@ -631,26 +543,7 @@ Stardew Valley:
     # Bite Rate: Shorter delay to get a bite when fishing
     # Fish Trap: Effect similar to the Trap Bobber, but weaker
     # Fishing Bar Size: Increased Fishing Bar Size
-    ['Bite Rate', 'Defense', 'Luck']
-
-  allowed_filler_items:
-    # Types of filler items that can be generated for this slot. All allowed fillers have the same odds, and duplicates can roll
-    # Farming Items: Items to help with farming. Fertilizers, sprinklers...
-    # Fishing Items: Items to help with fishing. Baits, Bobbers...
-    # Fruit Trees: Extra Fruit Trees
-    # Food: Food that doesn't give buffs
-    # Buff Food: Food that gives buffs
-    # Consumables: Other consumables. Warp Totems, Staircases...
-    # Machines: Various machines. Enables a lot of OoL
-    # Storage: Storage items. Chests, Big Chests...
-    # Quality Of Life: Items that are nice to have. Key to the town, Horse Flute...
-    # Materials: Construction Materials. Wood, Stone...
-    # Money: Packs of money
-    # Currencies: Packs of other currencies. Walnuts, Qi Gems, Calico eggs...
-    # Rings: Various rings
-    # Hats: Various hats.
-    # Decorations: Various decorations and furniture
-    ['Hats', 'Currencies', 'Rings', 'Quality Of Life', 'Materials', 'Machines', 'Consumables', 'Food', 'Money', 'Fruit Trees', 'Buff Food', 'Decorations', 'Storage', 'Fishing Items', 'Farming Items']
+    ['Luck', 'Defense', 'Bite Rate']
 
   trap_difficulty:
     # When rolling filler items, including resource packs, the game can also roll trap items.
@@ -739,40 +632,9 @@ Stardew Valley:
     # List of mods that will be included in the shuffling.
     []
 
-  bundle_whitelist:
-    # If using Remixed or Meme bundles, this guarantees some of them will show up in your community center.
-    # If more bundles are specified than what fits in their parent room, that room will randomly pick from only the whitelist ones
-    []
-
-  bundle_blacklist:
-    # If using Remixed or Meme bundles, this guarantees some of them will not show up in your community center.
-    # If too many bundles are blacklisted for a given room, that room will pick all the non-blacklist bundles, then random blacklisted ones.
-    []
-
-  custom_logic:
-    # Enable various customizations to the logic of the generator.
-    # Some flags are inherently incompatible with each other, the harder flag takes priority.
-    # Some of these toggles can, if the player is not careful, force them to reset days.
-    # Chair Skips: Chair skips are considered in-logic
-    # Easy Fishing: +2 Required fishing levels
-    # Hard Fishing: -2 Required fishing levels
-    # Extreme Fishing: -4 Required fishing levels
-    # Easy Mining: +1 required pickaxes and +2 required mining levels
-    # Hard Mining: -1 required pickaxes and -2 required mining levels
-    # Extreme Mining: -2 required pickaxes and -4 required mining levels
-    # Easy Combat: +1 required weapon and +2 required combat levels
-    # Hard Combat: -1 required weapon and -2 required combat levels
-    # Extreme Combat: -2 required weapon and -4 required combat levels
-    # Deep Mining: x2 Mine depth expectations
-    # Very Deep Mining: x4 Mine depth expectations
-    # Ignore Birthdays: Villager birthdays are not considered in logic
-    # Easy Money: x0.25 to earnings expectations
-    # Hard Money: x2 to earnings expectations
-    # Extreme Money: x8 to earnings expectations
-    # Nightmare Money: x20 to earnings expectations
-    # Bomb Hoeing: Hoeing ground is in logic without a hoe
-    # Rain Watering: Watering crops is in logic without a watering can
-    # Critical Free Samples: Free samples of items are considered in logic without a renewable source
+  bundle_plando:
+    # If using Remixed bundles, this guarantees some of them will show up in your community center.
+    # If more bundles are specified than what fits in their parent room, that room will randomly pick from only the plando ones
     []
 
   progression_balancing:
@@ -799,74 +661,6 @@ Stardew Valley:
     # **Minimal:** ensure what is needed to reach your goal can be acquired.
     full: 50
     minimal: 0
-
-  #################
-  # Jojapocalypse #
-  #################
-  jojapocalypse:
-    # Joja Co opens a new Archipelago branch, selling you any and all location checks you might want or need, in exchange for money.
-    # But are you ready to pay the price...
-    # Disabled: Joja does not sell location checks
-    # Allowed: Joja sells location checks, that you can buy if you want
-    # Forced: The only way to obtain location checks is through Joja
-    disabled: 50
-    allowed: 0
-    forced: 0
-
-  joja_start_price:
-    # The price of Jojapocalypse items at the very beginning of the game. This price will increase with each Jojapocalypse purchase
-    #
-    # You can define additional values between the minimum and maximum values.
-    # Minimum value is 1
-    # Maximum value is 10000
-    100: 50
-    random: 0
-    random-low: 0 # random value weighted towards lower values
-    random-high: 0 # random value weighted towards higher values
-    random-range-1-10000: 0 # random value between 1 and 10000
-
-  joja_end_price:
-    # The price of the very last Jojapocalypse item you will buy. An individual location check will never go above this.
-    # Consider your number of checks before choosing a price, as the total amount of money you spend will highly scale with it.
-    #
-    # You can define additional values between the minimum and maximum values.
-    # Minimum value is 0
-    # Maximum value is 100000
-    10000: 50
-    random: 0
-    random-low: 0 # random value weighted towards lower values
-    random-high: 0 # random value weighted towards higher values
-    random-range-0-100000: 0 # random value between 0 and 100000
-
-  joja_pricing_pattern:
-    # Chooses the pricing strategy of Jojapocalypse sold location checks. Prices will always increase, but you can pick the increase pattern.
-    linear: 0
-    exponential: 50
-
-  joja_purchases_for_membership:
-    # After buying this number of location checks for Joja, you will earn your very own Joja Membership!
-    # The world will change accordingly.
-    # If you are on "Allowed", receiving your first Movie Theater before earning your membership will close down Joja permanently.
-    # If you obtain your membership, the movie theater will instead replace the Community Center, and some location checks will become only obtainable through Joja.
-    # If you are on "Forced", You will start as a Joja Member.
-    #
-    # You can define additional values between the minimum and maximum values.
-    # Minimum value is 1
-    # Maximum value is 100
-    10: 50
-    random: 0
-    random-low: 0 # random value weighted towards lower values
-    random-high: 0 # random value weighted towards higher values
-    random-range-1-100: 0 # random value between 1 and 100
-
-  joja_are_you_sure:
-    # Jojapocalypse will be an extremely unfulfilling experience.
-    # The main driving directive behind its Design is to make the player feel bad and guilty about picking Joja.
-    # Most of the things you buy will come with heavy, painful consequences, and they are explicitly done with the intent of being unfun and annoying.
-    # This game mode is not supposed to be fun. You will have a bad time.
-    # Are you really sure you want to do this?
-    'false': 50
-    'true': 0
 
   ###########################
   # Item & Location Options #

@@ -32,7 +32,7 @@ description: Default Dark Souls III Template
 
 game: Dark Souls III
 requires:
-  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
 
 Dark Souls III:
   ################
@@ -282,11 +282,10 @@ Dark Souls III:
     'true': 50
 
   simple_early_bosses:
-    # Avoid replacing Iudex Gundyr and Vordt with difficult bosses.
+    # Avoid replacing Iudex Gundyr and Vordt with late bosses.
     # 
-    # This limits these fights to bosses that are known to scale gracefully for low-level fights.
-    # This doesn't necessarily mean that those bosses will be from the early game, just that they're
-    # not too difficult when scaled down.
+    # This excludes all bosses after Dancer of the Boreal Valley from these two boss fights. Disable
+    # it for a chance at a much harder early game.
     # 
     # This is ignored unless enemies are randomized.
     'false': 0
@@ -368,7 +367,7 @@ Dark Souls III:
   ###########################
   exclude_locations:
     # Prevent these locations from having an important item.
-    ['Small Crystal Lizards', 'Miscellaneous', 'Hidden', 'Upgrade', 'Small Souls']
+    ['Miscellaneous', 'Small Crystal Lizards', 'Small Souls', 'Hidden', 'Upgrade']
 
   excluded_location_behavior:
     # How to choose items for excluded locations in DS3.
