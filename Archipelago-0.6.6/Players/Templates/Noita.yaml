@@ -32,7 +32,7 @@ description: Default Noita Template
 
 game: Noita
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
   game:
     Noita: 1.4.0 # Version of the world required for this yaml to work as expected.
 

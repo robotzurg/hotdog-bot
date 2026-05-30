@@ -32,7 +32,7 @@ description: Default Pokemon Platinum Template
 
 game: Pokemon Platinum
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
   game:
     Pokemon Platinum: 0.2.0 # Version of the world required for this yaml to work as expected.
 
@@ -303,7 +303,7 @@ Pokemon Platinum:
 
   in_logic_encounters:
     # Which methods/variations of encounters are in logic.
-    ['trophy_garden', 'good_rod', 'swarms', 'day', 'odd_keystone', 'great_marsh_observatory', 'emerald', 'surf', 'regular_honey_tree', 'feebas_fishing', 'night', 'roamers', 'sapphire', 'leafgreen', 'old_rod', 'great_marsh_observatory_national_dex', 'super_rod', 'munchlax_honey_tree', 'firered', 'ruby', 'radar']
+    ['night', 'sapphire', 'day', 'emerald', 'good_rod', 'roamers', 'swarms', 'ruby', 'great_marsh_observatory_national_dex', 'firered', 'radar', 'odd_keystone', 'munchlax_honey_tree', 'leafgreen', 'feebas_fishing', 'trophy_garden', 'surf', 'regular_honey_tree', 'super_rod', 'old_rod', 'great_marsh_observatory']
 
   encounter_species_blacklist:
     # Specify the banned encounter species.
@@ -351,7 +351,7 @@ Pokemon Platinum:
 
   in_logic_evolution_methods:
     # Evolution methods that are in logic.
-    ['level_male', 'level_happiness', 'level_atk_lt_def', 'level_with_held_item_night', 'use_item_male', 'level_female', 'level_moss_rock', 'trade_with_held_item', 'level', 'level_happiness_day', 'level_with_held_item_day', 'level_know_move', 'level_ninjask', 'level_species_in_party', 'use_item', 'level_magnetic_field', 'level_atk_gt_def', 'level_shedinja', 'level_atk_eq_def', 'trade', 'level_happiness_night', 'level_ice_rock', 'level_beauty', 'level_pid_low', 'use_item_female', 'level_pid_high']
+    ['level_with_held_item_night', 'level_moss_rock', 'level_male', 'level_know_move', 'use_item', 'level_ninjask', 'level_female', 'level_ice_rock', 'level_species_in_party', 'level_beauty', 'trade', 'level_happiness_night', 'use_item_female', 'level', 'level_shedinja', 'level_pid_high', 'level_atk_gt_def', 'level_happiness', 'level_atk_eq_def', 'level_pid_low', 'level_happiness_day', 'use_item_male', 'trade_with_held_item', 'level_with_held_item_day', 'level_magnetic_field', 'level_atk_lt_def']
 
   evo_items_shop_in_ap_helper:
     # Evolution items shop is available with the AP Helper. (Present in the 2nd floor of any Pokémon Center)

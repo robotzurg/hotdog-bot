@@ -32,7 +32,7 @@ description: Default Into the Breach Template
 
 game: Into the Breach
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
   game:
     Into the Breach: 0.15.18 # Version of the world required for this yaml to work as expected.
 

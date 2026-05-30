@@ -32,7 +32,7 @@ description: Default Simon Tatham's Portable Puzzle Collection Template
 
 game: Simon Tatham's Portable Puzzle Collection
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
   game:
     Simon Tatham's Portable Puzzle Collection: 0.1.16 # Version of the world required for this yaml to work as expected.
 

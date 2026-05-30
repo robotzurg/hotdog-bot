@@ -32,7 +32,7 @@ description: 'Default Sekiro: Shadows Die Twice Template'
 
 game: 'Sekiro: Shadows Die Twice'
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 'Sekiro: Shadows Die Twice':
   ################
@@ -169,7 +169,7 @@ requires:
 
   exclude_locations:
     # Prevent these locations from having an important item.
-    ['Hidden', 'Miscellaneous', 'Upgrade']
+    ['Hidden', 'Upgrade', 'Miscellaneous']
 
   excluded_location_behavior:
     # How to choose items for excluded locations in DS3.

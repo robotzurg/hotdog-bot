@@ -32,7 +32,7 @@ description: Default Manual_ReadBooks_RoobyRoo Template
 
 game: Manual_ReadBooks_RoobyRoo
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 Manual_ReadBooks_RoobyRoo:
   ################

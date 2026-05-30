@@ -32,7 +32,7 @@ description: Default XCOM 2 War of the Chosen Template
 
 game: XCOM 2 War of the Chosen
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 XCOM 2 War of the Chosen:
   ################
@@ -116,7 +116,7 @@ XCOM 2 War of the Chosen:
   progressive_items:
     # Force these items to be collected in order.
     # Valid values: 'RifleTech', 'MeleeWeaponTech', 'ArmorTech', 'GREMLINTech', 'PsionicsTech'
-    ['ArmorTech', 'PsionicsTech', 'MeleeWeaponTech', 'RifleTech', 'GREMLINTech']
+    ['RifleTech', 'MeleeWeaponTech', 'GREMLINTech', 'PsionicsTech', 'ArmorTech']
 
   early_proving_ground:
     # Force the Proving Ground to be unlockable very early (sphere 1).
@@ -164,7 +164,7 @@ XCOM 2 War of the Chosen:
     # Automatically skip these mission types when they are spawned from a regular calendar event.
     # Can be changed in-game via Mod Config Menu.
     # Valid values: 'SupplyRaid', 'CouncilMission', 'ResistanceOp'
-    ['SupplyRaid', 'ResistanceOp', 'CouncilMission']
+    ['ResistanceOp', 'CouncilMission', 'SupplyRaid']
 
   disable_covert_action_risks:
     # Disable these covert action risks.

@@ -32,7 +32,7 @@ description: Default Super Mario Sunshine Template
 
 game: Super Mario Sunshine
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 Super Mario Sunshine:
   ################
@@ -63,12 +63,41 @@ Super Mario Sunshine:
     full: 50
     minimal: 0
 
+  extra_shines:
+    # How many extra shine sprites you want added to the pool. This is a percentage so it ranges from 0 to 90
+    # If more shines would be added than locations possible it will add as many as it can
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 90
+    15: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-90: 0 # random value between 0 and 90
+
+  death_link:
+    # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+    'false': 50
+    'true': 0
+
+  #############
+  # SMS Basic #
+  #############
   level_access:
     # If on "vanilla", the main levels are accessed in the way they are in the base game (e.g. Ricco Harbor is accessible after collecting 3 Shine Sprites).
     # If on "tickets", each level has a ticket item that must be acquired to access the level.
     # To reduce generation failures in testing, you'll automatically receive one free ticket at the start.
     vanilla: 50
     tickets: 0
+
+  starting_nozzle:
+    # If on, you will start with no Spray Nozzle, and in fact, no FLUDD at all. (Still in non-enforce mode)
+    # You will skip directly to Delfino Plaza, and the first Airstrip mission will be removed from locations.
+    # In this early version of this setting, you are expected to spray unusual things with Hover.
+    spray: 50
+    hover: 0
+    fluddless: 0
 
   enable_coin_shines:
     # Turn off to ignore the 100 coin Shine Sprites, which removes 8 Shine Sprites from the pool.
@@ -78,27 +107,30 @@ Super Mario Sunshine:
 
   corona_mountain_shines:
     # How many Shine Sprites are required to access Corona Mountain and the Delfino Airstrip revisit.
-    # If less than this number of Shines exist in the pool, it will be adjusted to the total Shine count.
+    # If this is more than the locations available, This will be automatically adjusted to 90-80% of locations available
+    # after all other progression items are created / accounted for.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 0
-    # Maximum value is 360
+    # Maximum value is 345
     50: 50
     random: 0
     random-low: 0 # random value weighted towards lower values
     random-high: 0 # random value weighted towards higher values
-    random-range-0-360: 0 # random value between 0 and 360
+    random-range-0-345: 0 # random value between 0 and 345
 
   blue_coin_sanity:
     # Full shuffle: adds Blue Coins to the pool and makes Blue Coins locations.
+    # Trade Shines Only: Adds the trade shines from the boathouse. Will NOT add the blue coin locations though.
     no_blue_coins: 50
     full_shuffle: 0
     trade_shines_only: 0
 
   blue_coin_maximum:
-    # How many Blue Coins to include in the pool if Blue Coinsanity is on. Does nothing if Blue Coinsanity is off.
+    # How many Blue Coins to include in the pool if Blue Coinsanity is on.
+    # Does nothing if Blue Coinsanity full_shuffle is off.
     # Corresponding trade shines will be removed from locations.
-    # Removed Blue Coins will be replaced by extra Shine Sprites.
+    # Removed Blue Coins will be replaced by extra Shine Sprites or other filler items.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 0
@@ -122,21 +154,6 @@ Super Mario Sunshine:
     random-low: 0 # random value weighted towards lower values
     random-high: 0 # random value weighted towards higher values
     random-range-0-24: 0 # random value between 0 and 24
-
-  starting_nozzle:
-    # If on, you will start with no Spray Nozzle, and in fact, no FLUDD at all. (Still in non-enforce mode)
-    # You will skip directly to Delfino Plaza, and the first Airstrip mission will be removed from locations.
-    # In this early version of this setting, you are expected to spray unusual things with Hover.
-    spray: 50
-    hover: 0
-    fluddless: 0
-
-  yoshi_mode:
-    # Due to an issue with Yoshi, by default Pinna Park 4 has to be skipped in order for the egg to appear
-    # in every level when receiving the item.
-    # Alternatively, you can opt to have the item only apply to Delfino Plaza (may have logic errors).
-    plaza_only: 50
-    skip_pinna: 0
 
   ###########################
   # Item & Location Options #

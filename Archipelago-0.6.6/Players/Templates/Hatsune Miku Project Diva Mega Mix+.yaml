@@ -32,9 +32,9 @@ description: Default Hatsune Miku Project Diva Mega Mix+ Template
 
 game: Hatsune Miku Project Diva Mega Mix+
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
   game:
-    Hatsune Miku Project Diva Mega Mix+: 1.4.2 # Version of the world required for this yaml to work as expected.
+    Hatsune Miku Project Diva Mega Mix+: 1.5.0 # Version of the world required for this yaml to work as expected.
 
 Hatsune Miku Project Diva Mega Mix+:
   ################
@@ -65,13 +65,6 @@ Hatsune Miku Project Diva Mega Mix+:
     full: 50
     minimal: 0
 
-  auto_remove_songs:
-    # If true, automatically removes cleared songs from the song list on refresh.
-    # 
-    # This can be done later manually with "/remove_cleared" or toggled with "/auto_remove" in the Client.
-    'false': 50
-    'true': 0
-
   ###############
   # Game Length #
   ###############
@@ -91,6 +84,9 @@ Hatsune Miku Project Diva Mega Mix+:
     # The total number of songs that will be placed in the randomisation pool.
     # - This does not count any Starting Songs or the Goal Song.
     # - The final song count may be lower due to other settings.
+    # 
+    # Given the large range, "random" is not recommended. If you have a 500+ check seed, this is why.
+    # At a pace of 4 minutes per song (fails, death links, traps, etc.), expect to clear 15 songs/30 checks an hour.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 15
@@ -102,7 +98,7 @@ Hatsune Miku Project Diva Mega Mix+:
     random-range-15-3900: 0 # random value between 15 and 3900
 
   duplicate_song_percentage:
-    # After placing required items, the percentage of remaining filler slots to become duplicate song items.
+    # After placing required items (Leeks and songs), the percentage of remaining filler slots to become duplicate song items.
     # Duplicate songs are considered Useful thus out of logic and may speed up completion time.
     #
     # You can define additional values between the minimum and maximum values.
@@ -115,21 +111,27 @@ Hatsune Miku Project Diva Mega Mix+:
     random-range-0-100: 0 # random value between 0 and 100
 
   leek_count_percentage:
-    # Controls how many Leeks are added to the pool based on the number of songs, including starting songs.
-    # Higher numbers leads to more consistent game lengths, but will cause individual leeks to be less important.
-    # Range is a percentage.
+    # The percentage of Leeks to add to the pool based on the total number of Starting and Additional Songs.
+    # A higher available Leek percentage leads to more consistent game lengths, but individual Leeks will be less important.
+    # 
+    # Example: (5 Starting + 40 Additional Songs) * 20% Leeks Total = 9 Leeks will be available
+    # 
+    # Recommended values are between 10 and 40.
+    # WARNING: Higher values, especially 100, are more suited for solo seeds to replicate the console progression experience.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 10
-    # Maximum value is 40
+    # Maximum value is 100
     20: 50
     random: 0
     random-low: 0 # random value weighted towards lower values
     random-high: 0 # random value weighted towards higher values
-    random-range-10-40: 0 # random value between 10 and 40
+    random-range-10-100: 0 # random value between 10 and 100
 
   leek_win_count_percentage:
-    # The percentage of Leeks in the item pool that are needed to unlock the Goal Song.
+    # The percentage of available Leeks in the item pool that are needed to unlock the Goal Song.
+    # 
+    # Example: (5 Starting + 40 Additional Songs) * 20% Leeks Total * 80% Leeks Needed = 7 out of 9 Leeks needed to goal
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 50
@@ -151,8 +153,9 @@ Hatsune Miku Project Diva Mega Mix+:
   goal_song:
     # Guarantee one song listed here as the final Goal Song.
     # - Difficulty options are ignored.
+    # - If a Goal Song is also in the Starting Inventory, it will not be chosen as a Goal Song.
     # 
-    # Use /item_groups in the Client for a list of available song groups.
+    # Use "Export Datapackage" from the Archipelago Launcher and see the game's section for available song item groups.
     []
 
   include_songs_percentage:
@@ -176,17 +179,19 @@ Hatsune Miku Project Diva Mega Mix+:
     # - Difficulty options are ignored for these songs.
     # - If you want these songs immediately, use start_inventory instead.
     # 
-    # Use /item_groups in the Client for a list of available song groups.
+    # Use "Export Datapackage" from the Archipelago Launcher and see the game's section for available song item groups.
     []
 
   exclude_songs:
     # Songs listed here and not previously chosen as a Goal or Include will be excluded from being a part of the seed.
+    # This is recommended instead of exclude_locations which would allow songs to appear but with guaranteed filler checks.
     # 
-    # Use /item_groups in the Client for a list of available song groups.
+    # Use "Export Datapackage" from the Archipelago Launcher and see the game's section for available song item groups.
     []
 
   megamix_mod_data:
     # To play with mod songs, set the output of the Mega Mix JSON Generator here.
+    # If the line ends with ": 50" or similar, remove it.
     '': 50
 
   ###################
@@ -268,29 +273,22 @@ Hatsune Miku Project Diva Mega Mix+:
   ##################
   # Game Modifiers #
   ##################
-  death_link:
-    # When you die on your own or fail to reach Grade Needed (not both), everyone who enabled Death Link dies.
+  progressive_hp:
+    # Divide the HP bar into items and start with 1/X HP. The rest go into the item pool.
+    # - There may be less based on free space after adding Leeks and Songs.
+    # - Non-lethal Death Link applies to max available HP
+    # - For finer control use "Progressive HP" in start_inventory or start_inventory_from_pool
     # 
-    # Received Death Links subtract a percentage of total HP. Adjustable in the game mod's config file.
-    # WARNING: Non-lethal Death Link makes it harder to get Life Bonuses and may affect score by up to 2%.
-    # 
-    # This can be toggled later in the Client with "/deathlink".
-    'false': 50
-    'true': 0
-
-  death_link_amnesty:
-    # Amount of additional own deaths needed before sending one Death Link. 0 would be every death, 1 every other, etc.
-    # 
-    # This can be adjusted later in the Client with "/deathlink #" and no upper limit.
+    # WARNING: Currently the only logic for this is needing full HP for the Goal Song.
     #
     # You can define additional values between the minimum and maximum values.
-    # Minimum value is 0
-    # Maximum value is 5
-    0: 50
+    # Minimum value is 1
+    # Maximum value is 20
+    1: 50
     random: 0
     random-low: 0 # random value weighted towards lower values
     random-high: 0 # random value weighted towards higher values
-    random-range-0-5: 0 # random value between 0 and 5
+    random-range-1-20: 0 # random value between 1 and 20
 
   trap_percentage:
     # After placing required items and duplicate songs, the percentage of remaining filler slots to become traps.
@@ -307,8 +305,8 @@ Hatsune Miku Project Diva Mega Mix+:
 
   traps_enabled:
     # Control which Traps can be placed in the item pool.
-    # It is highly recommended to add these Traps to non_local_items.
-    ['Icon Trap', 'Sudden Trap', 'Hidden Trap']
+    # It is highly recommended to add the "Traps" item group to non_local_items.
+    ['Icon Trap', 'Hidden Trap', 'Sudden Trap']
 
   ###########################
   # Item & Location Options #
@@ -323,6 +321,12 @@ Hatsune Miku Project Diva Mega Mix+:
 
   start_inventory:
     # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_inventory_from_pool:
+    # Start with the specified amount of these items and don't place them in the world. Example: "Bomb: 1"
+    # 
+    # The game decides what the replacement items will be.
     {}
 
   start_hints:

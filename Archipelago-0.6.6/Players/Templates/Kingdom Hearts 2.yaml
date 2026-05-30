@@ -32,7 +32,7 @@ description: Default Kingdom Hearts 2 Template
 
 game: Kingdom Hearts 2
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
   game:
     Kingdom Hearts 2: 2.0.0 # Version of the world required for this yaml to work as expected.
 
@@ -253,12 +253,12 @@ Kingdom Hearts 2:
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 1
-    # Maximum value is 26
+    # Maximum value is 42
     10: 50
     random: 0
     random-low: 0 # random value weighted towards lower values
     random-high: 0 # random value weighted towards higher values
-    random-range-1-26: 0 # random value between 1 and 26
+    random-range-1-42: 0 # random value between 1 and 42
 
   BountyRequired:
     # Number of Bounties to collect to Win/Unlock Final Xemnas Door.
@@ -267,12 +267,12 @@ Kingdom Hearts 2:
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 1
-    # Maximum value is 26
+    # Maximum value is 42
     7: 50
     random: 0
     random-low: 0 # random value weighted towards lower values
     random-high: 0 # random value weighted towards higher values
-    random-range-1-26: 0 # random value between 1 and 26
+    random-range-1-42: 0 # random value between 1 and 42
 
   BountyStartingHintToggle:
     # Start with Bounties Hinted
@@ -375,6 +375,11 @@ Kingdom Hearts 2:
     # Terra Sephiroth and Data Fights Toggle.
     'false': 0
     'true': 50
+
+  CasualBounties:
+    # Adds more casual and generic locations that aren't superbosses to expand the bounty pool. (World Bosses, etc.)
+    'false': 50
+    'true': 0
 
   Cups:
     # Olympus Cups Toggles

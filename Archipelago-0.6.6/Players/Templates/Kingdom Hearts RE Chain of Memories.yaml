@@ -32,7 +32,7 @@ description: Default Kingdom Hearts RE Chain of Memories Template
 
 game: Kingdom Hearts RE Chain of Memories
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 Kingdom Hearts RE Chain of Memories:
   ################

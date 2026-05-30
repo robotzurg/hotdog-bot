@@ -32,7 +32,9 @@ description: Default Cuphead Template
 
 game: Cuphead
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Cuphead: 0.2.16909311 # Version of the world required for this yaml to work as expected.
 
 Cuphead:
   ################
@@ -63,6 +65,13 @@ Cuphead:
     full: 50
     minimal: 0
 
+  early_parry:
+    # Make Parry be placed early in the multiworld.
+    # This may prevent early BK.
+    # NOTE: This is on regardless in single player multiworlds.
+    'false': 50
+    'true': 0
+
   ########
   # Main #
   ########
@@ -90,6 +99,7 @@ Cuphead:
   start_weapon:
     # Choose weapon to start with.
     # NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead.
+    random_weapon: 50
     peashooter: 0
     spread: 0
     chaser: 0
@@ -99,7 +109,7 @@ Cuphead:
     dlc_crackshot: 0
     dlc_converge: 0
     dlc_twistup: 0
-    random: 50
+    none: 0
 
   weapon_mode:
     # Set how the weapons are shuffled in the pool.
@@ -118,7 +128,7 @@ Cuphead:
     ex_separate_except_start: 0
 
   contract_requirements:
-    # Set the amount of contracts needed to confront Kingdice and, ultimately, the devil.
+    # Set the amount of contracts needed to confront King Dice and, ultimately, the devil.
     # The required contracts for the die houses are evenly distributed.
     #
     # You can define additional values between the minimum and maximum values.
@@ -170,13 +180,18 @@ Cuphead:
     random-range-0-4: 0 # random value between 0 and 4
 
   level_shuffle:
-    # --EXPERIMENTAL--
     # Shuffle the Boss and Run n' Gun levels.
     # Bosses and Run n' Guns are shuffled within their own group.
     # Note: Be careful with this option! This can easily break generation if used with plando.
     disabled: 50
     enabled: 0
     plane_separate: 0
+
+  level_shuffle_kingdice:
+    # Shuffle the King Dice mini-bosses.
+    # This option is independent of Level Shuffle.
+    'false': 0
+    'true': 50
 
   level_placements:
     # Define which levels will be placed in which spots when shuffling the levels.
@@ -189,8 +204,15 @@ Cuphead:
     'false': 50
     'true': 0
 
+  logic_mode:
+    # -HARD LOGIC WORKS, BUT IS INCOMPLETE-
+    # Set the logic mode.
+    # Hard: Use more difficult logic that may require more skillful actions without specific items.
+    normal: 50
+    hard: 0
+
   randomize_abilities:
-    # Randomize essential abilities like Duck, Parry, Dash, etc.
+    # Randomize essential abilities like Crouch, Parry, Dash, etc.
     'false': 0
     'true': 50
 
@@ -206,12 +228,12 @@ Cuphead:
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 0
-    # Maximum value is 9
+    # Maximum value is 25
     0: 50
     random: 0
     random-low: 0 # random value weighted towards lower values
     random-high: 0 # random value weighted towards higher values
-    random-range-0-9: 0 # random value between 0 and 9
+    random-range-0-25: 0 # random value between 0 and 25
 
   ############
   # DLC Main #
@@ -270,9 +292,9 @@ Cuphead:
   # Checks #
   ##########
   boss_secret_checks:
-    # Also include beating the secret phases of the three bosses as checks.
-    # The three boss levels include: Botanic Panic, Pyramid Peril, and Dramatic Fanatic.
-    # The secret phases are more difficult than the normal fight.
+    # Also include beating the secret phases that certain bosses have as checks.
+    # The boss levels include: Botanic Panic, Pyramid Peril, Dramatic Fanatic, and Doggone Dogfight (DLC).
+    # The secret phases are generally more difficult than the normal fight.
     'false': 50
     'true': 0
 
@@ -308,7 +330,7 @@ Cuphead:
 
   kingdice_bosssanity:
     # ---NOT YET IMPLEMENTED---
-    # Enable checks for beating the Kingdice mini-bosses.
+    # Enable checks for beating the King Dice mini-bosses.
     # There is an indicator for which mini-bosses you defeated.
     'false': 50
     'true': 0
@@ -352,14 +374,13 @@ Cuphead:
     # --NOT YET IMPLEMENTED--
     # -DLC ONLY-
     # -REQUIRES CHALICE-
-    # -REQUIRES KINGDICE BOSSSANITY-
-    # Enable checks for completing Kingdice Bossanity checks as Ms. Chalice.
+    # -REQUIRES KING DICE BOSSSANITY-
+    # Enable checks for completing King Dice Bossanity checks as Ms. Chalice.
     disabled: 50
     enabled: 0
     separate: 0
 
   dlc_chess_chalice_checks:
-    # --NOT YET IMPLEMENTED--
     # -DLC ONLY-
     # -REQUIRES CHALICE-
     # -REQUIRES THE KING'S LEAP-
@@ -434,13 +455,6 @@ Cuphead:
   ########
   # Misc #
   ########
-  ducklock_platdrop:
-    # Allow the dropping-down-platforms-without-duck-by-using-aim-lock exploit.
-    # This option re-enables that bug that the mod had before alpha02.
-    # This "feature" is purely client-side and does not affect logic.
-    'false': 50
-    'true': 0
-
   ################
   # Item Weights #
   ################

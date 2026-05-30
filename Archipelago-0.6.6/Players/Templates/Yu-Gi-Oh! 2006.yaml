@@ -32,7 +32,7 @@ description: Default Yu-Gi-Oh! 2006 Template
 
 game: Yu-Gi-Oh! 2006
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 Yu-Gi-Oh! 2006:
   ################

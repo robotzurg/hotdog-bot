@@ -32,7 +32,7 @@ description: 'Default Lego Star Wars: The Complete Saga Template'
 
 game: 'Lego Star Wars: The Complete Saga'
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 'Lego Star Wars: The Complete Saga':
   ################
@@ -582,7 +582,7 @@ requires:
     # When Progressive Score Multiplier items are enabled (always enabled currently), preferring "Score x{number}" to be
     # included in the item pool will try to ensure there are enough Progressive Score Multiplier items to unlock that
     # score multiplier.
-    ['Infinite Torpedos', 'Score x4', 'Dark Side', 'Exploding Blaster Bolts', 'Score x6', 'Super Ewok Catapult', 'Disarm Troopers', 'Score x8', 'Invincibility', 'Self Destruct', 'Fast Build', 'Deflect Bolts', 'Stud Magnet', 'Fast Force', 'Score x10', 'Score x2', 'Force Grapple Leap']
+    ['Fast Build', 'Force Grapple Leap', 'Self Destruct', 'Stud Magnet', 'Dark Side', 'Exploding Blaster Bolts', 'Infinite Torpedos', 'Invincibility', 'Score x2', 'Score x6', 'Score x4', 'Score x10', 'Deflect Bolts', 'Super Ewok Catapult', 'Disarm Troopers', 'Fast Force', 'Score x8']
 
   filler_reserve_characters:
     # When enabled, reserve space in the item pool for at least as many Characters as enabled locations that would

@@ -32,7 +32,9 @@ description: Default Death's Door Template
 
 game: Death's Door
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Death's Door: 0.3.1 # Version of the world required for this yaml to work as expected.
 
 Death's Door:
   ################
@@ -63,6 +65,19 @@ Death's Door:
     full: 50
     minimal: 0
 
+  plando_connections:
+    # Generic connection plando. Format is:
+    # - entrance: Entrance Name
+    #   exit: Exit Name
+    #   direction: Direction
+    #   percentage: 100
+    # Direction must be one of entrance, exit, or both, and defaults to both if omitted.
+    # Direction entrance means the entrance leads to the exit. Direction exit means the exit leads to the entrance.
+    # If you do not have Decoupled enabled, you do not need the direction line, as it will only use both.
+    # Percentage is an integer from 0 to 100 which determines whether that connection will be made. Defaults to 100 if omitted.
+    # This option does nothing if Entrance Randomization is disabled.
+    []
+
   #################
   # Logic Options #
   #################
@@ -76,6 +91,12 @@ Death's Door:
     true_ending: 0
     green_tablet: 0
     any: 0
+
+  entrance_randomization:
+    # Randomize entrances.
+    'off': 50
+    coupled: 0
+    decoupled: 0
 
   start_day_or_night:
     # Choose whether to start during the day or night. You must access the Rusty Belltower Bell to toggle the time of day.
@@ -212,6 +233,31 @@ Death's Door:
     # If you combine this option with plando not from pool, you are very likely to encounter generation errors.
     # The fewer pools randomized, the more likely you are to encounter generation errors.
     []
+
+  trap_chance:
+    # The probability for each filler item (including unique filler) to be replaced with a trap item.
+    # The exact number of trap items will still be somewhat random, so you can't know
+    # if you've seen the 'last trap' in your world without checking the spoiler log.
+    # If you don't want any traps, set this to 0.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    15: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  trap_type_weights:
+    # When a filler item is replaced with a trap, these weights determine the
+    # odds for each trap type to be selected.
+    # If you don't want a specific trap type, set its weight to 0.
+    # Setting all weights to 0 is the same as setting trap_chance to 0.
+    Enemy Invisibility Trap: 0
+    Knockback Trap: 2
+    Player Invisibility Trap: 2
+    Rotation Trap: 2
 
   #########################
   # Customization Options #

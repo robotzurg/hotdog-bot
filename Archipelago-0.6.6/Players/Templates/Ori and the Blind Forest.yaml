@@ -32,7 +32,7 @@ description: Default Ori and the Blind Forest Template
 
 game: Ori and the Blind Forest
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 Ori and the Blind Forest:
   ################

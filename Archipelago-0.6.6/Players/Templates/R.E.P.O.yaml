@@ -32,9 +32,9 @@ description: Default R.E.P.O Template
 
 game: R.E.P.O
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
   game:
-    R.E.P.O: 0.3.0 # Version of the world required for this yaml to work as expected.
+    R.E.P.O: 0.4.1 # Version of the world required for this yaml to work as expected.
 
 R.E.P.O:
   ################
@@ -66,18 +66,19 @@ R.E.P.O:
     minimal: 0
 
   pellys_required:
-    # Choose which Pellys will be required for victory
-    ['Standard Pelly', 'Glass Pelly', 'Gold Pelly']
-
-  pelly_spawning:
-    # Determines how Pellys are spawned
-    # True: Spawns all Pellys. All Pellys are locations.
-    # False: Only spawns Pellys chosen in 'Pellys Required'. Only spawned Pellys are Locations.
-    'false': 0
-    'true': 50
+    # Choose how many Pellys will be required for victory.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 12
+    12: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-12: 0 # random value between 0 and 12
 
   level_quota:
-    # Choose how many levels must be completed for your goal. This is in addition to gathering all Pellys.
+    # Choose how many levels must be completed for your goal, in addition to gathering enough Pellys.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 1
@@ -89,7 +90,7 @@ R.E.P.O:
     random-range-1-20: 0 # random value between 1 and 20
 
   valuable_hunt:
-    # Determines if extracting all valuables is required for your goal.
+    # Determines if extracting all valuables (excluding pellys) is required for your goal.
     'false': 50
     'true': 0
 
@@ -101,8 +102,8 @@ R.E.P.O:
   combat_logic:
     # Determines what items are logically required to fight monsters.
     # Easy: Guns or Explosives
-    # Medium: Strength Upgrades, Melee Weapons, Guns, or Explosives
-    # Hard: Nothing. Player may have to use valuables found in levels.
+    # Medium: Strength Upgrades + Stun Items, Melee Weapons, Guns, or Explosives
+    # Hard: No combat logic. Player may have to kill monsters with valuables found in levels.
     easy: 0
     medium: 50
     hard: 0
@@ -120,7 +121,7 @@ R.E.P.O:
     random-range-5-50: 0 # random value between 5 and 50
 
   shop_upgrade_total:
-    # Choose how many Archipelago Items show up in the Upgrades section of the Shop
+    # Choose how many Archipelago Items show up in the Upgrades section of the Shop.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 20
@@ -132,9 +133,9 @@ R.E.P.O:
     random-range-20-100: 0 # random value between 20 and 100
 
   shop_upgrade_logical:
-    # Choose how many shop how many shop upgrades will be potentially logically relevant.
+    # Choose how many shop upgrades will potentially be logically relevant.
     # Items past this number will not have progression items.
-    # This number gets set to the Total Shop Upgrade Locations if its greater.
+    # This number gets set to the Total Shop Upgrade Locations if it is greater.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 20
@@ -146,27 +147,43 @@ R.E.P.O:
     random-range-20-100: 0 # random value between 20 and 100
 
   starting_level_type:
-    # Choose which level type to start with
+    # Choose which level type to start with.
     swiftbroom_academy: 0
     headman_manor: 0
     mcjannek_station: 0
     museum_of_human_art: 0
     random: 50
 
-  upgrade_item_weights:
-    # Choose the Weights for adding Upgrades to the Item Pool (death head battery does nothing in singleplayer)
-    Crouch Rest Upgrade: 2
-    Death Head Battery Upgrade: 1
-    Double Jump Upgrade: 2
-    Health Upgrade: 5
-    Map Player Count Upgrade: 1
-    Range Upgrade: 2
-    Sprint Speed Upgrade: 3
-    Stamina Upgrade: 5
-    Strength Upgrade: 3
-    Tumble Climb Upgrade: 2
-    Tumble Launch Upgrade: 2
-    Tumble Wings Upgrade: 2
+  filler_item_weights:
+    # Choose the weights for adding filler and traps to the item pool.
+    # Each upgrade item will spawn one upgrade of that type in the truck.
+    # Each small health pack spawns one small health pack (25hp) in the truck.
+    # Traps:
+    #     Extra Monster Trap - Spawns an extra enemy (or enemy group) from the tier 3 enemy pool.
+    #     Audit Trap - Takes half of your money the next time you visit a shop.
+    #     Monster Lure Trap - Lures monsters to your location for two minutes.
+    #     Progressive Moon Phase Trap - Increases the moon phase by one stage FOR THE REST OF THE MULTIWORLD.
+    Audit Trap: 6
+    Crouch Rest Upgrade: 40
+    Death Head Battery Upgrade: 10
+    Double Jump Upgrade: 20
+    Extra Monster Trap: 8
+    Health Upgrade: 40
+    Monster Lure Trap: 15
+    Progressive Moon Phase Trap: 3
+    Range Upgrade: 40
+    Small Health Pack: 20
+    Sprint Speed Upgrade: 30
+    Stamina Upgrade: 50
+    Strength Upgrade: 30
+    Tumble Climb Upgrade: 20
+    Tumble Launch Upgrade: 20
+    Tumble Wings Upgrade: 20
+
+  death_link:
+    # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+    'false': 50
+    'true': 0
 
   ###########################
   # Item & Location Options #

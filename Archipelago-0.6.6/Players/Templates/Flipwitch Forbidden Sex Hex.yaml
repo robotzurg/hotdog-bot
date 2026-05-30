@@ -32,7 +32,7 @@ description: Default Flipwitch Forbidden Sex Hex Template
 
 game: Flipwitch Forbidden Sex Hex
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 Flipwitch Forbidden Sex Hex:
   ################

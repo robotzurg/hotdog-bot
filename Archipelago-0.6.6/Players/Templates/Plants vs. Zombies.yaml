@@ -32,7 +32,9 @@ description: Default Plants vs. Zombies Template
 
 game: Plants vs. Zombies
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    Plants vs. Zombies: 1.7.2 # Version of the world required for this yaml to work as expected.
 
 Plants vs. Zombies:
   ################
@@ -75,6 +77,11 @@ Plants vs. Zombies:
 
   death_link:
     # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+    'false': 50
+    'true': 0
+
+  ring_link:
+    # Enables Ring Link for Sun.
     'false': 50
     'true': 0
 
@@ -190,24 +197,30 @@ Plants vs. Zombies:
     'false': 0
     'true': 50
 
+  shop_behaviour:
+    # Determines how access is granted to Crazy Dave's shop.
+    # 
+    # - off: Crazy Dave's shop will not be included.
+    # - normal: Finding the "Crazy Dave's Car Key" item will grant access to Crazy Dave's shop. "Twiddydinkies Restock" items will unlock new pages.
+    # - progressive: The first "Progressive Twiddydinkies" item you find will grant access to Crazy Dave's shop. Additional "Progressive Twiddydinkies" items will unlock new pages.
+    'off': 0
+    normal: 50
+    progressive: 0
+
   shop_items:
     # How many items to include in Crazy Dave's shop.
-    # You cannot access the shop until you obtain Crazy Dave's Car Keys. 
     # 
-    # Each page contains eight items. 
-    # Each page after the first must be unlocked by obtaining a "Twiddydinkies Restock" item.
-    # 
-    # A value of 0 disables the shop entirely.
-    # A value of 64 has eight pages.
+    # Each page contains eight items.
+    # A value of 96 has twelve pages.
     #
     # You can define additional values between the minimum and maximum values.
-    # Minimum value is 0
-    # Maximum value is 64
+    # Minimum value is 1
+    # Maximum value is 96
     16: 50
     random: 0
     random-low: 0 # random value weighted towards lower values
     random-high: 0 # random value weighted towards higher values
-    random-range-0-64: 0 # random value between 0 and 64
+    random-range-1-96: 0 # random value between 1 and 96
 
   ########
   # Goal #
@@ -322,7 +335,6 @@ Plants vs. Zombies:
 
   taco_hunt_items:
     # Determines the total number of Taco items to be included in the item pool.
-    # If necessary, this number will be automatically reduced to match the amount of remaining locations.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 0
@@ -366,26 +378,12 @@ Plants vs. Zombies:
     'true': 0
 
   zombie_randomisation:
-    # Randomises the Zombie types included in each level.
+    # Randomises the zombie types included in each level.
     'false': 50
     'true': 0
 
-  zombie_randomised_modes:
-    # Determines which levels will have their Zombies randomised.
-    # This setting only matters if zombie_randomisation is set to true.
-    # If zombie_randomisation is set to false, this option will be ignored and no Zombies will be randomised.
-    # 
-    # Any mode set to 1 will feature levels with randomised selection of Zombies.
-    # Any mode set to 0 will contain its usual Zombies from the original game.
-    Adventure: 1
-    Bonus Levels: 1
-    Cloudy Day: 0
-    Mini-games: 1
-    Survival: 1
-
   randomised_zombies:
-    # Determines which Zombie types will be included in randomisation.
-    # This setting only matters if zombie_randomisation is set to true.
+    # Determines which zombie types will be included in randomisation.
     # If zombie_randomisation is set to false, this option will be ignored and no Zombies will be randomised.
     # 
     # Any Zombie type set to 1 will be included in randomisation and can appear in randomly selected levels.
@@ -419,6 +417,32 @@ Plants vs. Zombies:
     WallnutHead: 0
     Zomboni: 1
 
+  zombie_randomised_modes:
+    # Determines which levels will have their zombie types randomised.
+    # If zombie_randomisation is set to false, this option will be ignored and no zombies will be randomised.
+    # 
+    # Any mode set to 1 will feature levels with randomised selection of zombies.
+    # Any mode set to 0 will contain its usual zombies from the original game.
+    # 
+    # *Survival, Cloudy Day and Bonus Levels will be forced to 0 if goty_compatability_mode is enabled.
+    Adventure: 1
+    Bonus Levels: 1
+    Cloudy Day: 0
+    Mini-games: 1
+    Survival: 1
+
+  zombie_weight_randomisation:
+    # Randomises the spawning weights for each zombie type. This affects how zombies are chosen to spawn in each level.
+    # As an extreme example, this could result in more Gargantuars spawning in a level than standard zombies.
+    # As such, this option is only recommended for somewhat experienced players.
+    # 
+    # - off: Zombies will be spawned using their usual ratios.
+    # - randomise_once: One randomised set of weights will be generated and used across every level.
+    # - randomise_per_level: A different set of randomised weights will be generated for each level.
+    'off': 50
+    randomise_once: 0
+    randomise_per_level: 0
+
   plant_stat_randomisation:
     # Randomises the stats of each Plant in the game. 
     # This affects Sun Cost, Packet Refresh Time, Toughness, Firing Rate and Projectile Damage.
@@ -426,10 +450,6 @@ Plants vs. Zombies:
     # 
     # While this affects the majority of levels in the game, it doesn't affect Puzzle levels or certain Mini-game levels.
     # It only affects Conveyor Belt levels if conveyor_randomisation is set to true.
-    # 
-    # This is a brand new option that has not yet been heavily tested. 
-    # It may be unwise to bring it to group multiworlds in its current state.
-    # Enable at your own risk, but if you're up to the challenge, let me know how you get on!
     'false': 50
     'true': 0
 
@@ -449,7 +469,7 @@ Plants vs. Zombies:
   easy_upgrade_plants:
     # Allows you to place upgrade plants without requiring their base form.
     # For example, Gatling Pea could be placed straight onto the lawn without requiring a Repeater first.
-    # Enabling this option increases the Sun prices of Upgrade Plants accordingly.
+    # Enabling this option increases the Sun prices of upgrade plants accordingly.
     'false': 50
     'true': 0
 
@@ -488,19 +508,19 @@ Plants vs. Zombies:
 
   starting_sun_upgrades:
     # Adds "Additional Starting Sun" items to the item pool.
-    # Obtaining an "Additional Starting Sun" item increases the amount of Sun you will start a level with.
+    # Obtaining an "Additional Starting Sun" item increases the amount of sun you will start a level with.
     # 
     # - off: No "Additional Starting Sun" items will be generated.
-    # - 5_sun_each: Each "Additional Starting Sun" item you obtain will give you 5 additional Sun at the beginning of each level.
-    # - 25_sun_each: Each "Additional Starting Sun" item you obtain will give you 25 additional Sun at the beginning of each level.
-    # - 50_sun_each: Each "Additional Starting Sun" item you obtain will give you 50 additional Sun at the beginning of each level.
+    # - 5_sun_each: Each "Additional Starting Sun" item you obtain will give you 5 additional sun at the beginning of each level.
+    # - 25_sun_each: Each "Additional Starting Sun" item you obtain will give you 25 additional sun at the beginning of each level.
+    # - 50_sun_each: Each "Additional Starting Sun" item you obtain will give you 50 additional sun at the beginning of each level.
     'off': 50
     5_sun_each: 0
     25_sun_each: 0
     50_sun_each: 0
 
-  maximum_sun_upgrade:
-    # Determines the maximum amount of additional Sun that "Additional Starting Sun" items can provide.
+  maximum_sun_upgrades:
+    # Determines the maximum amount of additional sun that "Additional Starting Sun" items can provide.
     # Increasing this number results in more "Additional Starting Sun" items being generated.
     #
     # You can define additional values between the minimum and maximum values.
@@ -527,7 +547,13 @@ Plants vs. Zombies:
 
   random_seed_filler:
     # Determines whether to include "Random Seed Packet" filler items.
-    # This item drops a random Seed Packet onto the lawn which can be freely picked up and planted, just like the ones you see in Vasebreaker.
+    # This item drops a random seed packet onto the lawn which can be freely picked up and planted, just like the ones you see in Vasebreaker.
+    'false': 50
+    'true': 0
+
+  zombie_freeze_filler:
+    # Determines whether to include "Mass Zombie Freeze" filler items.
+    # This item instantly freezes all zombies on the lawn.
     'false': 50
     'true': 0
 
@@ -572,6 +598,27 @@ Plants vs. Zombies:
     'false': 50
     'true': 0
 
+  progressive_sun_capacity_items:
+    # Restricts the amount of sun that can be held at once until enough "Progressive Sun Capacity" items are collected. 
+    # You will begin the game with the ability to hold a maximum of 150 sun at a time.
+    # Each "Progressive Sun Capacity" item you obtain doubles your current maximum.
+    'false': 50
+    'true': 0
+
+  individual_tile_unlock_items:
+    # Locks planting on each individual lawn tile behind receiving a corresponding item.
+    # You will start the game with a random assortment of tiles unlocked.
+    # 
+    # This can make the game much more difficult, especially when combined with other forms of randomisation.
+    # You may be expected to exploit lawn mowers and zombie spawning patterns in order to progress.
+    # 
+    # This adds ~42 items to the item pool and is recommended as a unique challenge for experienced players only.
+    # 
+    # This option is brand new and likely requires further testing and balancing to keep things fun and fair.
+    # Enable at your own risk, but if you do, please let me know how you get on!
+    'false': 50
+    'true': 0
+
   #########
   # Traps #
   #########
@@ -588,7 +635,7 @@ Plants vs. Zombies:
     random-range-0-100: 0 # random value between 0 and 100
 
   mower_deploy_trap_weight:
-    # This trap instantly activates all Lawn Mowers on the lawn.
+    # This trap instantly activates all lawn mowers on the lawn.
     # A higher number means that you are more likely to see the given trap. A value of 0 means the trap will not appear.
     #
     # You can define additional values between the minimum and maximum values.
@@ -601,7 +648,7 @@ Plants vs. Zombies:
     random-range-0-100: 0 # random value between 0 and 100
 
   seed_packet_cooldown_trap_weight:
-    # This trap instantly puts all Seed Packets on cooldown.
+    # This trap instantly puts all seed packets on cooldown.
     # A higher number means that you are more likely to see the given trap. A value of 0 means the trap will not appear.
     #
     # You can define additional values between the minimum and maximum values.
@@ -614,7 +661,20 @@ Plants vs. Zombies:
     random-range-0-100: 0 # random value between 0 and 100
 
   zombie_ambush_trap_weight:
-    # This trap instantly causes an ambush of Zombies.
+    # This trap instantly causes an ambush of zombies.
+    # A higher number means that you are more likely to see the given trap. A value of 0 means the trap will not appear.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    50: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
+
+  zombie_shuffle_trap_weight:
+    # This trap causes zombies to change lanes.
     # A higher number means that you are more likely to see the given trap. A value of 0 means the trap will not appear.
     #
     # You can define additional values between the minimum and maximum values.

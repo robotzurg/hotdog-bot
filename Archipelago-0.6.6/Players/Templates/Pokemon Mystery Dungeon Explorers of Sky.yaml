@@ -32,7 +32,7 @@ description: Default Pokemon Mystery Dungeon Explorers of Sky Template
 
 game: Pokemon Mystery Dungeon Explorers of Sky
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 Pokemon Mystery Dungeon Explorers of Sky:
   ################

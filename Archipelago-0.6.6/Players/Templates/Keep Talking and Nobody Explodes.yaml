@@ -32,7 +32,7 @@ description: Default Keep Talking and Nobody Explodes Template
 
 game: Keep Talking and Nobody Explodes
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 Keep Talking and Nobody Explodes:
   ################

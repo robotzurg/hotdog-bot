@@ -32,7 +32,7 @@ description: Default ChecksMate Template
 
 game: ChecksMate
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 ChecksMate:
   ################
@@ -255,7 +255,7 @@ ChecksMate:
     # Petal: Adds a custom army themed after pieces that move down angled paths. The Gardener is a 2,2 leaper with
     # additional pacifist moves. The Ribbon moves 1 space as a Bishop before rotating to move 2 more spaces. The Petal
     # moves 3 spaces as a Rook before rotating 3 more spaces. The Miracle moves as a Ribbon and as a Petal.
-    ['Cannon', 'FIDE', 'Petal', 'Clobberers', 'Nutty', 'Rookies', 'Camel']
+    ['Petal', 'Nutty', 'FIDE', 'Camel', 'Clobberers', 'Rookies', 'Cannon']
 
   fairy_chess_army:
     # Whether to mix pieces between the Different Armies. Does not affect pawns. Note that the Cannon pieces, which

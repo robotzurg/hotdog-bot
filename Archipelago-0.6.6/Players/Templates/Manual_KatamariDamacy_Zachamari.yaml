@@ -32,7 +32,7 @@ description: Default Manual_KatamariDamacy_Zachamari Template
 
 game: Manual_KatamariDamacy_Zachamari
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 Manual_KatamariDamacy_Zachamari:
   ################

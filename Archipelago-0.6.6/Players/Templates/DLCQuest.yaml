@@ -32,7 +32,7 @@ description: Default DLCQuest Template
 
 game: DLCQuest
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 DLCQuest:
   ###########

@@ -32,7 +32,7 @@ description: Default The Binding of Isaac Repentance Template
 
 game: The Binding of Isaac Repentance
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 The Binding of Isaac Repentance:
   ################
@@ -66,7 +66,7 @@ The Binding of Isaac Repentance:
   goals:
     # Set of all bosses you'll have to beat to sucessfully win the game.
     # Valid bosses are: ["Mom", "Mom's Heart", "Isaac", "Satan", "Blue Baby", "The Lamb", "Mega Satan", "Boss Rush", "Hush", "Beast", "Mother", "Delirium"]
-    ['Delirium', 'Mega Satan', 'Mother', 'Beast']
+    ['Delirium', 'Mother', 'Mega Satan', 'Beast']
 
   excluded_areas:
     # Entire areas to exclude from the game. By excluding an area, none of the entrance methods to the area will be able to spawn and neither are locations placed in those areas.

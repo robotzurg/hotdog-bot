@@ -32,7 +32,7 @@ description: Default Minecraft Fabric Template
 
 game: Minecraft Fabric
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
   game:
     Minecraft Fabric: 1.0.6 # Version of the world required for this yaml to work as expected.
 
@@ -105,7 +105,7 @@ Minecraft Fabric:
     #     "Hard" - Disables Locations that're Hard
     #     "Exploration" - Disables Locations that might require Exploration
     #     "Unreasonable" - Disables Location's that're EXTREMELY Hard
-    ['Unreasonable', 'Hard']
+    ['Hard', 'Unreasonable']
 
   speedrunner_mode:
     # Makes it so Beds are a required item for defeating the Ender Dragon
@@ -172,7 +172,7 @@ Minecraft Fabric:
     #     Netherite Gear - Netherite Tools, Armor, and Netherite Smithing Template
     #     Trims - Smithing Templates that're used for Trims (Doesn't include Upgrade Templates)
     #     Sherds - Pottery Sherds
-    ['Sherds', 'Trims', 'Rare Ores', 'Discs', 'Mob Heads', 'Netherite Gear']
+    ['Netherite Gear', 'Rare Ores', 'Sherds', 'Discs', 'Trims', 'Mob Heads']
 
   empty_fill_percentage:
     # Replaces a certain amount of Non-Trap Junk Items with Items that do nothing.
@@ -214,7 +214,7 @@ Minecraft Fabric:
     #     "Jump"
     #     "Sprint"
     #     "Beds"
-    ['Bow', 'Iron Armor', 'Iron Weapons', 'Jump', 'Beds', 'Sprint']
+    ['Iron Weapons', 'Beds', 'Jump', 'Sprint', 'Bow', 'Iron Armor']
 
   required_before_raids:
     # Makes it so certain Items are required in Logic before you need
@@ -229,7 +229,7 @@ Minecraft Fabric:
     #     "Jump"
     #     "Sprint"
     #     "Beds"
-    ['Iron Armor', 'Iron Weapons', 'Jump']
+    ['Jump', 'Iron Weapons', 'Iron Armor']
 
   keep_inventory:
     # Prevents you from dropping your items when you die!
@@ -255,7 +255,7 @@ Minecraft Fabric:
     #     "Rabbits Foot" - Increases the 10% Chance for Rabbit's Foot to drop to 50%
     #     "Drowned Items" - Increases the Chance for a Drowned to drop the items they're holding to 100%
     #     "Copper Oxidation" - Increases the Chance for Copper Blocks to attempt to Oxidize from 5% to 55%
-    ['Rabbits Foot', 'Drowned Items', 'Wither Skulls', 'Copper Oxidation']
+    ['Wither Skulls', 'Drowned Items', 'Rabbits Foot', 'Copper Oxidation']
 
   trap_fill_percentage:
     # Replace a percentage of junk items in the item pool with random traps

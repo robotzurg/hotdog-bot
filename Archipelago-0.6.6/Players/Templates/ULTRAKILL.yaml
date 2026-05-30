@@ -32,7 +32,9 @@ description: Default ULTRAKILL Template
 
 game: ULTRAKILL
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
+  game:
+    ULTRAKILL: 3.5.2 # Version of the world required for this yaml to work as expected.
 
 ULTRAKILL:
   ################
@@ -73,6 +75,8 @@ ULTRAKILL:
     '2_3': 0
     '3_1': 0
     '4_2': 0
+    '8_2': 0
+    '8_3': 0
 
   goal_level:
     # Choose which level must be completed to finish the game.
@@ -109,8 +113,12 @@ ULTRAKILL:
     '7_1': 0
     '7_2': 0
     '7_3': 0
-    '7_4': 50
+    '7_4': 0
     7_s: 0
+    '8_1': 0
+    '8_2': 0
+    '8_3': 0
+    '8_4': 50
     0_e: 0
     1_e: 0
     p_1: 0
@@ -121,12 +129,12 @@ ULTRAKILL:
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 5
-    # Maximum value is 38
+    # Maximum value is 42
     15: 50
     random: 0
     random-low: 0 # random value weighted towards lower values
     random-high: 0 # random value weighted towards higher values
-    random-range-5-38: 0 # random value between 5 and 38
+    random-range-5-42: 0 # random value between 5 and 42
 
   perfect_goal:
     # Choose if the goal must be cleared with a perfect rank. Has no effect if the goal level is a secret mission.
@@ -135,7 +143,9 @@ ULTRAKILL:
 
   skipped_levels:
     # List as many levels as you would like to skip completing for the goal.
-    ['0-E', 'P-2', '1-E', 'P-1']
+    # 
+    # Skipped levels will still exist in the item pool, and can still be completed to add progress towards unlocking the goal, but will not be considered in logic.
+    ['P-1', 'P-2', '1-E', '0-E']
 
   auto_exclude_skipped_locations:
     # Choose if skipped levels should automatically have all of their locations excluded.
@@ -146,6 +156,19 @@ ULTRAKILL:
     # Choose if levels will be unlocked one at a time, or whole layers at once.
     levels: 50
     layers: 0
+
+  secret_mission_unlock_type:
+    # Choose if secret missions should be unlocked by using their secret exits, or by finding items in the multiworld.
+    secret_exits: 50
+    items: 0
+
+  secret_exit_behavior:
+    # Choose if using secret exits should count the current level as completed, or if secret exits should NOT count the 
+    # current level as completed, and instead add rewards for using each secret exit.
+    # 
+    # Does not affect secret exits leading to prime sanctums.
+    standard: 50
+    add_rewards: 0
 
   trap_percent:
     # Choose the percentage of trap items that will appear when filling the item pool with junk.
@@ -175,7 +198,6 @@ ULTRAKILL:
     Hands-Free Mode: 50
     Hard Damage: 50
     Radiant Aura: 50
-    Short-Term Sandstorm: 50
     Stamina Limiter: 50
     Wall Jump Limiter: 50
     Weapon Malfunction: 50
@@ -237,6 +259,8 @@ ULTRAKILL:
     # Choose a pool of possible starting weapons and their weights of being selected.
     # 
     # Some weapons will not be considered valid depending on other options:
+    # 
+    # If the start level is 2-3, 8-2, or 8-3, all arms will be removed from the pool.
     # 
     # If choosing to start with Feedbacker, it will be removed from the pool.
     # 
@@ -382,7 +406,7 @@ ULTRAKILL:
   music_randomizer:
     # Randomizes the music that plays during the game.
     # 
-    # Music randomizer is temporarily disabled.
+    # Some music is never randomized.
     'false': 50
     'true': 0
 
@@ -400,6 +424,18 @@ ULTRAKILL:
     'false': 50
     'true': 0
 
+  death_link_amnesty:
+    # Choose how many deaths must happen before a death link is sent to the multiworld.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 1
+    # Maximum value is 10
+    1: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-1-10: 0 # random value between 1 and 10
+
   ###########################
   # Item & Location Options #
   ###########################
@@ -413,6 +449,12 @@ ULTRAKILL:
 
   start_inventory:
     # Start with the specified amount of these items. Example: "Bomb: 1"
+    {}
+
+  start_inventory_from_pool:
+    # Start with the specified amount of these items and don't place them in the world. Example: "Bomb: 1"
+    # 
+    # The game decides what the replacement items will be.
     {}
 
   start_hints:

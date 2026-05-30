@@ -32,7 +32,7 @@ description: Default Mario Kart Wii Template
 
 game: Mario Kart Wii
 requires:
-  version: 0.6.6 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.7 # Version of Archipelago required for this yaml to work as expected.
 
 Mario Kart Wii:
   ################
@@ -65,11 +65,11 @@ Mario Kart Wii:
 
   enabled_ccs:
     # Which engine classes (CCs) generate location checks. (options: 50cc, 100cc, 150cc, Mirror)
-    ['Mirror', '50cc', '100cc', '150cc']
+    ['150cc', '100cc', 'Mirror', '50cc']
 
   enabled_cup_check_tiers:
     # Which difficulty tiers generate cup completion checks. (options: 3rd_place, 2nd_place, 1st_place, 1_star, 2_star, 3_star)
-    ['2_star', '3rd_place', '1st_place', '1_star', '2nd_place']
+    ['2_star', '2nd_place', '1st_place', '1_star', '3rd_place']
 
   include_race_checks:
     # Include individual race 1st place checks in addition to cup checks.

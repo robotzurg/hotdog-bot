@@ -7,7 +7,7 @@ Celeste (Open World):
   death_link: 'true'
   death_link_amnesty: '10'
   trap_link: 'false'
-  goal_area: the_summit_c
+  goal_area: the_summit_b
   lock_goal_area: 'true'
   goal_area_checkpointsanity: 'false'
   total_strawberries: '50'
@@ -41,11 +41,11 @@ Celeste (Open World):
   zoom_trap_weight: medium
   music_shuffle: none
   require_cassettes: 'false'
-  madeline_hair_length: long
-  madeline_one_dash_hair_color: strawberry
-  madeline_two_dash_hair_color: double
-  madeline_no_dash_hair_color: empty
-  madeline_feather_hair_color: golden
+  madeline_hair_length: default
+  madeline_one_dash_hair_color: any_color
+  madeline_two_dash_hair_color: any_color
+  madeline_no_dash_hair_color: any_color
+  madeline_feather_hair_color: any_color
   local_items: []
   non_local_items: []
   start_hints: []
