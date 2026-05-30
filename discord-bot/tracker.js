@@ -22,6 +22,12 @@ const noisePatterns = [
     /^Could not remove enough non-progression items/,
     /^Traps needed:/,
     /^TODO:/,
+    /^Did not load .+\.apworld as its game .+ is already loaded/,
+    /does not include a manifest file/,
+    /^The plando items module is turned off/,
+    /^Extra Items Needed:/,
+    /^vanilla fork$/,
+    / has more items than locations\. \d+ non-progression items will be removed at random/,
 ];
 
 const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
