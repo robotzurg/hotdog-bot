@@ -63,35 +63,6 @@ Dark Souls III:
     full: 50
     minimal: 0
 
-  goal:
-    # Which bosses must be defeated in order to win the game, of the form "<Region> Boss".
-    # 
-    # A few regions have more than one boss:
-    # 
-    # - **Archdragon Peak:** "Archdragon Peak Fort" is Ancient Wyvern in vanilla,
-    #   "Archdragon Peak End" is Nameless King in vanilla.
-    # - **Lothric Castle:** "Lothric Castle Entrance" is Dancer of the Boreal
-    #   Valley in vanilla, "Lothric Castle End" is Dragonslayer Armor in vanilla.
-    # - **Painted World of Ariandel:** "Painted World of Ariendel Lower" is
-    #   Champion's Gravetender and Gravetender Greatwolf in vanilla, "Painted
-    #   World of Ariendel End" is Sister Friede in vanilla.
-    # - **Ringed City:** "Ringed City Midway" is Halflight, Spear of the Church in
-    #   vanilla, "Ringed City Hidden" is Darkeater Midir in vanilla, and "Ringed
-    #   City End" is Slave Knight Gael in vanilla.
-    # 
-    # There are also several group names that can be used:
-    # 
-    # - **All Bosses:** All bosses in the base game and DLC must be beaten to win
-    #     the game.
-    # - **Base Game Bosses:** All bosses in the base game must be beaten, but not
-    #     any of the DLC bosses.
-    # - **DLC Bosses:** All bosses in the DLC must be beaten, but not any of the
-    #     base game bosses.
-    # 
-    # If multiple goals are selected, all of them must be achieved in order to win
-    # your game. By default, only "Kiln of the First Flame Boss" is selected.
-    ['Kiln of the First Flame Boss']
-
   early_banner:
     # Force Small Lothric Banner into an early sphere in your world or across all worlds.
     'off': 50
@@ -123,38 +94,18 @@ Dark Souls III:
 
   death_link:
     # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
-    # 
-    # - **Off:** Death link is disabled. (The default.)
-    # - **Any Death:** Death link triggers for any death.
-    # - **Lost Souls:** Death link only triggers if you die without collecting
-    #   your last bloodstain.
-    'off': 50
-    any_death: 0
-    lost_souls: 0
-
-  death_link_amnesty:
-    # How many times you have to die before sending a death link.
-    #
-    # You can define additional values between the minimum and maximum values.
-    # Minimum value is 1
-    # Maximum value is 30
-    1: 50
-    random: 0
-    random-low: 0 # random value weighted towards lower values
-    random-high: 0 # random value weighted towards higher values
-    random-range-1-30: 0 # random value between 1 and 30
+    'false': 50
+    'true': 0
 
   enable_dlc:
     # Include DLC locations, items, and enemies in the randomized pools.
     # 
     # To use this option, you must own both the "Ashes of Ariandel" and the "Ringed City" DLCs.
-    'false': 0
-    'true': 50
+    'false': 50
+    'true': 0
 
   enable_ngp:
     # Include items and locations exclusive to NG+ cycles.
-    # 
-    # These locations appear in normal NG runs. You don't have to enter NG+ to reach them.
     'false': 50
     'true': 0
 
@@ -170,6 +121,18 @@ Dark Souls III:
     # Require starting equipment to be usable one-handed.
     'false': 0
     'true': 50
+
+  auto_equip:
+    # Automatically equips any received armor or left/right weapons.
+    'false': 50
+    'true': 0
+
+  lock_equip:
+    # Lock the equipment slots so you cannot change your armor or your left/right weapons.
+    # 
+    # Works great with the Auto-equip option.
+    'false': 50
+    'true': 0
 
   no_equip_load:
     # Disable the equip load constraint from the game.
@@ -390,8 +353,10 @@ Dark Souls III:
   random_enemy_preset:
     # The YAML preset for the static enemy randomizer.
     # 
-    # See the online enemy randomization documentation for all available options.
+    # See the static randomizer documentation in `randomizer\presets\README.txt` for details.
     # Include this as nested YAML. For example:
+    # 
+    # .. code-block:: YAML
     # 
     #   random_enemy_preset:
     #     RemoveSource: Ancient Wyvern; Darkeater Midir
@@ -403,7 +368,7 @@ Dark Souls III:
   ###########################
   exclude_locations:
     # Prevent these locations from having an important item.
-    ['Small Souls', 'Small Crystal Lizards', 'Hidden', 'Upgrade', 'Miscellaneous']
+    ['Small Crystal Lizards', 'Miscellaneous', 'Hidden', 'Upgrade', 'Small Souls']
 
   excluded_location_behavior:
     # How to choose items for excluded locations in DS3.

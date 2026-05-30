@@ -89,6 +89,7 @@ DLCQuest:
     low: 0 # equivalent to 5
     normal: 0 # equivalent to 20
     high: 0 # equivalent to 50
+    surprise: 0 # equivalent to -1
 
   #####################
   # Tedious and Grind #
