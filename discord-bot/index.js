@@ -71,6 +71,15 @@ client.once('ready', async () => {
     } catch (err) {
         console.error('Failed to start Archipelago module:', err);
     }
+
+    // Pre-warm murder mystery received items cache so /investigate autocomplete
+    // shows correct statuses immediately on startup
+    const mm = require('./murder-mystery.js');
+    if (mm.isGameActive()) {
+        mm.readReceivedItems().catch(err =>
+            console.error('Failed to pre-warm murder mystery cache:', err)
+        );
+    }
 });
 
 process.on('SIGINT', () => {
