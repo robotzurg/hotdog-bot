@@ -206,12 +206,19 @@ async function mmConnect() {
     return client;
 }
 
+let receivedItemsCache = null;
+
 async function readReceivedItems() {
     const client = await mmConnect();
     await new Promise(r => setTimeout(r, 4000));
     const received = [...client.items.received];
     try { client.socket.disconnect(); } catch (_) {}
+    receivedItemsCache = received;
     return received;
+}
+
+function getLastReceivedItems() {
+    return receivedItemsCache;
 }
 
 async function sendChecks(locationIds) {
@@ -441,6 +448,7 @@ module.exports = {
 
     // AP
     readReceivedItems,
+    getLastReceivedItems,
     sendChecks,
     sendGoal,
 

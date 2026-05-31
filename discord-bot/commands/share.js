@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const mm = require('../murder-mystery.js');
-const { PERSONS } = require('../murdermystery-ap-info.js');
+const { PERSONS, PLAYER_DISCORD_IDS } = require('../murdermystery-ap-info.js');
 
 const PLAYER_CHOICES = PERSONS.map(p => ({ name: p, value: p }));
 
@@ -148,5 +148,19 @@ module.exports = {
         await interaction.editReply(
             `Shared **${hint.sourcePlayer === player ? hint.template : `${hint.template} (originally ${hint.sourcePlayer}'s)`}** with **${targetPlayer}**.`
         );
+
+        const targetDiscordId = PLAYER_DISCORD_IDS[targetPlayer];
+        if (targetDiscordId) {
+            try {
+                const targetUser = await interaction.client.users.fetch(targetDiscordId);
+                const hintText = mm.getHintText(hint.sourcePlayer, hint.template);
+                const label = hint.sourcePlayer === player
+                    ? hint.template
+                    : `${hint.template} (originally ${hint.sourcePlayer}'s)`;
+                await targetUser.send(`**${player}** shared a clue with you!\n## ${label}\n${hintText}`);
+            } catch (err) {
+                console.error(`share: failed to DM ${targetPlayer}:`, err);
+            }
+        }
     },
 };

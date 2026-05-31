@@ -2,8 +2,6 @@ const { SlashCommandBuilder } = require('discord.js');
 const mm = require('../murder-mystery.js');
 const { HINT_TEMPLATES } = require('../murdermystery-ap-info.js');
 
-const SLOT_CHOICES = HINT_TEMPLATES.map(t => ({ name: t, value: t }));
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('investigate')
@@ -12,7 +10,28 @@ module.exports = {
             option.setName('slot')
                 .setDescription('Which clue slot to investigate')
                 .setRequired(true)
-                .addChoices(...SLOT_CHOICES)),
+                .setAutocomplete(true)),
+
+    async autocomplete(interaction) {
+        const focused = interaction.options.getFocused().toLowerCase();
+        const player = mm.resolveDiscordUser(interaction.user.id);
+        if (!player) { await interaction.respond([]); return; }
+
+        const cached = mm.getLastReceivedItems();
+        const board = cached ? mm.buildClueBoard(player, cached) : null;
+        const options = HINT_TEMPLATES.map(template => {
+            if (board) {
+                const clue = board.clues.find(c => c.template === template);
+                if (clue?.status === 'INVESTIGATED') return { name: `${template} — investigated`, value: template };
+                if (clue?.status === 'LOCKED')       return { name: `${template} — locked`, value: template };
+                return { name: `${template} — available`, value: template };
+            }
+            return { name: template, value: template };
+        });
+
+        const filtered = options.filter(o => o.name.toLowerCase().includes(focused));
+        await interaction.respond(filtered.slice(0, 25));
+    },
 
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true });
