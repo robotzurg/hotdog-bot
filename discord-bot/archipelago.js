@@ -227,7 +227,7 @@ async function start(discordClient, db) {
             console.error('Error recording item to ap_history:', err);
         }
 
-        // Increment cached check count for the sender slot
+        // Increment cached check count and invalidate tracker cache for the sender slot
         if (senderName) {
             try {
                 const counts = db.archipelago.get('check_counts') ?? {};
@@ -237,6 +237,12 @@ async function start(discordClient, db) {
                 }
             } catch (err) {
                 console.error('Error updating check count:', err);
+            }
+            try {
+                const { invalidateSlotCache } = require('./tracker.js');
+                invalidateSlotCache(senderName);
+            } catch (err) {
+                console.error('Error invalidating tracker cache:', err);
             }
         }
 

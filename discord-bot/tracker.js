@@ -43,6 +43,13 @@ const noisePatterns = [
 
 const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
 
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const trackerCache = new Map(); // slotName -> { result, expiresAt }
+
+function invalidateSlotCache(slotName) {
+    trackerCache.delete(slotName);
+}
+
 function processItems(rawItems, finishedGames = []) {
     const isFinishedHint = (v) => {
         const m = v.match(hintRegex);
@@ -69,6 +76,11 @@ function processItems(rawItems, finishedGames = []) {
 }
 
 function runTrackerForSlot(slotName, port, finishedGames = []) {
+    const cached = trackerCache.get(slotName);
+    if (cached && Date.now() < cached.expiresAt) {
+        return Promise.resolve(cached.result);
+    }
+
     return new Promise((resolve) => {
         const launcherScript = path.join(__dirname, '../Archipelago-0.6.6/Launcher.py');
         const pythonPath = process.platform === 'win32'
@@ -118,7 +130,11 @@ function runTrackerForSlot(slotName, port, finishedGames = []) {
             console.error(`[${slotName}] stderr:`, data.toString('utf8'));
         });
 
-        pythonProcess.on('close', () => resolve({ slotName, ...processItems([...new Set(rawItems)], finishedGames) }));
+        pythonProcess.on('close', () => {
+            const result = { slotName, ...processItems([...new Set(rawItems)], finishedGames) };
+            trackerCache.set(slotName, { result, expiresAt: Date.now() + CACHE_TTL });
+            resolve(result);
+        });
         pythonProcess.on('error', (err) => {
             console.error(`[${slotName}] spawn error:`, err);
             resolve({ slotName, items: [], hintedCount: 0 });
@@ -140,4 +156,4 @@ async function fetchCheckCounts(slotName, port) {
     }
 }
 
-module.exports = { runTrackerForSlot, fetchCheckCounts };
+module.exports = { runTrackerForSlot, fetchCheckCounts, invalidateSlotCache };

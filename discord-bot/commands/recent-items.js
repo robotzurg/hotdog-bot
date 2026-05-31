@@ -88,8 +88,8 @@ module.exports = {
             const other = role === 'received'
                 ? (e.sender ? `from ${mapEmote(e.sender)}` : '')
                 : `to ${mapEmote(e.receiver)}`;
-            const main = `- **${e.itemName}** ${flagEmote} ${other}`;
-            return e.locationName ? [main, `-# at ${e.locationName} ${ts}`] : [main];
+            const main = `- **${e.itemName}** ${flagEmote} ${other} ${ts}`;
+            return [main];
         });
 
         const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
