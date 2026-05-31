@@ -31,6 +31,12 @@ const noisePatterns = [
     /^SlotData version:/,
     /^Server APWorld Version:/,
     /^This APWorld Version:/,
+    /^P\d+ Weights:/,
+    /^Generating for \d+ players/,
+    /\(Team #\d+\) tracking .+ has joined/,
+    /^Now that you are connected/,
+    /you can use !help to list commands/,
+    /you may have additional local commands/,
 ];
 
 const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
