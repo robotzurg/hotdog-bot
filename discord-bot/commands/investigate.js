@@ -22,9 +22,9 @@ module.exports = {
         const options = HINT_TEMPLATES.map(template => {
             if (board) {
                 const clue = board.clues.find(c => c.template === template);
-                if (clue?.status === 'INVESTIGATED') return { name: `${template} — investigated`, value: template };
-                if (clue?.status === 'LOCKED')       return { name: `${template} — locked`, value: template };
-                return { name: `${template} — available`, value: template };
+                if (clue?.status === 'INVESTIGATED') return { name: `${template} — Investigated`, value: template };
+                if (clue?.status === 'LOCKED')       return { name: `${template} — Locked`, value: template };
+                return { name: `${template} — Available`, value: template };
             }
             return { name: template, value: template };
         });
