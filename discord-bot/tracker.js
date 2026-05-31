@@ -43,8 +43,7 @@ const noisePatterns = [
 
 const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
 
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-const trackerCache = new Map(); // slotName -> { result, expiresAt }
+const trackerCache = new Map(); // slotName -> result
 
 function invalidateSlotCache(slotName) {
     trackerCache.delete(slotName);
@@ -76,9 +75,8 @@ function processItems(rawItems, finishedGames = []) {
 }
 
 function runTrackerForSlot(slotName, port, finishedGames = []) {
-    const cached = trackerCache.get(slotName);
-    if (cached && Date.now() < cached.expiresAt) {
-        return Promise.resolve(cached.result);
+    if (trackerCache.has(slotName)) {
+        return Promise.resolve(trackerCache.get(slotName));
     }
 
     return new Promise((resolve) => {
@@ -132,7 +130,7 @@ function runTrackerForSlot(slotName, port, finishedGames = []) {
 
         pythonProcess.on('close', () => {
             const result = { slotName, ...processItems([...new Set(rawItems)], finishedGames) };
-            trackerCache.set(slotName, { result, expiresAt: Date.now() + CACHE_TTL });
+            trackerCache.set(slotName, result);
             resolve(result);
         });
         pythonProcess.on('error', (err) => {
