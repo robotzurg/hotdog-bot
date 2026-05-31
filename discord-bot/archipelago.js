@@ -241,6 +241,7 @@ async function start(discordClient, db) {
             try {
                 const { invalidateSlotCache } = require('./tracker.js');
                 invalidateSlotCache(senderName);
+                if (receiverName && receiverName !== senderName) invalidateSlotCache(receiverName);
             } catch (err) {
                 console.error('Error invalidating tracker cache:', err);
             }
