@@ -28,6 +28,9 @@ const noisePatterns = [
     /^Extra Items Needed:/,
     /^vanilla fork$/,
     / has more items than locations\. \d+ non-progression items will be removed at random/,
+    /^SlotData version:/,
+    /^Server APWorld Version:/,
+    /^This APWorld Version:/,
 ];
 
 const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
@@ -107,7 +110,7 @@ function runTrackerForSlot(slotName, port, finishedGames = []) {
             console.error(`[${slotName}] stderr:`, data.toString('utf8'));
         });
 
-        pythonProcess.on('close', () => resolve({ slotName, ...processItems(rawItems, finishedGames) }));
+        pythonProcess.on('close', () => resolve({ slotName, ...processItems([...new Set(rawItems)], finishedGames) }));
         pythonProcess.on('error', (err) => {
             console.error(`[${slotName}] spawn error:`, err);
             resolve({ slotName, items: [], hintedCount: 0 });
