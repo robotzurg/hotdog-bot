@@ -13,7 +13,7 @@ const PLAYER_SLOTS = {
     'Nate':   ['NateBloons', 'NateCeleste', 'NateCube', 'NateDoor', 'NateFE', 'NateLies', 'NateMario', 'NateMini', 'NateOri', 'NateRefunct', 'NateSols', 'NateSpire'],
     'Raveel': ['Raveel3H', 'RaveelBalatro', 'RaveelCiVI', 'RaveelGenshin', 'RaveelKartWii', 'RaveelKong', 'RaveelKong2', 'RaveelResort'],
     'Vlad':   ['vlad-blas', 'vlad-chess', 'vlad-crab', 'vlad-dd', 'vlad-elem', 'vlad-hike', 'vlad-hk', 'vlad-simp', 'vlad-sub', 'vlad-ultra', 'vlad-wit'],
-    'Yacob':  ['Yacob-2077', 'Yacob-C', 'Yacob-DS3', 'Yacob-GH3', 'Yacob-LIES', 'Yacob-LOR', 'Yacob-MEGAMIX', 'Yacob-PKMN', 'Yacob-REPO', 'Yacob-STAR'],
+    'Yacob':  ['Yacob-2077', 'Yacob-C', 'Yacob-DS3', 'Yacob-GH3', 'Yacob-LIES', 'Yacob-LOR', 'Yacob-MIKU', 'Yacob-PKMN', 'Yacob-REPO', 'Yacob-STAR'],
 };
 
 const PLAYERS = [

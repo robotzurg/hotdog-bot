@@ -116,7 +116,7 @@ const SLOT_EMOTES = {
     'Yacob-GH3':        '<:gh3:1508530695352488006>',
     'Yacob-LIES':       '<:liesofp:1487560880269951057>',
     'Yacob-LOR':        '<:libraryofruina:1508530697348845768>',
-    'Yacob-MEGAMIX':    '<:divamegamix:1426636473150734437>',
+    'Yacob-MIKU':       '<:divamegamix:1426636473150734437>',
     'Yacob-PKMN':       '<:pkmnblack:1426636870363643995>',
     'Yacob-REPO':       '<:repo:1469451338936090848>',
     'Yacob-STAR':       '<:stardew:1423880027707015199>',
