@@ -265,9 +265,24 @@ async function start(discordClient, db) {
 
     archClient.deathLink.on('deathReceived', async (source, _time, cause) => {
         try {
-            const causeParts = cause ? cause.split(' ').map(str => mapEmoji(str)) : null;
-            if (causeParts) causeParts[0] = `**${causeParts[0]}**`;
-            const message = causeParts ? `🪦 ${causeParts.join(' ')}` : `🪦 **${mapEmoji(source)}** has died.`;
+            let message;
+            if (cause) {
+                const causeParts = cause.split(' ').map(str => mapEmoji(str));
+                const firstWordIsSource = cause.split(' ')[0] === source;
+                const sourceInCause = cause.includes(source);
+                if (firstWordIsSource) {
+                    causeParts[0] = `**${causeParts[0]}**`;
+                    message = `🪦 ${causeParts.join(' ')}`;
+                } else if (sourceInCause) {
+                    const boldedSource = `**${mapEmoji(source)}**`;
+                    const processedCause = cause.replace(source, boldedSource);
+                    message = `🪦 ${processedCause.split(' ').map(str => str.includes('**') ? str : mapEmoji(str)).join(' ')}`;
+                } else {
+                    message = `🪦 **${mapEmoji(source)}** ${causeParts.join(' ')}`;
+                }
+            } else {
+                message = `🪦 **${mapEmoji(source)}** has died.`;
+            }
             if (discordChannel && discordClient.isReady()) {
                 await discordChannel.send({ content: message });
             } else {
