@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_EMOTES } = require('../slots.js');
+const { PLAYER_SLOTS } = require('../players.js');
 
 const FLAG_EMOTES = {
     Progression: '<:Progression:1495879488716668988>',
@@ -34,7 +35,12 @@ const mapEmote = (name) => {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('recent-items-all')
-        .setDescription('View item history across all slots')
+        .setDescription('View item history for all slots of a player')
+        .addStringOption(option =>
+            option.setName('player')
+                .setDescription('The player whose slots to check')
+                .setRequired(true)
+                .setAutocomplete(true))
         .addStringOption(option =>
             option.setName('timeframe')
                 .setDescription('How far back to look (default: last hour)')
@@ -52,11 +58,24 @@ module.exports = {
                 ))
         .setDMPermission(false),
 
+    async autocomplete(interaction) {
+        const focused = interaction.options.getFocused().toLowerCase();
+        const filtered = Object.keys(PLAYER_SLOTS).filter(n => n.toLowerCase().includes(focused));
+        await interaction.respond(filtered.slice(0, 25).map(n => ({ name: n, value: n })));
+    },
+
     async execute(interaction) {
         await interaction.deferReply();
 
+        const player     = interaction.options.getString('player');
         const timeframe  = interaction.options.getString('timeframe') ?? '1h';
         const typeFilter = interaction.options.getString('type');
+
+        const slots = PLAYER_SLOTS[player];
+        if (!slots) {
+            await interaction.editReply(`Unknown player: **${player}**`);
+            return;
+        }
 
         const tfConfig = TIMEFRAMES.find(t => t.value === timeframe);
         const cutoff = tfConfig?.ms ? Date.now() - tfConfig.ms : null;
@@ -69,37 +88,37 @@ module.exports = {
             if (e.type !== 'item') return false;
             if (cutoff && e.timestamp < cutoff) return false;
             if (typeFilter && e.group !== typeFilter) return false;
-            return true;
+            return slots.includes(e.receiver);
         }).reverse();
 
         if (allEntries.length === 0) {
-            await interaction.editReply(`## Recent Items Overview -${timeLabel}${typeSuffix}\n*No items found.*`);
+            await interaction.editReply(`## ${player} - Recent Items - ${timeLabel}${typeSuffix}\n*No items found.*`);
             return;
         }
 
-        // Group by receiver for per-slot views
+        // Group by receiver, preserving player slot order
         const bySlot = {};
+        for (const slot of slots) bySlot[slot] = [];
         for (const e of allEntries) {
-            const slot = e.receiver ?? '?';
-            if (!bySlot[slot]) bySlot[slot] = [];
-            bySlot[slot].push(e);
+            if (bySlot[e.receiver]) bySlot[e.receiver].push(e);
         }
-        const slotsWithItems = Object.keys(bySlot).sort();
+        const playerSlots = slots.filter(s => bySlot[s].length > 0);
 
         // --- builders ---
 
         const buildOverview = () => {
-            const lines = [`## Recent Items Overview -${timeLabel}${typeSuffix}`];
-            for (const slot of slotsWithItems) {
+            const lines = [`## ${player} - Recent Items Overview - ${timeLabel}${typeSuffix}`];
+            for (const slot of slots) {
                 const emote = SLOT_EMOTES[slot] ?? '';
-                const count = bySlot[slot].length;
-                lines.push(`- ${emote ? `${slot} ${emote}` : `**${slot}**`}: **${count}** item${count !== 1 ? 's' : ''}`);
+                const count = bySlot[slot]?.length ?? 0;
+                const label = emote ? `${slot} ${emote}` : `**${slot}**`;
+                lines.push(`- ${label}: **${count}** item${count !== 1 ? 's' : ''}`);
             }
             return lines.join('\n');
         };
 
         const buildSelectMenu = (selectedSlot = null) => {
-            const options = slotsWithItems.slice(0, 25).map(slot => {
+            const options = playerSlots.slice(0, 25).map(slot => {
                 const count = bySlot[slot].length;
                 const emoji = parseEmote(SLOT_EMOTES[slot]);
                 const option = new StringSelectMenuOptionBuilder()
@@ -130,7 +149,7 @@ module.exports = {
             const flagEmote = FLAG_EMOTES[e.group] ?? '';
             const sender   = e.sender   ? mapEmote(e.sender)   : '?';
             const receiver = e.receiver ? mapEmote(e.receiver) : '?';
-            return `- **${e.itemName}** ${flagEmote} ${sender} → ${receiver} ${ts}`;
+            return `- **${e.itemName}** ${flagEmote} ${sender} -> ${receiver} ${ts}`;
         });
 
         const buildDetailContent = (slot, page) => {
@@ -139,7 +158,7 @@ module.exports = {
             const slice = lines.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
             const emote = SLOT_EMOTES[slot] ? ` ${SLOT_EMOTES[slot]}` : '';
             return {
-                content: `## ${slot}${emote} -${timeLabel}${typeSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`,
+                content: `## ${slot}${emote} - ${timeLabel}${typeSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`,
                 totalPages,
             };
         };
@@ -149,7 +168,7 @@ module.exports = {
             const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
             const slice = lines.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
             return {
-                content: `## All Items -${timeLabel}${typeSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`,
+                content: `## ${player} - All Items - ${timeLabel}${typeSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`,
                 totalPages,
             };
         };
@@ -186,8 +205,10 @@ module.exports = {
 
         const response = await interaction.editReply({
             content: buildOverview(),
-            components: overviewComponents(),
+            components: playerSlots.length > 0 ? overviewComponents() : [],
         });
+
+        if (playerSlots.length === 0) return;
 
         let mode = 'overview';
         let currentSlot = null;
