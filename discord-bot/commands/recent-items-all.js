@@ -43,7 +43,7 @@ module.exports = {
                 .setAutocomplete(true))
         .addStringOption(option =>
             option.setName('timeframe')
-                .setDescription('How far back to look (default: last hour)')
+                .setDescription('How far back to look (default: all time)')
                 .setRequired(false)
                 .addChoices(...TIMEFRAMES.map(t => ({ name: t.name, value: t.value }))))
         .addStringOption(option =>
@@ -68,7 +68,7 @@ module.exports = {
         await interaction.deferReply();
 
         const player     = interaction.options.getString('player');
-        const timeframe  = interaction.options.getString('timeframe') ?? '1h';
+        const timeframe  = interaction.options.getString('timeframe') ?? 'all';
         const typeFilter = interaction.options.getString('type');
 
         const slots = PLAYER_SLOTS[player];
