@@ -31,6 +31,7 @@ const noisePatterns = [
     /^SlotData version:/,
     /^Server APWorld Version:/,
     /^This APWorld Version:/,
+    /^Getting UT slot data/,
     /^P\d+ Weights:/,
     /^Generating for \d+ players?/,
     /^Hod Floor$/,
