@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_EMOTES } = require('../slots.js');
 
@@ -19,6 +19,12 @@ const TIMEFRAMES = [
 ];
 
 const ITEMS_PER_PAGE = 15;
+
+function parseEmote(emoteStr) {
+    if (!emoteStr) return null;
+    const match = emoteStr.match(/^<:(\w+):(\d+)>$/);
+    return match ? { name: match[1], id: match[2] } : null;
+}
 
 const mapEmote = (name) => {
     const emote = SLOT_EMOTES[name];
@@ -54,61 +60,180 @@ module.exports = {
 
         const tfConfig = TIMEFRAMES.find(t => t.value === timeframe);
         const cutoff = tfConfig?.ms ? Date.now() - tfConfig.ms : null;
+        const typeSuffix = typeFilter ? ` - ${typeFilter} ${FLAG_EMOTES[typeFilter]}` : '';
+        const timeLabel = tfConfig?.name ?? 'All time';
 
         const history = db.archipelago.get('ap_history') ?? [];
 
-        const entries = history.filter(e => {
+        const allEntries = history.filter(e => {
             if (e.type !== 'item') return false;
             if (cutoff && e.timestamp < cutoff) return false;
             if (typeFilter && e.group !== typeFilter) return false;
             return true;
         }).reverse();
 
-        const typeSuffix = typeFilter ? ` — ${typeFilter} ${FLAG_EMOTES[typeFilter]}` : '';
-        const header = `## All Items - ${tfConfig?.name ?? 'All time'}${typeSuffix}`;
-
-        if (entries.length === 0) {
-            await interaction.editReply(`${header}\n*No items found.*`);
+        if (allEntries.length === 0) {
+            await interaction.editReply(`## Recent Items Overview -${timeLabel}${typeSuffix}\n*No items found.*`);
             return;
         }
 
-        const lines = entries.map(e => {
+        // Group by receiver for per-slot views
+        const bySlot = {};
+        for (const e of allEntries) {
+            const slot = e.receiver ?? '?';
+            if (!bySlot[slot]) bySlot[slot] = [];
+            bySlot[slot].push(e);
+        }
+        const slotsWithItems = Object.keys(bySlot).sort();
+
+        // --- builders ---
+
+        const buildOverview = () => {
+            const lines = [`## Recent Items Overview -${timeLabel}${typeSuffix}`];
+            for (const slot of slotsWithItems) {
+                const emote = SLOT_EMOTES[slot] ?? '';
+                const count = bySlot[slot].length;
+                lines.push(`- ${emote ? `${slot} ${emote}` : `**${slot}**`}: **${count}** item${count !== 1 ? 's' : ''}`);
+            }
+            return lines.join('\n');
+        };
+
+        const buildSelectMenu = (selectedSlot = null) => {
+            const options = slotsWithItems.slice(0, 25).map(slot => {
+                const count = bySlot[slot].length;
+                const emoji = parseEmote(SLOT_EMOTES[slot]);
+                const option = new StringSelectMenuOptionBuilder()
+                    .setLabel(slot)
+                    .setValue(slot)
+                    .setDescription(`${count} item${count !== 1 ? 's' : ''}`)
+                    .setDefault(slot === selectedSlot);
+                if (emoji) option.setEmoji(emoji);
+                return option;
+            });
+            return new ActionRowBuilder().addComponents(
+                new StringSelectMenuBuilder()
+                    .setCustomId('slot_select')
+                    .setPlaceholder('Select a slot to view details...')
+                    .addOptions(options)
+            );
+        };
+
+        const slotLines = (slot) => bySlot[slot].map(e => {
             const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
             const flagEmote = FLAG_EMOTES[e.group] ?? '';
             const sender = e.sender ? mapEmote(e.sender) : '?';
+            return `- **${e.itemName}** ${flagEmote} from ${sender} ${ts}`;
+        });
+
+        const combinedLines = () => allEntries.map(e => {
+            const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
+            const flagEmote = FLAG_EMOTES[e.group] ?? '';
+            const sender   = e.sender   ? mapEmote(e.sender)   : '?';
             const receiver = e.receiver ? mapEmote(e.receiver) : '?';
             return `- **${e.itemName}** ${flagEmote} ${sender} → ${receiver} ${ts}`;
         });
 
-        const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
-        let currentPage = 0;
-
-        const generatePage = (page) => {
+        const buildDetailContent = (slot, page) => {
+            const lines = slotLines(slot);
+            const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
             const slice = lines.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
-            return `${header}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${entries.length}** items`;
+            const emote = SLOT_EMOTES[slot] ? ` ${SLOT_EMOTES[slot]}` : '';
+            return {
+                content: `## ${slot}${emote} -${timeLabel}${typeSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`,
+                totalPages,
+            };
         };
 
-        const generateButtons = (page) => new ActionRowBuilder().addComponents(
-            new ButtonBuilder().setCustomId('first').setLabel('⏮️ First').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
-            new ButtonBuilder().setCustomId('prev').setLabel('◀️ Previous').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
-            new ButtonBuilder().setCustomId('next').setLabel('Next ▶️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
-            new ButtonBuilder().setCustomId('last').setLabel('Last ⏭️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
-        );
+        const buildCombinedContent = (page) => {
+            const lines = combinedLines();
+            const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
+            const slice = lines.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
+            return {
+                content: `## All Items -${timeLabel}${typeSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`,
+                totalPages,
+            };
+        };
 
-        if (totalPages <= 1) {
-            await interaction.editReply(`${header}\n${lines.join('\n')}\n-# **${entries.length}** items`);
-            return;
-        }
+        // --- component rows ---
 
-        const response = await interaction.editReply({ content: generatePage(0), components: [generateButtons(0)] });
+        const overviewComponents = () => [
+            buildSelectMenu(),
+            new ActionRowBuilder().addComponents(
+                new ButtonBuilder().setCustomId('combined').setLabel('Combined View').setStyle(ButtonStyle.Secondary),
+            ),
+        ];
+
+        const detailComponents = (slot, page, totalPages) => [
+            buildSelectMenu(slot),
+            new ActionRowBuilder().addComponents(
+                new ButtonBuilder().setCustomId('back_overview').setLabel('Overview').setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId('combined').setLabel('Combined View').setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId('prev').setLabel('◀️ Prev').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
+                new ButtonBuilder().setCustomId('next').setLabel('Next ▶️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
+            ),
+        ];
+
+        const combinedComponents = (page, totalPages) => [
+            new ActionRowBuilder().addComponents(
+                new ButtonBuilder().setCustomId('back_overview').setLabel('Overview').setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId('prev').setLabel('◀️ Prev').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
+                new ButtonBuilder().setCustomId('next').setLabel('Next ▶️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
+                new ButtonBuilder().setCustomId('last').setLabel('Last ⏭️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
+            ),
+        ];
+
+        // --- initial render ---
+
+        const response = await interaction.editReply({
+            content: buildOverview(),
+            components: overviewComponents(),
+        });
+
+        let mode = 'overview';
+        let currentSlot = null;
+        let currentPage = 0;
+
         const collector = response.createMessageComponentCollector({ time: 600000 });
 
         collector.on('collect', async i => {
-            if (i.customId === 'first') currentPage = 0;
-            else if (i.customId === 'prev') currentPage = Math.max(0, currentPage - 1);
-            else if (i.customId === 'next') currentPage = Math.min(totalPages - 1, currentPage + 1);
-            else if (i.customId === 'last') currentPage = totalPages - 1;
-            await i.update({ content: generatePage(currentPage), components: [generateButtons(currentPage)] });
+            if (i.customId === 'slot_select') {
+                mode = 'slot';
+                currentSlot = i.values[0];
+                currentPage = 0;
+                const { content, totalPages } = buildDetailContent(currentSlot, currentPage);
+                await i.update({ content, components: detailComponents(currentSlot, currentPage, totalPages) });
+
+            } else if (i.customId === 'back_overview') {
+                mode = 'overview';
+                currentSlot = null;
+                currentPage = 0;
+                await i.update({ content: buildOverview(), components: overviewComponents() });
+
+            } else if (i.customId === 'combined') {
+                mode = 'combined';
+                currentSlot = null;
+                currentPage = 0;
+                const { content, totalPages } = buildCombinedContent(currentPage);
+                await i.update({ content, components: combinedComponents(currentPage, totalPages) });
+
+            } else if (i.customId === 'prev' || i.customId === 'next' || i.customId === 'last') {
+                if (mode === 'slot' && currentSlot) {
+                    const lines = slotLines(currentSlot);
+                    const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
+                    if (i.customId === 'prev') currentPage = Math.max(0, currentPage - 1);
+                    else currentPage = Math.min(totalPages - 1, currentPage + 1);
+                    const { content } = buildDetailContent(currentSlot, currentPage);
+                    await i.update({ content, components: detailComponents(currentSlot, currentPage, totalPages) });
+                } else if (mode === 'combined') {
+                    const lines = combinedLines();
+                    const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
+                    if (i.customId === 'prev') currentPage = Math.max(0, currentPage - 1);
+                    else if (i.customId === 'last') currentPage = totalPages - 1;
+                    else currentPage = Math.min(totalPages - 1, currentPage + 1);
+                    const { content } = buildCombinedContent(currentPage);
+                    await i.update({ content, components: combinedComponents(currentPage, totalPages) });
+                }
+            }
         });
 
         collector.on('end', async () => {
