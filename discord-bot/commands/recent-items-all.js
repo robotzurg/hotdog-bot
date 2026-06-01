@@ -19,7 +19,10 @@ const TIMEFRAMES = [
     { name: 'All time',        value: 'all', ms: null },
 ];
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 10;
+const MAX_CONTENT = 1990;
+
+const safeContent = (str) => str.length > MAX_CONTENT ? str.slice(0, MAX_CONTENT - 3) + '...' : str;
 
 function parseEmote(emoteStr) {
     if (!emoteStr) return null;
@@ -96,29 +99,58 @@ module.exports = {
             return;
         }
 
-        // Group by receiver, preserving player slot order
+        // Group by receiver for slot drill-down
         const bySlot = {};
         for (const slot of slots) bySlot[slot] = [];
         for (const e of allEntries) {
             if (bySlot[e.receiver]) bySlot[e.receiver].push(e);
         }
-        const playerSlots = slots.filter(s => bySlot[s].length > 0);
+        const slotsWithItems = slots.filter(s => bySlot[s].length > 0);
 
-        // --- builders ---
+        // --- line builders ---
 
-        const buildOverview = () => {
-            const lines = [`## ${player} - Recent Items Overview - ${timeLabel}${typeSuffix}`];
-            for (const slot of slots) {
-                const emote = SLOT_EMOTES[slot] ?? '';
-                const count = bySlot[slot]?.length ?? 0;
-                const label = emote ? `${slot} ${emote}` : `**${slot}**`;
-                lines.push(`- ${label}: **${count}** item${count !== 1 ? 's' : ''}`);
-            }
-            return lines.join('\n');
+        const combinedLines = () => allEntries.map(e => {
+            const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
+            const flagEmote = FLAG_EMOTES[e.group] ?? '';
+            const sender   = e.sender   ? mapEmote(e.sender)   : '?';
+            const receiver = e.receiver ? mapEmote(e.receiver) : '?';
+            return `- **${e.itemName}** ${flagEmote} ${sender} -> ${receiver} ${ts}`;
+        });
+
+        const slotLines = (slot) => bySlot[slot].map(e => {
+            const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
+            const flagEmote = FLAG_EMOTES[e.group] ?? '';
+            const sender = e.sender ? mapEmote(e.sender) : '?';
+            return `- **${e.itemName}** ${flagEmote} from ${sender} ${ts}`;
+        });
+
+        // --- content builders ---
+
+        const buildCombinedContent = (page) => {
+            const lines = combinedLines();
+            const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
+            const slice = lines.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
+            return {
+                content: safeContent(`## ${player} - All Items - ${timeLabel}${typeSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`),
+                totalPages,
+            };
         };
 
+        const buildDetailContent = (slot, page) => {
+            const lines = slotLines(slot);
+            const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
+            const slice = lines.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
+            const emote = SLOT_EMOTES[slot] ? ` ${SLOT_EMOTES[slot]}` : '';
+            return {
+                content: safeContent(`## ${slot}${emote} - ${timeLabel}${typeSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`),
+                totalPages,
+            };
+        };
+
+        // --- component builders ---
+
         const buildSelectMenu = (selectedSlot = null) => {
-            const options = playerSlots.slice(0, 25).map(slot => {
+            const options = slotsWithItems.slice(0, 25).map(slot => {
                 const count = bySlot[slot].length;
                 const emoji = parseEmote(SLOT_EMOTES[slot]);
                 const option = new StringSelectMenuOptionBuilder()
@@ -137,82 +169,37 @@ module.exports = {
             );
         };
 
-        const slotLines = (slot) => bySlot[slot].map(e => {
-            const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
-            const flagEmote = FLAG_EMOTES[e.group] ?? '';
-            const sender = e.sender ? mapEmote(e.sender) : '?';
-            return `- **${e.itemName}** ${flagEmote} from ${sender} ${ts}`;
-        });
-
-        const combinedLines = () => allEntries.map(e => {
-            const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
-            const flagEmote = FLAG_EMOTES[e.group] ?? '';
-            const sender   = e.sender   ? mapEmote(e.sender)   : '?';
-            const receiver = e.receiver ? mapEmote(e.receiver) : '?';
-            return `- **${e.itemName}** ${flagEmote} ${sender} -> ${receiver} ${ts}`;
-        });
-
-        const buildDetailContent = (slot, page) => {
-            const lines = slotLines(slot);
-            const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
-            const slice = lines.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
-            const emote = SLOT_EMOTES[slot] ? ` ${SLOT_EMOTES[slot]}` : '';
-            return {
-                content: `## ${slot}${emote} - ${timeLabel}${typeSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`,
-                totalPages,
-            };
-        };
-
-        const buildCombinedContent = (page) => {
-            const lines = combinedLines();
-            const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
-            const slice = lines.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
-            return {
-                content: `## ${player} - All Items - ${timeLabel}${typeSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`,
-                totalPages,
-            };
-        };
-
-        // --- component rows ---
-
-        const overviewComponents = () => [
+        const combinedComponents = (page, totalPages) => [
             buildSelectMenu(),
             new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setCustomId('combined').setLabel('Combined View').setStyle(ButtonStyle.Secondary),
-            ),
-        ];
-
-        const detailComponents = (slot, page, totalPages) => [
-            buildSelectMenu(slot),
-            new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setCustomId('back_overview').setLabel('Overview').setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder().setCustomId('combined').setLabel('Combined View').setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder().setCustomId('prev').setLabel('◀️ Prev').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
-                new ButtonBuilder().setCustomId('next').setLabel('Next ▶️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
-            ),
-        ];
-
-        const combinedComponents = (page, totalPages) => [
-            new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setCustomId('back_overview').setLabel('Overview').setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder().setCustomId('prev').setLabel('◀️ Prev').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
                 new ButtonBuilder().setCustomId('next').setLabel('Next ▶️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
                 new ButtonBuilder().setCustomId('last').setLabel('Last ⏭️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
             ),
         ];
 
-        // --- initial render ---
+        const detailComponents = (slot, page, totalPages) => [
+            buildSelectMenu(slot),
+            new ActionRowBuilder().addComponents(
+                new ButtonBuilder().setCustomId('back_combined').setLabel('All Items').setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId('prev').setLabel('◀️ Prev').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
+                new ButtonBuilder().setCustomId('next').setLabel('Next ▶️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
+            ),
+        ];
 
-        const response = await interaction.editReply({
-            content: buildOverview(),
-            components: playerSlots.length > 0 ? overviewComponents() : [],
-        });
+        // --- initial render (combined) ---
 
-        if (playerSlots.length === 0) return;
-
-        let mode = 'overview';
+        let mode = 'combined';
         let currentSlot = null;
         let currentPage = 0;
+
+        const { content: initContent, totalPages: initTotal } = buildCombinedContent(0);
+        const response = await interaction.editReply({
+            content: initContent,
+            components: slotsWithItems.length > 0 ? combinedComponents(0, initTotal) : [],
+        });
+
+        if (slotsWithItems.length === 0) return;
 
         const collector = response.createMessageComponentCollector({ time: 600000 });
 
@@ -224,13 +211,7 @@ module.exports = {
                 const { content, totalPages } = buildDetailContent(currentSlot, currentPage);
                 await i.update({ content, components: detailComponents(currentSlot, currentPage, totalPages) });
 
-            } else if (i.customId === 'back_overview') {
-                mode = 'overview';
-                currentSlot = null;
-                currentPage = 0;
-                await i.update({ content: buildOverview(), components: overviewComponents() });
-
-            } else if (i.customId === 'combined') {
+            } else if (i.customId === 'back_combined') {
                 mode = 'combined';
                 currentSlot = null;
                 currentPage = 0;

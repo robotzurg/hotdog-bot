@@ -18,7 +18,10 @@ const TIMEFRAMES = [
     { name: 'All time',        value: 'all', ms: null },
 ];
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 10;
+const MAX_CONTENT = 1990;
+
+const safeContent = (str) => str.length > MAX_CONTENT ? str.slice(0, MAX_CONTENT - 3) + '...' : str;
 
 const mapEmote = (name) => {
     const emote = SLOT_EMOTES[name];
@@ -110,7 +113,7 @@ module.exports = {
 
         const generatePage = (page) => {
             const slice = lines.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
-            return `${header}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${entries.length}** items`;
+            return safeContent(`${header}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${entries.length}** items`);
         };
 
         const generateButtons = (page) => new ActionRowBuilder().addComponents(
@@ -121,7 +124,7 @@ module.exports = {
         );
 
         if (totalPages <= 1) {
-            await interaction.editReply(`${header}\n${lines.join('\n')}\n-# **${entries.length}** items`);
+            await interaction.editReply(safeContent(`${header}\n${lines.join('\n')}\n-# **${entries.length}** items`));
             return;
         }
 
