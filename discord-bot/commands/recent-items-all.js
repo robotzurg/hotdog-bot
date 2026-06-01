@@ -114,7 +114,7 @@ module.exports = {
             const flagEmote = FLAG_EMOTES[e.group] ?? '';
             const sender   = e.sender   ? mapEmote(e.sender)   : '?';
             const receiver = e.receiver ? mapEmote(e.receiver) : '?';
-            return `- **${e.itemName}** ${flagEmote} ${sender} -> ${receiver} ${ts}`;
+            return `- **${e.itemName}** ${flagEmote} for **${receiver}** from ${sender} ${ts}`;
         });
 
         const slotLines = (slot) => bySlot[slot].map(e => {
