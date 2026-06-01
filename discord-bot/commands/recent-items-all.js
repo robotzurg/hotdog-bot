@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const db = require('../db.js');
-const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
+const { SLOT_EMOTES } = require('../slots.js');
 
 const FLAG_EMOTES = {
     Progression: '<:Progression:1495879488716668988>',
@@ -27,24 +27,11 @@ const mapEmote = (name) => {
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('recent-items')
-        .setDescription('View item history for a slot')
-        .addStringOption(option =>
-            option.setName('slot-name')
-                .setDescription('The slot to look up')
-                .setRequired(true)
-                .setAutocomplete(true))
-        .addStringOption(option =>
-            option.setName('role')
-                .setDescription('Show items received by or sent from this slot (default: received)')
-                .setRequired(false)
-                .addChoices(
-                    { name: 'Received', value: 'received' },
-                    { name: 'Sent', value: 'sent' },
-                ))
+        .setName('recent-items-all')
+        .setDescription('View item history across all slots')
         .addStringOption(option =>
             option.setName('timeframe')
-                .setDescription('How far back to look (default: all time)')
+                .setDescription('How far back to look (default: last hour)')
                 .setRequired(false)
                 .addChoices(...TIMEFRAMES.map(t => ({ name: t.name, value: t.value }))))
         .addStringOption(option =>
@@ -59,18 +46,10 @@ module.exports = {
                 ))
         .setDMPermission(false),
 
-    async autocomplete(interaction) {
-        const query = interaction.options.getFocused().toLowerCase();
-        const filtered = SLOT_NAMES.filter(n => n.toLowerCase().includes(query));
-        await interaction.respond(filtered.slice(0, 25).map(n => ({ name: n, value: n })));
-    },
-
     async execute(interaction) {
         await interaction.deferReply();
 
-        const slotName  = interaction.options.getString('slot-name');
-        const role      = interaction.options.getString('role') ?? 'received';
-        const timeframe = interaction.options.getString('timeframe') ?? 'all';
+        const timeframe  = interaction.options.getString('timeframe') ?? '1h';
         const typeFilter = interaction.options.getString('type');
 
         const tfConfig = TIMEFRAMES.find(t => t.value === timeframe);
@@ -82,27 +61,23 @@ module.exports = {
             if (e.type !== 'item') return false;
             if (cutoff && e.timestamp < cutoff) return false;
             if (typeFilter && e.group !== typeFilter) return false;
-            return role === 'received' ? e.receiver === slotName : e.sender === slotName;
+            return true;
         }).reverse();
 
-        const slotEmote = SLOT_EMOTES[slotName] ? ` ${SLOT_EMOTES[slotName]}` : '';
-        const roleLabel = role === 'received' ? 'Received by' : 'Sent from';
         const typeSuffix = typeFilter ? ` — ${typeFilter} ${FLAG_EMOTES[typeFilter]}` : '';
-        const header = `## ${roleLabel} ${slotName}${slotEmote} - ${tfConfig?.name ?? 'All time'}${typeSuffix}`;
+        const header = `## All Items - ${tfConfig?.name ?? 'All time'}${typeSuffix}`;
 
         if (entries.length === 0) {
             await interaction.editReply(`${header}\n*No items found.*`);
             return;
         }
 
-        const lines = entries.flatMap(e => {
+        const lines = entries.map(e => {
             const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
             const flagEmote = FLAG_EMOTES[e.group] ?? '';
-            const other = role === 'received'
-                ? (e.sender ? `from ${mapEmote(e.sender)}` : '')
-                : `to ${mapEmote(e.receiver)}`;
-            const main = `- **${e.itemName}** ${flagEmote} ${other} ${ts}`;
-            return [main];
+            const sender = e.sender ? mapEmote(e.sender) : '?';
+            const receiver = e.receiver ? mapEmote(e.receiver) : '?';
+            return `- **${e.itemName}** ${flagEmote} ${sender} → ${receiver} ${ts}`;
         });
 
         const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
