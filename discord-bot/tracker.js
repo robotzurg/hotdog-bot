@@ -32,6 +32,8 @@ const noisePatterns = [
     /^Server APWorld Version:/,
     /^This APWorld Version:/,
     /^Getting UT slot data/,
+    /^Running MRGR version/,
+    /^UT compatibility mismatch detected/,
     /^P\d+ Weights:/,
     /^Generating for \d+ players?/,
     /^Hod Floor$/,
