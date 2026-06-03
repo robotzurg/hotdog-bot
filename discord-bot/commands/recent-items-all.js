@@ -172,6 +172,7 @@ module.exports = {
         const combinedComponents = (page, totalPages) => [
             buildSelectMenu(),
             new ActionRowBuilder().addComponents(
+                new ButtonBuilder().setCustomId('first').setLabel('⏮️ First').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
                 new ButtonBuilder().setCustomId('prev').setLabel('◀️ Prev').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
                 new ButtonBuilder().setCustomId('next').setLabel('Next ▶️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
                 new ButtonBuilder().setCustomId('last').setLabel('Last ⏭️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
@@ -182,6 +183,7 @@ module.exports = {
             buildSelectMenu(slot),
             new ActionRowBuilder().addComponents(
                 new ButtonBuilder().setCustomId('back_combined').setLabel('All Items').setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId('first').setLabel('⏮️ First').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
                 new ButtonBuilder().setCustomId('prev').setLabel('◀️ Prev').setStyle(ButtonStyle.Primary).setDisabled(page === 0),
                 new ButtonBuilder().setCustomId('next').setLabel('Next ▶️').setStyle(ButtonStyle.Primary).setDisabled(page === totalPages - 1),
             ),
@@ -218,18 +220,20 @@ module.exports = {
                 const { content, totalPages } = buildCombinedContent(currentPage);
                 await i.update({ content, components: combinedComponents(currentPage, totalPages) });
 
-            } else if (i.customId === 'prev' || i.customId === 'next' || i.customId === 'last') {
+            } else if (['first', 'prev', 'next', 'last'].includes(i.customId)) {
                 if (mode === 'slot' && currentSlot) {
                     const lines = slotLines(currentSlot);
                     const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
-                    if (i.customId === 'prev') currentPage = Math.max(0, currentPage - 1);
+                    if (i.customId === 'first') currentPage = 0;
+                    else if (i.customId === 'prev') currentPage = Math.max(0, currentPage - 1);
                     else currentPage = Math.min(totalPages - 1, currentPage + 1);
                     const { content } = buildDetailContent(currentSlot, currentPage);
                     await i.update({ content, components: detailComponents(currentSlot, currentPage, totalPages) });
                 } else if (mode === 'combined') {
                     const lines = combinedLines();
                     const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
-                    if (i.customId === 'prev') currentPage = Math.max(0, currentPage - 1);
+                    if (i.customId === 'first') currentPage = 0;
+                    else if (i.customId === 'prev') currentPage = Math.max(0, currentPage - 1);
                     else if (i.customId === 'last') currentPage = totalPages - 1;
                     else currentPage = Math.min(totalPages - 1, currentPage + 1);
                     const { content } = buildCombinedContent(currentPage);
