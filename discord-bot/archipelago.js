@@ -96,6 +96,19 @@ async function start(discordClient, db) {
         }, delay);
     }
 
+    // Ping the room page to wake the server if a room URL is configured
+    async function wakeRoom() {
+        const roomUrl = db.archipelago.get('room_url');
+        if (!roomUrl) return;
+        try {
+            await fetch(roomUrl);
+            console.log('[Archipelago] Pinged room URL to wake server.');
+            await new Promise(r => setTimeout(r, 3000));
+        } catch (err) {
+            console.warn('[Archipelago] Room wake ping failed:', err.message);
+        }
+    }
+
     // Reconnect function
     async function reconnect() {
         if (isDestroyed) return;
@@ -109,6 +122,7 @@ async function start(discordClient, db) {
             return;
         }
 
+        await wakeRoom();
         const address = `archipelago.gg:${port}`;
 
         try {
@@ -392,6 +406,7 @@ async function start(discordClient, db) {
         return archClient;
     }
 
+    await wakeRoom();
     const address = `archipelago.gg:${port}`;
 
     try {
