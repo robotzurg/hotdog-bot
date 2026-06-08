@@ -101,9 +101,12 @@ async function start(discordClient, db) {
         const roomUrl = db.archipelago.get('room_url');
         if (!roomUrl) return;
         try {
-            await fetch(roomUrl);
-            console.log('[Archipelago] Pinged room URL to wake server.');
-            await new Promise(r => setTimeout(r, 3000));
+            const lib = require(roomUrl.startsWith('https') ? 'https' : 'http');
+            await new Promise((resolve, reject) => {
+                lib.get(roomUrl, res => { res.resume(); resolve(); }).on('error', reject);
+            });
+            console.log('[Archipelago] Pinged room URL to wake server, waiting for it to come up...');
+            await new Promise(r => setTimeout(r, 8000));
         } catch (err) {
             console.warn('[Archipelago] Room wake ping failed:', err.message);
         }
