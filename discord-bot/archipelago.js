@@ -112,6 +112,9 @@ async function start(discordClient, db) {
         const address = `archipelago.gg:${port}`;
 
         try {
+            const cachedPackage = db.archipelago.get('package_cache');
+            if (cachedPackage) archClient.package.importPackage(cachedPackage);
+
             if (slot) {
                 console.log(`Attempting to reconnect to Archipelago at ${address} with slot ${slot} (game ${game})...`);
                 await archClient.login(address, slot, game);
@@ -309,12 +312,13 @@ async function start(discordClient, db) {
         }
     });
 
-    // Cache all slot data in db for autocomplete and commands
+    // Cache all slot data in db for autocomplete and commands, and persist the package for fast reconnects
     async function cacheSlotData() {
         try {
             await archClient.package.fetchPackage(); // downloads all game packages not yet cached
             const slots = archClient.players.slots;
             const slotData = {};
+            const packageGames = {};
 
             for (const slot of Object.values(slots)) {
                 if (!slot.name) continue;
@@ -325,9 +329,19 @@ async function start(discordClient, db) {
                     items: pkg ? Object.keys(pkg.itemTable).sort() : [],
                     locations: pkg ? Object.keys(pkg.locationTable).sort() : [],
                 };
+                if (pkg && !packageGames[slot.game]) {
+                    packageGames[slot.game] = {
+                        checksum: pkg.checksum,
+                        item_name_to_id: { ...pkg.itemTable },
+                        location_name_to_id: { ...pkg.locationTable },
+                    };
+                }
             }
 
             db.archipelago.set('slot_data', slotData);
+            if (Object.keys(packageGames).length > 0) {
+                db.archipelago.set('package_cache', { games: packageGames });
+            }
             console.log(`[Archipelago] Cached data for ${Object.keys(slotData).length} slots.`);
         } catch (err) {
             console.error('[Archipelago] Failed to cache slot data:', err);
@@ -396,6 +410,9 @@ async function start(discordClient, db) {
     const address = `archipelago.gg:${port}`;
 
     try {
+        const cachedPackage = db.archipelago.get('package_cache');
+        if (cachedPackage) archClient.package.importPackage(cachedPackage);
+
         if (slot) {
             await archClient.login(address, slot, game);
         } else {
