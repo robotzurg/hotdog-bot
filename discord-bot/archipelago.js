@@ -366,6 +366,7 @@ async function start(discordClient, db) {
 
             archClient.socket.on('close', () => {
                 console.log('Archipelago WebSocket closed');
+                sendDiscordMessage('Disconnected from Archipelago server. Attempting to reconnect...');
                 attemptReconnect('close');
             });
         }
