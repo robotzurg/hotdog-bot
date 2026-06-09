@@ -109,7 +109,7 @@ async function start(discordClient, db) {
             return;
         }
 
-        const address = `archipelago.gg:${port}`;
+        const address = `wss://archipelago.gg:${port}`;
 
         try {
             const cachedPackage = db.archipelago.get('package_cache');
@@ -407,7 +407,7 @@ async function start(discordClient, db) {
         return archClient;
     }
 
-    const address = `archipelago.gg:${port}`;
+    const address = `wss://archipelago.gg:${port}`;
 
     try {
         const cachedPackage = db.archipelago.get('package_cache');
