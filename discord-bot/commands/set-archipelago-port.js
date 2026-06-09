@@ -21,22 +21,16 @@ module.exports = {
             option.setName('game')
                 .setDescription('The archipelago game name to log in as.')
                 .setRequired(true))
-        .addStringOption(option =>
-            option.setName('room-url')
-                .setDescription('The archipelago.gg room URL (used to wake the room on reconnect).')
-                .setRequired(false))
         .setDMPermission(false),
-    async execute(interaction) {
+	async execute(interaction) {
         const channel = interaction.options.getChannel('channel');
         const port = interaction.options.getString('port');
         const slot = interaction.options.getString('slot');
         const game = interaction.options.getString('game');
-        const roomUrl = interaction.options.getString('room-url');
         db.archipelago.set('server_port', port);
         db.archipelago.set('server_channel', channel.id);
         db.archipelago.set('slot', slot);
         db.archipelago.set('game', game);
-        if (roomUrl) db.archipelago.set('room_url', roomUrl);
-        interaction.reply(`Archipelago port set to ${port}, server_channel set to ${channel}, slot set to ${slot}, game set to ${game}${roomUrl ? `, room URL saved` : ''}`);
+        interaction.reply(`Archipelago port set to ${port}, server_channel set to ${channel}, slot set to ${slot}, game set to ${game}`);
     },
 };
