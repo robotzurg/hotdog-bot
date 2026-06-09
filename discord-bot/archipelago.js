@@ -125,10 +125,10 @@ async function start(discordClient, db) {
 
             // Reset attempts on successful connection
             reconnectAttempts = 0;
-            await cacheSlotData();
-            await syncCheckCounts();
             sendDiscordMessage('Successfully reconnected to Archipelago server!');
             console.log('Reconnected to the Archipelago server!');
+            await cacheSlotData();
+            await syncCheckCounts();
         } catch (err) {
             console.error('Archipelago reconnection failed:', err);
             // Will trigger another reconnect attempt via error listener
@@ -404,11 +404,10 @@ async function start(discordClient, db) {
         // Set up socket listeners after successful initial connection
         setupSocketListeners();
         archClient.deathLink.enableDeathLink();
-        await cacheSlotData();
-        await syncCheckCounts();
-
         console.log('Connected to the Archipelago server!');
         sendDiscordMessage('Connected to Archipelago server!');
+        await cacheSlotData();
+        await syncCheckCounts();
     } catch (err) {
         console.error('Archipelago login failed:', err);
         // Don't throw - let reconnection logic handle it
