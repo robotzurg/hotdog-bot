@@ -79,7 +79,7 @@ async function start(discordClient, db) {
         reconnectAttempts++;
 
         if (reconnectAttempts > maxReconnectAttempts) {
-            // sendDiscordMessage(`Failed to reconnect after ${maxReconnectAttempts} attempts. Archipelago monitor stopped.`);
+            sendDiscordMessage(`Failed to reconnect after ${maxReconnectAttempts} attempts. Giving up.`);
             return;
         }
 
@@ -413,6 +413,7 @@ async function start(discordClient, db) {
         const cachedPackage = db.archipelago.get('package_cache');
         if (cachedPackage) archClient.package.importPackage(cachedPackage);
 
+        console.log(`Connecting to Archipelago at ${address}...`);
         if (slot) {
             await archClient.login(address, slot, game);
         } else {
