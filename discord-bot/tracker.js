@@ -40,6 +40,7 @@ const noisePatterns = [
     /^SlotData version:/,
     /^Server APWorld Version:/,
     /^This APWorld Version:/,
+    /^lolololol/,
     /^Getting UT slot data/,
     /^Running MRGR version/,
     /^UT compatibility mismatch detected/,
