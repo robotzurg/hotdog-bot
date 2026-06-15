@@ -46,6 +46,7 @@ const noisePatterns = [
     /^UT compatibility mismatch detected/,
     /^P\d+ Weights:/,
     /^Generating for \d+ players?/,
+    /^Took [\d.]+ seconds in /,
     /^Hod Floor$/,
     /\(Team #\d+\) (?:tracking|viewing) .+ has joined/,
     /\(Team #\d+\) has stopped (?:tracking|viewing) the game/,
