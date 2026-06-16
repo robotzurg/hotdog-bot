@@ -102,7 +102,8 @@ module.exports = {
             return emote ? `${name} ${emote}` : `**${name}**`;
         };
 
-        const pointsLine = hintPoints !== null ? `\n-# 💡 **${hintPoints}** hint points` : '';
+        const pointsTag = hintPoints !== null ? `💡 **${hintPoints}**` : '';
+        const footerSuffix = pointsTag ? ` | ${pointsTag}` : '';
 
         if (sub === 'all') {
             const finishedGames = db.archipelago.get('finished_games') ?? [];
@@ -118,14 +119,14 @@ module.exports = {
                 `- **${item.name}** for ${mapEmote(item.receiver?.name ?? '???')} at **${item.locationName}**${item.sender?.name !== slotName ? ` in ${mapEmote(item.sender?.name ?? '???')}'s world` : ''}`
             );
 
-            const header = `## Unfound Hints for ${slotName}${pointsLine}`;
+            const header = `## Unfound Hints for ${slotName}`;
             const itemsPerPage = 10;
             const totalPages = Math.ceil(lines.length / itemsPerPage);
             let currentPage = 0;
 
             const generatePage = (page) => {
                 const pageLines = lines.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
-                return `${header}\n${pageLines.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** unfound hints`;
+                return `${header}\n${pageLines.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** unfound hints${footerSuffix}`;
             };
 
             const generateButtons = (page) => new ActionRowBuilder().addComponents(
@@ -136,7 +137,7 @@ module.exports = {
             );
 
             if (totalPages <= 1) {
-                await interaction.editReply(`${header}\n${lines.join('\n')}\n-# **${lines.length}** unfound hints`);
+                await interaction.editReply(`${header}\n${lines.join('\n')}\n-# **${lines.length}** unfound hints${footerSuffix}`);
                 return;
             }
 
@@ -174,6 +175,7 @@ module.exports = {
             `- **${item.name}** for ${mapEmote(item.receiver?.name ?? '???')} at **${item.locationName}**${item.sender?.name !== slotName ? ` in ${mapEmote(item.sender?.name ?? '???')}'s world` : ''}`
         );
 
-        await interaction.editReply(`## Hint result for ${slotName}${pointsLine}\n${lines.join('\n')}`);
+        const itemFooter = pointsTag ? `\n-# ${pointsTag}` : '';
+        await interaction.editReply(`## Hint result for ${slotName}\n${lines.join('\n')}${itemFooter}`);
     },
 };
