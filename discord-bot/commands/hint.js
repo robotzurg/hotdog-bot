@@ -102,7 +102,7 @@ module.exports = {
             return emote ? `${name} ${emote}` : `**${name}**`;
         };
 
-        const pointsTag = hintPoints !== null ? `💡 **${hintPoints}**` : '';
+        const pointsTag = hintPoints !== null ? `**${hintPoints}** hint points left` : '';
         const footerSuffix = pointsTag ? ` | ${pointsTag}` : '';
 
         if (sub === 'all') {
