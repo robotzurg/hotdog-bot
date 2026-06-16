@@ -59,18 +59,32 @@ module.exports = {
         const client = new Client();
         const hintResults = [];
         let messageOutput = '';
+        let primaryOutput = '';
+        let hintPoints = null;
+        let capturingHints = true;
 
         client.messages.on('itemHinted', (_text, item, found) => {
-            hintResults.push({ item, found });
+            if (capturingHints) hintResults.push({ item, found });
         });
         client.messages.on('message', (_text) => {
             messageOutput = _text;
+            const m = _text.match(/You have (\d+) points/);
+            if (m) hintPoints = parseInt(m[1], 10);
         });
 
         try {
             await client.login(`archipelago.gg:${port}`, slotName);
             await client.messages.say(sub === 'item' ? `!hint ${interaction.options.getString('item-name')}` : '!hint');
             await new Promise(resolve => setTimeout(resolve, 2000));
+            // The bare `!hint` output (used by `all`/`points`) includes the points line;
+            // `!hint <item>` does not always, so request points explicitly without
+            // polluting the item's hint results.
+            primaryOutput = messageOutput;
+            if (sub === 'item') {
+                capturingHints = false;
+                await client.messages.say('!hint');
+                await new Promise(resolve => setTimeout(resolve, 1500));
+            }
             client.socket.disconnect();
         } catch (err) {
             console.error('Hint error:', err);
@@ -88,6 +102,8 @@ module.exports = {
             return emote ? `${name} ${emote}` : `**${name}**`;
         };
 
+        const pointsLine = hintPoints !== null ? `\n-# 💡 **${hintPoints}** hint points` : '';
+
         if (sub === 'all') {
             const finishedGames = db.archipelago.get('finished_games') ?? [];
             const unfound = hintResults.filter(({ found, item }) =>
@@ -102,7 +118,7 @@ module.exports = {
                 `- **${item.name}** for ${mapEmote(item.receiver?.name ?? '???')} at **${item.locationName}**${item.sender?.name !== slotName ? ` in ${mapEmote(item.sender?.name ?? '???')}'s world` : ''}`
             );
 
-            const header = `## Unfound Hints for ${slotName}`;
+            const header = `## Unfound Hints for ${slotName}${pointsLine}`;
             const itemsPerPage = 10;
             const totalPages = Math.ceil(lines.length / itemsPerPage);
             let currentPage = 0;
@@ -144,7 +160,7 @@ module.exports = {
         // sub === 'item'
         const itemName = interaction.options.getString('item-name');
         if (hintResults.length === 0) {
-            await interaction.editReply(`No hint found for **${itemName}** on **${slotName}**. The item may not exist or was already found.\nOutput from Archipelago: ${messageOutput}`);
+            await interaction.editReply(`No hint found for **${itemName}** on **${slotName}**. The item may not exist or was already found.\nOutput from Archipelago: ${primaryOutput}`);
             return;
         }
 
@@ -158,6 +174,6 @@ module.exports = {
             `- **${item.name}** for ${mapEmote(item.receiver?.name ?? '???')} at **${item.locationName}**${item.sender?.name !== slotName ? ` in ${mapEmote(item.sender?.name ?? '???')}'s world` : ''}`
         );
 
-        await interaction.editReply(`## Hint result for ${slotName}\n${lines.join('\n')}`);
+        await interaction.editReply(`## Hint result for ${slotName}${pointsLine}\n${lines.join('\n')}`);
     },
 };
