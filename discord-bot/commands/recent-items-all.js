@@ -59,20 +59,42 @@ module.exports = {
                     { name: 'Trap',        value: 'Trap' },
                     { name: 'Junk',        value: 'Junk' },
                 ))
+        .addStringOption(option =>
+            option.setName('item-group')
+                .setDescription('Filter by game-defined item group')
+                .setRequired(false)
+                .setAutocomplete(true))
         .setDMPermission(false),
 
     async autocomplete(interaction) {
-        const focused = interaction.options.getFocused().toLowerCase();
-        const filtered = Object.keys(PLAYER_SLOTS).filter(n => n.toLowerCase().includes(focused));
-        await interaction.respond(filtered.slice(0, 25).map(n => ({ name: n, value: n })));
+        const focused = interaction.options.getFocused(true);
+        const query = focused.value.toLowerCase();
+
+        if (focused.name === 'item-group') {
+            const player = interaction.options.getString('player') ?? '';
+            const slots = PLAYER_SLOTS[player] ?? [];
+            const slotData = db.archipelago.get('slot_data') ?? {};
+            const itemNameGroups = db.archipelago.get('item_name_groups') ?? {};
+            const groupSet = new Set();
+            for (const slot of slots) {
+                const game = slotData[slot]?.game;
+                if (game) Object.keys(itemNameGroups[game] ?? {}).forEach(g => groupSet.add(g));
+            }
+            const filtered = [...groupSet].filter(g => g.toLowerCase().includes(query));
+            await interaction.respond(filtered.slice(0, 25).map(n => ({ name: n, value: n })));
+        } else {
+            const filtered = Object.keys(PLAYER_SLOTS).filter(n => n.toLowerCase().includes(query));
+            await interaction.respond(filtered.slice(0, 25).map(n => ({ name: n, value: n })));
+        }
     },
 
     async execute(interaction) {
         await interaction.deferReply();
 
-        const player     = interaction.options.getString('player');
-        const timeframe  = interaction.options.getString('timeframe') ?? 'all';
-        const typeFilter = interaction.options.getString('type');
+        const player      = interaction.options.getString('player');
+        const timeframe   = interaction.options.getString('timeframe') ?? 'all';
+        const typeFilter  = interaction.options.getString('type');
+        const groupFilter = interaction.options.getString('item-group');
 
         const slots = PLAYER_SLOTS[player];
         if (!slots) {
@@ -82,8 +104,21 @@ module.exports = {
 
         const tfConfig = TIMEFRAMES.find(t => t.value === timeframe);
         const cutoff = tfConfig?.ms ? Date.now() - tfConfig.ms : null;
-        const typeSuffix = typeFilter ? ` - ${typeFilter} ${FLAG_EMOTES[typeFilter]}` : '';
+        const typeSuffix  = typeFilter  ? ` - ${typeFilter} ${FLAG_EMOTES[typeFilter]}` : '';
+        const groupSuffix = groupFilter ? ` - ${groupFilter}` : '';
         const timeLabel = tfConfig?.name ?? 'All time';
+
+        let groupItemSet = null;
+        if (groupFilter) {
+            const slotData = db.archipelago.get('slot_data') ?? {};
+            const itemNameGroups = db.archipelago.get('item_name_groups') ?? {};
+            groupItemSet = new Set();
+            for (const slot of slots) {
+                const game = slotData[slot]?.game;
+                const items = game ? (itemNameGroups[game]?.[groupFilter] ?? []) : [];
+                items.forEach(i => groupItemSet.add(i));
+            }
+        }
 
         const history = db.archipelago.get('ap_history') ?? [];
 
@@ -91,11 +126,12 @@ module.exports = {
             if (e.type !== 'item') return false;
             if (cutoff && e.timestamp < cutoff) return false;
             if (typeFilter && e.group !== typeFilter) return false;
+            if (groupItemSet && !groupItemSet.has(e.itemName)) return false;
             return slots.includes(e.receiver);
         }).reverse();
 
         if (allEntries.length === 0) {
-            await interaction.editReply(`## ${player} - Recent Items - ${timeLabel}${typeSuffix}\n*No items found.*`);
+            await interaction.editReply(`## ${player} - Recent Items - ${timeLabel}${typeSuffix}${groupSuffix}\n*No items found.*`);
             return;
         }
 
@@ -131,7 +167,7 @@ module.exports = {
             const totalPages = Math.max(1, Math.ceil(lines.length / ITEMS_PER_PAGE));
             const slice = lines.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
             return {
-                content: safeContent(`## ${player} - All Items - ${timeLabel}${typeSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`),
+                content: safeContent(`## ${player} - All Items - ${timeLabel}${typeSuffix}${groupSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`),
                 totalPages,
             };
         };
@@ -142,7 +178,7 @@ module.exports = {
             const slice = lines.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
             const emote = SLOT_EMOTES[slot] ? ` ${SLOT_EMOTES[slot]}` : '';
             return {
-                content: safeContent(`## ${slot}${emote} - ${timeLabel}${typeSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`),
+                content: safeContent(`## ${slot}${emote} - ${timeLabel}${typeSuffix}${groupSuffix}\n${slice.join('\n')}\n-# Page ${page + 1}/${totalPages} | **${lines.length}** items`),
                 totalPages,
             };
         };

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
+const { invalidateSlotCache } = require('../tracker.js');
 
 const slotOption = (option) =>
     option.setName('slot-name')
@@ -86,6 +87,7 @@ module.exports = {
                 await new Promise(resolve => setTimeout(resolve, 1500));
             }
             client.socket.disconnect();
+            invalidateSlotCache(slotName);
         } catch (err) {
             console.error('Hint error:', err);
             await interaction.editReply(`Failed to connect or send hint: ${err.message}`);
@@ -108,7 +110,7 @@ module.exports = {
         if (sub === 'all') {
             const finishedGames = db.archipelago.get('finished_games') ?? [];
             const unfound = hintResults.filter(({ found, item }) =>
-                !found && !finishedGames.includes(item.receiver?.name)
+                !found && !finishedGames.includes(item.receiver?.name) 
             );
             if (unfound.length === 0) {
                 await interaction.editReply(`No unfound hints for **${slotName}**.`);

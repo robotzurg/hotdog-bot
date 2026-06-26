@@ -181,7 +181,7 @@ async function start(discordClient, db) {
 
             if (node.type === 'player') return mapEmoji(text);
             if (node.type === 'item') return `**${text}**${item !== false ? ` ${flagEmote(item.flags ?? 0)}` : ''}`;
-            if (node.type === 'location') return hint ? text : `\n-# at ${text}`;
+            if (node.type === 'location') return hint ? text : anyFinished ? ` at ${text}` : `\n-# at ${text}`;
 
             // Skip the parentheses wrapping the location node in send messages
             if (!hint) {
@@ -342,6 +342,21 @@ async function start(discordClient, db) {
             if (Object.keys(packageGames).length > 0) {
                 db.archipelago.set('package_cache', { games: packageGames });
             }
+
+            const uniqueGames = [...new Set(Object.values(slots).filter(s => s.name && s.game).map(s => s.game))];
+            const itemNameGroups = {};
+            for (const game of uniqueGames) {
+                try {
+                    const result = await archClient.storage.fetchItemNameGroups(game);
+                    itemNameGroups[game] = result[`_read_item_name_groups_${game}`] ?? {};
+                } catch (err) {
+                    console.warn(`[Archipelago] Failed to fetch item name groups for ${game}:`, err);
+                }
+            }
+            if (Object.keys(itemNameGroups).length > 0) {
+                db.archipelago.set('item_name_groups', itemNameGroups);
+            }
+
             console.log(`[Archipelago] Cached data for ${Object.keys(slotData).length} slots.`);
         } catch (err) {
             console.error('[Archipelago] Failed to cache slot data:', err);
