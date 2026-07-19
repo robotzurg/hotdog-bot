@@ -447,6 +447,7 @@ module.exports = {
     getPlayerState,
 
     // AP
+    mmConnect,
     readReceivedItems,
     getLastReceivedItems,
     sendChecks,
