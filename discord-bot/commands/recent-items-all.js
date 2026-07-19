@@ -147,7 +147,7 @@ module.exports = {
 
         const combinedLines = () => allEntries.map(e => {
             const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
-            const flagEmote = FLAG_EMOTES[e.group] ?? '';
+            const flagEmote = e.itemName === 'Picture Frame' ? '<:pictureframe:1528503736245289081>' : (FLAG_EMOTES[e.group] ?? '');
             const sender   = e.sender   ? mapEmote(e.sender)   : '?';
             const receiver = e.receiver ? mapEmote(e.receiver) : '?';
             return `- **${e.itemName}** ${flagEmote} for **${receiver}** from ${sender} ${ts}`;
@@ -155,7 +155,7 @@ module.exports = {
 
         const slotLines = (slot) => bySlot[slot].map(e => {
             const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
-            const flagEmote = FLAG_EMOTES[e.group] ?? '';
+            const flagEmote = e.itemName === 'Picture Frame' ? '<:pictureframe:1528503736245289081>' : (FLAG_EMOTES[e.group] ?? '');
             const sender = e.sender ? mapEmote(e.sender) : '?';
             return `- **${e.itemName}** ${flagEmote} from ${sender} ${ts}`;
         });

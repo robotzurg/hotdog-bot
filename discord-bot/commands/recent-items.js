@@ -128,7 +128,7 @@ module.exports = {
 
         const lines = entries.flatMap(e => {
             const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
-            const flagEmote = FLAG_EMOTES[e.group] ?? '';
+            const flagEmote = e.itemName === 'Picture Frame' ? '<:pictureframe:1528503736245289081>' : (FLAG_EMOTES[e.group] ?? '');
             const other = role === 'received'
                 ? (e.sender ? `from ${mapEmote(e.sender)}` : '')
                 : `to ${mapEmote(e.receiver)}`;

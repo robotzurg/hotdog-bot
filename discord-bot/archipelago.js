@@ -180,7 +180,12 @@ async function start(discordClient, db) {
             const text = typeof node.text === 'string' ? node.text : '';
 
             if (node.type === 'player') return mapEmoji(text);
-            if (node.type === 'item') return `**${text}**${item !== false ? ` ${flagEmote(item.flags ?? 0)}` : ''}`;
+            if (node.type === 'item') {
+                const itemEmote = text === 'Picture Frame'
+                    ? '<:pictureframe:1528503736245289081>'
+                    : (item !== false ? flagEmote(item.flags ?? 0) : '');
+                return `**${text}**${itemEmote ? ` ${itemEmote}` : ''}`;
+            }
             if (node.type === 'location') return hint ? text : anyFinished ? ` at ${text}` : `\n-# at ${text}`;
 
             // Skip the parentheses wrapping the location node in send messages
