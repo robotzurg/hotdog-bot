@@ -109,7 +109,7 @@ module.exports = {
 
         const entries = history.filter(e => {
             if (e.type !== 'item') return false;
-            if (cutoff && e.timestamp < cutoff) return false;
+            if (cutoff && e.timestamp && e.timestamp < cutoff) return false;
             if (typeFilter && e.group !== typeFilter) return false;
             if (groupItemSet && !groupItemSet.has(e.itemName)) return false;
             return role === 'received' ? e.receiver === slotName : e.sender === slotName;
@@ -127,7 +127,7 @@ module.exports = {
         }
 
         const lines = entries.flatMap(e => {
-            const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
+            const ts = e.timestamp ? `<t:${Math.floor(e.timestamp / 1000)}:R>` : '';
             const flagEmote = e.itemName === 'Picture Frame' ? '<:pictureframe:1528503736245289081>' : (FLAG_EMOTES[e.group] ?? '');
             const other = role === 'received'
                 ? (e.sender ? `from ${mapEmote(e.sender)}` : '')

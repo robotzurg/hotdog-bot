@@ -124,7 +124,7 @@ module.exports = {
 
         const allEntries = history.filter(e => {
             if (e.type !== 'item') return false;
-            if (cutoff && e.timestamp < cutoff) return false;
+            if (cutoff && e.timestamp && e.timestamp < cutoff) return false;
             if (typeFilter && e.group !== typeFilter) return false;
             if (groupItemSet && !groupItemSet.has(e.itemName)) return false;
             return slots.includes(e.receiver);
@@ -146,7 +146,7 @@ module.exports = {
         // --- line builders ---
 
         const combinedLines = () => allEntries.map(e => {
-            const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
+            const ts = e.timestamp ? `<t:${Math.floor(e.timestamp / 1000)}:R>` : '';
             const flagEmote = e.itemName === 'Picture Frame' ? '<:pictureframe:1528503736245289081>' : (FLAG_EMOTES[e.group] ?? '');
             const sender   = e.sender   ? mapEmote(e.sender)   : '?';
             const receiver = e.receiver ? mapEmote(e.receiver) : '?';
@@ -154,7 +154,7 @@ module.exports = {
         });
 
         const slotLines = (slot) => bySlot[slot].map(e => {
-            const ts = `<t:${Math.floor(e.timestamp / 1000)}:R>`;
+            const ts = e.timestamp ? `<t:${Math.floor(e.timestamp / 1000)}:R>` : '';
             const flagEmote = e.itemName === 'Picture Frame' ? '<:pictureframe:1528503736245289081>' : (FLAG_EMOTES[e.group] ?? '');
             const sender = e.sender ? mapEmote(e.sender) : '?';
             return `- **${e.itemName}** ${flagEmote} from ${sender} ${ts}`;
