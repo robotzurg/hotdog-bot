@@ -349,3 +349,6 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 discord-bot/config.json
+
+# docker stuff
+docker-compose.yaml
