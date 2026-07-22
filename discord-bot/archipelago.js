@@ -72,7 +72,7 @@ async function start(discordClient, db) {
     async function sendDiscordMessage(message) {
         if (discordChannel && discordClient.isReady()) {
             try {
-                await discordChannel.send({ content: `[Archipelago] ${message}` });
+                await discordChannel.send({ content: `${message}` });
             } catch (err) {
                 console.error('Failed to send Discord message:', err);
             }
