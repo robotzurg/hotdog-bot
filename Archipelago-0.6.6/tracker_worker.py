@@ -1,0 +1,118 @@
+"""Persistent Universal Tracker worker.
+
+Reads newline-delimited JSON requests on stdin and writes NDJSON responses,
+keeping the interpreter (and UT's class-level multiworld cache) alive between
+requests instead of paying a full cold start per lookup.
+
+Request:   {"id": 1, "slot": "AllRepo", "port": 38281}
+Response:  {"id": 1, "items": ["Region | Location", ...]}
+           {"id": 1, "error": "..."}
+Emitted once when worlds are loaded and requests can be served:
+           {"ready": true}
+
+Run from the Archipelago root with the venv interpreter:
+    ./venv/bin/python3 tracker_worker.py
+"""
+
+import asyncio
+import json
+import logging
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# Archipelago and the worlds print a great deal to stdout during generation.
+# Claim the real stdout for the protocol before importing any of it, then point
+# fd 1 at stderr so stray prints can never corrupt a response line.
+_protocol_out = os.fdopen(os.dup(1), "w", encoding="utf-8")
+os.dup2(2, 1)
+sys.stdout = sys.stderr
+
+REQUEST_TIMEOUT = float(os.environ.get("TRACKER_REQUEST_TIMEOUT", "180"))
+REUSE_LAUNCH_MW = os.environ.get("TRACKER_REUSE_LAUNCH_MW", "1") != "0"
+
+from worlds.tracker.TrackerClient import TrackerGameContext, server_loop  # noqa: E402
+
+logging.getLogger().setLevel(logging.ERROR)
+
+_launch_mw = None
+_use_split = None
+
+
+def send(payload):
+    _protocol_out.write(json.dumps(payload) + "\n")
+    _protocol_out.flush()
+
+
+class WorkerContext(TrackerGameContext):
+    """Captures the tracker state instead of logging it line by line."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.captured = None
+
+    def updateTracker(self):
+        state = super().updateTracker()
+        # updateTracker fires on every watcher tick, including before the
+        # multiworld is ready; only keep a state that actually resolved.
+        if state is not None and state.readable_locations:
+            self.captured = state
+        return state
+
+
+async def run_request(slot, port):
+    global _launch_mw, _use_split
+
+    ctx = WorkerContext(f"archipelago.gg:{port}", None, print_list=True)
+    ctx.auth = slot
+    ctx.server_task = asyncio.create_task(server_loop(ctx), name="server loop")
+
+    if REUSE_LAUNCH_MW and _launch_mw is not None:
+        ctx.tracker_core.launch_multiworld = _launch_mw
+        ctx.tracker_core.use_split = _use_split
+        ctx.use_split = _use_split
+    else:
+        ctx.run_generator()
+        if REUSE_LAUNCH_MW:
+            _launch_mw = ctx.tracker_core.launch_multiworld
+            _use_split = ctx.tracker_core.use_split
+
+    try:
+        await asyncio.wait_for(ctx.exit_event.wait(), timeout=REQUEST_TIMEOUT)
+    except asyncio.TimeoutError:
+        pass
+    finally:
+        try:
+            await ctx.shutdown()
+        except Exception:
+            pass
+
+    if ctx.captured is None:
+        raise RuntimeError(f"tracker produced no state for {slot}")
+    return list(ctx.captured.readable_locations)
+
+
+def main():
+    send({"ready": True})
+
+    for line in sys.stdin:
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            req = json.loads(line)
+        except ValueError as err:
+            send({"id": None, "error": f"bad request: {err}"})
+            continue
+
+        req_id = req.get("id")
+        try:
+            items = asyncio.run(run_request(req["slot"], req["port"]))
+            send({"id": req_id, "items": items})
+        except Exception as err:  # one bad slot must not kill the worker
+            send({"id": req_id, "error": f"{type(err).__name__}: {err}"})
+
+
+if __name__ == "__main__":
+    main()

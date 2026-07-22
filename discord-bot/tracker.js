@@ -1,66 +1,113 @@
 const { spawn } = require('child_process');
+const readline = require('readline');
 const path = require('path');
 const { SLOT_EMOTES } = require('./slots.js');
 
-const noisePatterns = [
-    /^Shop Upgrade total:/,
-    /^Location id:/,
-    /^Adding rule for/,
-    /^Creating \d+/,
-    /^Making /,
-    /^Excluding /,
-    /Pelly (Added|added)/,
-    /^(Loaction|Location|Item) Count:/,
-    /^(Total Filler|Filler needed):/,
-    /^\[/,
-    /^\d+$/,
-    // Python traceback / asyncio noise
-    /^Task exception was never retrieved/,
-    /^future: </,
-    /^Traceback \(/,
-    /^File ".*\.py"/,
-    /^assert /,
-    /^\^+$/,
-    /^AssertionError/,
-    /^Exception/,
-    /There is no item named 'archipelago\.json' in the archive/,
-    /Invalid or missing manifest file for .+\.apworld/,
-    /This apworld will stop working with Archipelago/,
-    /This might be the incorrect world version for this file/,
-    /^Archipelago \([\d.]+\) logging initialized/,
-    /^Could not remove enough non-progression items/,
-    /^Traps needed:/,
-    /^TODO:/,
-    /^Did not load .+\.apworld as its game .+ is already loaded/,
-    /does not include a manifest file/,
-    /^The plando items module is turned off/,
-    /^Extra Items Needed:/,
-    /^vanilla fork$/,
-    / has more items than locations\. \d+ non-progression items will be removed at random/,
-    /^SlotData version:/,
-    /^Server APWorld Version:/,
-    /^This APWorld Version:/,
-    /^lolololol/,
-    /^Getting UT slot data/,
-    /^Running MRGR version/,
-    /^UT compatibility mismatch detected/,
-    /^P\d+ Weights:/,
-    /^Generating for \d+ players?/,
-    /^Took [\d.]+ seconds in /,
-    /^Hod Floor$/,
-    /\(Team #\d+\) (?:tracking|viewing) .+ has joined/,
-    /\(Team #\d+\) has stopped (?:tracking|viewing) the game/,
-    /^Now that you are connected/,
-    /you can use !help to list commands/,
-    /you may have additional local commands/,
-];
+const AP_ROOT = path.join(__dirname, '../Archipelago-0.6.6');
+const WORKER_SCRIPT = path.join(AP_ROOT, 'tracker_worker.py');
+const PYTHON_PATH = process.platform === 'win32'
+    ? path.join(AP_ROOT, 'venv/Scripts/python.exe')
+    : path.join(AP_ROOT, 'venv/bin/python3');
+
+// Generous: requests are served serially by the worker, so a late request in a
+// /check-logic-all batch waits behind the ones ahead of it.
+const REQUEST_TIMEOUT_MS = 300000;
 
 const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
 
-const trackerCache = new Map(); // slotName -> result
+const trackerCache = new Map(); // slotName -> Promise<result>
+
+let worker = null;
+let nextRequestId = 1;
+const pending = new Map(); // id -> { resolve, reject, timer }
 
 function invalidateSlotCache(slotName) {
     trackerCache.delete(slotName);
+}
+
+function workerEnv() {
+    const e = { ...process.env };
+    delete e.DISPLAY;
+    e.SDL_AUDIODRIVER = 'dummy';
+    e.SDL_VIDEODRIVER = 'dummy';
+    e.QT_QPA_PLATFORM = 'offscreen';
+    e.MPLBACKEND = 'Agg';
+    e.KIVY_WINDOW = 'headless';
+    e.KIVY_NO_ENV_CONFIG = '1';
+    return e;
+}
+
+function startWorker() {
+    const proc = spawn(PYTHON_PATH, [WORKER_SCRIPT], {
+        cwd: AP_ROOT,
+        env: workerEnv(),
+        stdio: ['pipe', 'pipe', 'pipe'],
+    });
+
+    readline.createInterface({ input: proc.stdout }).on('line', (line) => {
+        let msg;
+        try {
+            msg = JSON.parse(line);
+        } catch {
+            console.error('[tracker] unparseable worker output:', line);
+            return;
+        }
+        if (msg.ready) {
+            console.log('[tracker] worker ready');
+            return;
+        }
+        const entry = pending.get(msg.id);
+        if (!entry) return;
+        pending.delete(msg.id);
+        clearTimeout(entry.timer);
+        if (msg.error) entry.reject(new Error(msg.error));
+        else entry.resolve(msg.items);
+    });
+
+    proc.stderr.on('data', (data) => {
+        const s = data.toString('utf8').trim();
+        if (s) console.error('[tracker worker]', s);
+    });
+
+    const teardown = (reason) => {
+        if (worker === proc) worker = null;
+        for (const [id, entry] of pending) {
+            clearTimeout(entry.timer);
+            entry.reject(new Error(reason));
+            pending.delete(id);
+        }
+    };
+
+    proc.on('close', (code) => teardown(`tracker worker exited (code ${code})`));
+    proc.on('error', (err) => teardown(`tracker worker failed to start: ${err.message}`));
+
+    return proc;
+}
+
+function ensureWorker() {
+    if (!worker) worker = startWorker();
+    return worker;
+}
+
+function requestItems(slotName, port) {
+    return new Promise((resolve, reject) => {
+        let proc;
+        try {
+            proc = ensureWorker();
+        } catch (err) {
+            reject(err);
+            return;
+        }
+
+        const id = nextRequestId++;
+        const timer = setTimeout(() => {
+            pending.delete(id);
+            reject(new Error(`tracker request for ${slotName} timed out`));
+        }, REQUEST_TIMEOUT_MS);
+
+        pending.set(id, { resolve, reject, timer });
+        proc.stdin.write(`${JSON.stringify({ id, slot: slotName, port })}\n`);
+    });
 }
 
 function processItems(rawItems, finishedGames = []) {
@@ -89,69 +136,20 @@ function processItems(rawItems, finishedGames = []) {
 }
 
 function runTrackerForSlot(slotName, port, finishedGames = []) {
-    if (trackerCache.has(slotName)) {
-        return Promise.resolve(trackerCache.get(slotName));
-    }
+    // Cache the promise, not the result, so concurrent requests for the same
+    // slot share one worker round-trip instead of queueing a duplicate.
+    if (trackerCache.has(slotName)) return trackerCache.get(slotName);
 
-    return new Promise((resolve) => {
-        const launcherScript = path.join(__dirname, '../Archipelago-0.6.6/Launcher.py');
-        const pythonPath = process.platform === 'win32'
-            ? path.join(__dirname, '../Archipelago-0.6.6/venv/Scripts/python.exe')
-            : path.join(__dirname, '../Archipelago-0.6.6/venv/bin/python3');
-
-        const pythonProcess = spawn(pythonPath, [
-            launcherScript,
-            'Universal Tracker',
-            '--',
-            '--nogui',
-            '--list',
-            `archipelago://${slotName}:None@archipelago.gg:${port}`
-        ], {
-            env: (() => {
-                const e = { ...process.env };
-                delete e.DISPLAY;
-                e.SDL_AUDIODRIVER = 'dummy';
-                e.SDL_VIDEODRIVER = 'dummy';
-                e.QT_QPA_PLATFORM = 'offscreen';
-                e.MPLBACKEND = 'Agg';
-                e.KIVY_WINDOW = 'headless';
-                e.KIVY_NO_ENV_CONFIG = '1';
-                return e;
-            })()
+    const promise = requestItems(slotName, port)
+        .then(rawItems => ({ slotName, ...processItems([...new Set(rawItems)], finishedGames) }))
+        .catch(err => {
+            console.error(`[${slotName}] tracker error:`, err.message);
+            trackerCache.delete(slotName); // don't cache a failure
+            return { slotName, items: [], hintedCount: 0 };
         });
 
-        const rawItems = [];
-
-        pythonProcess.stdout.on('data', (data) => {
-            const s = data instanceof Buffer ? data.toString('utf8') : String(data);
-            if (s.toLowerCase().includes('press enter to install')) {
-                pythonProcess.stdin.write('\n');
-            }
-            if (!s.includes('Archipelago (0.6.6)') && !s.includes('enter to exit') && !s.includes('found cached multiworld')) {
-                const parts = s.split(/[\r\n]+/)
-                    .map(p => p.trim())
-                    .filter(p => p && !noisePatterns.some(re => re.test(p)));
-                if (parts.length) rawItems.push(...parts);
-            }
-            if (s.toLowerCase().includes('enter to exit')) {
-                try { pythonProcess.kill(); } catch (e) {}
-            }
-        });
-
-        pythonProcess.stderr.on('data', (data) => {
-            console.error(`[${slotName}] stderr:`, data.toString('utf8'));
-        });
-
-        pythonProcess.on('close', () => {
-            const result = { slotName, ...processItems([...new Set(rawItems)], finishedGames) };
-            trackerCache.set(slotName, result);
-            resolve(result);
-        });
-        pythonProcess.on('error', (err) => {
-            console.error(`[${slotName}] spawn error:`, err);
-            resolve({ slotName, items: [], hintedCount: 0 });
-        });
-    });
+    trackerCache.set(slotName, promise);
+    return promise;
 }
 
 async function fetchCheckCounts(slotName, port) {
@@ -167,5 +165,8 @@ async function fetchCheckCounts(slotName, port) {
         return { checked: 0, total: 0 };
     }
 }
+
+// Pay the world-import cost at boot rather than on the first command.
+ensureWorker();
 
 module.exports = { runTrackerForSlot, fetchCheckCounts, invalidateSlotCache };
