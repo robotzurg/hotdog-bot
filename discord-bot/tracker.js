@@ -32,9 +32,22 @@ function workerEnv() {
     e.SDL_VIDEODRIVER = 'dummy';
     e.QT_QPA_PLATFORM = 'offscreen';
     e.MPLBACKEND = 'Agg';
-    e.KIVY_WINDOW = 'headless';
+    e.KIVY_WINDOW = 'mock'; // 'headless' is not a real Kivy provider; 'mock' is
     e.KIVY_NO_ENV_CONFIG = '1';
     return e;
+}
+
+// Worlds print freely during generation and it all lands on stderr. Keep the
+// journal readable by default; set TRACKER_DEBUG=1 to see everything.
+const DEBUG_WORKER = process.env.TRACKER_DEBUG === '1';
+const interestingStderr = /ERROR|CRITICAL|Traceback|Error:|Exception/;
+
+function logWorkerStderr(chunk) {
+    for (const line of chunk.toString('utf8').split(/\r?\n/)) {
+        const s = line.trim();
+        if (!s) continue;
+        if (DEBUG_WORKER || interestingStderr.test(s)) console.error('[tracker worker]', s);
+    }
 }
 
 function startWorker() {
@@ -64,10 +77,7 @@ function startWorker() {
         else entry.resolve(msg.items);
     });
 
-    proc.stderr.on('data', (data) => {
-        const s = data.toString('utf8').trim();
-        if (s) console.error('[tracker worker]', s);
-    });
+    proc.stderr.on('data', logWorkerStderr);
 
     const teardown = (reason) => {
         if (worker === proc) worker = null;

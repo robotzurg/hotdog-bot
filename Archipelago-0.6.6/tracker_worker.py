@@ -32,9 +32,24 @@ sys.stdout = sys.stderr
 REQUEST_TIMEOUT = float(os.environ.get("TRACKER_REQUEST_TIMEOUT", "180"))
 REUSE_LAUNCH_MW = os.environ.get("TRACKER_REUSE_LAUNCH_MW", "1") != "0"
 
+# Utils computes `gui_enabled = not sys.stdout or "--nogui" not in sys.argv` at
+# import time. Without this the worker loads Kivy and aborts trying to open a
+# Window. Must happen before anything pulls in Utils.
+if "--nogui" not in sys.argv:
+    sys.argv.insert(1, "--nogui")
+
 from worlds.tracker.TrackerClient import TrackerGameContext, server_loop  # noqa: E402
 
-logging.getLogger().setLevel(logging.ERROR)
+
+def quiet_logging():
+    """Utils.init_logging() strips root handlers and resets the level to INFO,
+    so this has to be re-asserted after anything that triggers it."""
+    logging.getLogger().setLevel(logging.ERROR)
+    for name in ("websockets", "kivy", "kivymd", "asyncio"):
+        logging.getLogger(name).setLevel(logging.ERROR)
+
+
+quiet_logging()
 
 _launch_mw = None
 _use_split = None
@@ -67,6 +82,7 @@ async def run_request(slot, port):
     ctx = WorkerContext(f"archipelago.gg:{port}", None, print_list=True)
     ctx.auth = slot
     ctx.server_task = asyncio.create_task(server_loop(ctx), name="server loop")
+    quiet_logging()
 
     if REUSE_LAUNCH_MW and _launch_mw is not None:
         ctx.tracker_core.launch_multiworld = _launch_mw
@@ -87,6 +103,14 @@ async def run_request(slot, port):
             await ctx.shutdown()
         except Exception:
             pass
+        # UT leaves GameWatcher and the server loop running. Cancel and drain
+        # them, or asyncio.run() closes the loop with tasks still pending and
+        # logs "Task exception was never retrieved".
+        leftover = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
+        for task in leftover:
+            task.cancel()
+        if leftover:
+            await asyncio.gather(*leftover, return_exceptions=True)
 
     if ctx.captured is None:
         raise RuntimeError(f"tracker produced no state for {slot}")
