@@ -52,7 +52,37 @@ def quiet_logging():
 quiet_logging()
 
 _launch_mw = None
-_use_split = None
+
+# Attributes run_generator() sets from host settings that updateTracker() later
+# reads. TrackerCore.__init__ does NOT set these, so a reused launch multiworld
+# has to bring them along or updateTracker dies on the second request.
+_HOST_SETTING_ATTRS = ("output_format", "hide_excluded", "use_split", "enable_glitched_logic")
+
+
+def prime_core_from_cache(core):
+    """Reproduce the host-settings half of TrackerCore.run_generator() without
+    regenerating the launch multiworld.
+
+    Mirrors the `self._set_host_settings()` unpacking at TrackerCore.run_generator.
+    Returns False if that contract has shifted, so the caller can fall back to a
+    real run_generator() rather than half-initializing the core.
+    """
+    try:
+        (_yaml_path, core.output_format, core.hide_excluded, core.use_split,
+         deferred, core.enable_glitched_logic) = core._set_host_settings()
+    except Exception as err:
+        print(f"[worker] host-settings reuse failed ({err}), regenerating", file=sys.stderr)
+        return False
+
+    if core.enforce_deferred_connections is None:
+        core.enforce_deferred_connections = deferred
+    core.launch_multiworld = _launch_mw
+
+    missing = [a for a in _HOST_SETTING_ATTRS if not hasattr(core, a)]
+    if missing:
+        print(f"[worker] core missing {missing} after reuse, regenerating", file=sys.stderr)
+        return False
+    return True
 
 
 def send(payload):
@@ -77,22 +107,21 @@ class WorkerContext(TrackerGameContext):
 
 
 async def run_request(slot, port):
-    global _launch_mw, _use_split
+    global _launch_mw
 
     ctx = WorkerContext(f"archipelago.gg:{port}", None, print_list=True)
     ctx.auth = slot
     ctx.server_task = asyncio.create_task(server_loop(ctx), name="server loop")
     quiet_logging()
 
+    primed = False
     if REUSE_LAUNCH_MW and _launch_mw is not None:
-        ctx.tracker_core.launch_multiworld = _launch_mw
-        ctx.tracker_core.use_split = _use_split
-        ctx.use_split = _use_split
-    else:
+        primed = prime_core_from_cache(ctx.tracker_core)
+    if not primed:
         ctx.run_generator()
         if REUSE_LAUNCH_MW:
             _launch_mw = ctx.tracker_core.launch_multiworld
-            _use_split = ctx.tracker_core.use_split
+    ctx.use_split = ctx.tracker_core.use_split
 
     try:
         await asyncio.wait_for(ctx.exit_event.wait(), timeout=REQUEST_TIMEOUT)
