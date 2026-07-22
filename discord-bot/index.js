@@ -6,9 +6,8 @@ const cron = require('node-cron');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const _ = require('lodash');
-const { start } = require('./archipelago');
-
-let archipelagoClient = null; // Store the archipelago client for reconnection
+const archipelago = require('./archipelago');
+const { start } = archipelago;
 
 const ogreList = [
     "./Ogres/ogreGold.png", "./Ogres/ogreHappy.png", "./Ogres/ogreMad.png", "./Ogres/ogreSad.png", "./Ogres/ogreSmug.png", "./Ogres/ogreSnow.png",
@@ -67,7 +66,7 @@ client.once('ready', async () => {
 
     // Start Archipelago client and wire messages to Discord channel
     try {
-        archipelagoClient = await start(client, db);
+        await start(client, db);
     } catch (err) {
         console.error('Failed to start Archipelago module:', err);
     }
@@ -84,6 +83,7 @@ client.once('ready', async () => {
 
 process.on('SIGINT', () => {
     console.log('Shutting down...');
+    const archipelagoClient = archipelago.getClient();
     if (archipelagoClient) {
         if (archipelagoClient.destroy) {
             archipelagoClient.destroy();

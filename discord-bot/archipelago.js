@@ -1,3 +1,24 @@
+// Tracks the currently running client
+let currentClient = null;
+
+function getClient() {
+    return currentClient;
+}
+
+function getRoomId(roomUrl) {
+    const segments = roomUrl.split('/').filter(Boolean);
+    return segments[segments.length - 1] || null;
+}
+
+// Hits the room's page (not just the status API) to wake it if archipelago.gg
+// has let it go idle.
+async function wakeRoom(roomUrl) {
+    try {
+        await fetch(roomUrl);
+    } catch (err) {
+        console.warn('[Archipelago] Failed to wake room:', err);
+    }
+}
 
 /**
  * Start the Archipelago client and forward messages into a Discord channel.
@@ -6,7 +27,6 @@
  * @param {object} db
  */
 async function start(discordClient, db) {
-    // Dynamically import the ESM-only package inside the async function
     let ArchipelagoClient;
     try {
         const mod = await import('archipelago.js');
@@ -16,6 +36,120 @@ async function start(discordClient, db) {
         console.error('Failed to import archipelago.js (ESM-only):', err);
         throw err;
     }
+
+    const { SLOT_EMOTES } = require('./slots.js');
+    const mapEmoji = (text) => {
+        const emote = SLOT_EMOTES[text];
+        return emote ? `${text} ${emote}` : text;
+    };
+
+    const FLAG_EMOTES = {
+        Progression: '<:Progression:1495879488716668988>',
+        Useful:      '<:Useful:1495879485407494354>',
+        Trap:        '<:Trap:1495879486346887238>',
+        Junk:        '<:Junk:1495879487538204804>',
+    };
+    const flagEmote = (flags) => {
+        // Bit flags for the flag types
+        if (flags & 0b0001) return FLAG_EMOTES.Progression;
+        if (flags & 0b0100) return FLAG_EMOTES.Trap;
+        if (flags & 0b0010) return FLAG_EMOTES.Useful;
+        return FLAG_EMOTES.Junk;
+    };
+
+    const channelId = db.archipelago.get('server_channel');
+    let discordChannel = null;
+
+    if (channelId) {
+        try {
+            discordChannel = await discordClient.channels.fetch(channelId);
+        } catch (err) {
+            console.error('Failed to fetch Discord channel for Archipelago messages:', err);
+        }
+    }
+
+    // Helper: Send message to Discord channel
+    async function sendDiscordMessage(message) {
+        if (discordChannel && discordClient.isReady()) {
+            try {
+                await discordChannel.send({ content: `[Archipelago] ${message}` });
+            } catch (err) {
+                console.error('Failed to send Discord message:', err);
+            }
+        }
+        console.log(`[Archipelago] ${message}`);
+    }
+
+    function getConnectionConfig() {
+        const port = db.archipelago.get('server_port');
+        const slot = db.archipelago.get('slot');
+        const game = db.archipelago.get('game');
+        return { port, slot, game, address: port ? `wss://archipelago.gg:${port}` : null };
+    }
+
+    // Checks the room's current port against archipelago.gg and updates the
+    // stored server_port in the db if it has drifted (e.g. after the room restarted).
+    async function checkRoomPort(roomId) {
+        try {
+            const res = await fetch(`https://archipelago.gg/api/room_status/${roomId}`);
+            const roomStatus = await res.json();
+            const lastPort = roomStatus.last_port != null ? String(roomStatus.last_port) : null;
+            const currentPort = db.archipelago.get('server_port');
+
+            if (lastPort && lastPort !== String(currentPort)) {
+                await sendDiscordMessage(`Room port changed from ${currentPort} to ${lastPort}. Updating.`);
+                db.archipelago.set('server_port', lastPort);
+            }
+        } catch (err) {
+            console.warn('[Archipelago] Failed to check room port:', err);
+        }
+    }
+
+    // Wakes the room and syncs its current port into the db. No-op if no room_url is configured.
+    async function syncRoomState() {
+        const roomUrl = db.archipelago.get('room_url');
+        if (!roomUrl) return;
+
+        const roomId = getRoomId(roomUrl);
+        if (!roomId) return;
+
+        await Promise.all([wakeRoom(roomUrl), checkRoomPort(roomId)]);
+    }
+
+    await syncRoomState();
+
+    const { port, slot, game, address } = getConnectionConfig();
+
+    // Reconnection state
+    const reconnectDelay = 5 * 60 * 1000; // 5 minutes
+    let reconnectTimer = null;
+    let isDestroyed = false;
+
+    if (!port) {
+        console.error('Archipelago server_port is not configured in the database. Skipping Archipelago login.');
+        currentClient = null;
+        return null;
+    }
+
+    // archipelago.gg rooms go idle after ~2 hours without an item send. Rather than
+    // polling on a fixed interval, this timer is reset on every itemSent event (see
+    // below) and only fires - waking the room and rescheduling itself - once real
+    // activity has actually stopped for that long (plus a minute, so the room has
+    // definitely gone idle rather than racing its own timeout).
+    const roomWakeDelay = 2 * 60 * 60 * 1000 + 60 * 1000; // 2 hours 1 minute
+    let roomWakeTimer = null;
+
+    function scheduleRoomWake() {
+        if (roomWakeTimer) clearTimeout(roomWakeTimer);
+        if (!db.archipelago.get('room_url')) return;
+
+        roomWakeTimer = setTimeout(async () => {
+            await syncRoomState();
+            scheduleRoomWake();
+        }, roomWakeDelay);
+    }
+
+    scheduleRoomWake();
 
     // Ensure a WebSocket implementation exists in Node. Archipelago expects a
     // global WebSocket/IsomorphousWebSocket constructor.
@@ -47,69 +181,28 @@ async function start(discordClient, db) {
 
     const archClient = new ArchipelagoClient();
 
-    // Reconnection state
-    let reconnectAttempts = 0;
-    const maxReconnectAttempts = 50;
-    let reconnectTimer = null;
-    let isDestroyed = false;
-
-    // Helper: Calculate exponential backoff delay
-    function getReconnectDelay() {
-        // Exponential backoff: 5s, 10s, 20s, 40s, 80s, 160s (cap at 5 min)
-        return Math.min(5000 * Math.pow(2, reconnectAttempts), 300000);
-    }
-
-    // Helper: Send message to Discord channel
-    async function sendDiscordMessage(message) {
-        if (discordChannel && discordClient.isReady()) {
-            try {
-                await discordChannel.send({ content: `[Archipelago] ${message}` });
-            } catch (err) {
-                console.error('Failed to send Discord message:', err);
-            }
-        }
-        console.log(`[Archipelago] ${message}`);
-    }
-
     // Reconnection logic
     function attemptReconnect(reason) {
-        // Don't reconnect if already destroyed or if timer is active
         if (isDestroyed || reconnectTimer) return;
-
-        reconnectAttempts++;
-
-        if (reconnectAttempts > maxReconnectAttempts) {
-            sendDiscordMessage(`Failed to reconnect after ${maxReconnectAttempts} attempts. Giving up.`);
-            return;
-        }
-
-        const delay = getReconnectDelay();
-        const minutes = Math.floor(delay / 60000);
-        const seconds = Math.floor((delay % 60000) / 1000);
-        const timeStr = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
-
-        // sendDiscordMessage(`Disconnected (${reason}). Reconnecting in ${timeStr}... (Attempt ${reconnectAttempts}/${maxReconnectAttempts})`);
 
         reconnectTimer = setTimeout(() => {
             reconnectTimer = null;
             reconnect();
-        }, delay);
+        }, reconnectDelay);
     }
 
     // Reconnect function
     async function reconnect() {
         if (isDestroyed) return;
 
-        const port = db.archipelago.get('server_port');
-        const slot = db.archipelago.get('slot');
-        const game = db.archipelago.get('game');
+        await syncRoomState();
+
+        const { port, slot, game, address } = getConnectionConfig();
 
         if (!port) {
             console.error('Archipelago server_port is not configured in the database. Cannot reconnect.');
             return;
         }
-
-        const address = `wss://archipelago.gg:${port}`;
 
         try {
             const cachedPackage = db.archipelago.get('package_cache');
@@ -126,48 +219,15 @@ async function start(discordClient, db) {
             setupSocketListeners();
             archClient.deathLink.enableDeathLink();
 
-            // Reset attempts on successful connection
-            reconnectAttempts = 0;
             sendDiscordMessage('Successfully reconnected to Archipelago server!');
             console.log('Reconnected to the Archipelago server!');
-            await cacheSlotData();
+            await ensureSlotDataCached();
             await syncCheckCounts();
         } catch (err) {
             console.error('Archipelago reconnection failed:', err);
             // Will trigger another reconnect attempt via error listener
         }
     }
-
-    const channelId = db.archipelago.get('server_channel');
-    let discordChannel = null;
-
-    if (channelId) {
-        try {
-            discordChannel = await discordClient.channels.fetch(channelId);
-        } catch (err) {
-            console.error('Failed to fetch Discord channel for Archipelago messages:', err);
-        }
-    }
-
-    const { SLOT_EMOTES } = require('./slots.js');
-    const mapEmoji = (text) => {
-        const emote = SLOT_EMOTES[text];
-        return emote ? `${text} ${emote}` : text;
-    };
-
-    const FLAG_EMOTES = {
-        Progression: '<:Progression:1495879488716668988>',
-        Useful:      '<:Useful:1495879485407494354>',
-        Trap:        '<:Trap:1495879486346887238>',
-        Junk:        '<:Junk:1495879487538204804>',
-    };
-    const flagEmote = (flags) => {
-        // Bit flags for the flag types
-        if (flags & 0b0001) return FLAG_EMOTES.Progression;
-        if (flags & 0b0100) return FLAG_EMOTES.Trap;
-        if (flags & 0b0010) return FLAG_EMOTES.Useful;
-        return FLAG_EMOTES.Junk;
-    };
 
     // Helper to format nodes into a message string safely
     function formatNodes(nodes, hint = false, item = false) {
@@ -200,14 +260,12 @@ async function start(discordClient, db) {
     }
 
     archClient.messages.on('itemSent', async (_text, _item, nodes) => {
+        scheduleRoomWake();
+
         // Send to Discord channel
         try {
             const messageStr = formatNodes(nodes, false, _item);
-            if (discordChannel && discordClient.isReady()) {
-                await discordChannel.send({ content: messageStr });
-            } else {
-                console.log('[Archipelago]', messageStr);
-            }
+            await sendDiscordMessage(messageStr);
         } catch (err) {
             console.error('Error forwarding Archipelago message to Discord:', err);
         }
@@ -298,11 +356,7 @@ async function start(discordClient, db) {
             } else {
                 message = `🪦 **${mapEmoji(source)}** has died.`;
             }
-            if (discordChannel && discordClient.isReady()) {
-                await discordChannel.send({ content: message });
-            } else {
-                console.log('[Archipelago]', message);
-            }
+            await sendDiscordMessage(message);
         } catch (err) {
             console.error('Error forwarding DeathLink message to Discord:', err);
         }
@@ -368,6 +422,31 @@ async function start(discordClient, db) {
         }
     }
 
+    // Returns true if the db already has datapackage/slot data covering every
+    // currently connected slot, so cacheSlotData() can be skipped on reboot.
+    function slotDataIsCached() {
+        const slotData = db.archipelago.get('slot_data');
+        const packageCache = db.archipelago.get('package_cache');
+        const itemNameGroups = db.archipelago.get('item_name_groups');
+        const slots = Object.values(archClient.players.slots).filter(s => s.name);
+
+        return slots.every(s => {
+            if (!slotData?.[s.name]) return false;
+            if (s.game && !packageCache?.games?.[s.game]) return false;
+            if (s.game && !itemNameGroups?.[s.game]) return false;
+            return true;
+        });
+    }
+
+    // Populates the datapackage/slot cache if it isn't already covering the current slots.
+    async function ensureSlotDataCached() {
+        if (slotDataIsCached()) {
+            console.log('[Archipelago] Using cached datapackage/slot data from db.');
+            return;
+        }
+        await cacheSlotData();
+    }
+
     // Sync check counts for all player slots from the server and store in DB
     async function syncCheckCounts() {
         try {
@@ -418,17 +497,6 @@ async function start(discordClient, db) {
         }
     }
 
-    const port = db.archipelago.get('server_port');
-    const slot = db.archipelago.get('slot');
-    const game = db.archipelago.get('game');
-
-    if (!port) {
-        console.error('Archipelago server_port is not configured in the database. Skipping Archipelago login.');
-        return archClient;
-    }
-
-    const address = `wss://archipelago.gg:${port}`;
-
     try {
         const cachedPackage = db.archipelago.get('package_cache');
         if (cachedPackage) archClient.package.importPackage(cachedPackage);
@@ -445,7 +513,7 @@ async function start(discordClient, db) {
         archClient.deathLink.enableDeathLink();
         console.log('Connected to the Archipelago server!');
         sendDiscordMessage('Connected to Archipelago server!');
-        await cacheSlotData();
+        await ensureSlotDataCached();
         await syncCheckCounts();
     } catch (err) {
         console.error('Archipelago login failed:', err);
@@ -460,11 +528,21 @@ async function start(discordClient, db) {
             clearTimeout(reconnectTimer);
             reconnectTimer = null;
         }
+        if (roomWakeTimer) clearTimeout(roomWakeTimer);
+        archClient.socket?.disconnect?.();
         console.log('Archipelago client destroyed');
     };
 
+    currentClient = archClient;
     return archClient;
 }
 
-module.exports = { start };
+// Tears down the current connection (if any) and starts a fresh one, e.g. for a manual reconnect command.
+async function restart(discordClient, db) {
+    if (currentClient?.destroy) {
+        currentClient.destroy();
+    }
+    return start(discordClient, db);
+}
 
+module.exports = { start, restart, getClient };
