@@ -42,14 +42,6 @@ function workerEnv() {
 const DEBUG_WORKER = process.env.TRACKER_DEBUG === '1';
 const interestingStderr = /ERROR|CRITICAL|Traceback|Error:|Exception/;
 
-function logWorkerStderr(chunk) {
-    for (const line of chunk.toString('utf8').split(/\r?\n/)) {
-        const s = line.trim();
-        if (!s) continue;
-        if (DEBUG_WORKER || interestingStderr.test(s)) console.error('[tracker worker]', s);
-    }
-}
-
 function startWorker() {
     const proc = spawn(PYTHON_PATH, [WORKER_SCRIPT], {
         cwd: AP_ROOT,
@@ -76,8 +68,6 @@ function startWorker() {
         if (msg.error) entry.reject(new Error(msg.error));
         else entry.resolve(msg.items);
     });
-
-    proc.stderr.on('data', logWorkerStderr);
 
     const teardown = (reason) => {
         if (worker === proc) worker = null;
