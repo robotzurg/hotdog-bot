@@ -15,6 +15,7 @@ Run from the Archipelago root with the venv interpreter:
 """
 
 import asyncio
+import collections
 import json
 import logging
 import os
@@ -39,6 +40,7 @@ if "--nogui" not in sys.argv:
     sys.argv.insert(1, "--nogui")
 
 from worlds.tracker.TrackerClient import TrackerGameContext, server_loop  # noqa: E402
+from worlds.tracker.TrackerCore import TrackerCore  # noqa: E402
 
 
 def quiet_logging():
@@ -52,6 +54,26 @@ def quiet_logging():
 quiet_logging()
 
 _launch_mw = None
+
+# UT caches generated multiworlds on TrackerCore keyed by slot_data *alone* --
+# no game, no slot name (see TrackerCore.run_generator). Two slots whose
+# slot_data compares equal collide and get handed each other's multiworld,
+# which surfaces as "Your datapackage is incorrect" once updateTracker reads
+# item_id_to_name off the wrong game. Harmless when every lookup ran in its own
+# process and the cache was always empty; not harmless in a worker. So give
+# each slot its own cache: a hit can then only ever be that slot's own entry.
+CACHE_SLOTS = int(os.environ.get("TRACKER_CACHE_SLOTS", "8"))
+_slot_caches = collections.OrderedDict()  # slot -> (multiworlds, slot_datas)
+
+
+def bind_slot_cache(slot):
+    entry = _slot_caches.pop(slot, None) or ([], [])
+    _slot_caches[slot] = entry  # reinsert at the end = most recently used
+    while len(_slot_caches) > CACHE_SLOTS:
+        evicted, _ = _slot_caches.popitem(last=False)
+        print(f"[worker] evicted multiworld cache for {evicted}", file=sys.stderr)
+    TrackerCore.cached_multiworlds, TrackerCore.cached_slot_data = entry
+
 
 # Attributes run_generator() sets from host settings that updateTracker() later
 # reads. TrackerCore.__init__ does NOT set these, so a reused launch multiworld
@@ -108,6 +130,8 @@ class WorkerContext(TrackerGameContext):
 
 async def run_request(slot, port):
     global _launch_mw
+
+    bind_slot_cache(slot)
 
     ctx = WorkerContext(f"archipelago.gg:{port}", None, print_list=True)
     ctx.auth = slot
