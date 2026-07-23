@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { token } = require('./config.json');
+const token = process.env.TOKEN;
 const db = require("./db.js");
 const cron = require('node-cron');
 const { REST } = require('@discordjs/rest');
@@ -8,6 +8,15 @@ const { Routes } = require('discord-api-types/v9');
 const _ = require('lodash');
 const archipelago = require('./archipelago');
 const { start } = archipelago;
+
+if (!token) {
+    try {
+        ({ token } = require('./config.json'));
+    } catch (error) {
+        console.error('No Discord token found. Set TOKEN, or provide config.json.');
+        process.exit(1);
+    }
+}
 
 const ogreList = [
     "./Ogres/ogreGold.png", "./Ogres/ogreHappy.png", "./Ogres/ogreMad.png", "./Ogres/ogreSad.png", "./Ogres/ogreSmug.png", "./Ogres/ogreSnow.png",
