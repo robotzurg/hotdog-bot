@@ -1,7 +1,7 @@
 # hotdog-bot
 Hotdog Water Review Corps Bot Repo.
 
-## Docker Compose (WIP)
+## Docker Compose
 
 - Create a directory and add a `docker-compose.yaml` file with the following contents:
 
