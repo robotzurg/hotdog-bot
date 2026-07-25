@@ -354,3 +354,4 @@ discord-bot/config.json
 docker-compose.yaml
 
 discord-bot/data/
+backup.sh
