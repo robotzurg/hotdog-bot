@@ -8,7 +8,7 @@ Hotdog Water Review Corps Bot Repo.
 ```yaml
 services:
   hotdog-bot:
-    image: tobeadded
+    image: ghcr.io/robotzurg/hotdog-bot:latest
     restart: unless-stopped
     volumes:
       - ./discord-bot/data:/app/discord-bot/data
@@ -16,7 +16,7 @@ services:
       TOKEN: "add-discord-token-here"
 ```
 
-- Create the following directory: `discord-bot/data` (will need to fix this later) and add the DB files to it.
+- Create the following directory: `discord-bot/data` and add the DB files to it.
 
 - Your directory structure should look like this now:
 ```
