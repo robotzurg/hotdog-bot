@@ -123,6 +123,8 @@ async function start(discordClient, db) {
     }
 
     // Wakes the room and syncs its current port into the db. No-op if no room_url is configured.
+    // The wake has to finish before the port check, or a sleeping room reports its
+    // stale pre-wake port and we connect to a dead socket.
     async function syncRoomState() {
         const roomUrl = db.archipelago.get('room_url');
         if (!roomUrl) return;
@@ -130,7 +132,8 @@ async function start(discordClient, db) {
         const roomId = getRoomId(roomUrl);
         if (!roomId) return;
 
-        await Promise.all([wakeRoom(roomUrl), checkRoomPort(roomId)]);
+        await wakeRoom(roomUrl);
+        await checkRoomPort(roomId);
     }
 
     await syncRoomState();
@@ -154,6 +157,9 @@ async function start(discordClient, db) {
     // activity has actually stopped for that long (plus a minute, so the room has
     // definitely gone idle rather than racing its own timeout).
     const roomWakeDelay = 2 * 60 * 60 * 1000 + 60 * 1000; // 2 hours 1 minute
+    // A room that has just been restarted (bot boot, manual reconnect, post-wake
+    // reboot) gets a shorter leash - we haven't seen any real activity on it yet.
+    const restartWakeDelay = 60 * 60 * 1000; // 1 hour
     let roomWakeTimer = null;
 
     // A re-woken room comes back on a fresh port/socket, so once it has had a
@@ -162,7 +168,7 @@ async function start(discordClient, db) {
     let rebootTimer = null;
     let isRebooting = false;
 
-    function scheduleRoomWake() {
+    function scheduleRoomWake(delay = roomWakeDelay) {
         if (roomWakeTimer) clearTimeout(roomWakeTimer);
         if (!db.archipelago.get('room_url')) return;
 
@@ -173,8 +179,10 @@ async function start(discordClient, db) {
                 rebootTimer = null;
                 rebootConnection();
             }, rebootAfterWakeDelay);
-            scheduleRoomWake();
-        }, roomWakeDelay);
+            // We just woke the room and are about to restart onto it, so use the
+            // shorter restart delay; a real item send will push it back out to 2 hours.
+            scheduleRoomWake(restartWakeDelay);
+        }, delay);
     }
 
     // Drops the current socket and reconnects, diverting the resulting
@@ -203,7 +211,7 @@ async function start(discordClient, db) {
         if (!ok) attemptReconnect('reboot failed');
     }
 
-    scheduleRoomWake();
+    scheduleRoomWake(restartWakeDelay);
 
     // Ensure a WebSocket implementation exists in Node. Archipelago expects a
     // global WebSocket/IsomorphousWebSocket constructor.
@@ -276,6 +284,8 @@ async function start(discordClient, db) {
 
             sendDiscordMessage('Successfully reconnected to Archipelago server!');
             console.log('Reconnected to the Archipelago server!');
+            // Fresh start on the room: re-arm the wake timer on the shorter delay.
+            scheduleRoomWake(restartWakeDelay);
             await ensureSlotDataCached();
             await syncCheckCounts();
             return true;

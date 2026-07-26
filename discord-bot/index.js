@@ -170,6 +170,17 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
+// Reacting can fail for reasons we don't care about (emote gone, message deleted,
+// missing perms), and an unhandled rejection there would take down the rest of the
+// message handler. Swallow it and log.
+async function safeReact(message, emote) {
+    try {
+        await message.react(emote);
+    } catch (error) {
+        console.warn(`Failed to react with ${emote}:`, error.message);
+    }
+}
+
 // Listen for messages
 client.on('messageCreate', async message => {
 
@@ -259,47 +270,38 @@ client.on('messageCreate', async message => {
         }
     }
 
-
-    if (message.channel.id == '802077628756525086') {
-        if (db.potd.get('potd_message') == false && message.author.id == db.potd.get('current_potd')) {
-            db.potd.set('potd_message', true);
-        } else if (db.potd.get('current_potd') == message.author.id) {
-            message.delete();
-        }
-    }
-
     // Don't do any of these in the vent channel
     if (message.channel.id != '1275932134116298802') {
 
         // pepehehe deployment
         if (Math.round(_.random(1, 500)) == 1 && message.author.id != db.potd.get('current_potd')) {
-            message.react('<:pepehehe:784594747406286868>');
+            await safeReact(message, '<:pepehehe:784594747406286868>');
             const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
             console.log(`Deploying pepehehe at ${date}`);
         } else if (Math.round(_.random(1, 100)) == 1 && message.author.id === db.potd.get('current_potd')) {
-            message.react('<:pepehehe:784594747406286868>');
+            await safeReact(message, '<:pepehehe:784594747406286868>');
             const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
             console.log(`Deploying pepehehe at ${date}`);
         }
 
         // wth pepehehe reaction
         if (message.content.toLowerCase().includes('wth') && message.content.length <= 4) {
-            message.react('<:pepehehe:784594747406286868>');
+            await safeReact(message, '<:pepehehe:784594747406286868>');
         }
 
         // craig reaction
         if (message.content.toLowerCase().includes('craig')) {
-            message.react('<:craig:714689464760533092>');
+            await safeReact(message, '<:craig:714689464760533092>');
         }
 
         // friday we ball reaction
         if (message.content.toLowerCase().includes('friday 🏀 we ball')) {
-            message.react('🏀');
+            await safeReact(message, '🏀');
         }
-        
+
         // i love you all reaction
         if (message.content.toLowerCase().includes('i love you all')) {
-            message.react('❤️');
+            await safeReact(message, '❤️');
         }
 
         let messageOptions = [];
