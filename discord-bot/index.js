@@ -51,21 +51,6 @@ for (const file of commandFiles) {
 
 const rest = new REST({ version: '9' }).setToken(token);
 
-(async () => {
-	try {
-		console.log('Started refreshing application (/) commands.');
-
-		await rest.put(
-			Routes.applicationCommands(mainClientId),
-			{ body: registerCommands },
-		);
-
-		console.log('Successfully reloaded application (/) commands.');
-	} catch (error) {
-		console.error(error);
-	}
-})();
-
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
 client.once('ready', async () => {
@@ -644,5 +629,27 @@ client.on('messageCreate', async message => {
     }
 });
 
-// login to Discord
-client.login(token);
+// Bootstrap: register slash commands, then connect to Discord. Archipelago work
+// is kicked off from the 'ready' handler above, so it can never run before login
+// has set the token. Awaiting login (rather than fire-and-forget) also means a
+// missing or invalid token surfaces as a clear error instead of a silent
+// unhandled rejection.
+(async () => {
+    try {
+        console.log('Started refreshing application (/) commands.');
+        await rest.put(
+            Routes.applicationCommands(mainClientId),
+            { body: registerCommands },
+        );
+        console.log('Successfully reloaded application (/) commands.');
+    } catch (error) {
+        console.error('Failed to register application commands:', error);
+    }
+
+    try {
+        await client.login(token);
+    } catch (error) {
+        console.error('Failed to log in to Discord:', error);
+        process.exit(1);
+    }
+})();
