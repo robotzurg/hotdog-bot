@@ -65,8 +65,6 @@ client.once('ready', async () => {
         console.error('Failed to start Archipelago module:', err);
     }
 
-    // Pre-warm murder mystery received items cache so /investigate autocomplete
-    // shows correct statuses immediately on startup
     const mm = require('./murder-mystery.js');
     if (mm.isGameActive()) {
         mm.readReceivedItems().catch(err =>
@@ -155,9 +153,6 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-// Reacting can fail for reasons we don't care about (emote gone, message deleted,
-// missing perms), and an unhandled rejection there would take down the rest of the
-// message handler. Swallow it and log.
 async function safeReact(message, emote) {
     try {
         await message.react(emote);
@@ -629,11 +624,6 @@ client.on('messageCreate', async message => {
     }
 });
 
-// Bootstrap: register slash commands, then connect to Discord. Archipelago work
-// is kicked off from the 'ready' handler above, so it can never run before login
-// has set the token. Awaiting login (rather than fire-and-forget) also means a
-// missing or invalid token surfaces as a clear error instead of a silent
-// unhandled rejection.
 (async () => {
     try {
         console.log('Started refreshing application (/) commands.');
