@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const token = process.env.TOKEN;
+let token = process.env.TOKEN;
 const db = require("./db.js");
 const cron = require('node-cron');
 const { REST } = require('@discordjs/rest');
