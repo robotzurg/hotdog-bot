@@ -51,8 +51,19 @@ for (const file of commandFiles) {
 
 const rest = new REST({ version: '9' }).setToken(token);
 
+// Apparently this is required to get the token to stay active
+client.rest.on('response', (_request, response) => {
+    const status = response.statusCode ?? response.status;
+    if (status !== 401) return;
+    console.warn('Discord returned 401; restoring the REST token.');
+    setImmediate(() => client.rest.setToken(token));
+});
+
+process.on('unhandledRejection', error => {
+    console.error('Unhandled promise rejection:', error);
+});
+
 // when the client is ready, run this code
-// this event will only trigger one time after logging in
 client.once('ready', async () => {
     console.log('Ready!');
     const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
@@ -96,7 +107,7 @@ cron.schedule('00 16 * * *', async () => {
     }
 
     const channel = client.channels.cache.get('680864894006067263');
-    channel.send('Hello everyone! I\'m here to tell you all today\'s **Pea of the Day** which is...');
+    await channel.send('Hello everyone! I\'m here to tell you all today\'s **Pea of the Day** which is...');
 
     const ogrePick = ogreList[Math.floor(Math.random() * ogreList.length)];
     const myUserRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Hotdog Water Bot");
@@ -197,7 +208,7 @@ client.on('messageCreate', async message => {
         let member = await message.guild.members.fetch(chosenUser);
         message.guild.members.fetch(previousUser).then(a => a.roles.remove(myRole));
         message.guild.members.fetch(chosenUser).then(a => a.roles.add(myRole));
-        message.channel.send(`<@${member.user.id}>! Congratulations!\nMake sure to send your 1 message in <#802077628756525086>, or take the chance to view others messages!`);
+        await message.channel.send(`<@${member.user.id}>! Congratulations!\nMake sure to send your 1 message in <#802077628756525086>, or take the chance to view others messages!`);
         db.potd.set('current_potd', chosenUser);
         db.potd.set('potd_message', false);
 
@@ -298,7 +309,7 @@ client.on('messageCreate', async message => {
                 'Maybe! Who knows?  I am just a bot, what do you expect from me?'
             ];
 
-            message.reply({ content: _.sample(messageOptions), allowedMentions: { repliedUser: false } });
+            await message.reply({ content: _.sample(messageOptions), allowedMentions: { repliedUser: false } });
         }
 
         if (message.channel.id == '680871349715075088') {
@@ -619,7 +630,7 @@ client.on('messageCreate', async message => {
                 ]
             }
 
-            message.channel.send(_.sample(messageOptions));
+            await message.channel.send(_.sample(messageOptions));
         }
     }
 });
