@@ -2,6 +2,7 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = re
 const db = require('../db.js');
 const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
 const { runTrackerForSlot } = require('../tracker.js');
+const archipelago = require('../archipelago.js');
 
 const ITEMS_PER_PAGE = 10;
 
@@ -27,10 +28,20 @@ module.exports = {
 
         const slotName = interaction.options.getString('slot-name');
         const finishedGames = db.archipelago.get('finished_games') ?? [];
+        
+        if (!SLOT_NAMES.includes(slotName)) {
+            await interaction.editReply(`**${slotName}** is not a valid Archipelago slot name!`);
+            return;
+        }
 
         if (finishedGames.includes(slotName)) {
             const emote = SLOT_EMOTES[slotName] ?? '';
             await interaction.editReply(`## ${slotName}${emote ? ` ${emote}` : ''} has been goaled!`);
+            return;
+        }
+
+        if (archipelago.isConnected() === false) {
+            await interaction.editReply('Archipelago is not connected. Please use `/archipelago-reconnect` to reconnect.');
             return;
         }
 

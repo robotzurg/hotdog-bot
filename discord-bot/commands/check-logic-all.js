@@ -3,6 +3,7 @@ const db = require('../db.js');
 const { SLOT_EMOTES } = require('../slots.js');
 const { runTrackerForSlot } = require('../tracker.js');
 const { PLAYER_SLOTS } = require('../players.js');
+const archipelago = require('../archipelago.js');
 
 const ITEMS_PER_PAGE = 10;
 
@@ -36,6 +37,11 @@ module.exports = {
         const slots = PLAYER_SLOTS[player];
         if (!slots) {
             await interaction.editReply(`Unknown player: **${player}**`);
+            return;
+        }
+
+        if (archipelago.isConnected() === false) {
+            await interaction.editReply('Archipelago is not connected. Please use `/archipelago-reconnect` to reconnect.');
             return;
         }
 

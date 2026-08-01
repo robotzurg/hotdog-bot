@@ -2,6 +2,7 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = re
 const db = require('../db.js');
 const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
 const { invalidateSlotCache } = require('../tracker.js');
+const archipelago = require('../archipelago.js');
 
 const slotOption = (option) =>
     option.setName('slot-name')
@@ -55,6 +56,16 @@ module.exports = {
         const sub = interaction.options.getSubcommand();
         const slotName = interaction.options.getString('slot-name');
         const port = db.archipelago.get('server_port');
+
+        if (!SLOT_NAMES.includes(slotName)) {
+            await interaction.editReply(`**${slotName}** is not a valid Archipelago slot name!`);
+            return;
+        }
+
+        if (archipelago.isConnected() === false) {
+            await interaction.editReply('Archipelago is not connected. Please use `/archipelago-reconnect` to reconnect.');
+            return;
+        }
 
         const { Client } = await import('archipelago.js');
         const client = new Client();

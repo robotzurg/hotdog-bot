@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_EMOTES } = require('../slots.js');
 const { PLAYER_SLOTS } = require('../players.js');
+const archipelago = require('../archipelago.js');
 
 async function fetchHintPoints(slotName, port) {
     try {
@@ -49,6 +50,11 @@ module.exports = {
         const slots = PLAYER_SLOTS[player];
         if (!slots) {
             await interaction.editReply(`Unknown player: **${player}**`);
+            return;
+        }
+
+        if (archipelago.isConnected() === false) {
+            await interaction.editReply('Archipelago is not connected. Please use `/archipelago-reconnect` to reconnect.');
             return;
         }
 

@@ -1,8 +1,14 @@
 // Tracks the currently running client
 let currentClient = null;
 
+let connected = false;
+
 function getClient() {
     return currentClient;
+}
+
+function isConnected() {
+    return connected;
 }
 
 function getRoomId(roomUrl) {
@@ -68,28 +74,11 @@ async function start(discordClient, db) {
         }
     }
 
-    // Connect/disconnect chatter from an automatic post-wake reboot goes here
-    // instead of the main server channel, so it doesn't spam the game feed.
-    const REBOOT_CHANNEL_ID = '1529508703555031202';
-    let rebootChannel = null;
-    let divertMessages = false;
-
-    async function getRebootChannel() {
-        if (rebootChannel) return rebootChannel;
-        try {
-            rebootChannel = await discordClient.channels.fetch(REBOOT_CHANNEL_ID);
-        } catch (err) {
-            console.error('Failed to fetch Discord channel for Archipelago reboot messages:', err);
-        }
-        return rebootChannel;
-    }
-
     // Helper: Send message to Discord channel
     async function sendDiscordMessage(message) {
-        const target = divertMessages ? await getRebootChannel() : discordChannel;
-        if (target && discordClient.isReady()) {
+        if (discordChannel && discordClient.isReady()) {
             try {
-                await target.send({ content: `${message}` });
+                await discordChannel.send({ content: `${message}` });
             } catch (err) {
                 console.error('Failed to send Discord message:', err);
             }
@@ -140,78 +129,53 @@ async function start(discordClient, db) {
 
     const { port, slot, game, address } = getConnectionConfig();
 
-    // Reconnection state
-    const reconnectDelay = 5 * 60 * 1000; // 5 minutes
-    let reconnectTimer = null;
     let isDestroyed = false;
 
     if (!port) {
         console.error('Archipelago server_port is not configured in the database. Skipping Archipelago login.');
         currentClient = null;
+        connected = false;
         return null;
     }
 
-    // archipelago.gg rooms go idle after ~2 hours without an item send. Rather than
-    // polling on a fixed interval, this timer is reset on every itemSent event (see
-    // below) and only fires - waking the room and rescheduling itself - once real
-    // activity has actually stopped for that long (plus a minute, so the room has
-    // definitely gone idle rather than racing its own timeout).
-    const roomWakeDelay = 2 * 60 * 60 * 1000 + 60 * 1000; // 2 hours 1 minute
-    // A room that has just been restarted (bot boot, manual reconnect, post-wake
-    // reboot) gets a shorter leash - we haven't seen any real activity on it yet.
-    const restartWakeDelay = 60 * 60 * 1000; // 1 hour
-    let roomWakeTimer = null;
+    const idleDelay = 2 * 60 * 60 * 1000; // 2 hours
+    let idleTimer = null;
 
-    // A re-woken room comes back on a fresh port/socket, so once it has had a
-    // minute to finish booting we tear the connection down and reconnect.
-    const rebootAfterWakeDelay = 60 * 1000; // 1 minute
-    let rebootTimer = null;
-    let isRebooting = false;
+    function scheduleIdleDisconnect() {
+        if (idleTimer) clearTimeout(idleTimer);
 
-    function scheduleRoomWake(delay = roomWakeDelay) {
-        if (roomWakeTimer) clearTimeout(roomWakeTimer);
-        if (!db.archipelago.get('room_url')) return;
-
-        roomWakeTimer = setTimeout(async () => {
-            await syncRoomState();
-            if (rebootTimer) clearTimeout(rebootTimer);
-            rebootTimer = setTimeout(() => {
-                rebootTimer = null;
-                rebootConnection();
-            }, rebootAfterWakeDelay);
-            // We just woke the room and are about to restart onto it, so use the
-            // shorter restart delay; a real item send will push it back out to 2 hours.
-            scheduleRoomWake(restartWakeDelay);
-        }, delay);
+        idleTimer = setTimeout(() => {
+            idleTimer = null;
+            handleDisconnect('no item activity for 2 hours');
+        }, idleDelay);
     }
 
-    // Drops the current socket and reconnects, diverting the resulting
-    // disconnect/reconnect messages away from the main channel.
-    async function rebootConnection() {
-        if (isDestroyed || isRebooting) return;
+    // Shuts the handler down for good and says so in the main checks channel.
+    // Nothing retries after this; /archipelago-reconnect brings it back.
+    function handleDisconnect(reason) {
+        if (isDestroyed) return;
 
-        isRebooting = true;
-        divertMessages = true;
-        if (reconnectTimer) {
-            clearTimeout(reconnectTimer);
-            reconnectTimer = null;
-        }
-
-        let ok = false;
+        isDestroyed = true;
+        connected = false;
+        clearTimers();
         try {
-            sendDiscordMessage('Room was re-woken; rebooting the Archipelago connection.');
             archClient.socket?.disconnect?.();
-            ok = await reconnect();
-        } finally {
-            isRebooting = false;
-            divertMessages = false;
+        } catch (err) {
+            console.warn('[Archipelago] Failed to close socket while disconnecting:', err);
         }
 
-        // Fall back to the normal retry loop if the reboot didn't take.
-        if (!ok) attemptReconnect('reboot failed');
+        console.log(`Archipelago handler stopped: ${reason}`);
+        sendDiscordMessage(`Disconnected from the Archipelago server (${reason}). Run \`/archipelago-reconnect\` to bring it back.`);
     }
 
-    scheduleRoomWake(restartWakeDelay);
+    function clearTimers() {
+        if (idleTimer) {
+            clearTimeout(idleTimer);
+            idleTimer = null;
+        }
+    }
+
+    scheduleIdleDisconnect();
 
     // Ensure a WebSocket implementation exists in Node. Archipelago expects a
     // global WebSocket/IsomorphousWebSocket constructor.
@@ -242,59 +206,6 @@ async function start(discordClient, db) {
     }
 
     const archClient = new ArchipelagoClient();
-
-    // Reconnection logic
-    function attemptReconnect(reason) {
-        // While a reboot is in flight it owns the reconnect; don't race it.
-        if (isDestroyed || isRebooting || reconnectTimer) return;
-
-        reconnectTimer = setTimeout(() => {
-            reconnectTimer = null;
-            reconnect();
-        }, reconnectDelay);
-    }
-
-    // Reconnect function. Resolves true once connected, false if it failed.
-    async function reconnect() {
-        if (isDestroyed) return false;
-
-        await syncRoomState();
-
-        const { port, slot, game, address } = getConnectionConfig();
-
-        if (!port) {
-            console.error('Archipelago server_port is not configured in the database. Cannot reconnect.');
-            return false;
-        }
-
-        try {
-            const cachedPackage = db.archipelago.get('package_cache');
-            if (cachedPackage) archClient.package.importPackage(cachedPackage);
-
-            if (slot) {
-                console.log(`Attempting to reconnect to Archipelago at ${address} with slot ${slot} (game ${game})...`);
-                await archClient.login(address, slot, game);
-            } else {
-                await archClient.login(address);
-            }
-
-            // Set up socket listeners after successful reconnection
-            setupSocketListeners();
-            archClient.deathLink.enableDeathLink();
-
-            sendDiscordMessage('Successfully reconnected to Archipelago server!');
-            console.log('Reconnected to the Archipelago server!');
-            // Fresh start on the room: re-arm the wake timer on the shorter delay.
-            scheduleRoomWake(restartWakeDelay);
-            await ensureSlotDataCached();
-            await syncCheckCounts();
-            return true;
-        } catch (err) {
-            console.error('Archipelago reconnection failed:', err);
-            // Will trigger another reconnect attempt via error listener
-            return false;
-        }
-    }
 
     // Helper to format nodes into a message string safely
     function formatNodes(nodes, hint = false, item = false) {
@@ -327,7 +238,7 @@ async function start(discordClient, db) {
     }
 
     archClient.messages.on('itemSent', async (_text, _item, nodes) => {
-        scheduleRoomWake();
+        scheduleIdleDisconnect();
 
         // Send to Discord channel
         try {
@@ -541,25 +452,24 @@ async function start(discordClient, db) {
 
             archClient.socket.on('error', (error) => {
                 console.error('Archipelago WebSocket error:', error);
-                attemptReconnect('error');
+                handleDisconnect('websocket error');
             });
 
             archClient.socket.on('close', () => {
                 console.log('Archipelago WebSocket closed');
-                sendDiscordMessage('Disconnected from Archipelago server. Attempting to reconnect...');
-                attemptReconnect('close');
+                handleDisconnect('the websocket closed');
             });
         }
 
         if (archClient.on) {
             archClient.on('error', (error) => {
                 console.error('Archipelago client error:', error);
-                attemptReconnect('client error');
+                handleDisconnect('client error');
             });
 
             archClient.on('disconnect', () => {
                 console.log('Archipelago client disconnected');
-                attemptReconnect('disconnect');
+                handleDisconnect('the client disconnected');
             });
         }
     }
@@ -578,28 +488,22 @@ async function start(discordClient, db) {
         // Set up socket listeners after successful initial connection
         setupSocketListeners();
         archClient.deathLink.enableDeathLink();
+        connected = true;
         console.log('Connected to the Archipelago server!');
         sendDiscordMessage('Connected to Archipelago server!');
         await ensureSlotDataCached();
         await syncCheckCounts();
     } catch (err) {
         console.error('Archipelago login failed:', err);
-        // Don't throw - let reconnection logic handle it
-        attemptReconnect('initial connection failed');
+        // Don't throw - report it and stay down until someone reconnects manually.
+        handleDisconnect('the initial connection failed');
     }
 
     // Add destroy method to client for cleanup
     archClient.destroy = function () {
         isDestroyed = true;
-        if (reconnectTimer) {
-            clearTimeout(reconnectTimer);
-            reconnectTimer = null;
-        }
-        if (roomWakeTimer) clearTimeout(roomWakeTimer);
-        if (rebootTimer) {
-            clearTimeout(rebootTimer);
-            rebootTimer = null;
-        }
+        connected = false;
+        clearTimers();
         archClient.socket?.disconnect?.();
         console.log('Archipelago client destroyed');
     };
@@ -616,4 +520,4 @@ async function restart(discordClient, db) {
     return start(discordClient, db);
 }
 
-module.exports = { start, restart, getClient };
+module.exports = { start, restart, getClient, isConnected };
