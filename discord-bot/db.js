@@ -1,4 +1,4 @@
-const Enmap = require("enmap");
+const Enmap = require("enmap").default;
 
 module.exports = {
   potd: new Enmap({ name: "potd" }),

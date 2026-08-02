@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "discord.js": "^14.26.3"
+    "discord.js": "^14.27.0",
+    "enmap": "^6.1.6"
+  },
+  "allowScripts": {
+    "better-sqlite3@12.11.1": true
   }
 }

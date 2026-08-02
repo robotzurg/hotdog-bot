@@ -5,7 +5,7 @@ RUN apt-get update \
     ca-certificates curl xz-utils git \
     gcc g++ make libc6-dev \
   && rm -rf /var/lib/apt/lists/* \
-  && curl -fsSL https://nodejs.org/dist/v18.8.0/node-v18.8.0-linux-x64.tar.xz -o /tmp/node.tar.xz \
+  && curl -fsSL https://nodejs.org/dist/v26.5.1/node-v26.5.1-linux-x64.tar.xz -o /tmp/node.tar.xz \
   && tar -xJf /tmp/node.tar.xz -C /usr/local --strip-components=1 \
   && rm -f /tmp/node.tar.xz
 

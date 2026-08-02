@@ -3,11 +3,14 @@
     "@discordjs/rest": "^1.5.0",
     "archipelago.js": "^2.0.4",
     "discord.js": "^14.11.0",
-    "enmap": "^5.9.5",
+    "enmap": "^6.1.6",
     "lodash": "^4.17.21",
     "node-cron": "^3.0.2",
     "node.js": "*",
     "trello-node-api": "^0.0.9",
     "ws": "^8.18.3"
+  },
+  "allowScripts": {
+    "better-sqlite3@12.11.1": true
   }
 }

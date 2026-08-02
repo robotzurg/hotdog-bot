@@ -129,6 +129,9 @@ async function start(discordClient, db) {
 
     const { port, slot, game, address } = getConnectionConfig();
 
+    // Reconnection state
+    const reconnectDelay = 5 * 60 * 1000; // 5 minutes
+    let reconnectTimer = null;
     let isDestroyed = false;
 
     if (!port) {
@@ -206,6 +209,57 @@ async function start(discordClient, db) {
     }
 
     const archClient = new ArchipelagoClient();
+
+    // Reconnection logic
+    function attemptReconnect(reason) {
+        connected = false;
+        if (isDestroyed || reconnectTimer) return;
+
+        reconnectTimer = setTimeout(() => {
+            reconnectTimer = null;
+            reconnect();
+        }, reconnectDelay);
+    }
+
+    // Reconnect function
+    async function reconnect() {
+        if (isDestroyed) return;
+
+        await syncRoomState();
+
+        const { port, slot, game, address } = getConnectionConfig();
+
+        if (!port) {
+            console.error('Archipelago server_port is not configured in the database. Cannot reconnect.');
+            return;
+        }
+
+        try {
+            const cachedPackage = db.archipelago.get('package_cache');
+            if (cachedPackage) archClient.package.importPackage(cachedPackage);
+
+            if (slot) {
+                console.log(`Attempting to reconnect to Archipelago at ${address} with slot ${slot} (game ${game})...`);
+                await archClient.login(address, slot, game);
+            } else {
+                await archClient.login(address);
+            }
+
+            // Set up socket listeners after successful reconnection
+            setupSocketListeners();
+            archClient.deathLink.enableDeathLink();
+            connected = true;
+
+            sendDiscordMessage('Successfully reconnected to Archipelago server!');
+            console.log('Reconnected to the Archipelago server!');
+            scheduleIdleDisconnect();
+            await ensureSlotDataCached();
+            await syncCheckCounts();
+        } catch (err) {
+            console.error('Archipelago reconnection failed:', err);
+            // Will trigger another reconnect attempt via error listener
+        }
+    }
 
     // Helper to format nodes into a message string safely
     function formatNodes(nodes, hint = false, item = false) {
@@ -452,24 +506,25 @@ async function start(discordClient, db) {
 
             archClient.socket.on('error', (error) => {
                 console.error('Archipelago WebSocket error:', error);
-                handleDisconnect('websocket error');
+                attemptReconnect('error');
             });
 
             archClient.socket.on('close', () => {
                 console.log('Archipelago WebSocket closed');
-                handleDisconnect('the websocket closed');
+                sendDiscordMessage('Disconnected from Archipelago server. Attempting to reconnect...');
+                attemptReconnect('close');
             });
         }
 
         if (archClient.on) {
             archClient.on('error', (error) => {
                 console.error('Archipelago client error:', error);
-                handleDisconnect('client error');
+                attemptReconnect('client error');
             });
 
             archClient.on('disconnect', () => {
                 console.log('Archipelago client disconnected');
-                handleDisconnect('the client disconnected');
+                attemptReconnect('disconnect');
             });
         }
     }
@@ -495,14 +550,18 @@ async function start(discordClient, db) {
         await syncCheckCounts();
     } catch (err) {
         console.error('Archipelago login failed:', err);
-        // Don't throw - report it and stay down until someone reconnects manually.
-        handleDisconnect('the initial connection failed');
+        // Don't throw - let reconnection logic handle it
+        attemptReconnect('initial connection failed');
     }
 
     // Add destroy method to client for cleanup
     archClient.destroy = function () {
         isDestroyed = true;
         connected = false;
+        if (reconnectTimer) {
+            clearTimeout(reconnectTimer);
+            reconnectTimer = null;
+        }
         clearTimers();
         archClient.socket?.disconnect?.();
         console.log('Archipelago client destroyed');
