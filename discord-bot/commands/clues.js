@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const mm = require('../murder-mystery.js');
 
 function statusBadge(status) {
@@ -48,7 +48,7 @@ module.exports = {
         .setDescription('DMs you your current clue board.'),
 
     async execute(interaction) {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         if (!mm.isGameActive()) {
             await interaction.editReply('No Murder Mystery game is currently active.');

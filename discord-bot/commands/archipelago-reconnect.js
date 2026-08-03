@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const db = require('../db.js');
 const archipelago = require('../archipelago.js');
 
@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('archipelago-reconnect')
         .setDescription('Closes and reconnects the Archipelago connection.')
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async execute(interaction) {
         if (interaction.channel.id !== db.archipelago.get('server_channel')) {

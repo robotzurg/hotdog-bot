@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags, InteractionContextType, PermissionFlagsBits } = require('discord.js');
 const mm = require('../murder-mystery.js');
 const { PERSONS } = require('../murdermystery-ap-info.js');
 
@@ -7,10 +7,10 @@ module.exports = {
         .setName('mm-status')
         .setDescription('Admin: view the full Murder Mystery game state.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async execute(interaction) {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         if (!mm.isGameActive()) {
             await interaction.editReply('No Murder Mystery game is currently active.');

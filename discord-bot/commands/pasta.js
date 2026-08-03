@@ -1,10 +1,10 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('pasta')
         .setDescription('Post one of the servers... many... copypastas.')
-        .setDMPermission(false)
+        .setContexts(InteractionContextType.Guild)
         .addSubcommand(subcommand =>
             subcommand.setName('egg')
             .setDescription('Post the egg copypasta.'))

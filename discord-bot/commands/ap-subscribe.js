@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags, InteractionContextType } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_NAMES } = require('../slots.js');
 
@@ -26,7 +26,7 @@ module.exports = {
                 .setDescription('Item name, or group: Progression / Useful / Trap / Junk')
                 .setRequired(true)
                 .setAutocomplete(true))
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async autocomplete(interaction) {
         const focused = interaction.options.getFocused(true);
@@ -58,7 +58,7 @@ module.exports = {
         const value = interaction.options.getString('value');
 
         if (type === 'group' && !GROUPS.includes(value)) {
-            await interaction.reply({ content: `Invalid group. Choose from: ${GROUPS.join(', ')}`, ephemeral: true });
+            await interaction.reply({ content: `Invalid group. Choose from: ${GROUPS.join(', ')}`, flags: MessageFlags.Ephemeral });
             return;
         }
 
@@ -72,14 +72,14 @@ module.exports = {
             db.archipelago.set('subscriptions', subscriptions);
             await interaction.reply({
                 content: `Unsubscribed from **${value}** (${type}) for **${slot}**.`,
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         } else {
             subscriptions.push({ userId, slot, type, value: type === 'group' ? value : value });
             db.archipelago.set('subscriptions', subscriptions);
             await interaction.reply({
                 content: `Subscribed! You'll get a DM when **${slot}** receives ${type === 'group' ? `a **${value}** item` : `**${value}**`}.`,
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
     },

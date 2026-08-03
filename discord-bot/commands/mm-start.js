@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags, InteractionContextType, PermissionFlagsBits } = require('discord.js');
 const mm = require('../murder-mystery.js');
 
 module.exports = {
@@ -6,10 +6,10 @@ module.exports = {
         .setName('mm-start')
         .setDescription('Start a new Murder Mystery game (rolls murderer, location, weapon).')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async execute(interaction) {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         let result;
         try {
             result = mm.startGame();

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags, InteractionContextType } = require('discord.js');
 const db = require('../db.js');
 
 module.exports = {
@@ -9,12 +9,12 @@ module.exports = {
             option.setName('confirm')
                 .setDescription('Type "yes" to confirm')
                 .setRequired(true))
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async execute(interaction) {
         const confirm = interaction.options.getString('confirm');
         if (confirm.toLowerCase() !== 'yes') {
-            await interaction.reply({ content: 'Confirmation not received. Type `yes` to confirm. History was not cleared.', ephemeral: true });
+            await interaction.reply({ content: 'Confirmation not received. Type `yes` to confirm. History was not cleared.', flags: MessageFlags.Ephemeral });
             return;
         }
 
@@ -22,6 +22,6 @@ module.exports = {
         const count = history.length;
         db.archipelago.set('finished_games', []);
         db.archipelago.set('ap_history', []);
-        await interaction.reply({ content: `Cleared **${count}** events from Archipelago history, and cleared finished games.`, ephemeral: true });
+        await interaction.reply({ content: `Cleared **${count}** events from Archipelago history, and cleared finished games.`, flags: MessageFlags.Ephemeral });
     },
 };

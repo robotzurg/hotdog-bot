@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_EMOTES } = require('../slots.js');
 const { PLAYER_SLOTS } = require('../players.js');
@@ -35,7 +35,7 @@ module.exports = {
                 .setDescription('The player whose slots to check')
                 .setRequired(true)
                 .setAutocomplete(true))
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused().toLowerCase();

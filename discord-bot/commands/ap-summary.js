@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_EMOTES } = require('../slots.js');
 const { PLAYER_SLOTS } = require('../players.js');
@@ -80,7 +80,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('ap-summary')
         .setDescription('Archipelago multiworld check summary by player')
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async execute(interaction) {
         await interaction.deferReply();

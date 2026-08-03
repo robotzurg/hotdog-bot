@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const db = require('../db.js');
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
             option.setName('room_url')
                 .setDescription('The archipelago.gg room URL, used to auto-detect port changes and keep the room awake.')
                 .setRequired(false))
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 	async execute(interaction) {
         const channel = interaction.options.getChannel('channel');
         const port = interaction.options.getString('port');

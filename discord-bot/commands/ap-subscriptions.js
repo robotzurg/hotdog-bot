@@ -1,18 +1,18 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags, InteractionContextType } = require('discord.js');
 const db = require('../db.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ap-subscriptions')
         .setDescription('List your active Archipelago item subscriptions')
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async execute(interaction) {
         const userId = interaction.user.id;
         const subscriptions = (db.archipelago.get('subscriptions') ?? []).filter(s => s.userId === userId);
 
         if (subscriptions.length === 0) {
-            await interaction.reply({ content: 'You have no active subscriptions. Use `/ap-subscribe` to add one.', ephemeral: true });
+            await interaction.reply({ content: 'You have no active subscriptions. Use `/ap-subscribe` to add one.', flags: MessageFlags.Ephemeral });
             return;
         }
 
@@ -22,7 +22,7 @@ module.exports = {
 
         await interaction.reply({
             content: `## Your AP Subscriptions\n${lines.join('\n')}\n-# Use \`/ap-subscribe\` with the same options to unsubscribe.`,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
         });
     },
 };

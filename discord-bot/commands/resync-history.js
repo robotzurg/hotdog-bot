@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const db = require('../db.js');
 
 function itemGroup(flags) {
@@ -12,7 +12,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('resync-history')
         .setDescription('Rebuild item history by connecting to each slot on Archipelago')
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async execute(interaction) {
         await interaction.deferReply();

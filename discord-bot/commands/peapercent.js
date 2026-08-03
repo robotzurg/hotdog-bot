@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const db = require('../db.js');
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
             option.setName('user')
                 .setDescription('The user.')
                 .setRequired(true))
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 	async execute(interaction) {
         // Set up random number function
         function randomNumber(min, max) {  

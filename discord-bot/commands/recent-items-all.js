@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_EMOTES } = require('../slots.js');
 const { PLAYER_SLOTS } = require('../players.js');
@@ -64,7 +64,7 @@ module.exports = {
                 .setDescription('Filter by game-defined item group')
                 .setRequired(false)
                 .setAutocomplete(true))
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async autocomplete(interaction) {
         const focused = interaction.options.getFocused(true);

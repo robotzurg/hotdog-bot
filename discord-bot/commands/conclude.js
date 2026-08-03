@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const mm = require('../murder-mystery.js');
 const { PERSONS, LOCATION_POOL, WEAPON_POOL } = require('../murdermystery-ap-info.js');
 
@@ -16,7 +16,7 @@ module.exports = {
             option.setName('location').setDescription('Where').setRequired(true).addChoices(...LOCATION_CHOICES))
         .addStringOption(option =>
             option.setName('weapon').setDescription('With what').setRequired(true).addChoices(...WEAPON_CHOICES))
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async execute(interaction) {
         await interaction.deferReply();

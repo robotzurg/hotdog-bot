@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
 const { invalidateSlotCache } = require('../tracker.js');
@@ -31,7 +31,7 @@ module.exports = {
             sub.setName('points')
                 .setDescription('Show hint points for a slot')
                 .addStringOption(slotOption))
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async autocomplete(interaction) {
         const focused = interaction.options.getFocused(true);

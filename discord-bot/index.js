@@ -3,8 +3,6 @@ const Discord = require('discord.js');
 let token = process.env.TOKEN;
 const db = require("./db.js");
 const cron = require('node-cron');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
 const _ = require('lodash');
 const archipelago = require('./archipelago');
 const { start } = archipelago;
@@ -24,7 +22,7 @@ const ogreList = [
 ]
 
 // create a new Discord client and give it some variables
-const { Client, GatewayIntentBits, Partials } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, ActivityType, REST, Routes } = require('discord.js');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, 
     GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent], partials: [Partials.Channel, Partials.Message, Partials.Reaction] });
@@ -49,7 +47,7 @@ for (const file of commandFiles) {
     }
 }
 
-const rest = new REST({ version: '9' }).setToken(token);
+const rest = new REST().setToken(token);
 
 // Apparently this is required to get the token to stay active
 client.rest.on('response', (_request, response) => {
@@ -64,7 +62,7 @@ process.on('unhandledRejection', error => {
 });
 
 // when the client is ready, run this code
-client.once('ready', async () => {
+client.once('clientReady', async () => {
     console.log('Ready!');
     const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
     console.log(date);
@@ -111,19 +109,23 @@ cron.schedule('00 16 * * *', async () => {
 
     const ogrePick = ogreList[Math.floor(Math.random() * ogreList.length)];
     const myUserRole = client.guilds.cache.find(guild => guild.id === '680864893552951306').roles.cache.find(role => role.name === "Hotdog Water Bot");
-    client.user.setAvatar(ogrePick);
+    try {
+        await client.user.setAvatar(ogrePick);
+    } catch (err) {
+        console.error('Failed to set avatar:', err);
+    }
     switch (ogrePick) {
         case './Ogres/girlGold.png':
-        case './Ogres/ogreGold.png': myUserRole.setColor('#FFEF00'); client.user.setActivity('with hotdogs!', { type: 'PLAYING' }); break;
+        case './Ogres/ogreGold.png': myUserRole.setColor('#FFEF00'); client.user.setActivity('with hotdogs!', { type: ActivityType.Playing }); break;
         case './Ogres/girlHappy.jpg':
-        case './Ogres/ogreHappy.png': myUserRole.setColor('#83FF39'); client.user.setActivity('Hotdog Water', { type: 'LISTENING' }); break;
+        case './Ogres/ogreHappy.png': myUserRole.setColor('#83FF39'); client.user.setActivity('Hotdog Water', { type: ActivityType.Listening }); break;
         case './Ogres/girlMad.jpg':
-        case './Ogres/ogreMad.png': myUserRole.setColor('#FF0000'); client.user.setActivity('Ultimate Pea Warfare', { type: 'COMPETING' }); break;
+        case './Ogres/ogreMad.png': myUserRole.setColor('#FF0000'); client.user.setActivity('Ultimate Pea Warfare', { type: ActivityType.Competing }); break;
         case './Ogres/girlSad.jpg':
-        case './Ogres/ogreSad.png': myUserRole.setColor('#3A41F9'); client.user.setActivity('all of you peas!', { type: 'WATCHING' }); break;
+        case './Ogres/ogreSad.png': myUserRole.setColor('#3A41F9'); client.user.setActivity('all of you peas!', { type: ActivityType.Watching }); break;
         case './Ogres/girlSmug.jpg':
-        case './Ogres/ogreSmug.png': myUserRole.setColor('#7E3BFF'); client.user.setActivity('live pea viewings', { type: 'STREAMING' }); break;
-        case './Ogres/ogreSnow.png': myUserRole.setColor('#FFFFFF'); client.user.setActivity('with colddogs!', { type: 'PLAYING' }); break;
+        case './Ogres/ogreSmug.png': myUserRole.setColor('#7E3BFF'); client.user.setActivity('live pea viewings', { type: ActivityType.Streaming }); break;
+        case './Ogres/ogreSnow.png': myUserRole.setColor('#FFFFFF'); client.user.setActivity('with colddogs!', { type: ActivityType.Playing }); break;
     }
 }, {
     scheduled: true,

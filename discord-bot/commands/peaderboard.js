@@ -1,11 +1,11 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 const db = require('../db.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('peaderboard')
         .setDescription('View the pea of the day leaderboard.')
-        .setDMPermission(false)
+        .setContexts(InteractionContextType.Guild)
         .addSubcommand(subcommand =>
             subcommand.setName('all_time')
             .setDescription('View the pea of the day leaderboard for all time.'))

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const db = require('../db.js');
 const mm = require('../murder-mystery.js');
 const { PERSONS, HINT_TEMPLATES, LOCATION_NAME_TO_ID } = require('../murdermystery-ap-info.js');
@@ -7,7 +7,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('resync-mm')
         .setDescription('Rebuild Murder Mystery player state from Archipelago checked locations')
-        .setDMPermission(false),
+        .setContexts(InteractionContextType.Guild),
 
     async execute(interaction) {
         await interaction.deferReply();
