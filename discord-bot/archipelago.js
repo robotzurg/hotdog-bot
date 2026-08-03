@@ -595,7 +595,7 @@ async function start(discordClient, db) {
         archClient.deathLink.enableDeathLink();
         connected = true;
         console.log('Connected to the Archipelago server!');
-        sendDiscordMessage('Connected to Archipelago server!');
+        sendDiscordMessage('Successfully connected to Archipelago server!');
         await ensureSlotDataCached();
         await syncCheckCounts();
     } catch (err) {
