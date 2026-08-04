@@ -92,7 +92,7 @@ async function start(discordClient, db) {
 
     // Helper: Send message to Discord channel
     async function sendDiscordMessage(message) {
-        const target = divertMessages ? await getRebootChannel() : discordChannel;
+        const target = (divertMessages && await getRebootChannel()) || discordChannel;
         if (target && discordClient.isReady()) {
             try {
                 await target.send({ content: `${message}` });
