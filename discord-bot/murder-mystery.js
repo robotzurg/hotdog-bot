@@ -27,7 +27,7 @@ function reloadHints() {
 // ---------------------------------------------------------------------------
 const CONCLUDE_THRESHOLD_PCT = 0.75; // fraction of all investigation+share items
                                      // that must be received before /conclude opens
-const MAX_WRONG_CONCLUSIONS = 2;     // wrong guesses before murderer wins
+const MAX_WRONG_CONCLUSIONS = 3;     // wrong guesses before murderer wins
 const MURDERER_SHARE_WIN_COUNT = 3;  // important hints shared *to* murderer to win
 
 // ---------------------------------------------------------------------------
@@ -408,14 +408,17 @@ function concludeAvailable(received) {
 
 function submitConclusion({ location, weapon, murderer }) {
     const solution = getSolution();
-    const correct = solution.location === location
-                 && solution.weapon === weapon
-                 && solution.murderer === murderer;
+    const matches = {
+        location: solution.location === location,
+        weapon: solution.weapon === weapon,
+        murderer: solution.murderer === murderer,
+    };
+    const correct = matches.location && matches.weapon && matches.murderer;
 
     if (correct) {
         const goalReached = !db.murder.get('winner');
         if (goalReached) db.murder.set('winner', 'detectives');
-        return { correct: true, winner: 'detectives', solution, goalReached };
+        return { correct: true, winner: 'detectives', solution, matches, goalReached };
     }
 
     const wrong = (db.murder.get('wrong_conclusions') ?? 0) + 1;
@@ -423,9 +426,9 @@ function submitConclusion({ location, weapon, murderer }) {
 
     if (wrong > MAX_WRONG_CONCLUSIONS && !db.murder.get('winner')) {
         db.murder.set('winner', 'murderer-wrong');
-        return { correct: false, winner: 'murderer-wrong', wrong, solution, goalReached: true };
+        return { correct: false, winner: 'murderer-wrong', wrong, solution, matches, goalReached: true };
     }
-    return { correct: false, wrong, remaining: MAX_WRONG_CONCLUSIONS - wrong + 1, solution: null };
+    return { correct: false, wrong, remaining: MAX_WRONG_CONCLUSIONS - wrong + 1, solution: null, matches };
 }
 
 module.exports = {

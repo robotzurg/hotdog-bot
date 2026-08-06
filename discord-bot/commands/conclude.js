@@ -85,8 +85,11 @@ module.exports = {
             return;
         }
 
+        const mark = hit => (hit ? '✅' : '❌');
         await interaction.editReply(
-            `❌ That conclusion is incorrect. **${outcome.remaining}** attempts remaining before the murderer wins.`
+            `❌ That conclusion is incorrect. **${outcome.remaining}** attempts remaining before the murderer wins.\n`
+          + `- ${mark(outcome.matches.location)} Location: **${location}**\n`
+          + `- ${mark(outcome.matches.weapon)} Weapon: **${weapon}**`
         );
     },
 };
