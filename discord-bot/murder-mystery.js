@@ -27,7 +27,7 @@ function reloadHints() {
 // ---------------------------------------------------------------------------
 const CONCLUDE_THRESHOLD_PCT = 0.75; // fraction of all investigation+share items
                                      // that must be received before /conclude opens
-const MAX_WRONG_CONCLUSIONS = 3;     // wrong guesses before murderer wins
+const MAX_WRONG_CONCLUSIONS = 4;     // wrong guesses before murderer wins
 const MURDERER_SHARE_WIN_COUNT = 3;  // important hints shared *to* murderer to win
 
 // ---------------------------------------------------------------------------
