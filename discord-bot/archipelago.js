@@ -297,7 +297,7 @@ async function start(discordClient, db) {
             archClient.deathLink.enableDeathLink();
             connected = true;
 
-            sendDiscordMessage('Successfully reconnected to Archipelago server!');
+            sendDiscordMessage('Successfully reconnected to Archipelago server.');
             console.log('Reconnected to the Archipelago server!');
             // Fresh start on the room: re-arm the wake timer on the shorter delay.
             scheduleRoomWake(restartWakeDelay);
@@ -595,7 +595,7 @@ async function start(discordClient, db) {
         archClient.deathLink.enableDeathLink();
         connected = true;
         console.log('Connected to the Archipelago server!');
-        sendDiscordMessage('Successfully connected to Archipelago server!');
+        sendDiscordMessage('Successfully connected to Archipelago server.');
         await ensureSlotDataCached();
         await syncCheckCounts();
     } catch (err) {
