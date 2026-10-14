@@ -23,6 +23,8 @@
 *.gb
 *.gbc
 *.gba
+*.nds
+*.iso
 *.wixobj
 *.lck
 *.db3
@@ -41,6 +43,7 @@ dist
 README.html
 .vs/
 EnemizerCLI/
+/Players/
 /SNI/
 /sni-*/
 /appimagetool*
@@ -62,8 +65,10 @@ Output Logs/
 /setup.ini
 /installdelete.iss
 /data/user.kv
+/data/jak1/
 /datapackage
 /datapackage_export.json
+/custom_worlds
 # stubgen output
 /out/
 

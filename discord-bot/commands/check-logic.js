@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
-const { runTrackerForSlot } = require('../tracker.js');
+const tracker = require('../tracker.js');
 const archipelago = require('../archipelago.js');
 
 const ITEMS_PER_PAGE = 10;
@@ -45,12 +45,26 @@ module.exports = {
             return;
         }
 
+        if (!tracker.isAvailable()) {
+            await interaction.editReply('Universal Tracker isn\'t installed on this bot (no Archipelago Python environment found).');
+            return;
+        }
+
+        if (tracker.listYamls().length === 0) {
+            await interaction.editReply('No player YAMLs found. Put them in the `Archipelago-0.6.6/Players` folder so the tracker can generate the multiworld.');
+            return;
+        }
+
         await interaction.editReply(`Gathering Universal Tracker data, this may take a moment...`);
 
         const port = db.archipelago.get('server_port');
         const { checked, total } = (db.archipelago.get('check_counts') ?? {})[slotName] ?? { checked: 0, total: 0 };
 
-        const { items, hintedCount } = await runTrackerForSlot(slotName, port, finishedGames);
+        const { items, hintedCount, error } = await tracker.runTrackerForSlot(slotName, port, finishedGames);
+        if (error) {
+            await interaction.editReply(`Universal Tracker failed for **${slotName}**: ${error}`.slice(0, 2000));
+            return;
+        }
 
         const emote = SLOT_EMOTES[slotName] ?? '';
         const header = `## In Logic Checks For ${slotName}${emote ? ` ${emote}` : ''}`;

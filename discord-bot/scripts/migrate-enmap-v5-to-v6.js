@@ -40,7 +40,7 @@ console.log(`Backed up ${liveDbPath} -> ${backupDbPath}`);
 const oldDb = new DatabaseSync(backupDbPath, { readOnly: true });
 const db = require('../db.js'); // v6 Enmap instances, pointed at the live file
 
-const tableToEnmap = { potd: db.potd, archipelago: db.archipelago, murder: db.murder };
+const tableToEnmap = { potd: db.potd, archipelago: db.archipelago };
 
 let totalMigrated = 0;
 let mismatches = 0;

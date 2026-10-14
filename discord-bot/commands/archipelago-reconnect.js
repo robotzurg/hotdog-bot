@@ -5,7 +5,7 @@ const archipelago = require('../archipelago.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('archipelago-reconnect')
-        .setDescription('Closes and reconnects the Archipelago connection.')
+        .setDescription('Wakes the Archipelago room, then closes and reconnects the Archipelago connection.')
         .setContexts(InteractionContextType.Guild),
 
     async execute(interaction) {
@@ -16,8 +16,9 @@ module.exports = {
 
         await interaction.reply({ content: 'Reconnecting to Archipelago...' });
 
+        // The outcome is posted in this channel by the connection itself
         try {
-            await archipelago.restart(interaction.client, db);
+            await archipelago.restart();
         } catch (err) {
             console.error('Failed to reconnect to Archipelago:', err);
             await interaction.followUp({ content: 'Failed to reconnect to Archipelago. Check the logs.' });

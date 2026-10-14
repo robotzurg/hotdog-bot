@@ -1,14 +1,8 @@
 const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 const db = require('../db.js');
-const { SLOT_EMOTES } = require('../slots.js');
+const archipelago = require('../archipelago.js');
+const { SLOT_EMOTES, FLAG_EMOTES, itemEmote } = require('../slots.js');
 const { PLAYER_SLOTS } = require('../players.js');
-
-const FLAG_EMOTES = {
-    Progression: '<:Progression:1495879488716668988>',
-    Useful:      '<:Useful:1495879485407494354>',
-    Trap:        '<:Trap:1495879486346887238>',
-    Junk:        '<:Junk:1495879487538204804>',
-};
 
 const TIMEFRAMES = [
     { name: 'Last 15 minutes', value: '15m', ms: 15 * 60 * 1000 },
@@ -120,6 +114,7 @@ module.exports = {
             }
         }
 
+        archipelago.flushHistory();
         const history = db.archipelago.get('ap_history') ?? [];
 
         const allEntries = history.filter(e => {
@@ -147,7 +142,7 @@ module.exports = {
 
         const combinedLines = () => allEntries.map(e => {
             const ts = e.timestamp ? `<t:${Math.floor(e.timestamp / 1000)}:R>` : '';
-            const flagEmote = e.itemName === 'Picture Frame' ? '<:pictureframe:1528503736245289081>' : (FLAG_EMOTES[e.group] ?? '');
+            const flagEmote = itemEmote(e.itemName, e.flags);
             const sender   = e.sender   ? mapEmote(e.sender)   : '?';
             const receiver = e.receiver ? mapEmote(e.receiver) : '?';
             return `- **${e.itemName}** ${flagEmote} for **${receiver}** from ${sender} ${ts}`;
@@ -155,7 +150,7 @@ module.exports = {
 
         const slotLines = (slot) => bySlot[slot].map(e => {
             const ts = e.timestamp ? `<t:${Math.floor(e.timestamp / 1000)}:R>` : '';
-            const flagEmote = e.itemName === 'Picture Frame' ? '<:pictureframe:1528503736245289081>' : (FLAG_EMOTES[e.group] ?? '');
+            const flagEmote = itemEmote(e.itemName, e.flags);
             const sender = e.sender ? mapEmote(e.sender) : '?';
             return `- **${e.itemName}** ${flagEmote} from ${sender} ${ts}`;
         });

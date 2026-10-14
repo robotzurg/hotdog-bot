@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const db = require('../db.js');
+const archipelago = require('../archipelago.js');
 const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
 
 const ITEMS_PER_PAGE = 10;
@@ -25,19 +25,13 @@ module.exports = {
         await interaction.deferReply();
 
         const slotName = interaction.options.getString('slot-name');
-        const port = db.archipelago.get('server_port');
 
         await interaction.editReply(`Getting info about Archipelago for **${slotName}**'s progression inventory...`);
 
-        const { Client } = await import('archipelago.js');
-        const client = new Client();
-
         let received = [];
         try {
-            await client.login(`archipelago.gg:${port}`, slotName);
-            await new Promise(resolve => setTimeout(resolve, 4000));
-            received = [...client.items.received];
-            client.socket.disconnect();
+            // ReceivedItems packets arrive shortly after Connected
+            received = await archipelago.withSlotClient(slotName, (client) => [...client.items.received], { settleMs: 4000 });
         } catch (err) {
             console.error('Progression-items error:', err);
             await interaction.editReply(`Failed to connect: ${err.message}`);

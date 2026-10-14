@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, MessageFlags, InteractionContextType } = require('discord.js');
 const db = require('../db.js');
+const archipelago = require('../archipelago.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -18,6 +19,7 @@ module.exports = {
             return;
         }
 
+        archipelago.flushHistory();
         const history = db.archipelago.get('ap_history') ?? [];
         const count = history.length;
         db.archipelago.set('finished_games', []);

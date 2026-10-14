@@ -55,7 +55,6 @@ module.exports = {
 
         const sub = interaction.options.getSubcommand();
         const slotName = interaction.options.getString('slot-name');
-        const port = db.archipelago.get('server_port');
 
         if (!SLOT_NAMES.includes(slotName)) {
             await interaction.editReply(`**${slotName}** is not a valid Archipelago slot name!`);
@@ -67,37 +66,35 @@ module.exports = {
             return;
         }
 
-        const { Client } = await import('archipelago.js');
-        const client = new Client();
         const hintResults = [];
         let messageOutput = '';
         let primaryOutput = '';
         let hintPoints = null;
         let capturingHints = true;
 
-        client.messages.on('itemHinted', (_text, item, found) => {
-            if (capturingHints) hintResults.push({ item, found });
-        });
-        client.messages.on('message', (_text) => {
-            messageOutput = _text;
-            const m = _text.match(/You have (\d+) points/);
-            if (m) hintPoints = parseInt(m[1], 10);
-        });
-
         try {
-            await client.login(`archipelago.gg:${port}`, slotName);
-            await client.messages.say(sub === 'item' ? `!hint ${interaction.options.getString('item-name')}` : '!hint');
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            // The bare `!hint` output (used by `all`/`points`) includes the points line;
-            // `!hint <item>` does not always, so request points explicitly without
-            // polluting the item's hint results.
-            primaryOutput = messageOutput;
-            if (sub === 'item') {
-                capturingHints = false;
-                await client.messages.say('!hint');
-                await new Promise(resolve => setTimeout(resolve, 1500));
-            }
-            client.socket.disconnect();
+            await archipelago.withSlotClient(slotName, async (client) => {
+                client.messages.on('itemHinted', (_text, item, found) => {
+                    if (capturingHints) hintResults.push({ item, found });
+                });
+                client.messages.on('message', (_text) => {
+                    messageOutput = _text;
+                    const m = _text.match(/You have (\d+) points/);
+                    if (m) hintPoints = parseInt(m[1], 10);
+                });
+
+                await client.messages.say(sub === 'item' ? `!hint ${interaction.options.getString('item-name')}` : '!hint');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                // The bare `!hint` output (used by `all`/`points`) includes the points line;
+                // `!hint <item>` does not always, so request points explicitly without
+                // polluting the item's hint results.
+                primaryOutput = messageOutput;
+                if (sub === 'item') {
+                    capturingHints = false;
+                    await client.messages.say('!hint');
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                }
+            });
             invalidateSlotCache(slotName);
         } catch (err) {
             console.error('Hint error:', err);

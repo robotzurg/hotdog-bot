@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_EMOTES } = require('../slots.js');
-const { runTrackerForSlot } = require('../tracker.js');
+const tracker = require('../tracker.js');
 const { PLAYER_SLOTS } = require('../players.js');
 const archipelago = require('../archipelago.js');
 
@@ -45,6 +45,16 @@ module.exports = {
             return;
         }
 
+        if (!tracker.isAvailable()) {
+            await interaction.editReply('Universal Tracker isn\'t installed on this bot (no Archipelago Python environment found).');
+            return;
+        }
+
+        if (tracker.listYamls().length === 0) {
+            await interaction.editReply('No player YAMLs found. Put them in the `Archipelago-0.6.6/Players` folder so the tracker can generate the multiworld.');
+            return;
+        }
+
         const port = db.archipelago.get('server_port');
         const finishedGames = db.archipelago.get('finished_games') ?? [];
         const activeSlots = slots.filter(slot => !finishedGames.includes(slot));
@@ -52,12 +62,14 @@ module.exports = {
         await interaction.editReply(`Gathering Universal Tracker data for all **${player}** slots (${activeSlots.length} active), this may take a moment...`);
 
         const cachedCounts = db.archipelago.get('check_counts') ?? {};
-        const trackerResults = await Promise.all(activeSlots.map(slot => runTrackerForSlot(slot, port, finishedGames)));
+        const trackerResults = await Promise.all(activeSlots.map(slot => tracker.runTrackerForSlot(slot, port, finishedGames)));
 
         const slotResults = Object.fromEntries(
-            trackerResults.map(({ slotName, items, hintedCount }) => {
+            trackerResults.map(({ slotName, items, hintedCount, error }) => {
                 const { checked, total } = cachedCounts[slotName] ?? { checked: 0, total: 0 };
-                return [slotName, { items, hintedCount, checked, total }];
+                // A failed lookup shows its error in place of the (empty) check list
+                const shownItems = error ? [`⚠️ Universal Tracker failed: ${error}`.slice(0, 500)] : items;
+                return [slotName, { items: shownItems, hintedCount, checked, total, error }];
             })
         );
 
@@ -70,10 +82,10 @@ module.exports = {
                     lines.push(`- ${prefix}**${slot}**: Completed`);
                     continue;
                 }
-                const { items, hintedCount, checked, total } = slotResults[slot] ?? { items: [], hintedCount: 0, checked: 0, total: 0 };
+                const { items, hintedCount, checked, total, error } = slotResults[slot] ?? { items: [], hintedCount: 0, checked: 0, total: 0 };
                 const hintSuffix = hintedCount > 0 ? ` (${hintedCount} hinted)` : '';
                 const checkStr = total > 0 ? ` | ${checked}/${total} checks` : '';
-                lines.push(`- ${prefix}**${slot}**: ${items.length} in logic${hintSuffix}${checkStr}`);
+                lines.push(`- ${prefix}**${slot}**: ${error ? '⚠️ tracker failed' : `${items.length} in logic`}${hintSuffix}${checkStr}`);
             }
             return lines.join('\n');
         };
@@ -83,14 +95,14 @@ module.exports = {
                 .setCustomId('slot_select')
                 .setPlaceholder('Select a slot to view details...')
                 .addOptions(activeSlots.map(slot => {
-                    const { items, hintedCount, checked, total } = slotResults[slot] ?? { items: [], hintedCount: 0, checked: 0, total: 0 };
+                    const { items, hintedCount, checked, total, error } = slotResults[slot] ?? { items: [], hintedCount: 0, checked: 0, total: 0 };
                     const hintStr = hintedCount > 0 ? ` • ${hintedCount} hinted` : '';
                     const checkStr = total > 0 ? ` • ${checked}/${total} checks` : '';
                     const emoji = parseEmote(SLOT_EMOTES[slot]);
                     const option = new StringSelectMenuOptionBuilder()
                         .setLabel(slot)
                         .setValue(slot)
-                        .setDescription(`${items.length} in logic${hintStr}${checkStr}`.slice(0, 100))
+                        .setDescription(`${error ? 'tracker failed' : `${items.length} in logic`}${hintStr}${checkStr}`.slice(0, 100))
                         .setDefault(slot === selectedSlot);
                     if (emoji) option.setEmoji(emoji);
                     return option;
@@ -99,7 +111,7 @@ module.exports = {
         };
 
         const buildDetailContent = (slotName, page) => {
-            const { items, hintedCount, checked, total } = slotResults[slotName] ?? { items: [], hintedCount: 0, checked: 0, total: 0 };
+            const { items, hintedCount, checked, total, error } = slotResults[slotName] ?? { items: [], hintedCount: 0, checked: 0, total: 0 };
             const totalPages = Math.max(1, Math.ceil(items.length / ITEMS_PER_PAGE));
             const start = page * ITEMS_PER_PAGE;
             const pageItems = items.slice(start, start + ITEMS_PER_PAGE);
@@ -109,7 +121,7 @@ module.exports = {
             const content = [
                 `## In Logic Checks For ${slotName}${emote ? ` ${emote}` : ''}`,
                 ...pageItems,
-                `\n-# Page ${page + 1}/${totalPages} | **${items.length}** In Logic${hintSuffix}${checkSuffix}`
+                `\n-# Page ${page + 1}/${totalPages} | **${error ? 0 : items.length}** In Logic${hintSuffix}${checkSuffix}`
             ].join('\n');
             return { content, totalPages };
         };

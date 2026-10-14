@@ -1,13 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const db = require('../db.js');
-const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
-
-const FLAG_EMOTES = {
-    Progression: '<:Progression:1495879488716668988>',
-    Useful:      '<:Useful:1495879485407494354>',
-    Trap:        '<:Trap:1495879486346887238>',
-    Junk:        '<:Junk:1495879487538204804>',
-};
+const archipelago = require('../archipelago.js');
+const { SLOT_NAMES, SLOT_EMOTES, FLAG_EMOTES, itemEmote } = require('../slots.js');
 
 const TIMEFRAMES = [
     { name: 'Last 15 minutes', value: '15m', ms: 15 * 60 * 1000 },
@@ -105,6 +99,7 @@ module.exports = {
             groupItemSet = new Set(itemNameGroups[game]?.[groupFilter] ?? []);
         }
 
+        archipelago.flushHistory();
         const history = db.archipelago.get('ap_history') ?? [];
 
         const entries = history.filter(e => {
@@ -128,7 +123,7 @@ module.exports = {
 
         const lines = entries.flatMap(e => {
             const ts = e.timestamp ? `<t:${Math.floor(e.timestamp / 1000)}:R>` : '';
-            const flagEmote = e.itemName === 'Picture Frame' ? '<:pictureframe:1528503736245289081>' : (FLAG_EMOTES[e.group] ?? '');
+            const flagEmote = itemEmote(e.itemName, e.flags);
             const other = role === 'received'
                 ? (e.sender ? `from ${mapEmote(e.sender)}` : '')
                 : `to ${mapEmote(e.receiver)}`;

@@ -5,7 +5,7 @@ const db = require("./db.js");
 const cron = require('node-cron');
 const _ = require('lodash');
 const archipelago = require('./archipelago');
-const { start } = archipelago;
+const tracker = require('./tracker.js');
 
 if (!token) {
     try {
@@ -67,31 +67,20 @@ client.once('clientReady', async () => {
     const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
     console.log(date);
 
-    // Start Archipelago client and wire messages to Discord channel
+    // Start Archipelago client (waking the room first) and wire messages to Discord channel
     try {
-        await start(client, db);
+        await archipelago.start(client, db);
     } catch (err) {
         console.error('Failed to start Archipelago module:', err);
     }
 
-    const mm = require('./murder-mystery.js');
-    if (mm.isGameActive()) {
-        mm.readReceivedItems().catch(err =>
-            console.error('Failed to pre-warm murder mystery cache:', err)
-        );
-    }
+    tracker.warmUp();
 });
 
 process.on('SIGINT', () => {
     console.log('Shutting down...');
-    const archipelagoClient = archipelago.getClient();
-    if (archipelagoClient) {
-        if (archipelagoClient.destroy) {
-            archipelagoClient.destroy();
-        } else if (archipelagoClient.socket) {
-            archipelagoClient.socket.close();
-        }
-    }
+    archipelago.destroy();
+    tracker.stop();
     process.exit(0);
 });
 
@@ -158,11 +147,19 @@ client.on('interactionCreate', async interaction => {
 
     if (!interaction.isCommand()) return;
     const command = client.commands.get(interaction.commandName);
+    if (!command) return;
     try {
         await command.execute(interaction, client);
     } catch (error) {
-        await console.error(error);
-        await interaction.reply(`There was an error trying to execute that command!`);
+        console.error(error);
+        // Commands that already deferred or replied can only be followed up
+        const reply = 'There was an error trying to execute that command!';
+        try {
+            if (interaction.deferred || interaction.replied) await interaction.followUp(reply);
+            else await interaction.reply(reply);
+        } catch (replyError) {
+            console.error(replyError);
+        }
     }
 });
 
@@ -186,7 +183,6 @@ client.on('messageCreate', async message => {
             '487747924361478155',
             '229617545651552256',
             '156110247004471296',
-            '289178868118716416',
             '103502445014949888',
             '341299011971448835',
             '1077358457184845864',
@@ -201,8 +197,7 @@ client.on('messageCreate', async message => {
             '221087833534889994',
             '229249397203009536',
             '218378075413413889',
-            '122568101995872256',
-            '506576587903336453'
+            '122568101995872256'
         ]
 
         const chosenUser = memberIDList[Math.floor(Math.random() * memberIDList.length)];

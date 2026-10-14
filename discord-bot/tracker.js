@@ -1,13 +1,26 @@
+/**
+ * Universal Tracker bridge: drives a long-lived Python worker (Archipelago-0.6.6/tracker_worker.py)
+ * that reports which locations are currently in logic for a slot.
+ *
+ * The player YAMLs are placed by hand in Archipelago-0.6.6/Players/; UT generates the multiworld
+ * from them, so nothing can be tracked until they're there. The worker caches what it generated,
+ * so restart the bot after changing them.
+ */
 const { spawn } = require('child_process');
+const fs = require('fs');
 const readline = require('readline');
 const path = require('path');
 const { SLOT_EMOTES } = require('./slots.js');
 
 const AP_ROOT = path.join(__dirname, '../Archipelago-0.6.6');
 const WORKER_SCRIPT = path.join(AP_ROOT, 'tracker_worker.py');
-const PYTHON_PATH = process.platform === 'win32'
+const PLAYERS_DIR = path.join(AP_ROOT, 'Players');
+const PYTHON_PATH = process.env.TRACKER_PYTHON || (process.platform === 'win32'
     ? path.join(AP_ROOT, 'venv/Scripts/python.exe')
-    : path.join(AP_ROOT, 'venv/bin/python3');
+    : path.join(AP_ROOT, 'venv/bin/python3'));
+
+// The worker namespaces its caches by this, as it can serve several multiworlds; the bot only has one
+const WORKER_KEY = 'main';
 
 // Generous: requests are served serially by the worker, so a late request in a
 // /check-logic-all batch waits behind the ones ahead of it.
@@ -20,6 +33,15 @@ const trackerCache = new Map(); // slotName -> Promise<result>
 let worker = null;
 let nextRequestId = 1;
 const pending = new Map(); // id -> { resolve, reject, timer }
+
+function isAvailable() {
+    return fs.existsSync(PYTHON_PATH) && fs.existsSync(WORKER_SCRIPT);
+}
+
+function listYamls() {
+    if (!fs.existsSync(PLAYERS_DIR)) return [];
+    return fs.readdirSync(PLAYERS_DIR).filter(f => /\.ya?ml$/i.test(f)).sort();
+}
 
 function invalidateSlotCache(slotName) {
     trackerCache.delete(slotName);
@@ -34,6 +56,9 @@ function workerEnv() {
     e.MPLBACKEND = 'Agg';
     e.KIVY_WINDOW = 'mock'; // 'headless' is not a real Kivy provider; 'mock' is
     e.KIVY_NO_ENV_CONFIG = '1';
+    e.PYTHONIOENCODING = 'utf-8';
+    // ModuleUpdate otherwise prompts on stdin over any version drift, which a worker can't answer
+    e.SKIP_REQUIREMENTS_UPDATE = 'true';
     return e;
 }
 
@@ -99,6 +124,19 @@ function ensureWorker() {
     return worker;
 }
 
+// Pays the world-import cost up front rather than on the first command
+function warmUp() {
+    if (!isAvailable()) {
+        console.log(`[tracker] Universal Tracker unavailable (no Python at ${PYTHON_PATH}); /check-logic is disabled.`);
+        return;
+    }
+    ensureWorker();
+}
+
+function stop() {
+    if (worker) worker.kill();
+}
+
 function requestItems(slotName, port) {
     return new Promise((resolve, reject) => {
         let proc;
@@ -116,7 +154,14 @@ function requestItems(slotName, port) {
         }, REQUEST_TIMEOUT_MS);
 
         pending.set(id, { resolve, reject, timer });
-        proc.stdin.write(`${JSON.stringify({ id, slot: slotName, port })}\n`);
+        proc.stdin.write(`${JSON.stringify({
+            id,
+            key: WORKER_KEY,
+            slot: slotName,
+            address: `archipelago.gg:${port}`,
+            password: null,
+            yaml_dir: PLAYERS_DIR,
+        })}\n`);
     });
 }
 
@@ -145,38 +190,29 @@ function processItems(rawItems, finishedGames = []) {
     return { items, hintedCount };
 }
 
+// Resolves to { slotName, items, hintedCount, error }; `error` is set (and nothing cached) if the lookup failed
 function runTrackerForSlot(slotName, port, finishedGames = []) {
     // Cache the promise, not the result, so concurrent requests for the same
     // slot share one worker round-trip instead of queueing a duplicate.
     if (trackerCache.has(slotName)) return trackerCache.get(slotName);
 
     const promise = requestItems(slotName, port)
-        .then(rawItems => ({ slotName, ...processItems([...new Set(rawItems)], finishedGames) }))
+        .then(rawItems => ({ slotName, ...processItems([...new Set(rawItems)], finishedGames), error: null }))
         .catch(err => {
             console.error(`[${slotName}] tracker error:`, err.message);
             trackerCache.delete(slotName); // don't cache a failure
-            return { slotName, items: [], hintedCount: 0 };
+            return { slotName, items: [], hintedCount: 0, error: err.message };
         });
 
     trackerCache.set(slotName, promise);
     return promise;
 }
 
-async function fetchCheckCounts(slotName, port) {
-    try {
-        const { Client } = await import('archipelago.js');
-        const client = new Client();
-        await client.login(`wss://archipelago.gg:${port}`, slotName);
-        const checked = client.room.checkedLocations.length;
-        const total = client.room.allLocations.length;
-        client.socket.disconnect();
-        return { checked, total };
-    } catch {
-        return { checked: 0, total: 0 };
-    }
-}
-
-// Pay the world-import cost at boot rather than on the first command.
-ensureWorker();
-
-module.exports = { runTrackerForSlot, fetchCheckCounts, invalidateSlotCache };
+module.exports = {
+    isAvailable,
+    warmUp,
+    stop,
+    listYamls,
+    runTrackerForSlot,
+    invalidateSlotCache,
+};

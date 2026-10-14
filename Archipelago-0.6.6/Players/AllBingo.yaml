@@ -65,6 +65,8 @@ APBingo:
     full: 0
     minimal: 50
 
+  allow_collecting_from: true
+
   start_hints:
     # Start with these item's locations prefilled into the ``!hint`` command.
     []

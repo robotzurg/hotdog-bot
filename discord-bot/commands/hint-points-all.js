@@ -4,18 +4,16 @@ const { SLOT_EMOTES } = require('../slots.js');
 const { PLAYER_SLOTS } = require('../players.js');
 const archipelago = require('../archipelago.js');
 
-async function fetchHintPoints(slotName, port) {
+async function fetchHintPoints(slotName) {
     try {
-        const { Client } = await import('archipelago.js');
-        const client = new Client();
         let pointsMsg = '';
-        client.messages.on('message', (text) => {
-            if (/You have \d+ points/.test(text)) pointsMsg = text;
+        await archipelago.withSlotClient(slotName, async (client) => {
+            client.messages.on('message', (text) => {
+                if (/You have \d+ points/.test(text)) pointsMsg = text;
+            });
+            await client.messages.say('!hint');
+            await new Promise(resolve => setTimeout(resolve, 2000));
         });
-        await client.login(`archipelago.gg:${port}`, slotName);
-        await client.messages.say('!hint');
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        client.socket.disconnect();
 
         const full = pointsMsg.match(/A hint costs (\d+) points\. You have (\d+) points/);
         if (full) return { slotName, points: parseInt(full[2], 10), cost: parseInt(full[1], 10) };
@@ -58,13 +56,12 @@ module.exports = {
             return;
         }
 
-        const port = db.archipelago.get('server_port');
         const finishedGames = db.archipelago.get('finished_games') ?? [];
         const activeSlots = slots.filter(slot => !finishedGames.includes(slot));
 
         await interaction.editReply(`Gathering hint points for all **${player}** slots (${activeSlots.length} active), this may take a moment...`);
 
-        const results = await Promise.all(activeSlots.map(slot => fetchHintPoints(slot, port)));
+        const results = await archipelago.mapSlotLogins(activeSlots, fetchHintPoints);
         const bySlot = Object.fromEntries(results.map(r => [r.slotName, r]));
 
         let totalPoints = 0;

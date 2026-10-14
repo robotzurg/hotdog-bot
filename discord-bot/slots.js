@@ -124,4 +124,37 @@ const SLOT_EMOTES = {
 
 const SLOT_NAMES = Object.keys(SLOT_EMOTES).sort();
 
-module.exports = { SLOT_NAMES, SLOT_EMOTES };
+const FLAG_EMOTES = {
+    Progression: '<:Progression:1495879488716668988>',
+    Useful:      '<:Useful:1495879485407494354>',
+    Trap:        '<:Trap:1495879486346887238>',
+    Junk:        '<:Junk:1495879487538204804>',
+};
+
+const ITEM_GROUPS = ['Progression', 'Useful', 'Trap', 'Junk'];
+
+// Archipelago item flag bits: 0b001 progression, 0b010 useful, 0b100 trap
+function itemGroup(flags = 0) {
+    if (flags & 0b0001) return 'Progression';
+    if (flags & 0b0100) return 'Trap';
+    if (flags & 0b0010) return 'Useful';
+    return 'Junk';
+}
+
+function flagEmote(flags = 0) {
+    return FLAG_EMOTES[itemGroup(flags)];
+}
+
+// Emote for an item, with the special-cased items that have their own art
+function itemEmote(itemName, flags = 0) {
+    if (itemName === 'Picture Frame') return '<:pictureframe:1528503736245289081>';
+    return flagEmote(flags);
+}
+
+// Slot name followed by its emote, if it has one
+function mapEmoji(text) {
+    const emote = SLOT_EMOTES[text];
+    return emote ? `${text} ${emote}` : text;
+}
+
+module.exports = { SLOT_NAMES, SLOT_EMOTES, FLAG_EMOTES, ITEM_GROUPS, itemGroup, flagEmote, itemEmote, mapEmoji };

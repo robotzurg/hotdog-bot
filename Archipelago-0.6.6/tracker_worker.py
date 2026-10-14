@@ -4,9 +4,13 @@ Reads newline-delimited JSON requests on stdin and writes NDJSON responses,
 keeping the interpreter (and UT's class-level multiworld cache) alive between
 requests instead of paying a full cold start per lookup.
 
-Request:   {"id": 1, "slot": "AllRepo", "port": 38281}
+Request:   {"id": 1, "key": "conn-id", "slot": "AllRepo", "address": "archipelago.gg:38281",
+            "password": null, "yaml_dir": "/abs/path/to/Players/conn-id"}
+           `key` namespaces the caches so several multiworlds can share one worker;
+           `yaml_dir` is the folder UT generates the launch multiworld from.
 Response:  {"id": 1, "items": ["Region | Location", ...]}
            {"id": 1, "error": "..."}
+Invalidate: {"id": 2, "invalidate": "conn-id", "yaml_dir": "..."} -> {"id": 2, "items": []}
 Emitted once when worlds are loaded and requests can be served:
            {"ready": true}
 
@@ -53,7 +57,8 @@ def quiet_logging():
 
 quiet_logging()
 
-_launch_mw = None
+# yaml_dir -> launch multiworld, so each multiworld's YAML folder is generated once
+_launch_mws = {}
 
 # UT caches generated multiworlds on TrackerCore keyed by slot_data *alone* --
 # no game, no slot name (see TrackerCore.run_generator). Two slots whose
@@ -63,12 +68,12 @@ _launch_mw = None
 # process and the cache was always empty; not harmless in a worker. So give
 # each slot its own cache: a hit can then only ever be that slot's own entry.
 CACHE_SLOTS = int(os.environ.get("TRACKER_CACHE_SLOTS", "8"))
-_slot_caches = collections.OrderedDict()  # slot -> (multiworlds, slot_datas)
+_slot_caches = collections.OrderedDict()  # (key, slot) -> (multiworlds, slot_datas)
 
 
-def bind_slot_cache(slot):
-    entry = _slot_caches.pop(slot, None) or ([], [])
-    _slot_caches[slot] = entry  # reinsert at the end = most recently used
+def bind_slot_cache(cache_key):
+    entry = _slot_caches.pop(cache_key, None) or ([], [])
+    _slot_caches[cache_key] = entry  # reinsert at the end = most recently used
     while len(_slot_caches) > CACHE_SLOTS:
         evicted, _ = _slot_caches.popitem(last=False)
         print(f"[worker] evicted multiworld cache for {evicted}", file=sys.stderr)
@@ -81,7 +86,7 @@ def bind_slot_cache(slot):
 _HOST_SETTING_ATTRS = ("output_format", "hide_excluded", "use_split", "enable_glitched_logic")
 
 
-def prime_core_from_cache(core):
+def prime_core_from_cache(core, launch_mw):
     """Reproduce the host-settings half of TrackerCore.run_generator() without
     regenerating the launch multiworld.
 
@@ -98,7 +103,7 @@ def prime_core_from_cache(core):
 
     if core.enforce_deferred_connections is None:
         core.enforce_deferred_connections = deferred
-    core.launch_multiworld = _launch_mw
+    core.launch_multiworld = launch_mw
 
     missing = [a for a in _HOST_SETTING_ATTRS if not hasattr(core, a)]
     if missing:
@@ -118,6 +123,7 @@ class WorkerContext(TrackerGameContext):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.captured = None
+        self.resolved_empty = False
 
     def updateTracker(self):
         state = super().updateTracker()
@@ -125,26 +131,35 @@ class WorkerContext(TrackerGameContext):
         # multiworld is ready; only keep a state that actually resolved.
         if state is not None and state.readable_locations:
             self.captured = state
+        elif state is not None and state.state is not None:
+            # A real collection state with nothing readable: the slot has no
+            # checks in logic right now. The placeholder UT returns before the
+            # multiworld is ready has no collection state, so it can't land here.
+            self.resolved_empty = True
         return state
 
 
-async def run_request(slot, port):
-    global _launch_mw
+async def run_request(key, slot, address, password, yaml_dir):
+    bind_slot_cache((key, slot))
 
-    bind_slot_cache(slot)
-
-    ctx = WorkerContext(f"archipelago.gg:{port}", None, print_list=True)
+    ctx = WorkerContext(address, password, print_list=True)
     ctx.auth = slot
+    # run_generator() and UT's regen-on-connect both fall back to this folder;
+    # passing it as override_yaml_path instead would switch UT into single-slot regen mode.
+    ctx.tracker_core.player_folder_override = yaml_dir
     ctx.server_task = asyncio.create_task(server_loop(ctx), name="server loop")
     quiet_logging()
 
     primed = False
-    if REUSE_LAUNCH_MW and _launch_mw is not None:
-        primed = prime_core_from_cache(ctx.tracker_core)
+    launch_mw = _launch_mws.get(yaml_dir)
+    if REUSE_LAUNCH_MW and launch_mw is not None:
+        primed = prime_core_from_cache(ctx.tracker_core, launch_mw)
     if not primed:
         ctx.run_generator()
+        if ctx.tracker_core.gen_error:
+            raise RuntimeError(f"generation failed for {yaml_dir}: {ctx.tracker_core.gen_error.strip().splitlines()[-1]}")
         if REUSE_LAUNCH_MW:
-            _launch_mw = ctx.tracker_core.launch_multiworld
+            _launch_mws[yaml_dir] = ctx.tracker_core.launch_multiworld
     ctx.use_split = ctx.tracker_core.use_split
 
     try:
@@ -166,6 +181,8 @@ async def run_request(slot, port):
             await asyncio.gather(*leftover, return_exceptions=True)
 
     if ctx.captured is None:
+        if ctx.resolved_empty:
+            return []
         raise RuntimeError(f"tracker produced no state for {slot}")
     return list(ctx.captured.readable_locations)
 
@@ -184,8 +201,19 @@ def main():
             continue
 
         req_id = req.get("id")
+
+        # Sent when a connection's YAMLs change: drop everything generated from them
+        if "invalidate" in req:
+            key, yaml_dir = req["invalidate"], req.get("yaml_dir")
+            _launch_mws.pop(yaml_dir, None)
+            for cache_key in [k for k in _slot_caches if k[0] == key]:
+                del _slot_caches[cache_key]
+            send({"id": req_id, "items": []})
+            continue
+
         try:
-            items = asyncio.run(run_request(req["slot"], req["port"]))
+            items = asyncio.run(run_request(
+                req.get("key", ""), req["slot"], req["address"], req.get("password"), req["yaml_dir"]))
             send({"id": req_id, "items": items})
         except Exception as err:  # one bad slot must not kill the worker
             send({"id": req_id, "error": f"{type(err).__name__}: {err}"})
