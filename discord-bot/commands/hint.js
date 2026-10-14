@@ -11,6 +11,8 @@ const slotOption = (option) =>
         .setAutocomplete(true);
 
 module.exports = {
+    // Logs in to the room, so it's refused while Archipelago is disabled
+    requiresArchipelago: true,
     data: new SlashCommandBuilder()
         .setName('hint')
         .setDescription('Hint commands for Archipelago')

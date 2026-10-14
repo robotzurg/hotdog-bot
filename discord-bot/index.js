@@ -74,7 +74,7 @@ client.once('clientReady', async () => {
         console.error('Failed to start Archipelago module:', err);
     }
 
-    tracker.warmUp();
+    if (archipelago.isEnabled()) tracker.warmUp();
 });
 
 process.on('SIGINT', () => {
@@ -148,6 +148,10 @@ client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
     const command = client.commands.get(interaction.commandName);
     if (!command) return;
+    if (command.requiresArchipelago && !archipelago.isEnabled()) {
+        await interaction.reply({ content: 'Archipelago is currently disabled. Use `/archipelago-enabled` to turn it back on.', flags: Discord.MessageFlags.Ephemeral });
+        return;
+    }
     try {
         await command.execute(interaction, client);
     } catch (error) {

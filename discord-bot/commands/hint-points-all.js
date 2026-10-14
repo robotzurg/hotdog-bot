@@ -25,6 +25,8 @@ async function fetchHintPoints(slotName) {
 }
 
 module.exports = {
+    // Logs in to the room, so it's refused while Archipelago is disabled
+    requiresArchipelago: true,
     data: new SlashCommandBuilder()
         .setName('hint-points-all')
         .setDescription('Show hint points for all of a player\'s slots')

@@ -4,11 +4,11 @@ const SLOT_EMOTES = {
     'AllRepo':          '<:repo:1469451338936090848>',
 
     // --- Av ---
-    'AvFlipwitchAP7':   '<:flipwitch:1469420881787752687>',
-    'Av-Funi':          '<:funi:1510054135951655112>',
+    'AvFlipwitch':   '<:flipwitch:1469420881787752687>',
+    'AvFuni':          '<:funi:1510054135951655112>',
     'AvGenshin':        '<:genshin:1443882704834658387>',
-    'AvHatAP7':         '<:hatintime:1423880268460326995>',
-    'AvOriAP7':         '<:oriwotw:1426636447817138397>',
+    'AvHat':         '<:hatintime:1423880268460326995>',
+    'AvOri':         '<:oriwotw:1426636447817138397>',
 
     // --- Ethan ---
     'Ethan-HK':         '<:hollowknight:1423880850658955374>',

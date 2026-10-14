@@ -3,6 +3,8 @@ const db = require('../db.js');
 const archipelago = require('../archipelago.js');
 
 module.exports = {
+    // Logs in to the room, so it's refused while Archipelago is disabled
+    requiresArchipelago: true,
     data: new SlashCommandBuilder()
         .setName('archipelago-reconnect')
         .setDescription('Wakes the Archipelago room, then closes and reconnects the Archipelago connection.')

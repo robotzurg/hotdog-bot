@@ -4,6 +4,9 @@
  *
  * There is no automatic reconnect. A dropped connection stays down until `/archipelago-reconnect`
  * or a bot restart, and both of those wake the archipelago.gg room before logging in.
+ *
+ * While no Archipelago is running, `/archipelago-enabled` turns all of this off: the bot stays
+ * disconnected (including across restarts) and the commands that need the room are refused.
  */
 const { mapEmoji, flagEmote, itemEmote, itemGroup } = require('./slots.js');
 const tracker = require('./tracker.js');
@@ -37,6 +40,11 @@ let historyFlushTimer = null;
 
 function isConnected() {
     return connected;
+}
+
+// Enabled unless explicitly turned off, so rooms set up before the toggle existed keep working
+function isEnabled() {
+    return db?.archipelago.get('enabled') !== false;
 }
 
 function getRoomId(roomUrl) {
@@ -164,7 +172,7 @@ function connect() {
 }
 
 async function doConnect() {
-    if (isDestroyed) return false;
+    if (isDestroyed || !isEnabled()) return false;
 
     await fetchChannel();
     await syncRoomState();
@@ -209,10 +217,10 @@ async function connectWithWake() {
     let ok = await connect();
     for (let attempt = 0; !ok && db.archipelago.get('room_url') && attempt < WAKE_RETRIES; attempt++) {
         await new Promise(resolve => setTimeout(resolve, WAKE_RETRY_DELAY));
-        if (isDestroyed) return false;
+        if (isDestroyed || !isEnabled()) return false;
         ok = await connect();
     }
-    if (!ok && !isDestroyed) {
+    if (!ok && !isDestroyed && isEnabled()) {
         await sendDiscordMessage('Couldn\'t connect to the Archipelago server. Use `/archipelago-reconnect` to try again.');
     }
     return ok;
@@ -235,7 +243,7 @@ function setupEventListeners() {
     apClient.socket.on('disconnected', () => {
         const wasConnected = connected;
         connected = false;
-        if (isDestroyed || isRestarting || !wasConnected) return;
+        if (isDestroyed || isRestarting || !wasConnected || !isEnabled()) return;
         console.log('Archipelago WebSocket closed');
         sendDiscordMessage('Disconnected from Archipelago server. Use `/archipelago-reconnect` to reconnect.');
     });
@@ -256,13 +264,15 @@ async function start(client, database) {
         setupEventListeners();
     }
 
+    if (!isEnabled()) {
+        console.log('[Archipelago] Disabled; skipping login. Use `/archipelago-enabled` to turn it back on.');
+        return false;
+    }
     return connectWithWake();
 }
 
-// Tears the socket down and logs in again (waking the room first), e.g. for a manual reconnect.
-// Resolves true once connected.
-async function restart() {
-    if (isDestroyed || !apClient) return false;
+// Closes the socket without announcing it as a dropped connection
+async function disconnectQuietly() {
     // Let an in-flight login settle first
     if (connectPromise) await connectPromise;
 
@@ -273,7 +283,31 @@ async function restart() {
         isRestarting = false;
     }
     connected = false;
+}
 
+// Tears the socket down and logs in again (waking the room first), e.g. for a manual reconnect.
+// Resolves true once connected.
+async function restart() {
+    if (isDestroyed || !apClient || !isEnabled()) return false;
+    await disconnectQuietly();
+    return connectWithWake();
+}
+
+// Turns the connection on or off and remembers it across restarts. Enabling connects (waking the
+// room first) and resolves true once connected; disabling disconnects and resolves false.
+async function setEnabled(enabled) {
+    db.archipelago.set('enabled', enabled);
+    if (isDestroyed || !apClient) return false;
+
+    if (!enabled) {
+        flushHistory();
+        await disconnectQuietly();
+        tracker.stop();
+        await sendDiscordMessage('Archipelago disabled; disconnected from the server.');
+        return false;
+    }
+
+    tracker.warmUp();
     return connectWithWake();
 }
 
@@ -558,6 +592,7 @@ async function readTrackerCounts(slots, counts) {
 // Logs a throwaway TextOnly client in as `slotName`, runs `fn` with it, and disconnects.
 // `settleMs` waits after login for packets that arrive after Connected (e.g. ReceivedItems).
 async function withSlotClient(slotName, fn, { settleMs = 0, slotData = false } = {}) {
+    if (!isEnabled()) throw new Error('Archipelago is disabled.');
     await prepareEnvironment();
     const address = serverAddress();
     if (!address) throw new Error('No Archipelago server port configured.');
@@ -579,6 +614,8 @@ module.exports = {
     start,
     restart,
     destroy,
+    setEnabled,
+    isEnabled,
     isConnected,
     serverAddress,
     flushHistory,

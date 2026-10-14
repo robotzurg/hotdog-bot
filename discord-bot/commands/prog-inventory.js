@@ -5,6 +5,8 @@ const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
 const ITEMS_PER_PAGE = 10;
 
 module.exports = {
+    // Logs in to the room, so it's refused while Archipelago is disabled
+    requiresArchipelago: true,
     data: new SlashCommandBuilder()
         .setName('prog-inventory')
         .setDescription('List all progression items in a slot\'s inventory')

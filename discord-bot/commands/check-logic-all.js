@@ -14,6 +14,8 @@ function parseEmote(emoteStr) {
 }
 
 module.exports = {
+    // Logs in to the room, so it's refused while Archipelago is disabled
+    requiresArchipelago: true,
     data: new SlashCommandBuilder()
         .setName('check-logic-all')
         .setDescription('Check in-logic items for all slots of a player, with side-by-side overview')

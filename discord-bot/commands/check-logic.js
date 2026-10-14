@@ -7,6 +7,8 @@ const archipelago = require('../archipelago.js');
 const ITEMS_PER_PAGE = 10;
 
 module.exports = {
+    // Logs in to the room, so it's refused while Archipelago is disabled
+    requiresArchipelago: true,
     data: new SlashCommandBuilder()
         .setName('check-logic')
         .setDescription('Check your in logic checks')

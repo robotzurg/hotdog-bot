@@ -135,6 +135,8 @@ function warmUp() {
 
 function stop() {
     if (worker) worker.kill();
+    // The room may have moved on by the time the worker is needed again
+    trackerCache.clear();
 }
 
 function requestItems(slotName, port) {

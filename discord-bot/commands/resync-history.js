@@ -4,6 +4,8 @@ const archipelago = require('../archipelago.js');
 const { itemGroup } = require('../slots.js');
 
 module.exports = {
+    // Logs in to the room, so it's refused while Archipelago is disabled
+    requiresArchipelago: true,
     data: new SlashCommandBuilder()
         .setName('resync-history')
         .setDescription('Rebuild item history by connecting to each slot on Archipelago')
