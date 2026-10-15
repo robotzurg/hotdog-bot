@@ -1,6 +1,6 @@
 from worlds.LauncherComponents import Component, components, Type, launch_subprocess, icon_paths
 from settings import Group, Bool, UserFolderPath, _world_settings_name_cache
-from typing import Any, ClassVar, NamedTuple, Callable,Optional
+from typing import Any, ClassVar, Literal, NamedTuple, Callable,Optional
 from worlds.AutoWorld import World
 from BaseClasses import CollectionState,Entrance
 from collections import Counter
@@ -20,7 +20,11 @@ def launch_client(*args):
     from .TrackerClient import launch as TCMain
     launch(TCMain, name="Universal Tracker client", args=args)
 
-UT_VERSION = "v0.2.26"
+from Utils import tuplize_version
+
+UT_VERSION = "v0.3.5"
+
+UT_VERSION_TUPLE = tuplize_version(UT_VERSION[1:].split("-",1)[0])
 
 class CurrentTrackerState(NamedTuple):
     all_items: Counter
@@ -51,6 +55,12 @@ class DeferredEntranceMode(Enum):
     default = "default"
     disabled = "off"
 
+class TrackerException(Exception):
+
+    def __init__(self, *args: object, message:str) -> None:
+        self.message = message
+        super().__init__(*args)
+
 class TrackerSettings(Group):
     class TrackerPlayersPath(UserFolderPath):
         """Players folder for UT look for YAMLs"""
@@ -77,6 +87,34 @@ class TrackerSettings(Group):
         off: Force worlds to connect all entrances
         """
 
+    class SaveEnteredCommands(Bool):
+        """Enable saving which locations you've ignored and which items you've manually collected using the commands.
+        These will be saved per seed and slot.
+        """
+
+    class SortingPriorties(dict):
+        """Defines how entries on the tracker tab are grouped and sorted.
+        Categories with the same value will be grouped together. Format is:
+          "category1": priority1,
+          "category2": priority2,
+          etc.
+        with each category on its own line and indented two spaces. Priority
+        must be a positive number. The 'other' category will be used
+        for all values you choose not to define. If 'other' is not given a
+        priority, it will default to one more than the highest number given.
+        Valid category names are: default, hinted, excluded, glitched,
+        hinted_glitched, excluded_glitched, unconnected, and other."""
+
+    class SortingMethod(str):
+        """Defines whether locations on the tracker tab are sorted by their
+        location name, their region name, the label shown on the screen,
+        or by the APWorld being tracked. Note that it is valid to sort by
+        regions even if they aren't visible. If apworld is selected but the
+        apworld doesn't define a custom sort method, label sorting is
+        used instead. If include_location_name is set to false, region
+        sorting will always be used.
+        Valid sorting methods are: location, region, label, apworld."""
+
     player_files_path: TrackerPlayersPath = TrackerPlayersPath("Players")
     include_region_name: RegionNameBool | bool = False
     include_location_name: LocationNameBool | bool = True
@@ -84,7 +122,35 @@ class TrackerSettings(Group):
     use_split_map_icons: UseSplitMapIcons | bool = True
     enforce_deferred_entrances: SettingDeferredEntranceMode | str = "default"
     display_glitched_logic: DisplayGlitchedLogic | bool = True
+    save_entered_commands: SaveEnteredCommands | bool = True
+    sorting_priorities: SortingPriorties | dict[str, int] = {}
+    sorting_method: SortingMethod | str = "apworld"
 
+class ItemLayoutSection:
+    name: str
+    items: list[str]
+    orientation: Literal["tb", "lr"]
+    cols: int
+    rows: int
+    item_size: tuple[int, int]
+    item_width: int
+    item_height: int
+
+    def __init__(self, name: str, items: str | list[str],
+                 orientation: Literal["tb", "lr"] = "lr",
+                 cols: int = 5, rows: int = -1,
+                 item_size: tuple[int, int] = (48,48)):
+        self.name = name
+        if isinstance(items, str):
+            self.items = [ items ]
+        else:
+            self.items = items
+        self.orientation = orientation
+        self.cols = cols
+        self.rows = rows
+        self.item_size = item_size
+        self.item_width = item_size[0]
+        self.item_height = item_size[1]
 
 class TrackerWorld(World):
     settings: ClassVar[TrackerSettings]
@@ -115,6 +181,24 @@ class UTMapTabData:
     map_page_groups: list[tuple[str, list]]
     """Map page groups. Mutually exclusive with map_page_layouts"""
 
+    item_page_items: list[str]
+    """The relative paths within the map_page_folder of the items.json"""
+
+    map_page_item_layouts_left: list[ItemLayoutSection]
+    """A list of configuration objects describing the layout of the left item panel on the map page"""
+
+    map_page_item_layouts_right: list[ItemLayoutSection]
+    """A list of configuration objects describing the layout of the right item panel on the map page"""
+
+    map_page_item_layouts_bottom: list[ItemLayoutSection]
+    """A list of configuration objects describing the layout of the bottom item panel on the map page"""
+
+    item_page_item_layouts: list[ItemLayoutSection]
+    """A list of configuration objects describing the layout of the item tracker"""
+
+    poptracker_item_mapping: dict[str, str]
+    """Mapping from [poptracker item name : datapackage item name] """
+
     map_page_setting_key: str
     """Data storage key used to determine which page should be loaded"""
 
@@ -133,27 +217,37 @@ class UTMapTabData:
     location_setting_key: str
     """Data storage key used to determine where to place the location indicator"""
 
-    location_icon_coords: Callable[[int, Any], tuple[int,int,str]|None]
+    location_icon_coords: Callable[[int, Any], tuple[int,int,str]|list[tuple[int,int,str]]|None]
     """Function used to convert between the map and the value in data storage into coords (or none to hide it) the return is [x, y, override path string]"""
 
     def __init__(
-            self, player_id, team_id, map_page_folder: str = "", map_page_maps: list[str] | str = "",
-            map_page_locations: list[str] | str = "", map_page_layouts: list[str] | str | None = None,
-            map_page_groups: list[tuple[str, list]] | None  = None,
+            self, player_id, team_id, map_page_folder: str = "", map_page_maps: list[str] | str | None = None,
+            map_page_locations: list[str] | str | None = None, map_page_layouts: list[str] | str | None = None,
+            map_page_groups: list[tuple[str, list]] | None  = None, item_page_items: list[str] | str = "", 
+            map_page_item_layouts_left: list[ItemLayoutSection] | None = None,
+            map_page_item_layouts_right: list[ItemLayoutSection] | None = None,
+            map_page_item_layouts_bottom: list[ItemLayoutSection] | None = None,
+            item_page_item_layouts: list[ItemLayoutSection] | None = None,
             map_page_setting_key: str | None = None, map_page_index: Callable[[Any], int] | None = None,
             external_pack_key: str = "", poptracker_name_mapping: dict[str, int] | None = None,
+            poptracker_item_mapping: dict[str, int] | None = None,
             location_setting_key: str|None = None,
             location_icon_coords: Callable[[int, Any], tuple[int,int]]|None= None,
             poptracker_entrance_mapping: dict[str, str]|None = None, **kwargs):
+
         self.map_page_folder = map_page_folder
         if isinstance(map_page_maps, str):
             self.map_page_maps = [map_page_maps]
-        else:
+        elif isinstance(map_page_maps, list):
             self.map_page_maps = map_page_maps
+        else:
+            self.map_page_maps = []
         if isinstance(map_page_locations, str):
             self.map_page_locations = [map_page_locations]
-        else:
+        elif isinstance(map_page_locations, list):
             self.map_page_locations = map_page_locations
+        else:
+            self.map_page_locations = []
         if isinstance(map_page_layouts, str):
             self.map_page_layouts = [map_page_layouts]
         elif isinstance(map_page_layouts, list):
@@ -161,6 +255,26 @@ class UTMapTabData:
         else:
             self.map_page_layouts = []
         self.map_page_groups = map_page_groups
+        if isinstance(item_page_items, str):
+            self.item_page_items = [item_page_items]
+        else:
+            self.item_page_items = item_page_items
+        if map_page_item_layouts_left:
+            self.map_page_item_layouts_left = map_page_item_layouts_left
+        else:
+            self.map_page_item_layouts_left = []
+        if map_page_item_layouts_right:
+            self.map_page_item_layouts_right = map_page_item_layouts_right
+        else:
+            self.map_page_item_layouts_right = []
+        if map_page_item_layouts_bottom:
+            self.map_page_item_layouts_bottom = map_page_item_layouts_bottom
+        else:
+            self.map_page_item_layouts_bottom = []
+        if item_page_item_layouts:
+            self.item_page_item_layouts = item_page_item_layouts
+        else:
+            self.item_page_item_layouts = []
         self.map_page_setting_key = map_page_setting_key
         if isinstance(self.map_page_setting_key, str):
             self.map_page_setting_key = self.map_page_setting_key.format(player=player_id, team=team_id)
@@ -172,6 +286,10 @@ class UTMapTabData:
             self.poptracker_name_mapping = poptracker_name_mapping
         else:
             self.poptracker_name_mapping = {}
+        if poptracker_item_mapping:
+            self.poptracker_item_mapping = poptracker_item_mapping
+        else:
+            self.poptracker_item_mapping = {}
         if poptracker_entrance_mapping:
             self.poptracker_entrance_mapping = poptracker_entrance_mapping
         else:

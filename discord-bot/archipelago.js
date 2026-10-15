@@ -70,6 +70,20 @@ async function mapWithConcurrency(values, limit, fn) {
     return results;
 }
 
+// The bot only ever listens to DeathLink and must never send one. A DeathLink is a Bounce packet,
+// and the bot has no use for Bounce at all, so every client it makes drops outgoing Bounces at the
+// socket, beneath anything archipelago.js could call.
+function createClient() {
+    const client = new ArchipelagoClient();
+    const send = client.socket.send.bind(client.socket);
+    client.socket.send = (...packets) => {
+        const allowed = packets.filter(packet => packet?.cmd !== 'Bounce');
+        if (allowed.length < packets.length) console.warn('[Archipelago] Blocked an outgoing Bounce (DeathLink) packet.');
+        return allowed.length > 0 ? send(...allowed) : client.socket;
+    };
+    return client;
+}
+
 // Runs one throwaway slot login per value, a few at a time so big rooms don't get hammered
 function mapSlotLogins(values, fn) {
     return mapWithConcurrency(values, SLOT_LOGIN_CONCURRENCY, fn);
@@ -260,7 +274,7 @@ async function start(client, database) {
 
     await prepareEnvironment();
     if (!apClient) {
-        apClient = new ArchipelagoClient();
+        apClient = createClient();
         setupEventListeners();
     }
 
@@ -597,7 +611,7 @@ async function withSlotClient(slotName, fn, { settleMs = 0, slotData = false } =
     const address = serverAddress();
     if (!address) throw new Error('No Archipelago server port configured.');
 
-    const client = new ArchipelagoClient();
+    const client = createClient();
     const cachedPackage = db.archipelago.get('package_cache');
     if (cachedPackage) client.package.importPackage(cachedPackage);
 

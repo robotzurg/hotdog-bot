@@ -1,12 +1,16 @@
-from fuzz import BaseHook, GenOutcome
+
+try:
+    from fuzz import BaseHook, GenOutcome
+except ImportError:
+    from worlds.fuzzer.fuzz import BaseHook, GenOutcome    
 from typing import List, Dict, Set
 import collections
 import logging
+import json
 from . import TrackerCore, DeferredEntranceMode
 from BaseClasses import MultiWorld,Location,ItemClassification
 from NetUtils import NetworkItem
 logger = logging.getLogger("Fuzzer")
-
 
 class Hook(BaseHook):
     ut_core:TrackerCore.TrackerCore
@@ -21,6 +25,9 @@ class Hook(BaseHook):
         self.ut_core.run_generator(None,None,args.player_files_path) #initial UT gen
 
     def after_generate(self, mw:MultiWorld, output_path):
+        # Default to OptionError in case generation failed or is invalid, so
+        # that it gets marked as ignored as we're not testing for that
+        self.status = GenOutcome.OptionError
         if mw is None:
             return
         if len(mw.worlds)>1:
@@ -39,9 +46,14 @@ class Hook(BaseHook):
         temp = Context.decompress(data)
 
         slot_data = temp["slot_data"][1] #slot 0 is reserved
+        # slot_data is sent to clients as json, so pass the slot_data through json conversion to ensure slot_data uses the correct types.
+        slot_data = json.loads(json.dumps(slot_data))
 
         self.ut_core.set_slot_params(mw.worlds[1].game,1,mw.player_name[1],1)
         self.ut_core.initalize_tracker_core(mw.worlds[1].__class__,slot_data)
+        if self.ut_core.tracker_disabled:
+            self.status = GenOutcome.OptionError
+            return #If core is disabled it should just be an option error (so it's ignored)
         assert self.ut_core.multiworld, self.ut_core.gen_error
 
         remaining_locations = [location.address for location in mw.worlds[1].get_locations() if location.address is not None]
@@ -97,3 +109,9 @@ class Hook(BaseHook):
 
     def reclassify_outcome(self, outcome, exc):
         return (self.status if self.status is not None else outcome), exc
+
+class YamllessHook(Hook):
+    def before_generate(self, args):
+        super().before_generate(args)
+        self.player_files_path = "Players" #Use default folder which won't have the correct yaml in it
+

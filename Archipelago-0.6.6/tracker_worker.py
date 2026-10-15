@@ -44,7 +44,7 @@ if "--nogui" not in sys.argv:
     sys.argv.insert(1, "--nogui")
 
 from worlds.tracker.TrackerClient import TrackerGameContext, server_loop  # noqa: E402
-from worlds.tracker.TrackerCore import TrackerCore  # noqa: E402
+from worlds.tracker.TrackerCore import TrackerCore, TrackerLogLineGroup  # noqa: E402
 
 
 def quiet_logging():
@@ -83,7 +83,14 @@ def bind_slot_cache(cache_key):
 # Attributes run_generator() sets from host settings that updateTracker() later
 # reads. TrackerCore.__init__ does NOT set these, so a reused launch multiworld
 # has to bring them along or updateTracker dies on the second request.
-_HOST_SETTING_ATTRS = ("output_format", "hide_excluded", "use_split", "enable_glitched_logic")
+_HOST_SETTING_ATTRS = ("output_format", "hide_excluded", "use_split", "enable_glitched_logic",
+                       "sorting_priorities", "sorting_method")
+
+# UT puts its own error and status lines into readable_locations; only these are actual locations
+_LOCATION_GROUPS = {
+    TrackerLogLineGroup.DEFAULT, TrackerLogLineGroup.HINTED, TrackerLogLineGroup.EXCLUDED,
+    TrackerLogLineGroup.EXCLUDED_GLITCHED, TrackerLogLineGroup.HINTED_GLITCHED, TrackerLogLineGroup.GLITCHED,
+}
 
 
 def prime_core_from_cache(core, launch_mw):
@@ -96,7 +103,8 @@ def prime_core_from_cache(core, launch_mw):
     """
     try:
         (_yaml_path, core.output_format, core.hide_excluded, core.use_split,
-         deferred, core.enable_glitched_logic) = core._set_host_settings()
+         deferred, core.enable_glitched_logic, core.sorting_priorities,
+         core.sorting_method) = core._set_host_settings()
     except Exception as err:
         print(f"[worker] host-settings reuse failed ({err}), regenerating", file=sys.stderr)
         return False
@@ -125,12 +133,36 @@ class WorkerContext(TrackerGameContext):
         self.captured = None
         self.resolved_empty = False
 
+    # The worker logs in as real player slots, and must never send a DeathLink (or any Bounce) as
+    # one. Drop Bounces at the send, beneath anything UT or a world's client code could call.
+    async def send_msgs(self, msgs):
+        allowed = [msg for msg in msgs if not (isinstance(msg, dict) and msg.get("cmd") == "Bounce")]
+        if len(allowed) < len(msgs):
+            print("[worker] blocked an outgoing Bounce (DeathLink) packet", file=sys.stderr)
+        if allowed:
+            await super().send_msgs(allowed)
+
+    async def send_death(self, death_text=""):
+        pass
+
+    async def update_death_link(self, death_link):
+        # Never take the DeathLink tag either, so the worker isn't even sent deaths
+        await super().update_death_link(False)
+
+    def readable_locations(self):
+        core = self.tracker_core
+        return [core.log_line_to_readable_string(line)
+                for group in sorted(core.log_lines)
+                for line in core.log_lines[group]
+                if line.group in _LOCATION_GROUPS]
+
     def updateTracker(self):
         state = super().updateTracker()
         # updateTracker fires on every watcher tick, including before the
         # multiworld is ready; only keep a state that actually resolved.
-        if state is not None and state.readable_locations:
-            self.captured = state
+        readable = self.readable_locations() if state is not None and state.state is not None else []
+        if readable:
+            self.captured = readable
         elif state is not None and state.state is not None:
             # A real collection state with nothing readable: the slot has no
             # checks in logic right now. The placeholder UT returns before the
@@ -184,7 +216,7 @@ async def run_request(key, slot, address, password, yaml_dir):
         if ctx.resolved_empty:
             return []
         raise RuntimeError(f"tracker produced no state for {slot}")
-    return list(ctx.captured.readable_locations)
+    return ctx.captured
 
 
 def main():
