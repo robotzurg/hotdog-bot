@@ -23,7 +23,7 @@ module.exports = {
                 .setRequired(true))
         .addStringOption(option =>
             option.setName('room_url')
-                .setDescription('The archipelago.gg room URL, used to auto-detect port changes and keep the room awake.')
+                .setDescription('The multiworld.gg room URL, used to auto-detect port changes and keep the room awake.')
                 .setRequired(false))
         .setContexts(InteractionContextType.Guild),
 	async execute(interaction) {

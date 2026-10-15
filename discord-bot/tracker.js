@@ -160,7 +160,7 @@ function requestItems(slotName, port) {
             id,
             key: WORKER_KEY,
             slot: slotName,
-            address: `archipelago.gg:${port}`,
+            address: `multiworld.gg:${port}`,
             password: null,
             yaml_dir: PLAYERS_DIR,
         })}\n`);
