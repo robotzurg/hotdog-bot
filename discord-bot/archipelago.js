@@ -3,7 +3,7 @@
  * cached room data (slots, datapackage, check counts, history) the commands read.
  *
  * There is no automatic reconnect. A dropped connection stays down until `/archipelago-reconnect`
- * or a bot restart, and both of those wake the archipelago.gg room before logging in.
+ * or a bot restart, and both of those wake the multiworld.gg room before logging in.
  *
  * While no Archipelago is running, `/archipelago-enabled` turns all of this off: the bot stays
  * disconnected (including across restarts) and the commands that need the room are refused.
@@ -54,7 +54,7 @@ function getRoomId(roomUrl) {
 
 function serverAddress() {
     const port = db.archipelago.get('server_port');
-    return port ? `archipelago.gg:${port}` : null;
+    return port ? `multiworld.gg:${port}` : null;
 }
 
 async function mapWithConcurrency(values, limit, fn) {
@@ -122,9 +122,9 @@ async function sendDiscordMessage(message) {
     console.log(`[Archipelago] ${message}`);
 }
 
-// --- archipelago.gg room handling ---
+// --- multiworld.gg room handling ---
 
-// Hits the room page (not just the status API) to wake it if archipelago.gg has let it go idle,
+// Hits the room page (not just the status API) to wake it if multiworld.gg has let it go idle,
 // then picks up the port it came back on. The wake has to finish before the port check, or a
 // sleeping room reports its stale pre-wake port and we connect to a dead socket.
 async function syncRoomState() {
@@ -520,7 +520,7 @@ async function cacheSlotData() {
 }
 
 // Brings the check counts up to date after time offline, without logging in as every slot each time:
-// a room with a URL is read from archipelago.gg's tracker API, and otherwise only slots that have
+// a room with a URL is read from multiworld.gg's tracker API, and otherwise only slots that have
 // never been counted get a throwaway login. onItemSent keeps the counts current from there.
 async function syncCheckCounts() {
     const slots = playerSlots();
