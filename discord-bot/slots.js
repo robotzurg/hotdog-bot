@@ -4,11 +4,11 @@ const SLOT_EMOTES = {
     'AllRepo':          '<:repo:1469451338936090848>',
 
     // --- Av ---
-    'AvFlipwitch':   '<:flipwitch:1469420881787752687>',
-    'AvFuni':          '<:funi:1510054135951655112>',
+    'AvFlipwitch':      '<:flipwitch:1469420881787752687>',
+    'AvFuni':           '<:funi:1510054135951655112>',
     'AvGenshin':        '<:genshin:1443882704834658387>',
-    'AvHat':         '<:hatintime:1423880268460326995>',
-    'AvOri':         '<:oriwotw:1426636447817138397>',
+    'AvHat':            '<:hatintime:1423880268460326995>',
+    'AvOri':            '<:oriwotw:1426636447817138397>',
 
     // --- Ethan ---
     'Ethan-HK':         '<:hollowknight:1423880850658955374>',
@@ -21,6 +21,19 @@ const SLOT_EMOTES = {
     'iapg-silk':        '<:silksong:1559961871295979710>',
     'iapg-smo':         '<:odyssey:1559961872910913606>',
     'iapg-ugc':         '<:ucg:1559961869782093875>',
+
+    // --- Jeff ---
+    'Jeff-HEX':         '<:hexagon:1560372370898681956>',
+    'Jeff-RM':          '<:rustedmoss:1560372071815712899>',
+    'Jeff-SJ':          '<:celeste:1443882718591975444>',
+    'Jeff-SMO':         '<:odyssey:1559961872910913606>',
+    'Jeff-UCG':         '<:ucg:1559961869782093875>',
+
+    // --- Nate ---
+    'NateCeleste':      '<:celeste:1443882718591975444>',
+    'NateDoom':         '<:doom:1560372073094975539>',
+    'NateHat':          '<:hatintime:1423880268460326995>',
+    'NateTunic':        '<:tunic:1469420324570402867>',
 
     // --- Vlad ---
     'vlad-dice':        '<:yachtdice:1469421299972702463>',
