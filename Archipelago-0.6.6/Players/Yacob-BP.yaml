@@ -17,6 +17,10 @@ Blue Prince:
   workshop_sanity: false
   upgrade_disk_sanity: false
   key_sanity: true
+  enable_obscure_locations:
+    disable: 50
+    exclude: 0
+    enable: 0
   filler_item_distribution:
     extra_allowance: 50
     extra_allowance_1: 0
