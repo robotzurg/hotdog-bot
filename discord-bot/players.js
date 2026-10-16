@@ -6,7 +6,7 @@ const PLAYER_SLOTS = {
     'Av':     ['AvFlipwitch', 'AvFuni', 'AvGenshin', 'AvHat', 'AvOri'],
     'Ethan':  ['Ethan-HK', 'Ethan-Mania', 'Ethan-Piku', 'Ethan-SMO', 'Ethan-TP'],
     'HDW':    ['AllBingo', 'AllRepo'],
-    'iapg':   ['iapg-silk', 'iapg-smo', 'iapg-ugc'],
+    'iapg':   ['iapg-silk', 'iapg-smo', 'iapg-ucg'],
     'Jeff':   ['Jeff-HEX', 'Jeff-RM', 'Jeff-SJ', 'Jeff-SMO', 'Jeff-UCG'],
     'Nate':   ['NateCeleste', 'NateDoom', 'NateHat', 'NateTunic'],
     'Vlad':   ['vlad-dice', 'vlad-frog', 'vlad-gta'],

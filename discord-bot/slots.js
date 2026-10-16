@@ -20,7 +20,7 @@ const SLOT_EMOTES = {
     // --- iapg ---
     'iapg-silk':        '<:silksong:1559961871295979710>',
     'iapg-smo':         '<:odyssey:1559961872910913606>',
-    'iapg-ugc':         '<:ucg:1559961869782093875>',
+    'iapg-ucg':         '<:ucg:1559961869782093875>',
 
     // --- Jeff ---
     'Jeff-HEX':         '<:hexagon:1560372370898681956>',
