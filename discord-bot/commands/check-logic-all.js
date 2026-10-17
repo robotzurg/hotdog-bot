@@ -77,7 +77,7 @@ module.exports = {
         );
 
         const logicStatus = ({ items, error, untracked }) =>
-            error ? 'tracker failed' : untracked ? 'logic not tracked' : `${items.length} in logic`;
+            error ? 'tracker failed' : untracked ? 'N/A in logic' : `${items.length} in logic`;
 
         const buildOverview = () => {
             const lines = [`## Logic Check Overview: ${player}`];
