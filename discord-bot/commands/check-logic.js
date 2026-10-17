@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const db = require('../db.js');
-const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
+const { SLOT_NAMES, SLOT_EMOTES, UNTRACKED_SLOTS } = require('../slots.js');
 const tracker = require('../tracker.js');
 const archipelago = require('../archipelago.js');
 
@@ -47,6 +47,20 @@ module.exports = {
             return;
         }
 
+        const { checked, total } = (db.archipelago.get('check_counts') ?? {})[slotName] ?? { checked: 0, total: 0 };
+        const checkSuffix = total > 0 ? ` | **${checked}/${total}** Checks (${((checked / total) * 100).toFixed(1)}%)` : '';
+
+        if (UNTRACKED_SLOTS.includes(slotName)) {
+            const emote = SLOT_EMOTES[slotName] ?? '';
+            const counts = total > 0 ? `**${checked}/${total}** Checks (${((checked / total) * 100).toFixed(1)}%)` : 'No check counts yet';
+            await interaction.editReply([
+                `## Checks For ${slotName}${emote ? ` ${emote}` : ''}`,
+                'Universal Tracker can\'t track logic for this slot.',
+                `-# ${counts}`,
+            ].join('\n'));
+            return;
+        }
+
         if (!tracker.isAvailable()) {
             await interaction.editReply('Universal Tracker isn\'t installed on this bot (no Archipelago Python environment found).');
             return;
@@ -60,7 +74,6 @@ module.exports = {
         await interaction.editReply(`Gathering Universal Tracker data, this may take a moment...`);
 
         const port = db.archipelago.get('server_port');
-        const { checked, total } = (db.archipelago.get('check_counts') ?? {})[slotName] ?? { checked: 0, total: 0 };
 
         const { items, hintedCount, error } = await tracker.runTrackerForSlot(slotName, port, finishedGames);
         if (error) {
@@ -72,7 +85,6 @@ module.exports = {
         const header = `## In Logic Checks For ${slotName}${emote ? ` ${emote}` : ''}`;
         const checks = items.length;
         const hintSuffix = hintedCount > 0 ? ` | **${hintedCount}** Hinted` : '';
-        const checkSuffix = total > 0 ? ` | **${checked}/${total}** Checks (${((checked / total) * 100).toFixed(1)}%)` : '';
         const totalPages = Math.max(1, Math.ceil(checks / ITEMS_PER_PAGE));
         let currentPage = 0;
 

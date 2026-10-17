@@ -55,6 +55,9 @@ const SLOT_EMOTES = {
 
 const SLOT_NAMES = Object.keys(SLOT_EMOTES).sort();
 
+// Slots Universal Tracker can't track properly (A Hat in Time, Library of Ruina); logic commands only show their check counts
+const UNTRACKED_SLOTS = ['AvHat', 'NateHat', 'Yacob-LOR'];
+
 const FLAG_EMOTES = {
     Progression: '<:Progression:1495879488716668988>',
     Useful:      '<:Useful:1495879485407494354>',
@@ -88,4 +91,4 @@ function mapEmoji(text) {
     return emote ? `${text} ${emote}` : text;
 }
 
-module.exports = { SLOT_NAMES, SLOT_EMOTES, FLAG_EMOTES, ITEM_GROUPS, itemGroup, flagEmote, itemEmote, mapEmoji };
+module.exports = { SLOT_NAMES, SLOT_EMOTES, UNTRACKED_SLOTS, FLAG_EMOTES, ITEM_GROUPS, itemGroup, flagEmote, itemEmote, mapEmoji };

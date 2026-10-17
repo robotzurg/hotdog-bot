@@ -10,7 +10,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const readline = require('readline');
 const path = require('path');
-const { SLOT_EMOTES } = require('./slots.js');
+const { SLOT_EMOTES, UNTRACKED_SLOTS } = require('./slots.js');
 
 const AP_ROOT = path.join(__dirname, '../Archipelago-0.6.6');
 const WORKER_SCRIPT = path.join(AP_ROOT, 'tracker_worker.py');
@@ -192,8 +192,13 @@ function processItems(rawItems, finishedGames = []) {
     return { items, hintedCount };
 }
 
-// Resolves to { slotName, items, hintedCount, error }; `error` is set (and nothing cached) if the lookup failed
+// Resolves to { slotName, items, hintedCount, error, untracked }; `error` is set (and nothing cached) if the lookup failed,
+// `untracked` is set for slots UT can't track, which never reach the worker
 function runTrackerForSlot(slotName, port, finishedGames = []) {
+    if (UNTRACKED_SLOTS.includes(slotName)) {
+        return Promise.resolve({ slotName, items: [], hintedCount: 0, error: null, untracked: true });
+    }
+
     // Cache the promise, not the result, so concurrent requests for the same
     // slot share one worker round-trip instead of queueing a duplicate.
     if (trackerCache.has(slotName)) return trackerCache.get(slotName);
