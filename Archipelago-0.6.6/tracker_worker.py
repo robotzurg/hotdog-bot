@@ -120,6 +120,29 @@ def prime_core_from_cache(core, launch_mw):
     return True
 
 
+# Some apworlds' custom_ut_sort look the location label up in their location table, but UT appends
+# the hint text to hinted locations' labels first (e.g. SMO: KeyError on "Name (**Item** for Slot)").
+# When the apworld's sort throws, sort by region instead of failing the whole request.
+_original_sort_log_lines = TrackerCore.sort_log_lines
+
+
+def _tolerant_sort_log_lines(self):
+    try:
+        _original_sort_log_lines(self)
+    except Exception as err:
+        if self.sorting_method != "apworld":
+            raise
+        print(f"[worker] apworld sort failed ({type(err).__name__}: {err}), sorting by region", file=sys.stderr)
+        self.sorting_method = "region"
+        try:
+            _original_sort_log_lines(self)
+        finally:
+            self.sorting_method = "apworld"
+
+
+TrackerCore.sort_log_lines = _tolerant_sort_log_lines
+
+
 def send(payload):
     _protocol_out.write(json.dumps(payload) + "\n")
     _protocol_out.flush()
