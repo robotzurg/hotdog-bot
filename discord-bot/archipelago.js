@@ -429,7 +429,16 @@ function formatDeath(source, cause) {
     return `🪦 **${mapEmoji(source)}** ${causeParts.join(' ')}`;
 }
 
+// Some games fire the same DeathLink several times at once; drop repeats from a slot within this window
+const DEATH_DEDUPE_MS = 1000;
+const lastDeathAt = new Map(); // source -> ms timestamp of its last DeathLink, posted or not
+
 async function onDeath(source, cause) {
+    const now = Date.now();
+    const last = lastDeathAt.get(source);
+    lastDeathAt.set(source, now);
+    if (last !== undefined && now - last < DEATH_DEDUPE_MS) return;
+
     await sendDiscordMessage(formatDeath(source, cause));
     recordHistory({ type: 'death', source, cause: cause ?? null, timestamp: Date.now() });
 }
