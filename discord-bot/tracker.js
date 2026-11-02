@@ -28,8 +28,6 @@ const REQUEST_TIMEOUT_MS = 300000;
 
 const hintRegex = /\((?:.+ for (.+)|Hinted Item for (.+)|Hinted)\)$/;
 
-const trackerCache = new Map(); // slotName -> Promise<result>
-
 let worker = null;
 let nextRequestId = 1;
 const pending = new Map(); // id -> { resolve, reject, timer }
@@ -41,10 +39,6 @@ function isAvailable() {
 function listYamls() {
     if (!fs.existsSync(PLAYERS_DIR)) return [];
     return fs.readdirSync(PLAYERS_DIR).filter(f => /\.ya?ml$/i.test(f)).sort();
-}
-
-function invalidateSlotCache(slotName) {
-    trackerCache.delete(slotName);
 }
 
 function workerEnv() {
@@ -135,8 +129,6 @@ function warmUp() {
 
 function stop() {
     if (worker) worker.kill();
-    // The room may have moved on by the time the worker is needed again
-    trackerCache.clear();
 }
 
 function requestItems(slotName, port) {
@@ -192,27 +184,19 @@ function processItems(rawItems, finishedGames = []) {
     return { items, hintedCount };
 }
 
-// Resolves to { slotName, items, hintedCount, error, untracked }; `error` is set (and nothing cached) if the lookup failed,
+// Resolves to { slotName, items, hintedCount, error, untracked }; `error` is set if the lookup failed,
 // `untracked` is set for slots UT can't track, which never reach the worker
 function runTrackerForSlot(slotName, port, finishedGames = []) {
     if (UNTRACKED_SLOTS.includes(slotName)) {
         return Promise.resolve({ slotName, items: [], hintedCount: 0, error: null, untracked: true });
     }
 
-    // Cache the promise, not the result, so concurrent requests for the same
-    // slot share one worker round-trip instead of queueing a duplicate.
-    if (trackerCache.has(slotName)) return trackerCache.get(slotName);
-
-    const promise = requestItems(slotName, port)
+    return requestItems(slotName, port)
         .then(rawItems => ({ slotName, ...processItems([...new Set(rawItems)], finishedGames), error: null }))
         .catch(err => {
             console.error(`[${slotName}] tracker error:`, err.message);
-            trackerCache.delete(slotName); // don't cache a failure
             return { slotName, items: [], hintedCount: 0, error: err.message };
         });
-
-    trackerCache.set(slotName, promise);
-    return promise;
 }
 
 module.exports = {
@@ -221,5 +205,4 @@ module.exports = {
     stop,
     listYamls,
     runTrackerForSlot,
-    invalidateSlotCache,
 };

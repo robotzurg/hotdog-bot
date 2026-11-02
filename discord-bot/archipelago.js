@@ -379,10 +379,6 @@ async function onItemSent(item, nodes) {
         }
     }
 
-    // A checked location or a new item changes what's in logic for both ends
-    tracker.invalidateSlotCache(receiverName);
-    if (senderName && senderName !== receiverName) tracker.invalidateSlotCache(senderName);
-
     // Notify subscribers
     const subscriptions = db.archipelago.get('subscriptions') ?? [];
     const matching = subscriptions.filter(s =>

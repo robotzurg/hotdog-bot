@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const db = require('../db.js');
 const { SLOT_NAMES, SLOT_EMOTES } = require('../slots.js');
-const { invalidateSlotCache } = require('../tracker.js');
 const archipelago = require('../archipelago.js');
 
 const slotOption = (option) =>
@@ -97,7 +96,6 @@ module.exports = {
                     await new Promise(resolve => setTimeout(resolve, 1500));
                 }
             });
-            invalidateSlotCache(slotName);
         } catch (err) {
             console.error('Hint error:', err);
             await interaction.editReply(`Failed to connect or send hint: ${err.message}`);
