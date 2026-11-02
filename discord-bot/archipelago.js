@@ -19,6 +19,9 @@ const WAKE_RETRY_DELAY = 5000;
 const HISTORY_FLUSH_DELAY = 2000;
 // How many throwaway slot logins to run at once (check counts, hint points).
 const SLOT_LOGIN_CONCURRENCY = 5;
+// A goaling slot is only marked finished once its auto-release has gone this long without sending
+// anything, so the release itself isn't dimmed.
+const GOAL_SETTLE_DELAY = 5000;
 
 const SLOT_TYPE_PLAYER = 1;
 
@@ -37,6 +40,9 @@ let connectPromise = null;
 
 let pendingHistory = [];
 let historyFlushTimer = null;
+
+// Slots that have goaled but aren't marked finished yet: name -> settle timer
+const pendingGoals = new Map();
 
 function isConnected() {
     return connected;
@@ -315,6 +321,7 @@ async function setEnabled(enabled) {
 
     if (!enabled) {
         flushHistory();
+        finishPendingGoals();
         await disconnectQuietly();
         tracker.stop();
         await sendDiscordMessage('Archipelago disabled; disconnected from the server.');
@@ -329,6 +336,7 @@ function destroy() {
     isDestroyed = true;
     connected = false;
     flushHistory();
+    finishPendingGoals();
     try { apClient?.socket.disconnect(); } catch (_) {}
     console.log('Archipelago client destroyed');
 }
@@ -360,6 +368,7 @@ function formatNodes(nodes, item) {
 }
 
 async function onItemSent(item, nodes) {
+    if (pendingGoals.has(item?.sender?.name)) scheduleGoalFinish(item.sender.name);
     await sendDiscordMessage(formatNodes(nodes, item));
 
     const receiverName = item?.receiver?.name;
@@ -401,12 +410,28 @@ async function onGoal(player) {
     const name = player?.name;
     if (!name) return;
 
+    scheduleGoalFinish(name);
+    await sendDiscordMessage(`🏆 **${mapEmoji(name)}** has completed their goal!`);
+}
+
+// (Re)starts the wait before `name` is marked finished; each item it sends pushes it back
+function scheduleGoalFinish(name) {
+    clearTimeout(pendingGoals.get(name));
+    pendingGoals.set(name, setTimeout(() => finishGoal(name), GOAL_SETTLE_DELAY));
+}
+
+function finishGoal(name) {
+    clearTimeout(pendingGoals.get(name));
+    pendingGoals.delete(name);
     const finished = db.archipelago.get('finished_games') ?? [];
     if (!finished.includes(name)) {
         finished.push(name);
         db.archipelago.set('finished_games', finished);
     }
-    await sendDiscordMessage(`🏆 **${mapEmoji(name)}** has completed their goal!`);
+}
+
+function finishPendingGoals() {
+    for (const name of [...pendingGoals.keys()]) finishGoal(name);
 }
 
 function formatDeath(source, cause) {
