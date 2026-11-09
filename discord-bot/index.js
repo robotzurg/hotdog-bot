@@ -300,14 +300,18 @@ client.on('messageCreate', async message => {
 
         if (message.content.includes('!ask')) {
             messageOptions = [
-                'Survey says... no, probably not.',
                 'Obviously yes, do you even need to ask?',
                 'Very possible... very possible indeed... perhaps consult with yul...',
-                'If you become pea tomorrow, your chances look good.',
+                'Yessir',
+                'Perchance, yes.',
+                'Wtf do you want me to say? I guess yes??????????? what an idiotic question you infantile pillock, bellend',
+                'Survey says... no, probably not.',
                 'Absolutely NOT. The world would explode before that.',
                 'You should DIE for even asking that question, NO.',
-                'Perchance.',
-                'Maybe! Who knows?  I am just a bot, what do you expect from me?'
+                'Your answer is destined in the stars, I can see it now..... no.',
+                'Nop',
+                'Nate will answer your question.',
+                'Snow will answer your question.',
             ];
 
             await message.reply({ content: _.sample(messageOptions), allowedMentions: { repliedUser: false } });
